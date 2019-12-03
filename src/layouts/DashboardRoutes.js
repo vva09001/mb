@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Activity from '../components/page/Activity';
+import News from '../components/page/News';
 import Associations from '../components/page/Associations';
 import Billing from '../components/page/Billing';
 import CustomerDetails from '../components/page/CustomerDetails';
@@ -91,6 +92,7 @@ const DashboardRoutes = () => (
   <Switch>
     {/*Pages*/}
     <Route path="/pages/activity" exact component={Activity} />
+    <Route path="/pages/news" exact component={News} />
     <Route path="/pages/associations" exact component={Associations} />
     <Route path="/pages/billing" exact component={Billing} />
     <Route path="/pages/customer-details" exact component={CustomerDetails} />
