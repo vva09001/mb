@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "@loadable/component": "^5.10.3",
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.2",
     "classnames": "^2.2.6",
@@ -32,7 +33,9 @@
     "react-es6-progressbar.js": "^1.0.20",
     "react-image-lightbox": "^5.1.0",
     "react-live": "^2.2.1",
+    "react-paginate": "^6.3.2",
     "react-quill": "^1.3.3",
+    "react-redux": "^7.1.3",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.0.1",
@@ -43,6 +46,9 @@
     "react-toastify": "^5.4.0",
     "react-typed": "^1.2.0",
     "reactstrap": "^8.1.1",
+    "redux": "^4.0.4",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3",
     "slick-carousel": "^1.8.1"
   },
   "scripts": {

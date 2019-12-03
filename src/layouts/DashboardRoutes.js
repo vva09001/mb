@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Activity from '../components/page/Activity';
+import Activity from '../container/News';
 import Associations from '../components/page/Associations';
 import Billing from '../components/page/Billing';
 import CustomerDetails from '../components/page/CustomerDetails';
@@ -90,7 +90,7 @@ const InboxRoutes = ({ match: { url } }) => (
 const DashboardRoutes = () => (
   <Switch>
     {/*Pages*/}
-    <Route path="/pages/activity" exact component={Activity} />
+    <Route path="/pages/news" exact component={Activity} />
     <Route path="/pages/associations" exact component={Associations} />
     <Route path="/pages/billing" exact component={Billing} />
     <Route path="/pages/customer-details" exact component={CustomerDetails} />

@@ -60,32 +60,13 @@ export const authenticationRoutes = {
 };
 
 export const pageRoutes = {
-  name: 'Pages',
+  name: 'Tin Tức',
   to: '/pages',
   icon: 'copy',
   children: [
-    { to: '/pages/activity', name: 'Activity' },
-    { to: '/pages/associations', name: 'Associations' },
-    { to: '/pages/billing', name: 'Billing' },
-    { to: '/pages/customer-details', name: 'Customer details' },
-    { to: '/pages/event-detail', name: 'Event detail' },
-    { to: '/pages/event-create', name: 'Event create' },
-    { to: '/pages/events', name: 'Events' },
-    { to: '/pages/faq', name: 'Faq' },
-    { to: '/pages/invoice', name: 'Invoice' },
-    { to: '/pages/invite-people', name: 'Invite people' },
-    { to: '/pages/notifications', name: 'Notifications' },
-    { to: '/pages/people', name: 'People' },
-    { to: '/pages/pricing', name: 'Pricing' },
-    { to: '/pages/pricing-alt', name: 'Pricing alt' },
-    { to: '/pages/profile', name: 'Profile' },
-    { to: '/pages/settings', name: 'Settings' },
-    { to: '/pages/starter', name: 'Starter' },
-    {
-      to: '/errors',
-      name: 'Errors',
-      children: [{ to: '/errors/404', name: '404' }, { to: '/errors/500', name: '500' }]
-    }
+    { to: '/pages/news', name: 'Tin tức' },
+    { to: '/pages/associations', name: 'Duyệt tổng' },
+    { to: '/pages/customer-details', name: 'Chuyên mục tin tức' }
   ]
 };
 
