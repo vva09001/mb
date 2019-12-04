@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/img/illustrations/falcon.png';
+import logo from 'assets/img/mb/logo.jpg';
 
 const Logo = ({ at, width, className, ...rest }) => {
   return (
@@ -26,8 +26,7 @@ const Logo = ({ at, width, className, ...rest }) => {
           className
         )}
       >
-        <img className="mr-2" src={logo} alt="Logo" width={width} />
-        <span className="text-sans-serif">falcon</span>
+        <img src={logo} alt="Logo" style={{ maxWidth: '100%' }} />
       </div>
     </Link>
   );

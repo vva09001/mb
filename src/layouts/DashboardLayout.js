@@ -6,7 +6,6 @@ import Dashboard from '../components/dashboard/Dashboard';
 import DashboardAlt from '../components/dashboard-alt/DashboardAlt';
 import NavbarTop from '../components/navbar/NavbarTop';
 import NavbarVertical from '../components/navbar/NavbarVertical';
-import Footer from '../components/footer/Footer';
 
 import loadable from '@loadable/component';
 const DashboardRoutes = loadable(() => import('./DashboardRoutes'));
@@ -32,7 +31,6 @@ const DashboardLayout = ({ location }) => {
           <Route path="/dashboard-alt" exact component={DashboardAlt} />
           <DashboardRoutes />
         </Switch>
-        <Footer />
       </div>
     </div>
   );

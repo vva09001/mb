@@ -12,7 +12,7 @@ const NavbarTop = () => {
   return (
     <Navbar light className="navbar-glass fs--1 font-weight-semi-bold row navbar-top sticky-kit" expand>
       <NavbarToggler onClick={() => setShowBurgerMenu(!showBurgerMenu)} id="burgerMenu" />
-      <Logo at="navbar-top" width={40} id="topLogo" />
+      <Logo at="navbar-top" id="topLogo" />
       <Collapse navbar>
         <Nav navbar className="align-items-center d-none d-lg-block">
           <NavItem>
