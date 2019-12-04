@@ -23,8 +23,8 @@ const NewTable = ({ data, getID, getDetail }) => {
               <input type="checkbox" />
             </th>
             <th>{t('name')}</th>
-            <th>{t('status')}</th>
-            <th>{t('sticky')}</th>
+            {/* <th>{t('status')}</th> */}
+            {/* <th>{t('sticky')}</th> */}
             <th>{t('created')}</th>
             <th>{t('active')}</th>
           </tr>
@@ -37,8 +37,8 @@ const NewTable = ({ data, getID, getDetail }) => {
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{values.status ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{values.stricky ? 'true' : 'false'}</td>
+                {/* <td onClick={() => getDetail(values)}>{values.status ? 'true' : 'false'}</td> */}
+                {/* <td onClick={() => getDetail(values)}>{values.stricky ? 'true' : 'false'}</td> */}
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
                 <td onClick={() => getDetail(values)}>{values.is_active ? 'true' : 'false'}</td>
               </tr>

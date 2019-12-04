@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import AppContext from '../context/AppContext';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from '../components/dashboard/Dashboard';
 import DashboardAlt from '../components/dashboard-alt/DashboardAlt';
@@ -11,8 +10,6 @@ import loadable from '@loadable/component';
 const DashboardRoutes = loadable(() => import('./DashboardRoutes'));
 
 const DashboardLayout = ({ location }) => {
-  const { isFluid } = useContext(AppContext);
-
   useEffect(() => {
     DashboardRoutes.preload();
   }, []);
@@ -22,7 +19,7 @@ const DashboardLayout = ({ location }) => {
   }, [location.pathname]);
 
   return (
-    <div className={isFluid ? 'container-fluid' : 'container'}>
+    <div className="container-fluid">
       <NavbarVertical />
       <div className="content">
         <NavbarTop />
