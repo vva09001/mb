@@ -1,0 +1,16 @@
+{
+    "name": "Tên",
+    "status": "Trạng thái",
+    "sticky": "Sticky",
+    "created": "Đã tạo",
+    "active": "Kích hoạt",
+    "create": "Tạo lập",
+    "delete": "Xóa",
+    "news": "Tin tức",
+    "summary": "Tóm tắt",
+    "authName": "Tên tác giả",
+    "description": "Mô tả",
+    "imgDescription": "Images Description",
+    "baseImages": "Base Images",
+    "category": "Danh mục"
+}

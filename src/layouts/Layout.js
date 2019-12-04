@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { CloseButton, Fade } from '../components/common/Toast';
 
 import DashboardLayout from './DashboardLayout';
 import ErrorLayout from './ErrorLayout';
+import history from 'helpers/history';
 
 import loadable from '@loadable/component';
 const AuthBasicLayout = loadable(() => import('./AuthBasicLayout'));
@@ -21,7 +22,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <Router fallback={<span />}>
+    <Router history={history}>
       <Switch>
         <Route path="/landing" exact component={Landing} />
         <Route path="/authentication/basic" component={AuthBasicLayout} />
