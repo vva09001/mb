@@ -1,11 +1,14 @@
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/stable';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Main from './Main';
 import './helpers/initFA';
+import './helpers/i18n';
+import '../node_modules/noty/lib/noty.css';
+import '../node_modules/noty/lib/themes/mint.css';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -24,9 +27,11 @@ sagaMiddleware.run(saga);
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <Main>
-        <App />
-      </Main>
+      <Suspense fallback={null}>
+        <Main>
+          <App />
+        </Main>
+      </Suspense>
     </PersistGate>
   </Provider>,
   document.getElementById('main')

@@ -2,14 +2,18 @@ import React from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import PropTypes from 'prop-types';
 import { map } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const PropsType = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  getID: PropTypes.func,
+  getDetail: PropTypes.func
 };
 
-const NewTable = ({ data }) => {
+const NewTable = ({ data, getID, getDetail }) => {
+  const { t } = useTranslation();
   return (
     <React.Fragment>
       <Table>
@@ -18,11 +22,11 @@ const NewTable = ({ data }) => {
             <th>
               <input type="checkbox" />
             </th>
-            <th>Tên</th>
-            <th>Trạng thái</th>
-            <th>Sticky</th>
-            <th>Đã tạo</th>
-            <th>Kích hoạt</th>
+            <th>{t('name')}</th>
+            <th>{t('status')}</th>
+            <th>{t('sticky')}</th>
+            <th>{t('created')}</th>
+            <th>{t('active')}</th>
           </tr>
         </thead>
         <tbody>
@@ -30,13 +34,13 @@ const NewTable = ({ data }) => {
             return (
               <tr key={index}>
                 <th>
-                  <input type="checkbox" />
+                  <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td>{values.name}</td>
-                <td>{values.status ? 'true' : 'false'}</td>
-                <td>{values.stricky ? 'true' : 'false'}</td>
-                <td>{moment(values.created).fromNow()}</td>
-                <td>{values.active}</td>
+                <td onClick={() => getDetail(values)}>{values.name}</td>
+                <td onClick={() => getDetail(values)}>{values.status ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>{values.stricky ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>{values.is_active ? 'true' : 'false'}</td>
               </tr>
             );
           })}
