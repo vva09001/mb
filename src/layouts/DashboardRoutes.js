@@ -91,11 +91,11 @@ const InboxRoutes = ({ match: { url } }) => (
 
 const DashboardRoutes = () => (
   <Switch>
-    {/*Pages*/}
-    <Route path="/pages/news" exact component={Activity} />
-    <Route path="/pages/news/create" exact component={NewsCreate} />
-    <Route path="/pages/news/edit" exact component={NewsEdit} />
-    <Route path="/pages/associations" exact component={Associations} />
+    <Route path="/news/list" exact component={Activity} />
+    <Route path="/news/create" exact component={NewsCreate} />
+    <Route path="/news/edit" exact component={NewsEdit} />
+    
+    <Route path="/pages/list" exact component={Associations} />
     <Route path="/pages/billing" exact component={Billing} />
     <Route path="/pages/customer-details" exact component={CustomerDetails} />
     <Route path="/pages/event-detail" exact component={EventDetail} />

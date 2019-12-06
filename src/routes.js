@@ -59,26 +59,23 @@ export const authenticationRoutes = {
   ]
 };
 
-export const pageRoutes = {
+export const newRoutes = {
   name: 'Tin Tức',
-  to: '/pages',
+  to: '/news',
   icon: 'copy',
   children: [
-    { to: '/pages/news', name: 'Tin tức' },
-    { to: '/pages/associations', name: 'Duyệt tổng' },
-    { to: '/pages/customer-details', name: 'Chuyên mục tin tức' }
+    { to: '/news/list', name: 'Tin tức' },
+    { to: '/news/category', name: 'Chuyên mục tin tức' }
   ]
 };
 
-export const emailRoutes = {
-  name: 'Email',
-  to: '/email',
+export const pageRoutes = {
+  name: 'Trang',
+  to: '/pages',
   icon: 'envelope-open',
-  badge: { text: 'new' },
+  // badge: { text: 'new' },
   children: [
-    { to: '/email/inbox', name: 'Inbox' },
-    { to: '/email/email-detail', name: 'Email detail' },
-    { to: '/email/compose', name: 'Compose' }
+    { to: '/pages/list', name: 'Trang' },
   ]
 };
 
@@ -175,8 +172,8 @@ export const utilityRoutes = {
 
 export default [
   homeRoutes,
+  newRoutes,
   pageRoutes,
-  emailRoutes,
   authenticationRoutes,
   componentRoutes,
   utilityRoutes,

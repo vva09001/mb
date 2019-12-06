@@ -10,47 +10,47 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   data: PropTypes.array,
-  getNews: PropTypes.func,
-  deleteNews: PropTypes.func,
+  getPages: PropTypes.func,
+  deletePages: PropTypes.func,
   getDetail: PropTypes.func
 };
 
-const Activity = ({ data, getNews, deleteNews, getDetail }) => {
+const Activity = ({ data, getPages, deletePages, getDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [newsID, setNewsID] = useState(null);
+  const [pagesID, setPagesID] = useState(null);
 
   useEffect(() => {
-    getNews();
-  }, [getNews]);
+    getPages();
+  }, [getPages]);
 
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (newsID !== null) {
+    if (pagesID !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (newsID !== null) {
-      deleteNews(newsID);
+    if (pagesID !== null) {
+      deletePages(pagesID);
       setIsOpen(!isOpen);
     }
   };
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/pages/news/edit');
+    history.push('/pages/pages/edit');
   };
 
   return (
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('news')}</h4>
+          <h4>{t('pages')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/news/create')}>
+          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/pages/create')}>
             {t('create')}
           </Button>
           <Button color="primary" className="mr-2" onClick={openComfirm}>
@@ -58,7 +58,7 @@ const Activity = ({ data, getNews, deleteNews, getDetail }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <NewTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <NewTable data={data} getID={id => setPagesID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -73,8 +73,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  getNews: NewActions.GetNews,
-  deleteNews: NewActions.DeleteNews,
+  getPages: NewActions.GetPages,
+  deletePages: NewActions.DeletePages,
   getDetail: NewActions.getDetail
 };
 
