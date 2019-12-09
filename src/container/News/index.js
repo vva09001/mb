@@ -50,10 +50,10 @@ const Activity = ({ data, getNews, deleteNews, getDetail }) => {
           <h4>{t('news')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/news/create')}>
+          <Button color="primary" className="mr-2" onClick={() => history.push('/news/create')}>
             {t('create')}
           </Button>
-          <Button color="primary" className="mr-2" onClick={openComfirm}>
+          <Button color="danger" className="mr-2" onClick={openComfirm}>
             {t('delete')}
           </Button>
         </Row>

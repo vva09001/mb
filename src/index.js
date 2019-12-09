@@ -9,6 +9,7 @@ import './helpers/initFA';
 import './helpers/i18n';
 import '../node_modules/noty/lib/noty.css';
 import '../node_modules/noty/lib/themes/mint.css';
+import 'styles/index.scss';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';

@@ -40,7 +40,6 @@ function* editNewsSaga() {
     const { data, onSuccess, onFail } = params;
     try {
       const res = yield editNews(data);
-      console.log(res);
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.EDIT_NEWS_RESPONSE, data: res.data });

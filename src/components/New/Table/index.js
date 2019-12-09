@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import { map } from 'lodash';
+import { map, slice } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
@@ -14,6 +14,9 @@ const PropsType = {
 
 const NewTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
+  const [page, setPage] = useState(Math.ceil(data.length / 20));
+  const list = slice(data, page * 20, page * 20 + 20);
+
   return (
     <React.Fragment>
       <Table>
@@ -30,7 +33,7 @@ const NewTable = ({ data, getID, getDetail }) => {
           </tr>
         </thead>
         <tbody>
-          {map(data, (values, index) => {
+          {map(list, (values, index) => {
             return (
               <tr key={index}>
                 <th>
@@ -47,8 +50,8 @@ const NewTable = ({ data, getID, getDetail }) => {
         </tbody>
       </Table>
       <ReactPaginate
-        pageCount={5}
-        marginPagesDisplayed={3}
+        pageCount={page < 1 ? 1 : page}
+        marginPagesDisplayed={5}
         pageRangeDisplayed={5}
         nextLinkClassName={'page-link'}
         previousLinkClassName={'page-link'}
@@ -59,6 +62,7 @@ const NewTable = ({ data, getID, getDetail }) => {
         activeLinkClassName={'active'}
         breakLinkClassName={'page-item'}
         containerClassName={'pagination'}
+        onPageChange={data => setPage(data.selected)}
       />
     </React.Fragment>
   );

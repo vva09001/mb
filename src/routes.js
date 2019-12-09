@@ -63,10 +63,7 @@ export const newRoutes = {
   name: 'Tin Tức',
   to: '/news',
   icon: 'copy',
-  children: [
-    { to: '/news/list', name: 'Tin tức' },
-    { to: '/news/category', name: 'Chuyên mục tin tức' }
-  ]
+  children: [{ to: '/news/list', name: 'Tin tức' }, { to: '/news/category', name: 'Duyệt tổng' }]
 };
 
 export const pageRoutes = {
@@ -74,9 +71,7 @@ export const pageRoutes = {
   to: '/pages',
   icon: 'envelope-open',
   // badge: { text: 'new' },
-  children: [
-    { to: '/pages/list', name: 'Trang' },
-  ]
+  children: [{ to: '/pages/list', name: 'Trang' }]
 };
 
 export const documentationRoutes = {

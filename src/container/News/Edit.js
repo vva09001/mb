@@ -24,11 +24,11 @@ function Edit({ detail, editNew }) {
 
   const [activeTab, setActiveTab] = useState('1');
 
+  const { t } = useTranslation();
+
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
-  const { t } = useTranslation();
 
   const handleChange = event => {
     event.persist();
@@ -82,7 +82,7 @@ function Edit({ detail, editNew }) {
               toggle('1');
             }}
           >
-            Chung
+            {t('general')}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -92,14 +92,14 @@ function Edit({ detail, editNew }) {
               toggle('2');
             }}
           >
-            SEO
+            {t('seo')}
           </NavLink>
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={editNews}>
-            <h4>Sửa</h4>
+            <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
               <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
@@ -145,23 +145,23 @@ function Edit({ detail, editNew }) {
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
-              Sửa
+              {t('edit')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={editNews}>
-            <h4>SEO</h4>
+            <h4>{t('edit')}</h4>
             <FormGroup>
-              <Label for="exampleName">Meta Title</Label>
+              <Label for="exampleName">{t('meta.title')}</Label>
               <Input type="text" name="meta_title" value={formState.values.meta_title} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label>Meta keywords</Label>
+              <Label>{t('meta.keywords')}</Label>
               <Input type="text" name="meta_keywords" value={formState.values.meta_keywords} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleText">Meta Description</Label>
+              <Label for="exampleText">{t('meta.description')}</Label>
               <Input
                 type="textarea"
                 name="meta_description"
@@ -171,7 +171,7 @@ function Edit({ detail, editNew }) {
               />
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>

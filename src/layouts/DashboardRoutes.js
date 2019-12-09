@@ -94,7 +94,7 @@ const DashboardRoutes = () => (
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit" exact component={NewsEdit} />
-    
+
     <Route path="/pages/list" exact component={Associations} />
     <Route path="/pages/billing" exact component={Billing} />
     <Route path="/pages/customer-details" exact component={CustomerDetails} />

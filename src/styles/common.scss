@@ -1,0 +1,23 @@
+.pagination {
+  float: right;
+  .page-link {
+    color: #007bff;
+    cursor: pointer;
+  }
+  .page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .page-link:hover {
+    background-color: #dee2e6;
+    border-color: #dee2e6;
+  }
+}
+
+.nav-tabs {
+  .nav-item {
+    cursor: pointer;
+  }
+}

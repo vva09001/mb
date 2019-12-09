@@ -1,5 +1,5 @@
 import Actions from './actions';
-import { filter } from 'lodash';
+import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
@@ -18,6 +18,16 @@ const News = (state = initialState, action) => {
         ...state,
         data: [...state.data, action.data]
       };
+    case Actions.EDIT_NEWS_REQUEST:
+      return {
+        ...state,
+        data: map(state.data, values => {
+          if (values.id === action.data.id) {
+            values = action.data;
+          }
+          return values;
+        })
+      };
     case Actions.DELETE_NEWS_RESPONSE:
       return {
         ...state,
@@ -26,7 +36,6 @@ const News = (state = initialState, action) => {
         })
       };
     case Actions.GET_DETAIL:
-      console.log(action.data);
       return {
         ...state,
         detail: action.data

@@ -22,11 +22,11 @@ function NewsCreate({ newsCreate }) {
   });
   const [activeTab, setActiveTab] = useState('1');
 
+  const { t } = useTranslation();
+
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
-  const { t } = useTranslation();
 
   const handleChange = event => {
     event.persist();
@@ -81,7 +81,7 @@ function NewsCreate({ newsCreate }) {
               toggle('1');
             }}
           >
-            Chung
+            {t('general')}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -91,7 +91,7 @@ function NewsCreate({ newsCreate }) {
               toggle('2');
             }}
           >
-            SEO
+            {t('seo')}
           </NavLink>
         </NavItem>
       </Nav>
@@ -138,27 +138,27 @@ function NewsCreate({ newsCreate }) {
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
-            <h4>SEO</h4>
+            <h4>{t('seo')}</h4>
             <FormGroup>
-              <Label for="exampleName">Meta Title</Label>
+              <Label for="exampleName">{t('meta.title')}</Label>
               <Input type="text" name="meta_title" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label>Meta keywords</Label>
+              <Label>{t('meta.keywords')}</Label>
               <Input type="text" name="meta_keywords" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleText">Meta Description</Label>
+              <Label for="exampleText">{t('meta.description')}</Label>
               <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>

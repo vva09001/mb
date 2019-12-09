@@ -12,5 +12,14 @@
     "description": "Mô tả",
     "imgDescription": "Images Description",
     "baseImages": "Base Images",
-    "category": "Danh mục"
+    "category": "Danh mục",
+    "general": "Chung",
+    "seo": "SEO",
+    "edit": "Sửa",
+    "save": "Lưu",
+    "meta": {
+        "title": "Meta Title",
+        "keywords": "Meta keywords",
+        "description": "Meta Description"
+    }
 }
