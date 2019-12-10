@@ -158,7 +158,7 @@ function Edit({ detail, editNew }) {
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <Input type="text" name="meta_keywords" value={formState.values.meta_keywords} onChange={handleChange} />
+              <Input type="text" name="meta_keyword" value={formState.values.meta_keyword} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>

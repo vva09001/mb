@@ -21,5 +21,12 @@
         "title": "Meta Title",
         "keywords": "Meta keywords",
         "description": "Meta Description"
+    },
+    "loginForm": {
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "remember": "Ghi nhớ",
+        "login": "Đăng nhập",
+        "forgetPassword": "Quên mật khẩu ?"
     }
 }

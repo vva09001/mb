@@ -13,7 +13,7 @@ function* getNewsSaga() {
         console.log(res);
       }
     } catch (error) {
-      console.log(error);
+      Error('Không thể kết nối đến server');
     }
   });
 }
@@ -30,7 +30,7 @@ function* addNewsSaga() {
         yield onFail();
       }
     } catch (error) {
-      console.log(error);
+      Error('Không thể kết nối đến server');
     }
   });
 }
@@ -45,10 +45,9 @@ function* editNewsSaga() {
         yield put({ type: actions.EDIT_NEWS_RESPONSE, data: res.data });
       } else {
         yield onFail();
-        console.log(res);
       }
     } catch (error) {
-      console.log(error);
+      Error('Không thể kết nối đến server');
     }
   });
 }
@@ -63,10 +62,9 @@ function* deleteNewsSaga() {
         yield put({ type: actions.DELETE_NEWS_RESPONSE, data: id });
       } else {
         yield Error('Xóa lỗi');
-        console.log(res);
       }
     } catch (error) {
-      console.log(error);
+      Error('Không thể kết nối đến server');
     }
   });
 }

@@ -22,7 +22,6 @@ const Activity = ({ data, getNews, deleteNews, getDetail }) => {
   useEffect(() => {
     getNews();
   }, [getNews]);
-
   const { t } = useTranslation();
 
   const openComfirm = () => {
@@ -40,7 +39,7 @@ const Activity = ({ data, getNews, deleteNews, getDetail }) => {
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/pages/news/edit');
+    history.push('/news/edit');
   };
 
   return (

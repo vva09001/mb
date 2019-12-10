@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Button, Form, Row, Col, FormGroup, Input, CustomInput, Label } from 'reactstrap';
-import Divider from '../common/Divider';
-import SocialAuthButtons from './SocialAuthButtons';
 import withRedirect from '../../hoc/withRedirect';
+import { useTranslation } from 'react-i18next';
+import { AuthActions } from 'store/actions';
+import { connect } from 'react-redux';
 
-const LoginForm = ({ setRedirect, hasLabel, layout }) => {
+const LoginForm = ({ hasLabel, layout, login }) => {
   // State
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
 
+  const { t } = useTranslation();
+
   // Handler
   const handleSubmit = e => {
     e.preventDefault();
-    toast.success(`Logged in as ${email}`);
-    setRedirect(true);
+    login({ username: email, password: password });
   };
 
   useEffect(() => {
@@ -28,18 +29,17 @@ const LoginForm = ({ setRedirect, hasLabel, layout }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <FormGroup>
-        {hasLabel && <Label>Email address</Label>}
+        {hasLabel && <Label>{t('loginForm.username')}</Label>}
         <Input
-          placeholder={!hasLabel ? 'Email address' : ''}
+          placeholder={!hasLabel ? t('loginForm.username') : ''}
           value={email}
           onChange={({ target }) => setEmail(target.value)}
-          type="email"
         />
       </FormGroup>
       <FormGroup>
-        {hasLabel && <Label>Password</Label>}
+        {hasLabel && <Label>{t('loginForm.password')}</Label>}
         <Input
-          placeholder={!hasLabel ? 'Password' : ''}
+          placeholder={!hasLabel ? t('loginForm.password') : ''}
           value={password}
           onChange={({ target }) => setPassword(target.value)}
           type="password"
@@ -49,7 +49,7 @@ const LoginForm = ({ setRedirect, hasLabel, layout }) => {
         <Col xs="auto">
           <CustomInput
             id="customCheckRemember"
-            label="Remember me"
+            label={t('loginForm.remember')}
             checked={remember}
             onChange={({ target }) => setRemember(target.checked)}
             type="checkbox"
@@ -57,17 +57,15 @@ const LoginForm = ({ setRedirect, hasLabel, layout }) => {
         </Col>
         <Col xs="auto">
           <Link className="fs--1" to={`/authentication/${layout}/forget-password`}>
-            Forget Password?
+            {t('loginForm.forgetPassword')}
           </Link>
         </Col>
       </Row>
       <FormGroup>
-        <Button color="primary" block className="mt-3" disabled={isDisabled}>
-          Log in
+        <Button color="primary" block className="mt-3" disabled={isDisabled} type="submit">
+          {t('loginForm.login')}
         </Button>
       </FormGroup>
-      <Divider className="mt-4">or log in with</Divider>
-      <SocialAuthButtons />
     </Form>
   );
 };
@@ -75,7 +73,8 @@ const LoginForm = ({ setRedirect, hasLabel, layout }) => {
 LoginForm.propTypes = {
   setRedirect: PropTypes.func.isRequired,
   layout: PropTypes.string,
-  hasLabel: PropTypes.bool
+  hasLabel: PropTypes.bool,
+  login: PropTypes.func
 };
 
 LoginForm.defaultProps = {
@@ -83,4 +82,11 @@ LoginForm.defaultProps = {
   hasLabel: false
 };
 
-export default withRedirect(LoginForm);
+const mapDispatchToProps = {
+  login: AuthActions.loginAction
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRedirect(LoginForm));

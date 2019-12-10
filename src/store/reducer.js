@@ -3,14 +3,17 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import NewReducer from './news/reducers';
+import AuthReducer from './auth/reducers';
 
 const reducers = combineReducers({
-  NewReducer
+  NewReducer,
+  AuthReducer
 });
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  whitelist: ['AuthReducer']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

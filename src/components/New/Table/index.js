@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import { map, slice } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
@@ -14,56 +13,56 @@ const PropsType = {
 
 const NewTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(Math.ceil(data.length / 20));
-  const list = slice(data, page * 20, page * 20 + 20);
-
+  const [page, setPage] = useState(0);
   return (
     <React.Fragment>
-      <Table>
+      <Table striped>
         <thead>
           <tr>
             <th>
               <input type="checkbox" />
             </th>
             <th>{t('name')}</th>
-            {/* <th>{t('status')}</th> */}
-            {/* <th>{t('sticky')}</th> */}
+            <th>{t('status')}</th>
+            <th>{t('sticky')}</th>
             <th>{t('created')}</th>
             <th>{t('active')}</th>
           </tr>
         </thead>
         <tbody>
-          {map(list, (values, index) => {
+          {data.slice(page * 20, page * 20 + 20).map(values => {
             return (
-              <tr key={index}>
+              <tr key={values.id}>
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
-                {/* <td onClick={() => getDetail(values)}>{values.status ? 'true' : 'false'}</td> */}
-                {/* <td onClick={() => getDetail(values)}>{values.stricky ? 'true' : 'false'}</td> */}
+                <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>{values.stricky === 1 ? 'true' : 'false'}</td>
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                <td onClick={() => getDetail(values)}>{values.is_active ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'true' : 'false'}</td>
               </tr>
             );
           })}
         </tbody>
       </Table>
-      <ReactPaginate
-        pageCount={page < 1 ? 1 : page}
-        marginPagesDisplayed={5}
-        pageRangeDisplayed={5}
-        nextLinkClassName={'page-link'}
-        previousLinkClassName={'page-link'}
-        pageClassName={'page-item'}
-        pageLinkClassName={'page-link'}
-        breakClassName={'page-link'}
-        activeClassName={'active'}
-        activeLinkClassName={'active'}
-        breakLinkClassName={'page-item'}
-        containerClassName={'pagination'}
-        onPageChange={data => setPage(data.selected)}
-      />
+      <div className="pagination__wapper">
+        <ReactPaginate
+          pageCount={Math.ceil(data.length / 20)}
+          marginPagesDisplayed={5}
+          pageRangeDisplayed={5}
+          nextLinkClassName={'page-link'}
+          previousLinkClassName={'page-link'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+          breakClassName={'page-link'}
+          activeClassName={'active'}
+          activeLinkClassName={'active'}
+          breakLinkClassName={'page-item'}
+          containerClassName={'pagination'}
+          onPageChange={data => setPage(data.selected)}
+        />
+      </div>
     </React.Fragment>
   );
 };

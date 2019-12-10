@@ -4,7 +4,6 @@ const { REACT_APP_BASE_URL } = process.env;
 
 const request = axios.create({
   baseURL: REACT_APP_BASE_URL,
-  timeout: 2000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
