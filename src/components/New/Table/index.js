@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
@@ -14,6 +15,8 @@ const PropsType = {
 const NewTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
+
+  const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
       <Table striped>
@@ -30,7 +33,7 @@ const NewTable = ({ data, getID, getDetail }) => {
           </tr>
         </thead>
         <tbody>
-          {data.slice(page * 20, page * 20 + 20).map(values => {
+          {map(list, values => {
             return (
               <tr key={values.id}>
                 <th>
