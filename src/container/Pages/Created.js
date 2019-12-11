@@ -5,10 +5,10 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { PageActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import { Error, Success } from 'helpers/notify';
-import history from 'helpers/history';
+import { Error, Success } from '../../helpers/notify';
+import history from '../../helpers/history';
 import { connect } from 'react-redux';
 
 const PropsType = {
@@ -35,30 +35,17 @@ function PagesCreate({ pagesCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]: (event.target.type === 'checkbox' ? (event.target.checked==false ? 0 : 1) : event.target.value)
       },
       touched: {
         ...formState.touched,
         [event.target.name]: true
       }
     }));
+    
   };
 
-  const ckEditorChange = (event, data) => {
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        description: data
-      },
-      touched: {
-        ...formState.touched,
-        description: true
-      }
-    }));
-  };
-
-  const onSuccess = () => {
+const onSuccess = () => {
     Success('Tạo thành công');
     history.goBack();
   };
@@ -68,7 +55,7 @@ function PagesCreate({ pagesCreate }) {
   };
 
   const createdPages = event => {
-    event.preventDefault();
+    event.preventDefault();    
     pagesCreate(formState.values, onSuccess, onFail);
   };
   return (
@@ -103,38 +90,23 @@ function PagesCreate({ pagesCreate }) {
               <Label for="exampleName">{t('name')}</Label>
               <Input type="text" name="name" id="exampleName" onChange={handleChange} />
             </FormGroup>
-            <FormGroup>
-              <Label for="exampleText">{t('summary')}</Label>
-              <Input type="textarea" name="slug" rows="5" onChange={handleChange} />
+            <FormGroup check>
+              <Label check>
+                <Input type="checkbox" name="status" value={0}  onChange={handleChange} />{' '}
+                Enable the page
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input type="checkbox" name="has_sidebar"  onChange = {handleChange} />{' '}
+                Enable sidebar
+              </Label>
             </FormGroup>
             <FormGroup>
-              <Label for="exampleFile">{t('imgDescription')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('description')}</Label>
-              <CKEditor
-                editor={ClassicEditor}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  ckEditorChange(event, data);
-                }}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('authName')}</Label>
-              <Input type="text" name="author_name" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="category_pages_id" id="exampleSelect" onChange={handleChange}>
-                <option value={0}>Tin tức</option>
-                <option value={1}>Doanh nghiệp</option>
-                <option value={2}>Hoạt động</option>
+              <Label for="template">Select</Label>
+              <Input type="select" name="template" id="template" onChange={handleChange} >
+                  <option>Default</option>
+                  <option>Full</option>                  
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
@@ -145,6 +117,10 @@ function PagesCreate({ pagesCreate }) {
         <TabPane tabId="2">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdPages}>
             <h4>SEO</h4>
+            <FormGroup>
+              <Label for="exampleName">Slug</Label>
+              <Input type="text" name="slug" onChange={handleChange} />
+            </FormGroup>
             <FormGroup>
               <Label for="exampleName">Meta Title</Label>
               <Input type="text" name="meta_title" onChange={handleChange} />
@@ -169,11 +145,11 @@ function PagesCreate({ pagesCreate }) {
 
 PagesCreate.propTypes = PropsType;
 
-const mamapDispatchToProps = {
-  pagesCreate: NewActions.AddPages
+const mapDispatchToProps = {
+  pagesCreate: PageActions.AddPages
 };
 
 export default connect(
   null,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(PagesCreate);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
-import NewTable from '../../components/New/Table';
+import PageTable from '../../components/page/Table';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { PageActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import PopupComfirm from 'components/common/PopupComfirm';
-import history from 'helpers/history';
+import PopupComfirm from '../../components/common/PopupComfirm';
+import history from '../../helpers/history';
 import { connect } from 'react-redux';
 
 const PropsType = {
@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const Activity = ({ data, getPages, deletePages, getDetail }) => {
+const ListPage = ({ data, getPages, deletePages, getDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [pagesID, setPagesID] = useState(null);
 
@@ -40,17 +40,17 @@ const Activity = ({ data, getPages, deletePages, getDetail }) => {
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/pages/pages/edit');
+    history.push('/pages/edit');
   };
 
   return (
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('pages')}</h4>
+          <h4>{t('Trang')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/pages/create')}>
+          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/create')}>
             {t('create')}
           </Button>
           <Button color="primary" className="mr-2" onClick={openComfirm}>
@@ -58,27 +58,27 @@ const Activity = ({ data, getPages, deletePages, getDetail }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <NewTable data={data} getID={id => setPagesID(id)} getDetail={onGetDetail} />
+          <PageTable data={data} getID={id => setPagesID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
 };
-
-Activity.propTypes = PropsType;
+  
+ListPage.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data };
+  return { data: state.PageReducer.data };
 };
 
 const mapDispatchToProps = {
-  getPages: NewActions.GetPages,
-  deletePages: NewActions.DeletePages,
-  getDetail: NewActions.getDetail
+  getPages: PageActions.GetPages,
+  deletePages: PageActions.DeletePages,
+  getDetail: PageActions.getDetail
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Activity);
+)(ListPage);

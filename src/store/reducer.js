@@ -4,10 +4,12 @@ import storage from 'redux-persist/lib/storage';
 
 import NewReducer from './news/reducers';
 import AuthReducer from './auth/reducers';
+import PageReducer from './pages/reducers';
 
 const reducers = combineReducers({
   NewReducer,
-  AuthReducer
+  AuthReducer,
+  PageReducer
 });
 
 const persistConfig = {
