@@ -3,6 +3,9 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Activity from '../container/News';
 import NewsCreate from '../container/News/Created';
 import NewsEdit from '../container/News/Edit';
+import ListPage from '../container/Pages';
+import PagesCreate from '../container/Pages/Created';
+import PageEdit from '../container/Pages/Edit';
 import Associations from '../components/page/Associations';
 import Billing from '../components/page/Billing';
 import CustomerDetails from '../components/page/CustomerDetails';
@@ -95,9 +98,9 @@ const DashboardRoutes = () => (
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit" exact component={NewsEdit} />
 
-    <Route path="/pages/list" exact component={Associations} />
-    <Route path="/pages/billing" exact component={Billing} />
-    <Route path="/pages/customer-details" exact component={CustomerDetails} />
+    <Route path="/pages/list" exact component={ListPage} />
+    <Route path="/pages/create" exact component={PagesCreate} />
+    <Route path="/pages/edit" exact component={PageEdit} />
     <Route path="/pages/event-detail" exact component={EventDetail} />
     <Route path="/pages/event-create" exact component={EventCreate} />
     <Route path="/pages/events" exact component={Events} />

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { PageActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +66,7 @@ const onSuccess = () => {
               toggle('1');
             }}
           >
-            Chung
+            {t('general')}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -78,7 +76,7 @@ const onSuccess = () => {
               toggle('2');
             }}
           >
-            SEO
+            {t('seo')}
           </NavLink>
         </NavItem>
       </Nav>
@@ -110,13 +108,13 @@ const onSuccess = () => {
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdPages}>
-            <h4>SEO</h4>
+            <h4>{t('seo')}</h4>
             <FormGroup>
               <Label for="exampleName">Slug</Label>
               <Input type="text" name="slug" onChange={handleChange} />
@@ -134,7 +132,7 @@ const onSuccess = () => {
               <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>

@@ -68,7 +68,7 @@ function PageEdit({ detail, editPage }) {
                 toggle('1');
               }}
             >
-              Chung
+              {t('genaral')}
             </NavLink>
           </NavItem>
           <NavItem>
@@ -78,7 +78,7 @@ function PageEdit({ detail, editPage }) {
                 toggle('2');
               }}
             >
-              SEO
+              {t('seo')}
             </NavLink>
           </NavItem>
         </Nav>
@@ -110,13 +110,13 @@ function PageEdit({ detail, editPage }) {
                 </Input>
               </FormGroup>
               <Button color="primary" type="submit">
-                Lưu
+                {t('save')}
               </Button>
             </Form>
           </TabPane>
           <TabPane tabId="2">
             <Form className="p-3" style={{ background: '#fff' }} onSubmit={editPages}>
-              <h4>SEO</h4>
+              <h4>{t('seo')}</h4>
               <FormGroup>
                 <Label for="exampleName">Slug</Label>
                 <Input type="text" name="slug" onChange={handleChange} />
@@ -134,7 +134,7 @@ function PageEdit({ detail, editPage }) {
                 <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
               </FormGroup>
               <Button color="primary" type="submit">
-                Lưu
+              {t('save')}
               </Button>
             </Form>
           </TabPane>

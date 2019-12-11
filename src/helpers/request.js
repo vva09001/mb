@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-
-
+const { REACT_APP_BASE_URL } = process.env;
 const request = axios.create({
-  baseURL: 'https://mbbank0312.herokuapp.com/api',
+  baseURL: REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
