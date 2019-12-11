@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Activity from '../container/News';
 import NewsCreate from '../container/News/Created';
 import NewsEdit from '../container/News/Edit';
+import Category from 'container/News/Category';
 import Associations from '../components/page/Associations';
 import Billing from '../components/page/Billing';
 import CustomerDetails from '../components/page/CustomerDetails';
@@ -94,6 +95,7 @@ const DashboardRoutes = () => (
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit" exact component={NewsEdit} />
+    <Route path="/news/category" component={Category} />
 
     <Route path="/pages/list" exact component={Associations} />
     <Route path="/pages/billing" exact component={Billing} />

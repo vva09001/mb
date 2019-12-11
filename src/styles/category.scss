@@ -1,0 +1,28 @@
+.category__wapper {
+  background: #fff;
+  padding: 20px 0;
+  .span__link {
+    color: #1f7aca;
+    cursor: pointer;
+  }
+  .active__tree {
+    color: #000;
+    text-decoration: underline;
+  }
+  .span__link:hover {
+    text-decoration: underline;
+    color: #000;
+  }
+  .cetegoryFrom {
+    .form-check-input {
+      position: unset;
+      margin: 0;
+    }
+    .check__box {
+      span {
+        font-size: 13px;
+        margin-left: 10px;
+      }
+    }
+  }
+}

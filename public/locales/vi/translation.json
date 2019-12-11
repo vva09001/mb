@@ -28,5 +28,20 @@
         "remember": "Ghi nhớ",
         "login": "Đăng nhập",
         "forgetPassword": "Quên mật khẩu ?"
+    },
+    "category_page": {
+        "title": "Chuyên mục tin tức",
+        "addRoot": "Thêm danh mục gốc",
+        "addChildren": "Thêm danh mục con",
+        "hideAll": "Thu gọn tất cả",
+        "showAll": "Mở rộng tất cả",
+        "form": {
+            "search": "Có thể tìm kiếm",
+            "active": "Kích hoạt danh mục",
+            "coverImage": "Ảnh bìa",
+            "featuredImage": "Hình ảnh đặc trưng",
+            "displayCategory": "Hiển thị danh mục này trong danh sách danh mục hộp tìm kiếm",
+            "activeCategory": "Kích hoạt danh mục"
+        }
     }
 }
