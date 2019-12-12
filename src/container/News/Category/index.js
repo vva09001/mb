@@ -25,7 +25,6 @@ function Category({ listCategory, getCategory, addCategory, editCategory, delete
   const [activeTab, setActiveTab] = useState('1');
   const [deleteActive, setDeleteActive] = useState(false);
   const [categoryDetail, setCategoryDetai] = useState({});
-  // const [path, setPath] = useState([]);
   const [formChildren, setFormChildren] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [formState, setFormState] = useState({
@@ -148,8 +147,8 @@ function Category({ listCategory, getCategory, addCategory, editCategory, delete
 
   const onMove = treeData => {
     const parentID = treeData.nextParentNode.id;
-    console.log(treeData);
-    console.log(treeData.node);
+    // console.log(treeData);
+    // console.log(treeData.node);
     const data = {
       ...treeData.node,
       parentId: parentID

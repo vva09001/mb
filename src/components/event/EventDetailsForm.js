@@ -29,7 +29,6 @@ const EventDetailsForm = () => {
   // Handler
   const handleSubmit = e => {
     e.preventDefault();
-    console.log({ title, startDate, startTime, endDate, endTime, deadline, timezone, venue, address });
   };
 
   return (

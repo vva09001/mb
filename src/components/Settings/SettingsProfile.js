@@ -16,7 +16,6 @@ const SettingsProfile = () => {
 
   const handleProfileSettings = e => {
     e.preventDefault();
-    console.log({ firstName, lastName, email, phone, heading, intro });
   };
 
   return (

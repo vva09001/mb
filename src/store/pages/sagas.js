@@ -10,7 +10,7 @@ function* getPagesSaga() {
       if (res.status === 200) {
         yield put({ type: actions.GET_PAGES_RESPONSE, data: res.data });
       } else {
-        console.log(res);
+        Error('Không thể kết nối đến server');
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
@@ -45,7 +45,6 @@ function* editPagesSaga() {
         yield put({ type: actions.EDIT_PAGES_RESPONSE, data: res.data });
       } else {
         yield onFail();
-        console.log(res);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
@@ -63,7 +62,6 @@ function* deletePagesSaga() {
         yield put({ type: actions.DELETE_PAGES_RESPONSE, data: id });
       } else {
         yield Error('Xóa lỗi');
-        console.log(res);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
