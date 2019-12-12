@@ -11,7 +11,7 @@ const PropType = {
   onDelete: PropTypes.func
 };
 
-const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete }) => {
+const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onDelete }) => {
   const { t } = useTranslation();
   return (
     <Form onSubmit={onSubmit} className="cetegoryFrom">
@@ -74,6 +74,6 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete })
   );
 };
 
-CategoryForm.propTypes = PropType;
+CategoryFormChildren.propTypes = PropType;
 
-export default CategoryForm;
+export default CategoryFormChildren;

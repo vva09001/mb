@@ -1,9 +1,15 @@
 import axios from 'axios';
 
+const getToken = () => {
+  const localStore = JSON.parse(localStorage.getItem('persist:root'));
+  const profile = JSON.parse(localStore.AuthReducer);
+  // const token = JSON.parse(localStore)
+  return profile.token;
+};
 
-
+const { REACT_APP_BASE_URL } = process.env;
 const request = axios.create({
-  baseURL: 'https://mbbank0312.herokuapp.com/api',
+  baseURL: REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
@@ -12,11 +18,15 @@ const request = axios.create({
 
 // before send request
 request.interceptors.request.use(
-  config => {
+  async config => {
+    const token = await getToken();
+    if (token !== null) {
+      config.headers.token = token;
+    }
     return config;
   },
   error => {
-    return error;
+    Promise.reject(error);
   }
 );
 
@@ -26,8 +36,7 @@ request.interceptors.response.use(
     return response;
   },
   error => {
-    const response = JSON.parse(JSON.stringify(error));
-    return response.response;
+    return Promise.reject(error);
   }
 );
 

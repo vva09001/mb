@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { PageActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -35,17 +33,17 @@ function PagesCreate({ pagesCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: (event.target.type === 'checkbox' ? (event.target.checked==false ? 0 : 1) : event.target.value)
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
         [event.target.name]: true
       }
     }));
-    
   };
 
-const onSuccess = () => {
+  const onSuccess = () => {
     Success('Tạo thành công');
     history.goBack();
   };
@@ -55,7 +53,7 @@ const onSuccess = () => {
   };
 
   const createdPages = event => {
-    event.preventDefault();    
+    event.preventDefault();
     pagesCreate(formState.values, onSuccess, onFail);
   };
   return (
@@ -68,7 +66,7 @@ const onSuccess = () => {
               toggle('1');
             }}
           >
-            Chung
+            {t('general')}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -78,7 +76,7 @@ const onSuccess = () => {
               toggle('2');
             }}
           >
-            SEO
+            {t('seo')}
           </NavLink>
         </NavItem>
       </Nav>
@@ -92,31 +90,29 @@ const onSuccess = () => {
             </FormGroup>
             <FormGroup check>
               <Label check>
-                <Input type="checkbox" name="status" value={0}  onChange={handleChange} />{' '}
-                Enable the page
+                <Input type="checkbox" name="status" value={0} onChange={handleChange} /> Enable the page
               </Label>
             </FormGroup>
             <FormGroup check>
               <Label check>
-                <Input type="checkbox" name="has_sidebar"  onChange = {handleChange} />{' '}
-                Enable sidebar
+                <Input type="checkbox" name="has_sidebar" onChange={handleChange} /> Enable sidebar
               </Label>
             </FormGroup>
             <FormGroup>
               <Label for="template">Select</Label>
-              <Input type="select" name="template" id="template" onChange={handleChange} >
-                  <option>Default</option>
-                  <option>Full</option>                  
+              <Input type="select" name="template" id="template" onChange={handleChange}>
+                <option>Default</option>
+                <option>Full</option>
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdPages}>
-            <h4>SEO</h4>
+            <h4>{t('seo')}</h4>
             <FormGroup>
               <Label for="exampleName">Slug</Label>
               <Input type="text" name="slug" onChange={handleChange} />
@@ -134,7 +130,7 @@ const onSuccess = () => {
               <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
             </FormGroup>
             <Button color="primary" type="submit">
-              Lưu
+              {t('save')}
             </Button>
           </Form>
         </TabPane>

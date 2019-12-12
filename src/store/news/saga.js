@@ -10,7 +10,7 @@ function* getNewsSaga() {
       if (res.status === 200) {
         yield put({ type: actions.GET_NEWS_RESPONSE, data: res.data });
       } else {
-        console.log(res);
+        Error('Không thể kết nối đến server');
       }
     } catch (error) {
       Error('Không thể kết nối đến server');

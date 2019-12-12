@@ -26,7 +26,6 @@ const Pages = (state = initialState, action) => {
         })
       };
     case Actions.GET_DETAIL:
-      
       return {
         ...state,
         detail: action.data

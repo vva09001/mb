@@ -5,11 +5,13 @@ import storage from 'redux-persist/lib/storage';
 import NewReducer from './news/reducers';
 import AuthReducer from './auth/reducers';
 import PageReducer from './pages/reducers';
+import CategoryReducer from './category/reducers';
 
 const reducers = combineReducers({
   NewReducer,
   AuthReducer,
-  PageReducer
+  PageReducer,
+  CategoryReducer
 });
 
 const persistConfig = {

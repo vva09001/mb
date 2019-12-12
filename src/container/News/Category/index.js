@@ -1,23 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CategoryForm from 'components/New/Category/CategoryForm';
-import SortableTree, { toggleExpandedForAll, addNodeUnderParent } from 'react-sortable-tree';
+import CategoryFormChildren from 'components/New/Category/CategoryFormChildren';
+import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { CategoryActions } from '../../../store/actions';
+import PopupComfirm from 'components/common/PopupComfirm';
+import Proptypes from 'prop-types';
+import { connect } from 'react-redux';
 
-function Category() {
+const Proptype = {
+  listCategory: Proptypes.array.isRequired,
+  getCategory: Proptypes.func.isRequired,
+  addCategory: Proptypes.func,
+  editCategory: Proptypes.func,
+  deleteCategory: Proptypes.func,
+  expanstion: Proptypes.func
+};
+
+function Category({ listCategory, getCategory, addCategory, editCategory, deleteCategory, expanstion }) {
   const [activeTab, setActiveTab] = useState('1');
-  const [data, setData] = useState([
-    { title: 'Chicken', children: [{ title: 'Egg' }] },
-    { title: 'Fish', children: [{ title: 'fingerline' }] }
-  ]);
+  const [deleteActive, setDeleteActive] = useState(false);
+  const [categoryDetail, setCategoryDetai] = useState({});
+  // const [path, setPath] = useState([]);
+  const [formChildren, setFormChildren] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [formState, setFormState] = useState({
+    values: {},
+    touched: {}
+  });
   const [addChildrenActive, setAddChildrenActive] = useState(true);
   const [treeActive, setTreeActive] = useState({
     show: false,
     hiden: false
   });
+
+  useEffect(() => {
+    getCategory();
+  }, [getCategory]);
 
   const { t } = useTranslation();
 
@@ -25,8 +48,65 @@ function Category() {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const handleChange = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+  const onSubmit = event => {
+    event.preventDefault();
+    if (deleteActive) {
+      editCategory(formState.values);
+    } else {
+      addCategory(formState.values);
+      setFormState({
+        values: {},
+        touched: {}
+      });
+    }
+  };
+
+  const onSubmitChildren = event => {
+    event.preventDefault();
+    if (deleteActive) {
+      editCategory(formState.values);
+    } else {
+      const values = {
+        ...formState.values,
+        parentId: categoryDetail.id
+      };
+      // const newData = addNodeUnderParent({
+      //   treeData: listCategory,
+      //   parentKey: path[path.length - 1],
+      //   expandParent: true,
+      //   getNodeKey,
+      //   newNode: {
+      //     title: 'Vanh'
+      //   },
+      //   addAsFirstChild: false
+      // });
+      // expanstion(newData.treeData);
+      addCategory(values);
+      setFormState({
+        values: {},
+        touched: {}
+      });
+    }
+  };
+
   const changeTree = treeData => {
-    setData(treeData);
+    expanstion(treeData);
   };
   const expansion = expanded => {
     if (expanded) {
@@ -42,29 +122,43 @@ function Category() {
         hiden: true
       }));
     }
-    const newData = toggleExpandedForAll({ treeData: data, expanded });
-    setData(newData);
+    const newData = toggleExpandedForAll({ treeData: listCategory, expanded });
+    expanstion(newData);
   };
 
   const addNode = () => {
-    const newData = [...data, { title: 'demo' }];
-    setData(newData);
+    setFormState({
+      values: {},
+      touched: {}
+    });
+    setDeleteActive(false);
   };
 
-  const getNodeKey = ({ treeIndex }) => treeIndex;
+  // const getNodeKey = ({ treeIndex }) => treeIndex;
   const click = (node, path) => {
-    const newData = addNodeUnderParent({
-      treeData: data,
-      parentKey: path[path.length - 1],
-      expandParent: true,
-      getNodeKey,
-      newNode: {
-        title: 'Vanh'
-      },
-      addAsFirstChild: false
-    });
-    console.log(newData.treeData);
-    setData(newData.treeData);
+    setFormState(formState => ({
+      ...formState,
+      values: node
+    }));
+    setAddChildrenActive(false);
+    setDeleteActive(true);
+    setCategoryDetai(node);
+    // setPath(path);
+  };
+
+  const onMove = treeData => {
+    const parentID = treeData.nextParentNode.id;
+    console.log(treeData);
+    console.log(treeData.node);
+    const data = {
+      ...treeData.node,
+      parentId: parentID
+    };
+    editCategory(data);
+  };
+
+  const onDelete = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -75,7 +169,18 @@ function Category() {
           <Button className="mb-2" onClick={addNode}>
             {t('category_page.addRoot')}
           </Button>
-          <Button className="mb-2" disabled={addChildrenActive}>
+          <Button
+            className="mb-2"
+            disabled={addChildrenActive}
+            onClick={() => {
+              setFormChildren(true);
+              setDeleteActive(false);
+              setFormState({
+                values: {},
+                touched: {}
+              });
+            }}
+          >
             {t('category_page.addChildren')}
           </Button>
           <div>
@@ -95,11 +200,12 @@ function Category() {
           </div>
           <div style={{ height: '100%' }}>
             <SortableTree
-              treeData={data}
+              treeData={listCategory}
               onChange={treeData => changeTree(treeData)}
               generateNodeProps={({ node, path }) => ({
                 onClick: () => click(node, path)
               })}
+              onMoveNode={treeData => onMove(treeData)}
               theme={FileExplorerTheme}
             />
           </div>
@@ -122,7 +228,23 @@ function Category() {
               <TabPane tabId="1">
                 <Row>
                   <Col sm="12">
-                    <CategoryForm />
+                    {!formChildren && (
+                      <CategoryForm
+                        handleChange={handleChange}
+                        onSubmit={onSubmit}
+                        value={formState.values}
+                        deleteActive={deleteActive}
+                        onDelete={() => setIsOpen(!isOpen)}
+                      />
+                    )}
+                    {formChildren && (
+                      <CategoryFormChildren
+                        handleChange={handleChange}
+                        value={formState.values}
+                        deleteActive={deleteActive}
+                        onSubmit={onSubmitChildren}
+                      />
+                    )}
                   </Col>
                 </Row>
               </TabPane>
@@ -130,8 +252,28 @@ function Category() {
           </div>
         </Col>
       </Row>
+      <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
 }
 
-export default Category;
+Category.propTypes = Proptype;
+
+const mapStateToProps = state => {
+  return {
+    listCategory: state.CategoryReducer.listCategory
+  };
+};
+
+const mapDispatchToProps = {
+  getCategory: CategoryActions.getCategoryAction,
+  addCategory: CategoryActions.addCategoryAction,
+  editCategory: CategoryActions.editCategoryAction,
+  deleteCategory: CategoryActions.deleteCategoryAction,
+  expanstion: CategoryActions.expansionAction
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Category);

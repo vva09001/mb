@@ -5,11 +5,9 @@ import actions from './actions';
 
 function* getPagesSaga() {
   yield takeLatest(actions.GET_PAGES_REQUEST, function*(params) {
-    
     try {
       const res = yield getPages();
       if (res.status === 200) {
-        
         yield put({ type: actions.GET_PAGES_RESPONSE, data: res.data });
       } else {
         console.log(res);
@@ -24,9 +22,7 @@ function* addPagesSaga() {
   yield takeLatest(actions.ADD_PAGES_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
     try {
-      
       const res = yield addPages(data);
-      console.log(res);
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.ADD_PAGES_RESPONSE, data: res.data });
@@ -44,7 +40,6 @@ function* editPagesSaga() {
     const { data, onSuccess, onFail } = params;
     try {
       const res = yield editPages(data);
-      console.log(123)
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.EDIT_PAGES_RESPONSE, data: res.data });
