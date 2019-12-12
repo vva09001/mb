@@ -16,7 +16,7 @@ export const newRoutes = {
   name: 'Tin Tức',
   to: '/news',
   icon: 'copy',
-  children: [{ to: '/news/list', name: 'Tin tức' }, { to: '/news/category', name: 'Danh mục' }]
+  children: [{ to: '/news/list', name: 'Tin tức' }, { to: '/news/category', name: 'Danh mục' }, { to: '/news/approved_listings', name: 'Duyệt tin' }]
 };
 
 export const pageRoutes = {

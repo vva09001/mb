@@ -23,6 +23,14 @@ const editNews = data => {
   });
 };
 
+const aprrNews = data => {
+  return request({
+    url: `/news/accept/${data.id}`,
+    method: 'PUT',
+    data: data
+  });
+}
+
 const deleteNews = id => {
   return request({
     url: `/news/${id}`,
@@ -30,4 +38,4 @@ const deleteNews = id => {
   });
 };
 
-export { getNews, addNews, editNews, deleteNews };
+export { getNews, addNews, editNews, deleteNews, aprrNews };

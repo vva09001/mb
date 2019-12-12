@@ -39,6 +39,16 @@ const Actions = {
   getDetail: data => ({
     type: Actions.GET_DETAIL,
     data
+  }),
+
+  APRR_NEWS_REQUEST: 'APRR_NEWS_REQUEST',
+  APRR_NEWS_RESPONSE: 'APRR_NEWS_RESPONSE',
+
+  AprrNew: (data, onSuccess, onFail) => ({
+    type: Actions.APRR_NEWS_REQUEST,
+    data,
+    onSuccess,
+    onFail
   })
 };
 

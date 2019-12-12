@@ -35,6 +35,24 @@ function* addNewsSaga() {
   });
 }
 
+function* aprrNewsSaga() {
+  yield takeLatest(actions.APRR_NEWS_REQUEST, function*(params) {
+    const { data, onSuccess, onFail } = params;
+    try {
+      const res = yield aprrNews(data);
+      console.log(res.data)
+      if (res.status === 200) {
+        yield onSuccess();
+        yield put({ type: actions.APRR_NEWS_RESPONSE, data: res.data });
+      } else {
+        yield onFail();
+      }
+    } catch (error) {
+      Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 function* editNewsSaga() {
   yield takeLatest(actions.EDIT_NEWS_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
@@ -70,5 +88,5 @@ function* deleteNewsSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getNewsSaga), fork(addNewsSaga), fork(editNewsSaga), fork(deleteNewsSaga)]);
+  yield all([fork(getNewsSaga), fork(addNewsSaga), fork(editNewsSaga), fork(deleteNewsSaga), fork(aprrNewsSaga)]);
 }

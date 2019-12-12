@@ -7,6 +7,8 @@ import Category from 'container/News/Category';
 import ListPage from '../container/Pages';
 import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
+import AprrEdit from '../container/ApprovingNews/Approving'
+import AprrNews from '../container/ApprovingNews'
 import EventDetail from '../components/page/EventDetail';
 import EventCreate from '../components/page/EventCreate';
 import Events from '../components/page/Events';
@@ -96,6 +98,8 @@ const DashboardRoutes = () => (
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit" exact component={NewsEdit} />
     <Route path="/news/category" component={Category} />
+    <Route path="/news/approved_listings" exact component={(AprrNews)} />
+    <Route path="/news/approving" exact component={(AprrEdit)} />
 
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
