@@ -146,7 +146,7 @@ function AprrEdit({ detail, aprrNew }) {
             </FormGroup>  
             <FormGroup>          
               <Button color="primary" type="submit">
-                {t('save')}                        
+                Phê Duyệt                        
               </Button>
             </FormGroup>                       
           </Form>
@@ -174,7 +174,7 @@ function AprrEdit({ detail, aprrNew }) {
             </FormGroup>            
             <FormGroup>          
               <Button color="primary" type="submit">
-                {t('save')}                        
+                Phê Duyệt                        
               </Button>
             </FormGroup>            
           </Form>

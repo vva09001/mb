@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getNews, addNews, editNews, deleteNews } from 'services/news';
+import { getNews, addNews, editNews, deleteNews, aprrNews } from 'services/news';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 
