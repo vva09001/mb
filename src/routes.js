@@ -22,9 +22,17 @@ export const newRoutes = {
 export const pageRoutes = {
   name: 'Trang',
   to: '/pages',
-  icon: 'envelope-open',
+  icon: 'copy',
   // badge: { text: 'new' },
   children: [{ to: '/pages/list', name: 'Trang' }]
+};
+
+export const emailRoutes = {
+  name: 'Mẫu Thư',
+  to: '/email',
+  icon: 'envelope-open',
+  // badge: { text: 'new' },
+  children: [{ to: '/emails/list', name: 'Mẫu Thư' }]
 };
 
 export const documentationRoutes = {
@@ -122,6 +130,7 @@ export default [
   homeRoutes,
   newRoutes,
   pageRoutes,
+  emailRoutes,
   componentRoutes,
   utilityRoutes,
   pluginRoutes,

@@ -9,19 +9,9 @@ import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
 import AprrEdit from '../container/ApprovingNews/Approving'
 import AprrNews from '../container/ApprovingNews'
-import EventDetail from '../components/page/EventDetail';
-import EventCreate from '../components/page/EventCreate';
-import Events from '../components/page/Events';
-import Faq from '../components/page/Faq';
-import Invoice from '../components/page/Invoice';
-import InvitePeople from '../components/page/InvitePeople';
-import Notifications from '../components/page/Notifications';
-import People from '../components/page/People';
-import Pricing from '../components/pricing/Pricing';
-import PricingAlt from '../components/pricing/PricingAlt';
-import Profile from '../components/profile/Profile';
-import Settings from '../components/page/Settings';
-import Starter from '../components/extra/Starter';
+import ListMail from '../container/Mails';
+import MailsCreate from '../container/Mails/Created';
+import MailEdit from '../container/Mails/Edit';
 import GettingStarted from '../components/documentation/GettingStarted';
 import Alerts from '../components/bootstrap-components/Alerts';
 import FalconAccordions from '../components/bootstrap-components/FalconAccordions';
@@ -104,22 +94,12 @@ const DashboardRoutes = () => (
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
     <Route path="/pages/edit" exact component={PageEdit} />
-    <Route path="/pages/event-detail" exact component={EventDetail} />
-    <Route path="/pages/event-create" exact component={EventCreate} />
-    <Route path="/pages/events" exact component={Events} />
-    <Route path="/pages/faq" exact component={Faq} />
-    <Route path="/pages/invoice" exact component={Invoice} />
-    <Route path="/pages/invite-people" exact component={InvitePeople} />
-    <Route path="/pages/notifications" exact component={Notifications} />
-    <Route path="/pages/people" exact component={People} />
-    <Route path="/pages/pricing" exact component={Pricing} />
-    <Route path="/pages/pricing-alt" exact component={PricingAlt} />
-    <Route path="/pages/profile" exact component={Profile} />
-    <Route path="/pages/settings" exact component={Settings} />
-    <Route path="/pages/starter" exact component={Starter} />
-
+    
     {/*Email*/}
-    <Route path="/email" component={InboxRoutes} />
+    <Route path="/emails/list" exact component={ListMail} />
+    <Route path="/emails/create" exact component={MailsCreate} />
+    <Route path="/emails/edit" exact component={MailEdit} />
+
 
     {/*Documentation*/}
     <Route path="/documentation" exact component={GettingStarted} />

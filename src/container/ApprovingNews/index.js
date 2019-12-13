@@ -3,7 +3,6 @@ import { Row } from 'reactstrap';
 import AprrTable from '../../components/ApprovingNews/Table'
 import PropTypes from 'prop-types';
 import { NewActions } from '../../store/actions';
-import { useTranslation } from 'react-i18next';
 import PopupComfirm from '../../components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
@@ -22,14 +21,7 @@ const AprrNews = ({ data, getNews, deleteNews, getDetail }) => {
   useEffect(() => {
     getNews();
   }, [getNews]);
-  const { t } = useTranslation();
-
-  const openComfirm = () => {
-    if (newsID !== null) {
-      setIsOpen(!isOpen);
-    }
-  };
-
+   
   const onDelete = () => {
     if (newsID !== null) {
       deleteNews(newsID);

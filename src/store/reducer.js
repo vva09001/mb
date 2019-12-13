@@ -6,12 +6,15 @@ import NewReducer from './news/reducers';
 import AuthReducer from './auth/reducers';
 import PageReducer from './pages/reducers';
 import CategoryReducer from './category/reducers';
+import MailReducer from './mail/reducers';
+
 
 const reducers = combineReducers({
   NewReducer,
   AuthReducer,
   PageReducer,
-  CategoryReducer
+  CategoryReducer,
+  MailReducer
 });
 
 const persistConfig = {
