@@ -7,8 +7,8 @@ import Category from 'container/News/Category';
 import ListPage from '../container/Pages';
 import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
-import AprrEdit from '../container/ApprovingNews/Approving'
-import AprrNews from '../container/ApprovingNews'
+import AprrEdit from '../container/ApprovingNews/Approving';
+import AprrNews from '../container/ApprovingNews';
 import ListMail from '../container/Mails';
 import MailsCreate from '../container/Mails/Created';
 import MailEdit from '../container/Mails/Edit';
@@ -59,28 +59,10 @@ import FontAwesome from '../components/plugins/FontAwesome';
 import Echarts from '../components/plugins/Echarts';
 import Toastify from '../components/plugins/Toastify';
 import Select from '../components/plugins/Select';
-import EmailDetail from '../components/email/EmailDetail';
-import Inbox from '../components/email/Inbox';
-import Compose from '../components/email/Compose';
 import QuillEditorExample from '../components/plugins/Quill';
 import BulkSelect from '../components/plugins/BulkSelect';
 import Changelog from '../components/changelog/Changelog';
 import ProgressBarJs from '../components/plugins/ProgressBarJs';
-
-import InboxProvider from '../components/email/inbox/InboxProvider';
-
-const InboxRoutes = ({ match: { url } }) => (
-  <InboxProvider>
-    <Switch>
-      <Route path={`${url}/email-detail`} exact component={EmailDetail} />
-      <Route path={`${url}/inbox`} exact component={Inbox} />
-      <Route path={`${url}/compose`} exact component={Compose} />
-
-      {/*Redirect*/}
-      <Redirect to="/errors/404" />
-    </Switch>
-  </InboxProvider>
-);
 
 const DashboardRoutes = () => (
   <Switch>
@@ -88,18 +70,17 @@ const DashboardRoutes = () => (
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit" exact component={NewsEdit} />
     <Route path="/news/category" component={Category} />
-    <Route path="/news/approved_listings" exact component={(AprrNews)} />
-    <Route path="/news/approving" exact component={(AprrEdit)} />
+    <Route path="/news/approved_listings" exact component={AprrNews} />
+    <Route path="/news/approving" exact component={AprrEdit} />
 
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
     <Route path="/pages/edit" exact component={PageEdit} />
-    
+
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
     <Route path="/emails/create" exact component={MailsCreate} />
     <Route path="/emails/edit" exact component={MailEdit} />
-
 
     {/*Documentation*/}
     <Route path="/documentation" exact component={GettingStarted} />

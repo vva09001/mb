@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -73,96 +74,108 @@ function NewsCreate({ newsCreate }) {
   };
   return (
     <React.Fragment>
-      <Nav tabs>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '1' })}
-            onClick={() => {
-              toggle('1');
-            }}
-          >
-            {t('general')}
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => {
-              toggle('2');
-            }}
-          >
-            {t('seo')}
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
-            <h4>{t('create')}</h4>
-            <FormGroup>
-              <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleText">{t('summary')}</Label>
-              <Input type="textarea" name="slug" rows="5" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleFile">{t('imgDescription')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('description')}</Label>
-              <CKEditor
-                editor={ClassicEditor}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  ckEditorChange(event, data);
+      <Row style={{ background: '#fff', padding: '15px 0' }}>
+        <Col lg={3} md={4}>
+          <div>
+            <ListGroup>
+              <ListGroupItem>Slider</ListGroupItem>
+              <ListGroupItem>Icon</ListGroupItem>
+            </ListGroup>
+          </div>
+        </Col>
+        <Col lg={9} md={8}>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '1' })}
+                onClick={() => {
+                  toggle('1');
                 }}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('authName')}</Label>
-              <Input type="text" name="author_name" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="category_news_id" id="exampleSelect" onChange={handleChange}>
-                <option value={0}>Tin tức</option>
-                <option value={1}>Doanh nghiệp</option>
-                <option value={2}>Hoạt động</option>
-              </Input>
-            </FormGroup>
-            <Button color="primary" type="submit">
-              {t('save')}
-            </Button>
-          </Form>
-        </TabPane>
-        <TabPane tabId="2">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
-            <h4>{t('seo')}</h4>
-            <FormGroup>
-              <Label for="exampleName">{t('meta.title')}</Label>
-              <Input type="text" name="meta_title" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('meta.keywords')}</Label>
-              <Input type="text" name="meta_keyword" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleText">{t('meta.description')}</Label>
-              <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
-            </FormGroup>
-            <Button color="primary" type="submit">
-              {t('save')}
-            </Button>
-          </Form>
-        </TabPane>
-      </TabContent>
+              >
+                {t('general')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '2' })}
+                onClick={() => {
+                  toggle('2');
+                }}
+              >
+                {t('seo')}
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1">
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
+                <h4>{t('create')}</h4>
+                <FormGroup>
+                  <Label for="exampleName">{t('name')}</Label>
+                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleText">{t('summary')}</Label>
+                  <Input type="textarea" name="slug" rows="5" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">{t('imgDescription')}</Label>
+                  <Input type="file" name="file" id="exampleFile" />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('description')}</Label>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      ckEditorChange(event, data);
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('authName')}</Label>
+                  <Input type="text" name="author_name" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">{t('baseImages')}</Label>
+                  <Input type="file" name="file" id="exampleFile" />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleSelect">{t('category')}</Label>
+                  <Input type="select" name="category_news_id" id="exampleSelect" onChange={handleChange}>
+                    <option value={0}>Tin tức</option>
+                    <option value={1}>Doanh nghiệp</option>
+                    <option value={2}>Hoạt động</option>
+                  </Input>
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="2">
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
+                <h4>{t('seo')}</h4>
+                <FormGroup>
+                  <Label for="exampleName">{t('meta.title')}</Label>
+                  <Input type="text" name="meta_title" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('meta.keywords')}</Label>
+                  <Input type="text" name="meta_keyword" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleText">{t('meta.description')}</Label>
+                  <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+          </TabContent>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 }

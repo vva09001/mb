@@ -29,15 +29,20 @@ function* getCategorySaga() {
           });
           data.push({ ...element, children: [...listChildren] });
         });
-
         for (let index = 0; index < data.length; index++) {
           if (data[index].children !== undefined) {
             let arr = data[index].children;
             for (let i = 0; i < arr.length; i++) {
               arr[i] = { ...arr[i], title: arr[i].name };
             }
+            arr.sort((a, b) => {
+              return a.position - b.position;
+            });
           }
         }
+        data.sort((a, b) => {
+          return a.position - b.position;
+        });
         yield put({ type: actions.GET_CATEGORY_RESPONSE, data: data });
       } else {
         yield Error(res.message);
@@ -71,8 +76,8 @@ function* editCategorySaga() {
     try {
       const res = yield editCategoryService(data);
       if (res.status === 200) {
-        Success('Sửa thành công');
-        yield put({ type: actions.EDIT_CATEGORY_RESPONSE, data: res.data });
+        yield Success('Sửa thành công');
+        yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
       } else {
         Error(res.message);
       }

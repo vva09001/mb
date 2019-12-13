@@ -94,17 +94,6 @@ function Category({
         ...formState.values,
         parentId: categoryDetail.id
       };
-      // const newData = addNodeUnderParent({
-      //   treeData: listCategory,
-      //   parentKey: path[path.length - 1],
-      //   expandParent: true,
-      //   getNodeKey,
-      //   newNode: {
-      //     title: 'Vanh'
-      //   },
-      //   addAsFirstChild: false
-      // });
-      // expanstion(newData.treeData);
       addCategory(values);
       setFormState({
         values: {},
@@ -131,6 +120,7 @@ function Category({
       }));
     }
     const newData = toggleExpandedForAll({ treeData: listCategory, expanded });
+    console.log(newData);
     expanstion(newData);
   };
 
@@ -153,20 +143,21 @@ function Category({
   };
 
   const onMove = treeData => {
-    let idParent = treeData.nextParentNode.id;
-    let idCategory = treeData.node.id;
-    let positions = 0;
-    let childrenData = treeData.nextParentNode.children;
-    for (let i = 0; i < childrenData.length; i++) {
-      if (childrenData[i].id === idCategory) {
-        positions = i;
-        break;
+    if (treeData.nextParentNode !== null) {
+      let idParent = treeData.nextParentNode.id;
+      let idCategory = treeData.node.id;
+      let positions = 0;
+      let childrenData = treeData.nextParentNode.children;
+      for (let i = 0; i < childrenData.length; i++) {
+        if (childrenData[i].id === idCategory) {
+          positions = i;
+          break;
+        }
       }
+      updatePosition(idCategory, idParent, positions);
+    } else {
+      getCategory();
     }
-    console.log(idParent);
-    console.log(idCategory);
-    console.log(positions);
-    updatePosition(idCategory, idParent, positions);
   };
 
   const onDelete = () => {
