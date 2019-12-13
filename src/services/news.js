@@ -29,7 +29,7 @@ const aprrNews = data => {
     method: 'PUT',
     data: data
   });
-}
+};
 
 const deleteNews = id => {
   return request({

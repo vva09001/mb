@@ -65,7 +65,7 @@ const ListMail = ({ data, getMails, deleteMails, getDetail }) => {
     </React.Fragment>
   );
 };
-  
+
 ListMail.propTypes = PropsType;
 
 const mapStateToProps = state => {

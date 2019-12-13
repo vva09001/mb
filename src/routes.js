@@ -1,5 +1,3 @@
-import { version } from './config';
-
 export const homeRoutes = {
   name: 'Home',
   to: '/',
@@ -16,14 +14,17 @@ export const newRoutes = {
   name: 'Tin Tức',
   to: '/news',
   icon: 'copy',
-  children: [{ to: '/news/list', name: 'Tin tức' }, { to: '/news/category', name: 'Danh mục' }, { to: '/news/approved_listings', name: 'Duyệt tin' }]
+  children: [
+    { to: '/news/list', name: 'Tin tức' },
+    { to: '/news/category', name: 'Danh mục' },
+    { to: '/news/approved_listings', name: 'Duyệt tin' }
+  ]
 };
 
 export const pageRoutes = {
   name: 'Trang',
   to: '/pages',
   icon: 'copy',
-  // badge: { text: 'new' },
   children: [{ to: '/pages/list', name: 'Trang' }]
 };
 
@@ -31,7 +32,6 @@ export const emailRoutes = {
   name: 'Mẫu Thư',
   to: '/email',
   icon: 'envelope-open',
-  // badge: { text: 'new' },
   children: [{ to: '/emails/list', name: 'Mẫu Thư' }]
 };
 
@@ -42,44 +42,10 @@ export const documentationRoutes = {
   icon: 'book'
 };
 
-export const changelogRoutes = {
-  name: 'Changelog',
-  to: '/changelog',
-  exact: true,
-  icon: 'code-branch',
-  badge: {
-    text: `v${version}`,
-    color: 'soft-primary'
-  }
-};
-
 export const componentRoutes = {
-  name: 'Components',
-  to: '/components',
-  icon: 'puzzle-piece',
-  children: [
-    { to: '/components/alerts', name: 'Alerts' },
-    { to: '/components/accordions', name: 'Accordions' },
-    { to: '/components/avatar', name: 'Avatar' },
-    { to: '/components/badges', name: 'Badges' },
-    { to: '/components/backgrounds', name: 'Backgrounds' },
-    { to: '/components/breadcrumb', name: 'Breadcrumb' },
-    { to: '/components/buttons', name: 'Buttons' },
-    { to: '/components/cards', name: 'Cards' },
-    { to: '/components/collapses', name: 'Collapses' },
-    { to: '/components/dropdowns', name: 'Dropdowns' },
-    { to: '/components/forms', name: 'Forms' },
-    { to: '/components/listgroups', name: 'List groups' },
-    { to: '/components/modals', name: 'Modals' },
-    { to: '/components/navs', name: 'Navs' },
-    { to: '/components/navbars', name: 'Navbars' },
-    { to: '/components/pageheaders', name: 'Page headers' },
-    { to: '/components/paginations', name: 'Paginations' },
-    { to: '/components/popovers', name: 'Popovers' },
-    { to: '/components/progress', name: 'Progress' },
-    { to: '/components/tables', name: 'Tables' },
-    { to: '/components/tooltips', name: 'Tooltips' }
-  ]
+  name: 'Tạo Form',
+  to: '/form-builder/list',
+  icon: 'book'
 };
 
 export const pluginRoutes = {
@@ -134,6 +100,5 @@ export default [
   componentRoutes,
   utilityRoutes,
   pluginRoutes,
-  documentationRoutes,
-  changelogRoutes
+  documentationRoutes
 ];

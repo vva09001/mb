@@ -17,6 +17,7 @@
     "seo": "SEO",
     "edit": "Sửa",
     "save": "Lưu",
+    "form": "Form",
     "meta": {
         "title": "Meta Title",
         "keywords": "Meta keywords",
@@ -43,5 +44,8 @@
             "displayCategory": "Hiển thị danh mục này trong danh sách danh mục hộp tìm kiếm",
             "activeCategory": "Kích hoạt danh mục"
         }
+    },
+    "formBuilder": {
+        "title": "Tạo Form"
     }
 }

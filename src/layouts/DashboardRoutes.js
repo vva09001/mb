@@ -13,27 +13,7 @@ import ListMail from '../container/Mails';
 import MailsCreate from '../container/Mails/Created';
 import MailEdit from '../container/Mails/Edit';
 import GettingStarted from '../components/documentation/GettingStarted';
-import Alerts from '../components/bootstrap-components/Alerts';
-import FalconAccordions from '../components/bootstrap-components/FalconAccordions';
-import Avatar from '../components/bootstrap-components/Avatar';
-import Badges from '../components/bootstrap-components/Badges';
-import Backgrounds from '../components/bootstrap-components/Backgrounds';
-import Breadcrumbs from '../components/bootstrap-components/Breadcrumb';
-import Buttons from '../components/bootstrap-components/Buttons';
-import Cards from '../components/bootstrap-components/Cards';
-import Collapses from '../components/bootstrap-components/Collapses';
-import Dropdowns from '../components/bootstrap-components/Dropdowns';
-import Forms from '../components/bootstrap-components/Forms';
-import ListGroups from '../components/bootstrap-components/ListGroups';
-import Modals from '../components/bootstrap-components/Modals';
-import Navs from '../components/bootstrap-components/Navs';
-import Navbars from '../components/bootstrap-components/Navbars';
-import PageHeaders from '../components/bootstrap-components/PageHeaders';
-import Paginations from '../components/bootstrap-components/Paginations';
-import Popovers from '../components/bootstrap-components/Popovers';
-import ProgressBar from '../components/bootstrap-components/ProgressBar';
-import Tables from '../components/bootstrap-components/Tables';
-import Tooltips from '../components/bootstrap-components/Tooltips';
+import ListFormBuilder from 'container/formbuilder';
 import Borders from '../components/utilities/Borders';
 import Clearfix from '../components/utilities/Clearfix';
 import CloseIcon from '../components/utilities/CloseIcon';
@@ -61,7 +41,6 @@ import Toastify from '../components/plugins/Toastify';
 import Select from '../components/plugins/Select';
 import QuillEditorExample from '../components/plugins/Quill';
 import BulkSelect from '../components/plugins/BulkSelect';
-import Changelog from '../components/changelog/Changelog';
 import ProgressBarJs from '../components/plugins/ProgressBarJs';
 
 const DashboardRoutes = () => (
@@ -86,30 +65,9 @@ const DashboardRoutes = () => (
     <Route path="/documentation" exact component={GettingStarted} />
 
     {/*Changelog*/}
-    <Route path="/changelog" exact component={Changelog} />
 
     {/*Components*/}
-    <Route path="/components/alerts" exact component={Alerts} />
-    <Route path="/components/accordions" exact component={FalconAccordions} />
-    <Route path="/components/avatar" exact component={Avatar} />
-    <Route path="/components/badges" exact component={Badges} />
-    <Route path="/components/backgrounds" exact component={Backgrounds} />
-    <Route path="/components/breadcrumb" exact component={Breadcrumbs} />
-    <Route path="/components/buttons" exact component={Buttons} />
-    <Route path="/components/cards" exact component={Cards} />
-    <Route path="/components/collapses" exact component={Collapses} />
-    <Route path="/components/dropdowns" exact component={Dropdowns} />
-    <Route path="/components/forms" exact component={Forms} />
-    <Route path="/components/listgroups" exact component={ListGroups} />
-    <Route path="/components/modals" exact component={Modals} />
-    <Route path="/components/navs" exact component={Navs} />
-    <Route path="/components/navbars" exact component={Navbars} />
-    <Route path="/components/pageheaders" exact component={PageHeaders} />
-    <Route path="/components/paginations" exact component={Paginations} />
-    <Route path="/components/popovers" exact component={Popovers} />
-    <Route path="/components/progress" exact component={ProgressBar} />
-    <Route path="/components/tables" exact component={Tables} />
-    <Route path="/components/tooltips" exact component={Tooltips} />
+    <Route path="/form-builder/list" exact component={ListFormBuilder} />
 
     {/*Utilities*/}
     <Route path="/utilities/borders" exact component={Borders} />

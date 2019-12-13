@@ -40,7 +40,6 @@ function* aprrNewsSaga() {
     const { data, onSuccess, onFail } = params;
     try {
       const res = yield aprrNews(data);
-      console.log(res.data)
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.APRR_NEWS_RESPONSE, data: res.data });

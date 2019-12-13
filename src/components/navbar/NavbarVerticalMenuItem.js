@@ -22,7 +22,8 @@ const NavbarVerticalMenuItem = ({ route }) => (
 NavbarVerticalMenuItem.propTypes = {
   route: PropTypes.shape({
     icon: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    badge: PropTypes.object
   }).isRequired
 };
 
