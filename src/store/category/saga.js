@@ -2,7 +2,13 @@ import actions from './actions';
 import { takeLatest, put, all, fork } from 'redux-saga/effects';
 import { filter } from 'lodash';
 import { Error, Success } from 'helpers/notify';
-import { getCategoryService, addCategoryService, editCategoryService, deleteCategoryService } from 'services/category';
+import {
+  getCategoryService,
+  addCategoryService,
+  editCategoryService,
+  deleteCategoryService,
+  updatePositionService
+} from 'services/category';
 
 function* getCategorySaga() {
   yield takeLatest(actions.GET_CATEGORY_REQUEST, function*(params) {
@@ -18,7 +24,7 @@ function* getCategorySaga() {
         listParent.forEach(element => {
           const listChildren = filter(res.data, res => {
             if (res.parentId === element.id) {
-              return {};
+              return res;
             }
           });
           data.push({ ...element, children: [...listChildren] });
@@ -93,6 +99,29 @@ function* deleteCategorySaga() {
   });
 }
 
+function* updatePositionSaga() {
+  yield takeLatest(actions.UPDATE_POSITION, function*(params) {
+    const { idCategory, idParent, positions } = params;
+    try {
+      const res = yield updatePositionService(idCategory, idParent, positions);
+      if (res.status === 200) {
+        Success('Sửa thành công');
+        yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
+      } else {
+        Error(res.message);
+      }
+    } catch (error) {
+      Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(getCategorySaga), fork(addCategorySaga), fork(editCategorySaga), fork(deleteCategorySaga)]);
+  yield all([
+    fork(getCategorySaga),
+    fork(addCategorySaga),
+    fork(editCategorySaga),
+    fork(deleteCategorySaga),
+    fork(updatePositionSaga)
+  ]);
 }

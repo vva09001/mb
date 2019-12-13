@@ -30,4 +30,11 @@ const deleteCategoryService = id => {
   });
 };
 
-export { getCategoryService, addCategoryService, editCategoryService, deleteCategoryService };
+const updatePositionService = (idCategory, idParent, positions) => {
+  return request({
+    url: `/categorys/update_position/${idParent}/${idCategory}?position=${positions}`,
+    method: 'PUT'
+  });
+};
+
+export { getCategoryService, addCategoryService, editCategoryService, deleteCategoryService, updatePositionService };

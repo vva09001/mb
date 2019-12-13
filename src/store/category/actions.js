@@ -34,6 +34,14 @@ const Actions = {
   expansionAction: data => ({
     type: Actions.EXPANSION_TOOGLE,
     data
+  }),
+
+  UPDATE_POSITION: 'UPDATE_POSITION',
+  updatePositionAction: (idCategory, idParent, positions) => ({
+    type: Actions.UPDATE_POSITION,
+    idCategory,
+    idParent,
+    positions
   })
 };
 

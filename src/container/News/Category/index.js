@@ -18,10 +18,19 @@ const Proptype = {
   addCategory: Proptypes.func,
   editCategory: Proptypes.func,
   deleteCategory: Proptypes.func,
-  expanstion: Proptypes.func
+  expanstion: Proptypes.func,
+  updatePosition: Proptypes.func
 };
 
-function Category({ listCategory, getCategory, addCategory, editCategory, deleteCategory, expanstion }) {
+function Category({
+  listCategory,
+  getCategory,
+  addCategory,
+  editCategory,
+  deleteCategory,
+  expanstion,
+  updatePosition
+}) {
   const [activeTab, setActiveTab] = useState('1');
   const [deleteActive, setDeleteActive] = useState(false);
   const [categoryDetail, setCategoryDetai] = useState({});
@@ -133,7 +142,6 @@ function Category({ listCategory, getCategory, addCategory, editCategory, delete
     setDeleteActive(false);
   };
 
-  // const getNodeKey = ({ treeIndex }) => treeIndex;
   const click = (node, path) => {
     setFormState(formState => ({
       ...formState,
@@ -142,18 +150,23 @@ function Category({ listCategory, getCategory, addCategory, editCategory, delete
     setAddChildrenActive(false);
     setDeleteActive(true);
     setCategoryDetai(node);
-    // setPath(path);
   };
 
   const onMove = treeData => {
-    const parentID = treeData.nextParentNode.id;
-    // console.log(treeData);
-    // console.log(treeData.node);
-    const data = {
-      ...treeData.node,
-      parentId: parentID
-    };
-    editCategory(data);
+    let idParent = treeData.nextParentNode.id;
+    let idCategory = treeData.node.id;
+    let positions = 0;
+    let childrenData = treeData.nextParentNode.children;
+    for (let i = 0; i < childrenData.length; i++) {
+      if (childrenData[i].id === idCategory) {
+        positions = i;
+        break;
+      }
+    }
+    console.log(idParent);
+    console.log(idCategory);
+    console.log(positions);
+    updatePosition(idCategory, idParent, positions);
   };
 
   const onDelete = () => {
@@ -269,7 +282,8 @@ const mapDispatchToProps = {
   addCategory: CategoryActions.addCategoryAction,
   editCategory: CategoryActions.editCategoryAction,
   deleteCategory: CategoryActions.deleteCategoryAction,
-  expanstion: CategoryActions.expansionAction
+  expanstion: CategoryActions.expansionAction,
+  updatePosition: CategoryActions.updatePositionAction
 };
 
 export default connect(
