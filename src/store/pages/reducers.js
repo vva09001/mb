@@ -1,9 +1,8 @@
 import Actions from './actions';
-import { filter } from 'lodash';
+import { filter, map } from 'lodash';
 
 const initialState = {
-  data: [],
-  detail: {}
+  data: []
 };
 
 const Pages = (state = initialState, action) => {
@@ -11,24 +10,36 @@ const Pages = (state = initialState, action) => {
     case Actions.GET_PAGES_RESPONSE:
       return {
         ...state,
-        data: action.data
+        data: map(action.data, values => {
+          return { ...values, title: values.name, expanded: true };
+        })
       };
     case Actions.ADD_PAGES_RESPONSE:
       return {
         ...state,
-        data: [...state.data, action.data]
+        data: [...state.data, { ...action.data, title: action.data.name }]
+      };
+    case Actions.EDIT_PAGES_RESPONSE:
+      return {
+        ...state,
+        data: map(state.data, values => {
+          if (values.id === action.data.id) {
+            values = { ...action.data, title: action.data.name };
+          }
+          return values;
+        })
       };
     case Actions.DELETE_PAGES_RESPONSE:
       return {
         ...state,
         data: filter(state.data, values => {
-          return values.id !== action.data;
+          return values !== action.data;
         })
       };
-    case Actions.GET_DETAIL:
+    case Actions.EXPANSION_TOOGLE:
       return {
         ...state,
-        detail: action.data
+        data: action.data
       };
     default:
       return state;

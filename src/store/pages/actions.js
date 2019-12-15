@@ -9,21 +9,17 @@ const Actions = {
   ADD_PAGES_REQUEST: 'ADD_PAGES_REQUEST',
   ADD_PAGES_RESPONSE: 'ADD_PAGES_RESPONSE',
 
-  AddPages: (data, onSuccess, onFail) => ({
+  AddPages: data => ({
     type: Actions.ADD_PAGES_REQUEST,
-    data,
-    onSuccess,
-    onFail
+    data
   }),
 
   EDIT_PAGES_REQUEST: 'EDIT_PAGES_REQUEST',
   EDIT_PAGES_RESPONSE: 'EDIT_PAGES_RESPONSE',
 
-  EditPage: (data, onSuccess, onFail) => ({
+  EditPages: data => ({
     type: Actions.EDIT_PAGES_REQUEST,
-    data,
-    onSuccess,
-    onFail
+    data
   }),
 
   DELETE_PAGES_REQUEST: 'DELETE_PAGES_REQUEST',
@@ -34,11 +30,18 @@ const Actions = {
     id
   }),
 
-  GET_DETAIL: 'GET_DETAIL',
-
-  getDetail: data => ({
-    type: Actions.GET_DETAIL,
+  EXPANSION_TOOGLE: 'EXPANSION_TOOGLE',
+  expansionAction: data => ({
+    type: Actions.EXPANSION_TOOGLE,
     data
+  }),
+
+  UPDATE_POSITION: 'UPDATE_POSITION',
+  updatePositionAction: (idCategory, idParent, positions) => ({
+    type: Actions.UPDATE_POSITION,
+    idCategory,
+    idParent,
+    positions
   })
 };
 

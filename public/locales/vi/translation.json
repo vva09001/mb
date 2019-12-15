@@ -45,7 +45,20 @@
             "activeCategory": "Kích hoạt danh mục"
         }
     },
+    "page": {
+        "page": "Trang",
+        "addRoot": "Thêm trang gốc",
+        "addChildren": "Thêm trang con",
+        "template": "Bản mẫu",
+        "active": "Kích hoạt trang",
+        "sidebar": "Kích hoạt thanh bên",
+        "full": "Đầy đủ",
+        "default": "Mặc định"          
+    },
     "formBuilder": {
         "title": "Tạo Form"
     }
 }
+
+
+

@@ -1,4 +1,4 @@
-import request from '../helpers/request';
+import request from 'helpers/request';
 
 const getPages = () => {
   return request({
@@ -25,9 +25,16 @@ const editPages = data => {
 
 const deletePages = id => {
   return request({
-    url: `/pages/${id}`,
+    url: `pages/${id}`,
     method: 'DELETE'
   });
 };
 
-export { getPages, addPages, editPages, deletePages };
+const updatePositionService = (idPage, idParent, positions) => {
+  return request({
+    url: `/pages/update_position/${idParent}/${idPage}?position=${positions}`,
+    method: 'PUT'
+  });
+};
+
+export { getPages, addPages, editPages, deletePages, updatePositionService };

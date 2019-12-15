@@ -1,50 +1,79 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getPages, addPages, editPages, deletePages } from '../../services/pages';
+import { getPages, addPages, editPages, deletePages, updatePositionService } from '../../services/pages';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
+import { filter } from 'lodash';
 
 function* getPagesSaga() {
   yield takeLatest(actions.GET_PAGES_REQUEST, function*(params) {
     try {
       const res = yield getPages();
+      const data = [];
       if (res.status === 200) {
-        yield put({ type: actions.GET_PAGES_RESPONSE, data: res.data });
+        let listParent = filter(res.data, res => {
+          if (res.parenID === 0) {
+            return res;
+          }
+        });
+        listParent.forEach(element => {
+          const listChildren = filter(res.data, res => {
+            if (res.parentID === element.id) {
+              return res;
+            }
+          });
+          data.push({ ...element, children: [...listChildren] });
+        });
+        for (let index = 0; index < data.length; index++) {
+          if (data[index].children !== undefined) {
+            let arr = data[index].children;
+            for (let i = 0; i < arr.length; i++) {
+              arr[i] = { ...arr[i], title: arr[i].name };
+            }
+            arr.sort((a, b) => {
+              return a.position - b.position;
+            });
+          }
+        }
+        data.sort((a, b) => {
+          return a.position - b.position;
+        });
+        yield put({ type: actions.GET_PAGES_RESPONSE, data: data });
       } else {
-        Error('Không thể kết nối đến server');
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
 
 function* addPagesSaga() {
   yield takeLatest(actions.ADD_PAGES_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield addPages(data);
       if (res.status === 200) {
-        yield onSuccess();
+        Success('Thêm thành công');
         yield put({ type: actions.ADD_PAGES_RESPONSE, data: res.data });
       } else {
-        yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
 
 function* editPagesSaga() {
   yield takeLatest(actions.EDIT_PAGES_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield editPages(data);
       if (res.status === 200) {
-        yield onSuccess();
-        yield put({ type: actions.EDIT_PAGES_RESPONSE, data: res.data });
+        yield Success('Sửa thành công');
+        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
-        yield onFail();
+        Error(res.message);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
@@ -69,6 +98,29 @@ function* deletePagesSaga() {
   });
 }
 
+function* updatePositionSaga() {
+  yield takeLatest(actions.UPDATE_POSITION, function*(params) {
+    const { idPage, idParent, position } = params;
+    try {
+      const res = yield updatePositionService(idPage, idParent, position);
+      if (res.status === 200) {
+        Success(' Sửa thành công');
+        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
+      } else {
+        Error(res.message);
+      }
+    } catch (error) {
+      Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(getPagesSaga), fork(addPagesSaga), fork(editPagesSaga), fork(deletePagesSaga)]);
+  yield all([
+    fork(getPagesSaga),
+    fork(addPagesSaga),
+    fork(editPagesSaga),
+    fork(deletePagesSaga),
+    fork(updatePositionSaga)
+  ]);
 }
