@@ -58,8 +58,11 @@
     "formBuilder": {
         "title": "Tạo Form"
     },
-    "email": {
-        "email": "Mẫu Thư"
+    "setting":{
+        "mail":"Mail",
+        "css/js":"Tùy chỉnh CSS / JS",
+        "setting":"Cài đặt",
+        "settingeneral":"Cài đặt chung"
     }
 }
 
