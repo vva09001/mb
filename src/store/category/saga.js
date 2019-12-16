@@ -45,7 +45,7 @@ function* getCategorySaga() {
         });
         yield put({ type: actions.GET_CATEGORY_RESPONSE, data: data });
       } else {
-        yield Error(res.error);
+        yield Error(res.message);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
@@ -62,7 +62,7 @@ function* addCategorySaga() {
         Success('Thêm thành công');
         yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
       } else {
-        yield Error(res.error);
+        yield Error(res.message);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
@@ -79,7 +79,7 @@ function* editCategorySaga() {
         yield Success('Sửa thành công');
         yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
       } else {
-        Error(res.error);
+        Error(res.message);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
@@ -96,7 +96,7 @@ function* deleteCategorySaga() {
         Success('Xóa thành công');
         yield put({ type: actions.DELETE_CATEGORY_RESPONSE, data: res.data });
       } else {
-        Error(res.error);
+        Error(res.message);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');
@@ -113,7 +113,7 @@ function* updatePositionSaga() {
         Success('Sửa thành công');
         yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
       } else {
-        Error(res.error);
+        Error(res.message);
       }
     } catch (error) {
       Error('Không thể kết nối đến server');

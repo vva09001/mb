@@ -14,7 +14,7 @@ function* loginSaga() {
         yield history.push('/');
         yield put({ type: actions.LOGIN_RESPONSE, data: res.data });
       } else {
-        Error(res.error);
+        Error(res.message);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
