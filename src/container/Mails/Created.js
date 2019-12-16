@@ -35,19 +35,18 @@ function MailsCreate({ MailsCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: (event.target.type === 'checkbox' ? event.target.checked : event.target.value)
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
       },
       touched: {
         ...formState.touched,
         [event.target.name]: true
       }
     }));
-    
   };
-  const ckEditorChange = (event, data) => {    
+  const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
-      values: {        
+      values: {
         ...formState.values,
         content: data
       },
@@ -55,11 +54,11 @@ function MailsCreate({ MailsCreate }) {
         ...formState.touched,
         content: true
       }
-    }))
-    console.log(formState)  
+    }));
+    console.log(formState);
   };
 
-const onSuccess = () => {
+  const onSuccess = () => {
     Success('Tạo thành công');
     history.goBack();
   };
@@ -69,7 +68,7 @@ const onSuccess = () => {
   };
 
   const createdMails = event => {
-    event.preventDefault();    
+    event.preventDefault();
     MailsCreate(formState.values, onSuccess, onFail);
   };
   return (
@@ -84,7 +83,7 @@ const onSuccess = () => {
           >
             {t('general')}
           </NavLink>
-        </NavItem>        
+        </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
@@ -106,10 +105,9 @@ const onSuccess = () => {
               <Label for="exampleName">Gửi Đến</Label>
               <Input type="text" name="email_cc" id="exampleName" onChange={handleChange} />
             </FormGroup>
-            <FormGroup >
+            <FormGroup>
               <Label>Nội Dung</Label>
               <CKEditor
-                
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -117,12 +115,12 @@ const onSuccess = () => {
                 }}
               />
             </FormGroup>
-            
+
             <Button color="primary" type="submit">
               {t('save')}
             </Button>
           </Form>
-        </TabPane>       
+        </TabPane>
       </TabContent>
     </React.Fragment>
   );

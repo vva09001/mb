@@ -11,13 +11,13 @@ function* getPagesSaga() {
       const data = [];
       if (res.status === 200) {
         let listParent = filter(res.data, res => {
-          if (res.parenID === 0) {
+          if (res.parentId === 0) {
             return res;
           }
         });
         listParent.forEach(element => {
           const listChildren = filter(res.data, res => {
-            if (res.parentID === element.id) {
+            if (res.parentId === element.id) {
               return res;
             }
           });
@@ -30,12 +30,12 @@ function* getPagesSaga() {
               arr[i] = { ...arr[i], title: arr[i].name };
             }
             arr.sort((a, b) => {
-              return a.position - b.position;
+              return a.position > b.position;
             });
           }
         }
         data.sort((a, b) => {
-          return a.position - b.position;
+          return a.position > b.position;
         });
         yield put({ type: actions.GET_PAGES_RESPONSE, data: data });
       } else {
@@ -100,9 +100,11 @@ function* deletePagesSaga() {
 
 function* updatePositionSaga() {
   yield takeLatest(actions.UPDATE_POSITION, function*(params) {
-    const { idPage, idParent, position } = params;
+    const { idPage, idParent, positions } = params;
     try {
-      const res = yield updatePositionService(idPage, idParent, position);
+      console.log(idPage, idParent, positions)
+      const res = yield updatePositionService(idPage, idParent, positions);
+      console.log(idPage, idParent, positions)
       if (res.status === 200) {
         Success(' Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
@@ -110,7 +112,7 @@ function* updatePositionSaga() {
         Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      Error('qeeqe');
     }
   });
 }

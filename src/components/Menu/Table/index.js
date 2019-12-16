@@ -12,7 +12,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const MailTable = ({ data, getID, getDetail }) => {
+const MenuTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -45,7 +45,7 @@ const MailTable = ({ data, getID, getDetail }) => {
           })}
         </tbody>
       </Table>
-      <div className="pagination_wapper">
+      <div className="pagination__wapper">
         <ReactPaginate
           pageCount={Math.ceil(data.length / 20)}
           marginPagesDisplayed={5}
@@ -65,6 +65,7 @@ const MailTable = ({ data, getID, getDetail }) => {
     </React.Fragment>
   );
 };
-MailTable.propTypes = PropsType;
 
-export default MailTable;
+MenuTable.propTypes = PropsType;
+
+export default MenuTable;
