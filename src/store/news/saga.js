@@ -10,10 +10,10 @@ function* getNewsSaga() {
       if (res.status === 200) {
         yield put({ type: actions.GET_NEWS_RESPONSE, data: res.data });
       } else {
-        Error('Không thể kết nối đến server');
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -28,9 +28,10 @@ function* addNewsSaga() {
         yield put({ type: actions.ADD_NEWS_RESPONSE, data: res.data });
       } else {
         yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -45,9 +46,10 @@ function* aprrNewsSaga() {
         yield put({ type: actions.APRR_NEWS_RESPONSE, data: res.data });
       } else {
         yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -62,9 +64,10 @@ function* editNewsSaga() {
         yield put({ type: actions.EDIT_NEWS_RESPONSE, data: res.data });
       } else {
         yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -81,7 +84,7 @@ function* deleteNewsSaga() {
         yield Error('Xóa lỗi');
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

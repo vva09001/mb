@@ -10,10 +10,10 @@ function* getMailsSaga() {
       if (res.status === 200) {
         yield put({ type: actions.GET_MAILS_RESPONSE, data: res.data });
       } else {
-        console.log(res);
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -27,9 +27,10 @@ function* addMailsSaga() {
         yield put({ type: actions.ADD_MAILS_RESPONSE, data: res.data });
       } else {
         yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -43,9 +44,10 @@ function* editMailsSaga() {
         yield put({ type: actions.EDIT_MAILS_RESPONSE, data: res.data });
       } else {
         yield onFail();
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -61,7 +63,7 @@ function* deleteMailsSaga() {
         yield Error('Xóa lỗi');
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

@@ -4,7 +4,13 @@ const getFormbuilderService = () => {
   return request({
     url: '/forms',
     method: 'GET'
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 const createFormbuilderService = data => {
@@ -12,7 +18,13 @@ const createFormbuilderService = data => {
     url: '/forms',
     method: 'POST',
     data: data
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 const editFormbuilderService = (id, data) => {
@@ -20,13 +32,25 @@ const editFormbuilderService = (id, data) => {
     url: `/forms/${id}`,
     method: 'PUT',
     data: data
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 const deleteFormbuilderService = id => {
   return request({
     url: `/forms/${id}`,
     method: 'DELETE'
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 export { getFormbuilderService, createFormbuilderService, editFormbuilderService, deleteFormbuilderService };

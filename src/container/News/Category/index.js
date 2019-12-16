@@ -120,7 +120,6 @@ function Category({
       }));
     }
     const newData = toggleExpandedForAll({ treeData: listCategory, expanded });
-    console.log(newData);
     expanstion(newData);
   };
 

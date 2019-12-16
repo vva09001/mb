@@ -73,10 +73,10 @@ function* editPagesSaga() {
         yield Success('Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -93,7 +93,7 @@ function* deletePagesSaga() {
         yield Error('Xóa lỗi');
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -108,10 +108,10 @@ function* updatePositionPagesSaga() {
         Success(' Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

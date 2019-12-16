@@ -148,11 +148,11 @@ const mapStateToProps = state => {
   return { detail: state.PageReducer.detail };
 };
 
-const mamapDispatchToProps = {
+const mapDispatchToProps = {
   editPage: PageActions.EditPage
 };
 
 export default connect(
   mapStateToProps,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(PageEdit);

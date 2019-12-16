@@ -3,8 +3,7 @@ import axios from 'axios';
 const getToken = () => {
   const localStore = JSON.parse(localStorage.getItem('persist:root'));
   const profile = JSON.parse(localStore.AuthReducer);
-  // const token = JSON.parse(localStore)
-  return profile.token;
+  return profile.profile.token;
 };
 
 const { REACT_APP_BASE_URL } = process.env;
@@ -16,10 +15,10 @@ const request = axios.create({
   }
 });
 
-// before send request
 request.interceptors.request.use(
   async config => {
     const token = await getToken();
+    request.defaults.headers.common['Authorization'] = token;
     if (token !== null) {
       config.headers.token = token;
     }

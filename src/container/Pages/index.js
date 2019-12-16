@@ -104,7 +104,6 @@ function Page({ data, getPage, addPage, editPage, deletePage, expanstion, update
       }));
     }
     const newData = toggleExpandedForAll({ treeData: data, expanded });
-    console.log(newData);
     expanstion(newData);
   };
 

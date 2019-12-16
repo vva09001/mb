@@ -17,7 +17,7 @@ function* loginSaga() {
         Error(res.message);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

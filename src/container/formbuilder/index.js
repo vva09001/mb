@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { FormBuilderActions } from 'store/actions';
 import Table from '../../components/formbuilder/Table';
+import history from 'helpers/history';
 import { connect } from 'react-redux';
 
 const Proptype = {
@@ -14,7 +15,7 @@ const Proptype = {
   deleteForm: PropTypes.func
 };
 
-function FormBuilder({ listForm, getListForm, createForm, editForm, deleteForm }) {
+function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm }) {
   useEffect(() => {
     getListForm();
   }, [getListForm]);
@@ -27,7 +28,7 @@ function FormBuilder({ listForm, getListForm, createForm, editForm, deleteForm }
         <h4>{t('formBuilder.title')}</h4>
       </Row>
       <Row className="mb-2">
-        <Button color="primary" className="mr-2">
+        <Button color="primary" className="mr-2" onClick={() => history.push('/form-builder/create')}>
           {t('create')}
         </Button>
         <Button color="danger" className="mr-2">
@@ -41,7 +42,7 @@ function FormBuilder({ listForm, getListForm, createForm, editForm, deleteForm }
   );
 }
 
-FormBuilder.propTypes = Proptype;
+Formbuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
@@ -59,4 +60,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FormBuilder);
+)(Formbuilder);
