@@ -14,6 +14,7 @@ import MailsCreate from '../container/Mails/Created';
 import MailEdit from '../container/Mails/Edit';
 import GettingStarted from '../components/documentation/GettingStarted';
 import ListFormBuilder from 'container/formbuilder';
+import CreatedFormBuilder from 'container/formbuilder/created';
 import Borders from '../components/utilities/Borders';
 import Clearfix from '../components/utilities/Clearfix';
 import CloseIcon from '../components/utilities/CloseIcon';
@@ -68,6 +69,7 @@ const DashboardRoutes = () => (
 
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
+    <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
 
     {/*Utilities*/}
     <Route path="/utilities/borders" exact component={Borders} />
