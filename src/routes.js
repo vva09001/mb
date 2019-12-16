@@ -91,7 +91,12 @@ export const utilityRoutes = {
     { to: '/utilities/visibility', name: 'Visibility' }
   ]
 };
-
+export const settingRoutes = {
+  name: 'Setting',
+  to: '/setting',
+  exact: true,
+  icon: 'cog'
+};
 export default [
   homeRoutes,
   newRoutes,
@@ -100,5 +105,6 @@ export default [
   componentRoutes,
   utilityRoutes,
   pluginRoutes,
-  documentationRoutes
+  documentationRoutes,
+  settingRoutes
 ];

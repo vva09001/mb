@@ -42,6 +42,7 @@ import Select from '../components/plugins/Select';
 import QuillEditorExample from '../components/plugins/Quill';
 import BulkSelect from '../components/plugins/BulkSelect';
 import ProgressBarJs from '../components/plugins/ProgressBarJs';
+import SettingHome from 'container/SettingHome/index';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -100,6 +101,9 @@ const DashboardRoutes = () => (
     <Route path="/plugins/toastify" exact component={Toastify} />
     <Route path="/plugins/select" exact component={Select} />
     <Route path="/plugins/progressbar" exact component={ProgressBarJs} />
+    
+    {/* Setting */}
+    <Route path="/setting" exact component={SettingHome} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

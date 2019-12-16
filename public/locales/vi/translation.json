@@ -57,6 +57,12 @@
     },
     "formBuilder": {
         "title": "Tạo Form"
+    },
+    "setting":{
+        "mail":"Mail",
+        "css/js":"Tùy chỉnh CSS / JS",
+        "setting":"Cài đặt",
+        "settingeneral":"Cài đặt chung"
     }
 }
 
