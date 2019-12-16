@@ -57,6 +57,9 @@
     },
     "formBuilder": {
         "title": "Tạo Form"
+    },
+    "email": {
+        "email": "Mẫu Thư"
     }
 }
 

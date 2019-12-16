@@ -71,6 +71,18 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
               <Label check>
                 <Input
                   type="checkbox"
+                  name="status"
+                  checked={value.status === 0 || value.status === undefined ? false : true}
+                  value={value.status === 0 ? false : value.status}
+                  onChange={handleChange}
+                />
+                {t('status')}
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
                   name="has_sidebar"
                   checked={value.has_sidebar === 0 || value.has_sidebar === undefined ? false : true}
                   value={value.has_sidebar === 0 ? false : value.has_sidebar}
@@ -80,7 +92,7 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
               </Label>
             </FormGroup>
             <FormGroup>
-              <Label for="template">Select</Label>
+              <Label for="template">{t('page.template')}</Label>
               <Input type="select" name="template" onChange={handleChange}>
                 <option>{t('page.default')}</option>
                 <option>{t('page.full')}</option>

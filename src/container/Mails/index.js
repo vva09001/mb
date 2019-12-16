@@ -47,7 +47,7 @@ const ListMail = ({ data, getMails, deleteMails, getDetail }) => {
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('Email')}</h4>
+          <h4>{t('email.email')}</h4>
         </Row>
         <Row className="mb-2">
           <Button color="primary" className="mr-2" onClick={() => history.push('/emails/create')}>

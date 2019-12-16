@@ -64,6 +64,9 @@ const DashboardRoutes = () => (
     {/*Documentation*/}
     <Route path="/documentation" exact component={GettingStarted} />
 
+    {/*Setting*/}
+    <Route path="/setting" exact component={GettingStarted} />
+
     {/*Changelog*/}
 
     {/*Components*/}

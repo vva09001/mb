@@ -91,6 +91,12 @@ export const utilityRoutes = {
     { to: '/utilities/visibility', name: 'Visibility' }
   ]
 };
+export const MenuRoutes = {
+  name: 'Menu',
+  to: '/setting',
+  exact: true,
+  icon: 'book'
+};
 
 export default [
   homeRoutes,
@@ -100,5 +106,6 @@ export default [
   componentRoutes,
   utilityRoutes,
   pluginRoutes,
-  documentationRoutes
+  documentationRoutes,
+  MenuRoutes
 ];

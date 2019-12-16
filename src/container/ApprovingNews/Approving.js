@@ -17,7 +17,7 @@ const PropsType = {
   AprrNew: PropTypes.func
 };
 
-function AprrEdit({ detail, aprrNew }) {
+function AprrEdit({ detail, AprrNew }) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
@@ -67,10 +67,10 @@ function AprrEdit({ detail, aprrNew }) {
         description: true
       }
     }));
-  };  
+  };
   const aprrNews = event => {
     event.preventDefault();
-    aprrNew(formState.values, onSuccess, onFail)    
+    AprrNew(formState.values, onSuccess, onFail);
   };
   return (
     <React.Fragment>
@@ -143,12 +143,12 @@ function AprrEdit({ detail, aprrNew }) {
                 <option value={1}>Doanh nghiệp</option>
                 <option value={2}>Hoạt động</option>
               </Input>
-            </FormGroup>  
-            <FormGroup>          
+            </FormGroup>
+            <FormGroup>
               <Button color="primary" type="submit">
-                Phê Duyệt                        
+                Phê Duyệt
               </Button>
-            </FormGroup>                       
+            </FormGroup>
           </Form>
         </TabPane>
         <TabPane tabId="2">
@@ -171,12 +171,12 @@ function AprrEdit({ detail, aprrNew }) {
                 rows="5"
                 onChange={handleChange}
               />
-            </FormGroup>            
-            <FormGroup>          
+            </FormGroup>
+            <FormGroup>
               <Button color="primary" type="submit">
-                Phê Duyệt                        
+                Phê Duyệt
               </Button>
-            </FormGroup>            
+            </FormGroup>
           </Form>
         </TabPane>
       </TabContent>
@@ -190,8 +190,8 @@ const mapStateToProps = state => {
   return { detail: state.NewReducer.detail };
 };
 
-const mapDispatchToProps = {  
-  aprrNew: NewActions.AprrNew
+const mapDispatchToProps = {
+  AprrNew: NewActions.AprrNew
 };
 
 export default connect(
