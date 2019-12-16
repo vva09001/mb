@@ -53,7 +53,12 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmit}>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" value={value.name} onChange={handleChange} />
+              <Input
+                type="text"
+                name="name"
+                value={value.name === undefined ? '' : value.name}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup check>
               <Label check>

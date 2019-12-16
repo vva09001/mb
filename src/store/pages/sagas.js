@@ -30,12 +30,12 @@ function* getPagesSaga() {
               arr[i] = { ...arr[i], title: arr[i].name };
             }
             arr.sort((a, b) => {
-              return a.position > b.position;
+              return a.position - b.position;
             });
           }
         }
         data.sort((a, b) => {
-          return a.position > b.position;
+          return a.position - b.position;
         });
         yield put({ type: actions.GET_PAGES_RESPONSE, data: data });
       } else {

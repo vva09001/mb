@@ -216,6 +216,7 @@ function Page({ data, getPage, addPage, editPage, deletePage, expanstion, update
                     value={formState.values}
                     deleteActive={deleteActive}
                     onSubmit={onSubmitChildren}
+                    onDelete={() => setIsOpen(!isOpen)}
                   />
                 )}
               </Col>
