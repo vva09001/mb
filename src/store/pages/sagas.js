@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getPages, addPages, editPages, deletePages, updatePositionService } from '../../services/pages';
+import { getPages, addPages, editPages, deletePages, updatePositionPages } from '../../services/pages';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
 import { filter } from 'lodash';
@@ -98,13 +98,12 @@ function* deletePagesSaga() {
   });
 }
 
-function* updatePositionSaga() {
-  yield takeLatest(actions.UPDATE_POSITION, function*(params) {
+function* updatePositionPagesSaga() {
+  yield takeLatest(actions.UPDATE_POSITION_PAGE, function*(params) {
     const { idPage, idParent, positions } = params;
     try {
-      console.log(idPage, idParent, positions)
-      const res = yield updatePositionService(idPage, idParent, positions);
-      console.log(idPage, idParent, positions)
+      const res = yield updatePositionPages(idPage, idParent, positions);
+
       if (res.status === 200) {
         Success(' Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
@@ -112,7 +111,7 @@ function* updatePositionSaga() {
         Error(res.message);
       }
     } catch (error) {
-      Error('qeeqe');
+      Error('Không thể kết nối đến server');
     }
   });
 }
@@ -123,6 +122,6 @@ export default function* rootSaga() {
     fork(addPagesSaga),
     fork(editPagesSaga),
     fork(deletePagesSaga),
-    fork(updatePositionSaga)
+    fork(updatePositionPagesSaga)
   ]);
 }

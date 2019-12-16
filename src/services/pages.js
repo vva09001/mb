@@ -38,11 +38,11 @@ const deletePages = id => {
   });
 };
 
-const updatePositionService = (idPage, idParent, positions) => {
+const updatePositionPages = (idPage, idParent, positions) => {
   return request({
     url: `/pages/update_position/${idParent}/${idPage}?position=${positions}`,
     method: 'PUT'
   });
 };
 
-export { getPages, addPages, editPages, deletePages, updatePositionService };
+export { getPages, addPages, editPages, deletePages, updatePositionPages };
