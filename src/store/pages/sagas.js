@@ -39,7 +39,7 @@ function* getPagesSaga() {
         });
         yield put({ type: actions.GET_PAGES_RESPONSE, data: data });
       } else {
-        yield Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
@@ -56,7 +56,7 @@ function* addPagesSaga() {
         Success('Thêm thành công');
         yield put({ type: actions.ADD_PAGES_RESPONSE, data: res.data });
       } else {
-        yield Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
@@ -73,10 +73,10 @@ function* editPagesSaga() {
         yield Success('Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -93,7 +93,7 @@ function* deletePagesSaga() {
         yield Error('Xóa lỗi');
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -102,17 +102,16 @@ function* updatePositionSaga() {
   yield takeLatest(actions.UPDATE_POSITION, function*(params) {
     const { idPage, idParent, positions } = params;
     try {
-      console.log(idPage, idParent, positions)
+      console.log(idPage, idParent, positions);
       const res = yield updatePositionService(idPage, idParent, positions);
-      console.log(idPage, idParent, positions)
       if (res.status === 200) {
         Success(' Sửa thành công');
         yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('qeeqe');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

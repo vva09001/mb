@@ -1,7 +1,10 @@
 import React, { createRef, useState, useEffect } from 'react';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
-import { useTranslation } from 'react-i18next';
 import $ from 'jquery';
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { useTranslation } from 'react-i18next';
+import Proptypes from 'prop-types';
+import { FormBuilderActions } from '../../store/actions';
+import { connect } from 'react-redux';
 
 window.jQuery = $;
 window.$ = $;
@@ -9,7 +12,11 @@ window.$ = $;
 require('jquery-ui-sortable');
 require('formBuilder');
 
-function FormBuilder() {
+const Proptype = {
+  created: Proptypes.func
+};
+
+function FormBuilder({ created }) {
   const fb = createRef();
   const { t } = useTranslation();
 
@@ -18,17 +25,21 @@ function FormBuilder() {
     touched: {}
   });
 
+  const [formData, setFormData] = useState(null);
+
+  const [checkSubmit, setSubmit] = useState(true);
+
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
 
   useEffect(() => {
     $(fb.current).formBuilder(options);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!fb.current, !options]);
 
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -44,14 +55,20 @@ function FormBuilder() {
   };
 
   const onSend = formData => {
-    console.log(formState.values);
-    console.log(JSON.stringify(formData));
+    setSubmit(false);
+    // setFormData(JSON.stringify(formData));
+    setFormData(formData);
+  };
+
+  const onSubmit = event => {
+    event.preventDefault();
+    created({ ...formState.values, formList: formData });
   };
   return (
     <React.Fragment>
       <h4>{t('formBuilder.title')}</h4>
       <div className="backgroud__white p-3">
-        <Form>
+        <Form onSubmit={onSubmit}>
           <FormGroup>
             <Label>{t('name')}</Label>
             <Input name="formName" onChange={handleChange} />
@@ -64,10 +81,22 @@ function FormBuilder() {
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
+          <Button type="submit" color="primary" disabled={checkSubmit}>
+            {t('save')}
+          </Button>
         </Form>
       </div>
     </React.Fragment>
   );
 }
 
-export default FormBuilder;
+FormBuilder.propTypes = Proptype;
+
+const mapDispatchToProps = {
+  created: FormBuilderActions.createFormAction
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(FormBuilder);

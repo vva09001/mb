@@ -14,10 +14,10 @@ function* loginSaga() {
         yield history.push('/');
         yield put({ type: actions.LOGIN_RESPONSE, data: res.data });
       } else {
-        Error(res.message);
+        Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }

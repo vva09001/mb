@@ -15,10 +15,10 @@ function* getFormSaga() {
       if (res.status === 200) {
         yield put({ type: actions.GET_FORM_RESPONSE, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -32,10 +32,10 @@ function* createFormSaga() {
         yield Success('Tạo thành công');
         yield put({ type: actions.CREATE_FORM_RESPONSE, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -49,10 +49,10 @@ function* editFormSaga() {
         yield Success('Sửa thành công');
         yield put({ type: actions.EDIT_FORM_RESPONSE, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
@@ -66,10 +66,10 @@ function* deleteFormSaga() {
         yield Success('Xóa thành công');
         yield put({ type: actions.DELETE_FORM_RESPONSE, data: res.data });
       } else {
-        Error(res.message);
+        yield Error(res.error);
       }
     } catch (error) {
-      Error('Không thể kết nối đến server');
+      yield Error('Không thể kết nối đến server');
     }
   });
 }
