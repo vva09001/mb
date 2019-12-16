@@ -93,7 +93,8 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
             </FormGroup>
             <FormGroup>
               <Label for="template">{t('page.template')}</Label>
-              <Input type="select" name="template" onChange={handleChange}>
+              <Input type="select" name="template" value={value.template} onChange={handleChange}>
+                <option>{t('Select')}</option>
                 <option>{t('page.default')}</option>
                 <option>{t('page.full')}</option>
               </Input>

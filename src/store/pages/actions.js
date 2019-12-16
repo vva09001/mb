@@ -36,9 +36,9 @@ const Actions = {
     data
   }),
 
-  UPDATE_POSITION: 'UPDATE_POSITION',
-  updatePositionAction: (idPage, idParent, positions) => ({
-    type: Actions.UPDATE_POSITION,
+  UPDATE_POSITION_PAGE: 'UPDATE_POSITION_PAGE',
+  updatePositionPages: (idPage, idParent, positions) => ({
+    type: Actions.UPDATE_POSITION_PAGE,
     idPage,
     idParent,
     positions

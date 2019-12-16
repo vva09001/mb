@@ -1,4 +1,12 @@
-import request from 'helpers/request';
+import axios from 'axios';
+
+const request = axios.create({
+  baseURL: 'https://mbbank0312.herokuapp.com/vi/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
 
 const getPages = () => {
   return request({
@@ -54,7 +62,7 @@ const deletePages = id => {
     });
 };
 
-const updatePositionService = (idPage, idParent, positions) => {
+const updatePositionPages = (idPage, idParent, positions) => {
   return request({
     url: `/pages/update_position/${idParent}/${idPage}?position=${positions}`,
     method: 'PUT'
@@ -67,4 +75,4 @@ const updatePositionService = (idPage, idParent, positions) => {
     });
 };
 
-export { getPages, addPages, editPages, deletePages, updatePositionService };
+export { getPages, addPages, editPages, deletePages, updatePositionPages };

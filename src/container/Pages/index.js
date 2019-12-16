@@ -17,10 +17,10 @@ const Proptype = {
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
-  updatePosition: Proptypes.func
+  updatePositionPages: Proptypes.func
 };
 
-function Page({ data, getPage, addPage, editPage, deletePage, expanstion, updatePosition }) {
+function Page({ data, getPage, addPage, editPage, deletePage, expanstion, updatePositionPages }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
   const [formChildren, setFormChildren] = useState(false);
@@ -137,7 +137,7 @@ function Page({ data, getPage, addPage, editPage, deletePage, expanstion, update
           break;
         }
       }
-      updatePosition(idPage, idParent, positions);
+      updatePositionPages(idPage, idParent, positions);
     } else {
       getPage();
     }
@@ -242,7 +242,7 @@ const mapDispatchToProps = {
   editPage: PageActions.EditPages,
   deletePage: PageActions.DeletePages,
   expanstion: PageActions.expansionAction,
-  updatePosition: PageActions.updatePositionAction
+  updatePositionPages: PageActions.updatePositionPages
 };
 
 export default connect(
