@@ -1,12 +1,4 @@
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://mbbank0312.herokuapp.com/api/',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from 'helpers/request';
 
 const login = data => {
   return request({
