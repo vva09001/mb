@@ -54,7 +54,7 @@ function* addPagesSaga() {
       const res = yield addPages(data);
       if (res.status === 200) {
         Success('Thêm thành công');
-        yield put({ type: actions.ADD_PAGES_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -88,7 +88,7 @@ function* deletePagesSaga() {
       const res = yield deletePages(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_PAGES_RESPONSE, data: id });
+        yield put({ type: actions.GET_PAGES_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

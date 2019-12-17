@@ -242,7 +242,7 @@ const mapDispatchToProps = {
   addPage: PageActions.AddPages,
   editPage: PageActions.EditPages,
   deletePage: PageActions.DeletePages,
-  expanstion: PageActions.expansionAction,
+  expanstion: PageActions.expansionPageAction,
   updatePositionPages: PageActions.updatePositionPages
 };
 
