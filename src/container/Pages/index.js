@@ -151,7 +151,7 @@ function Page({ data, getPage, addPage, editPage, deletePage, expanstion, update
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="catelogy__wapper">
+      <Row className="category__wapper">
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
