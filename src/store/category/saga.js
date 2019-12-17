@@ -36,12 +36,12 @@ function* getCategorySaga() {
               arr[i] = { ...arr[i], title: arr[i].name };
             }
             arr.sort((a, b) => {
-              return a.position - b.position;
+              return a.position > b.position;
             });
           }
         }
         data.sort((a, b) => {
-          return a.position - b.position;
+          return a.position > b.position;
         });
         yield put({ type: actions.GET_CATEGORY_RESPONSE, data: data });
       } else {

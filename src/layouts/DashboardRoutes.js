@@ -15,6 +15,7 @@ import MailEdit from '../container/Mails/Edit';
 import GettingStarted from '../components/documentation/GettingStarted';
 import ListFormBuilder from 'container/formbuilder';
 import CreatedFormBuilder from 'container/formbuilder/created';
+import EditFormBuilder from 'container/formbuilder/edit';
 import ListMenus from 'container/Menu';
 import Borders from '../components/utilities/Borders';
 import Clearfix from '../components/utilities/Clearfix';
@@ -78,6 +79,7 @@ const DashboardRoutes = () => (
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
+    <Route path="/form-builder/edit" exact component={EditFormBuilder} />
 
     {/*Utilities*/}
     <Route path="/utilities/borders" exact component={Borders} />

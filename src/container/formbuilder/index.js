@@ -10,17 +10,21 @@ import { connect } from 'react-redux';
 const Proptype = {
   listForm: PropTypes.array,
   getListForm: PropTypes.func,
-  createForm: PropTypes.func,
-  editForm: PropTypes.func,
+  getFormDetail: PropTypes.func,
   deleteForm: PropTypes.func
 };
 
-function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm }) {
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
   useEffect(() => {
     getListForm();
   }, [getListForm]);
 
   const { t } = useTranslation();
+
+  const getDetail = detail => {
+    getFormDetail(detail);
+    history.push('/form-builder/edit');
+  };
 
   return (
     <React.Fragment>
@@ -36,7 +40,7 @@ function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm }
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForm} />
+        <Table data={listForm} getDetail={detail => getDetail(detail)} />
       </Row>
     </React.Fragment>
   );
@@ -52,8 +56,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getListForm: FormBuilderActions.getFormAction,
-  createForm: FormBuilderActions.createFormAction,
-  editForm: FormBuilderActions.editFormAction,
+  getFormDetail: FormBuilderActions.getFormDetailAction,
   deleteForm: FormBuilderActions.deleteFormAction
 };
 

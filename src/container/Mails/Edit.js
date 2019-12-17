@@ -37,7 +37,8 @@ function MailEdit({ detail, editMail }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -68,30 +69,30 @@ function MailEdit({ detail, editMail }) {
   const onFail = () => {
     Error('Sửa thất bại');
   };
-  
+
   const editMails = event => {
     event.preventDefault();
     editMail(formState.values, onSuccess, onFail);
   };
   return (
-      <React.Fragment>
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: activeTab === '1' })}
-              onClick={() => {
-                toggle('1');
-              }}
-            >
-              {t('genaral')}
-            </NavLink>
-          </NavItem>          
-        </Nav>
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">
-            <Form className="p-3" style={{ background: '#fff' }} onSubmit={editMails}>
-              <h4>{t('create')}</h4>
-              <FormGroup>
+    <React.Fragment>
+      <Nav tabs>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '1' })}
+            onClick={() => {
+              toggle('1');
+            }}
+          >
+            {t('genaral')}
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="1">
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={editMails}>
+            <h4>{t('create')}</h4>
+            <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
               <Input type="text" name="name" id="exampleName" onChange={handleChange} />
             </FormGroup>
@@ -107,10 +108,9 @@ function MailEdit({ detail, editMail }) {
               <Label for="exampleName">Gửi Đến</Label>
               <Input type="text" name="name" id="exampleName" onChange={handleChange} />
             </FormGroup>
-            <FormGroup >
+            <FormGroup>
               <Label>Nội Dung</Label>
               <CKEditor
-                
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -118,13 +118,13 @@ function MailEdit({ detail, editMail }) {
                 }}
               />
             </FormGroup>
-              <Button color="primary" type="submit">
-                {t('save')}
-              </Button>
-            </Form>
-          </TabPane>          
-        </TabContent>
-      </React.Fragment>
+            <Button color="primary" type="submit">
+              {t('save')}
+            </Button>
+          </Form>
+        </TabPane>
+      </TabContent>
+    </React.Fragment>
   );
 }
 
