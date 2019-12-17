@@ -12,7 +12,13 @@ const getMenus = () => {
   return request({
     url: '/menu',
     method: 'GET'
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 const addMenus = data => {
@@ -20,7 +26,13 @@ const addMenus = data => {
     url: '/menu',
     method: 'POST',
     data: data
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 const editMenus = data => {
@@ -28,14 +40,26 @@ const editMenus = data => {
     url: `/menu/${data.id}`,
     method: 'PUT',
     data: data
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 const deleteMenus = id => {
   return request({
     url: `/menu/${id}`,
     method: 'DELETE'
-  });
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
 export { getMenus, addMenus, editMenus, deleteMenus };
