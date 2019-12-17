@@ -36,7 +36,7 @@ const Pages = (state = initialState, action) => {
           return values !== action.data;
         })
       };
-    case Actions.EXPANSION_TOOGLE:
+    case Actions.EXPANSION_TOOGLE_PAGE:
       return {
         ...state,
         data: action.data
