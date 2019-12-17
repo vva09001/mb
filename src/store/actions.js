@@ -4,5 +4,6 @@ import PageActions from './pages/actions';
 import CategoryActions from './category/actions';
 import MailActions from './mail/actions';
 import FormBuilderActions from './formbuilder/actions';
+import MenuActions from './menu/actions';
 
-export { NewActions, AuthActions, PageActions, CategoryActions, MailActions, FormBuilderActions };
+export { NewActions, AuthActions, PageActions, CategoryActions, MailActions, FormBuilderActions, MenuActions };

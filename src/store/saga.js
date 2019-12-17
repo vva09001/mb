@@ -5,7 +5,8 @@ import PageSaga from './pages/sagas';
 import CategorySaga from './category/saga';
 import MailSaga from './mail/sagas';
 import FormBuilderSaga from './formbuilder/saga';
+import MenuSaga from './menu/saga';
 
 export default function* rootSaga() {
-  yield all([NewSaga(), AuthSaga(), PageSaga(), CategorySaga(), MailSaga(), FormBuilderSaga()]);
+  yield all([NewSaga(), AuthSaga(), PageSaga(), CategorySaga(), MailSaga(), FormBuilderSaga(), MenuSaga()]);
 }

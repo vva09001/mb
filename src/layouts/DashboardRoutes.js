@@ -15,6 +15,7 @@ import MailEdit from '../container/Mails/Edit';
 import GettingStarted from '../components/documentation/GettingStarted';
 import ListFormBuilder from 'container/formbuilder';
 import CreatedFormBuilder from 'container/formbuilder/created';
+import ListMenus from 'container/Menu';
 import Borders from '../components/utilities/Borders';
 import Clearfix from '../components/utilities/Clearfix';
 import CloseIcon from '../components/utilities/CloseIcon';
@@ -68,6 +69,9 @@ const DashboardRoutes = () => (
 
     {/*Setting*/}
     <Route path="/setting" exact component={GettingStarted} />
+
+    {/*Menu*/}
+    <Route path="/menu/list" exact component={ListMenus} />
 
     {/*Changelog*/}
 
