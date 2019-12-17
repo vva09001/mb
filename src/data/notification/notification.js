@@ -210,28 +210,16 @@ export const activities = [
 
 export const rawNewNotifications = [
   {
-    avatar: {
-      src: team1,
-      size: '2xl'
-    },
-    children: '<strong>Emma Watson</strong> replied to your comment : "Hello world 😍"',
-    time: 'Just Now',
-    emoji: '💬',
+    children: '<strong>Vietnamese</strong>',
     className: 'rounded-0 border-x-0 border-300 border-bottom-0',
-    to: '#!',
+    lang: 'vi',
     unread: true
   },
 
   {
-    avatar: {
-      name: 'Albert Brooks',
-      size: '2xl'
-    },
-    children: "<strong>Albert Brooks</strong> reacted to <strong>Mia Khalifa's</strong> status",
-    time: '9hr',
-    emoji: '❤️',
+    children: '<strong>English</strong>',
     className: 'rounded-0 border-x-0 border-300 border-bottom-0',
-    to: '#!',
+    lang: 'en',
     unread: true
   }
 ];

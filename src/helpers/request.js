@@ -1,14 +1,9 @@
 import axios from 'axios';
-
-const getToken = () => {
-  const localStore = JSON.parse(localStorage.getItem('persist:root'));
-  const profile = JSON.parse(localStore.AuthReducer);
-  return profile.profile.token;
-};
+import { getToken, getLang } from './localStorage';
 
 const { REACT_APP_BASE_URL } = process.env;
 const request = axios.create({
-  baseURL: REACT_APP_BASE_URL,
+  baseURL: `${REACT_APP_BASE_URL}/${getLang()}/api`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
