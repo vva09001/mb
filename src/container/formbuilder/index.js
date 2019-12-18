@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { FormBuilderActions } from 'store/actions';
 import Table from '../../components/formbuilder/Table';
+import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 
@@ -12,19 +13,37 @@ const Proptype = {
   getListForm: PropTypes.func,
   getFormDetail: PropTypes.func,
   deleteForm: PropTypes.func
+
 };
 
-function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
+
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm,getDetail }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formID, setformID] = useState(null);
   useEffect(() => {
     getListForm();
+    
   }, [getListForm]);
 
   const { t } = useTranslation();
-
-  const getDetail = detail => {
-    getFormDetail(detail);
+ 
+  const onGetDetail = detail => {
     history.push('/form-builder/edit');
   };
+
+  const openComfirm = () => {
+    if (formID !== null) {
+      setIsOpen(!isOpen);
+    }
+  };
+  const onDelete = () => {
+    if (formID !== null) {
+      deleteForm(formID);
+      setIsOpen(!isOpen);
+    }
+  };
+
+
 
   return (
     <React.Fragment>
@@ -35,13 +54,14 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
         <Button color="primary" className="mr-2" onClick={() => history.push('/form-builder/create')}>
           {t('create')}
         </Button>
-        <Button color="danger" className="mr-2">
+        <Button color="danger" className="mr-2" onClick={openComfirm}>
           {t('delete')}
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForm} getDetail={detail => getDetail(detail)} />
+        <Table data={listForm} getID={id => setformID(id)} getDetail={onGetDetail} />
       </Row>
+      <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
 }
@@ -52,6 +72,7 @@ const mapStateToProps = state => {
   return {
     listForm: state.FormBuilderReducer.listForm
   };
+
 };
 
 const mapDispatchToProps = {

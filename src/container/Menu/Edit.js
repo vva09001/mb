@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Alert } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
@@ -12,12 +12,14 @@ const Proptype = {
   data: Proptypes.object
 };
 
-function EditMenus({ editMenu }) {
+function EditMenus({ editMenu, data }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: data,
     touched: {}
   });
-
+  useEffect(() => {
+    console.log(data);
+  });
   const { t } = useTranslation();
   const handleChange = event => {
     event.persist();
@@ -47,7 +49,14 @@ function EditMenus({ editMenu }) {
       <Row className="category__wapper">
         <Col lg={7} md={4}>
           <div>
-            <Button color="primary">{t('create')}</Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                history.push('/menu/edit/item');
+              }}
+            >
+              {t('create')}
+            </Button>
           </div>
           <div>
             <Alert color="primary">Dang cho API</Alert>
@@ -59,7 +68,12 @@ function EditMenus({ editMenu }) {
               <h4>Tạo Menu</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
-                <Input type="text" name="name" onChange={handleChange} />
+                <Input
+                  type="text"
+                  name="menuItemtranslations[0].name"
+                  value={formState.values.menuItemtranslations[0].name}
+                  onChange={handleChange}
+                />
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
@@ -85,7 +99,7 @@ EditMenus.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    data: state.PageReducer.data
+    data: state.MenuReducer.detail
   };
 };
 

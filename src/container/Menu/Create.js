@@ -46,7 +46,7 @@ function CreateMenus({ addMenu }) {
       <Row className="category__wapper">
         <Col lg={7} md={4}>
           <div>
-            <Alert color="primary">Dang Cho API</Alert>
+            <Alert color="primary">Vui lòng lưu menu trước khi thêm các mục menu</Alert>
           </div>
         </Col>
         <Col lg={5} md={4}>
@@ -79,17 +79,11 @@ function CreateMenus({ addMenu }) {
 
 CreateMenus.propTypes = Proptype;
 
-const mapStateToProps = state => {
-  return {
-    data: state.PageReducer.data
-  };
-};
-
 const mapDispatchToProps = {
   addMenu: MenuActions.AddMenus
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(CreateMenus);
