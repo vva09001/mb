@@ -12,7 +12,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const FormTable = ({ data, getID, getDetail }) => {
+const BlokTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -27,7 +27,7 @@ const FormTable = ({ data, getID, getDetail }) => {
             </th>
             <th>{t('name')}</th>
             <th>{t('status')}</th>
-            <th>{t('form')}</th>
+            <th>{t('tags')}</th>
             <th>{t('created')}</th>
           </tr>
         </thead>
@@ -68,6 +68,6 @@ const FormTable = ({ data, getID, getDetail }) => {
   );
 };
 
-FormTable.propTypes = PropsType;
+BlokTable.propTypes = PropsType;
 
-export default FormTable;
+export default BlokTable;

@@ -25,7 +25,11 @@ export const pageRoutes = {
   name: 'Trang',
   to: '/pages',
   icon: 'copy',
-  children: [{ to: '/pages/list', name: 'Trang' }]
+  children: [
+    { to: '/pages/list', name: 'Trang' },
+    { to: '/pages/block', name: 'Khối' },
+    { to: '/pages/tags', name: 'Thẻ' }
+  ]
 };
 
 export const emailRoutes = {
@@ -35,14 +39,7 @@ export const emailRoutes = {
   children: [{ to: '/emails/list', name: 'Mẫu Thư' }]
 };
 
-export const documentationRoutes = {
-  name: 'Documentation',
-  to: '/documentation',
-  exact: true,
-  icon: 'book'
-};
-
-export const componentRoutes = {
+export const formRoutes = {
   name: 'Tạo Form',
   to: '/form-builder/list',
   icon: 'book'
@@ -76,43 +73,11 @@ export const pluginRoutes = {
   ]
 };
 
-export const utilityRoutes = {
-  name: 'Utilities',
-  to: '/utilities',
-  icon: ['fab', 'hotjar'],
-  children: [
-    { to: '/utilities/borders', name: 'Borders' },
-    { to: '/utilities/clearfix', name: 'Clearfix' },
-    { to: '/utilities/closeIcon', name: 'Close icon' },
-    { to: '/utilities/colors', name: 'Colors' },
-    { to: '/utilities/display', name: 'Display' },
-    { to: '/utilities/embed', name: 'Embed' },
-    { to: '/utilities/figures', name: 'Figures' },
-    { to: '/utilities/flex', name: 'Flex' },
-    { to: '/utilities/grid', name: 'Grid' },
-    { to: '/utilities/sizing', name: 'Sizing' },
-    { to: '/utilities/spacing', name: 'Spacing' },
-    { to: '/utilities/stretchedLink', name: 'Stretched link' },
-    { to: '/utilities/typography', name: 'Typography' },
-    { to: '/utilities/verticalAlign', name: 'Vertical align' },
-    { to: '/utilities/visibility', name: 'Visibility' }
-  ]
-};
 export const settingRoutes = {
   name: 'Setting',
   to: '/setting',
   exact: true,
   icon: 'cog'
 };
-export default [
-  homeRoutes,
-  newRoutes,
-  pageRoutes,
-  emailRoutes,
-  componentRoutes,
-  utilityRoutes,
-  pluginRoutes,
-  documentationRoutes,
-  settingRoutes,
-  menuRoutes
-];
+
+export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, pluginRoutes, settingRoutes];

@@ -18,6 +18,8 @@
     "edit": "Sửa",
     "save": "Lưu",
     "form": "Form",
+    "tags": "Thẻ",
+    "tagsName": "Tên thẻ",
     "meta": {
         "title": "Meta Title",
         "keywords": "Meta keywords",
@@ -53,18 +55,18 @@
         "active": "Kích hoạt trang",
         "sidebar": "Kích hoạt thanh bên",
         "full": "Đầy đủ",
-        "default": "Mặc định"          
+        "default": "Mặc định"
     },
     "formBuilder": {
         "title": "Tạo Form"
     },
-    "setting":{
-        "mail":"Mail",
-        "css/js":"Tùy chỉnh CSS / JS",
-        "setting":"Cài đặt",
-        "settingeneral":"Cài đặt chung"
+    "setting": {
+        "mail": "Mail",
+        "css/js": "Tùy chỉnh CSS / JS",
+        "setting": "Cài đặt",
+        "settingeneral": "Cài đặt chung"
+    },
+    "block_page": {
+        "title": "Khối"
     }
 }
-
-
-
