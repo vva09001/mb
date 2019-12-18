@@ -20,14 +20,13 @@ function* getMenusSaga() {
 
 function* addMenusSaga() {
   yield takeLatest(actions.ADD_MENUS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield addMenus(data);
       if (res.status === 200) {
-        yield onSuccess();
+        Success('Thêm thành công');
         yield put({ type: actions.ADD_MENUS_RESPONSE, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {

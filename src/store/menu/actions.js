@@ -9,11 +9,9 @@ const Actions = {
   ADD_MENUS_REQUEST: 'ADD_MENUS_REQUEST',
   ADD_MENUS_RESPONSE: 'ADD_MENUS_RESPONSE',
 
-  AddMenus: (data, onSuccess, onFail) => ({
+  AddMenus: data => ({
     type: Actions.ADD_MENUS_REQUEST,
-    data,
-    onSuccess,
-    onFail
+    data
   }),
 
   EDIT_MENUS_REQUEST: 'EDIT_MENUS_REQUEST',

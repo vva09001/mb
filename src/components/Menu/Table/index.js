@@ -32,7 +32,6 @@ const MenuTable = ({ data, getID, getDetail }) => {
         </thead>
         <tbody>
           {map(list, values => {
-            console.log(JSON.stringify(list));
             return (
               <tr key={values.id}>
                 <th>
