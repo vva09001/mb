@@ -143,9 +143,10 @@ function NewsCreate({ newsCreate }) {
                 <FormGroup>
                   <Label for="exampleSelect">{t('category')}</Label>
                   <Input type="select" name="category_news_id" id="exampleSelect" onChange={handleChange}>
-                    <option value={0}>Tin tức</option>
-                    <option value={1}>Doanh nghiệp</option>
-                    <option value={2}>Hoạt động</option>
+                    <option>Chọn...</option>
+                    <option value={1}>Tin tức</option>
+                    <option value={2}>Doanh nghiệp</option>
+                    <option value={3}>Hoạt động</option>
                   </Input>
                 </FormGroup>
                 <Button color="primary" type="submit">

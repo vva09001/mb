@@ -2,46 +2,47 @@ import Actions from './actions';
 import { filter, map } from 'lodash';
 
 const initialState = {
-  data: []
+  data: [],
+  detail: {}
 };
 
-const Pages = (state = initialState, action) => {
+const Menus = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.GET_PAGES_RESPONSE:
+    case Actions.GET_MENUS_RESPONSE:
       return {
         ...state,
         data: action.data
       };
-    case Actions.ADD_PAGES_RESPONSE:
+    case Actions.ADD_MENUS_RESPONSE:
       return {
         ...state,
-        data: [...state.data, { ...action.data, title: action.data.name }]
+        data: [...state.data, action.data]
       };
-    case Actions.EDIT_PAGES_RESPONSE:
+    case Actions.EDIT_MENUS_REQUEST:
       return {
         ...state,
         data: map(state.data, values => {
           if (values.id === action.data.id) {
-            values = { ...action.data, title: action.data.name };
+            values = action.data;
           }
           return values;
         })
       };
-    case Actions.DELETE_PAGES_RESPONSE:
+    case Actions.DELETE_MENUS_RESPONSE:
       return {
         ...state,
         data: filter(state.data, values => {
-          return values !== action.data;
+          return values.id !== action.data;
         })
       };
-    case Actions.EXPANSION_TOOGLE_PAGE:
+    case Actions.GET_DETAIL_MENU:
       return {
         ...state,
-        data: action.data
+        detail: action.data
       };
     default:
       return state;
   }
 };
 
-export default Pages;
+export default Menus;

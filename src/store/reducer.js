@@ -8,6 +8,7 @@ import PageReducer from './pages/reducers';
 import CategoryReducer from './category/reducers';
 import MailReducer from './mail/reducers';
 import FormBuilderReducer from './formbuilder/reducers';
+import MenuReducer from './menu/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   PageReducer,
   CategoryReducer,
   MailReducer,
-  FormBuilderReducer
+  FormBuilderReducer,
+  MenuReducer
 });
 
 const persistConfig = {

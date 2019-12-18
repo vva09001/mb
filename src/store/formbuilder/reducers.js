@@ -2,7 +2,8 @@ import Actions from './actions';
 import { filter, map } from 'lodash';
 
 const initialState = {
-  listForm: []
+  listForm: [],
+  detail: {}
 };
 
 const FormBuilder = (state = initialState, action) => {
@@ -30,6 +31,11 @@ const FormBuilder = (state = initialState, action) => {
       return {
         ...state,
         listForm: filter(state.listForm, values => values.id !== action.id)
+      };
+    case Actions.GET_FORM_DETAIL:
+      return {
+        ...state,
+        detail: action.detail
       };
     default:
       return state;

@@ -6,6 +6,7 @@ import {
   editFormbuilderService,
   deleteFormbuilderService
 } from 'services/formbuilder';
+import history from 'helpers/history';
 import { Error, Success } from 'helpers/notify';
 
 function* getFormSaga() {
@@ -31,6 +32,7 @@ function* createFormSaga() {
       if (res.status === 200) {
         yield Success('Tạo thành công');
         yield put({ type: actions.CREATE_FORM_RESPONSE, data: res.data });
+        yield history.push('/form-builder/list');
       } else {
         yield Error(res.message);
       }
@@ -48,6 +50,7 @@ function* editFormSaga() {
       if (res.status === 200) {
         yield Success('Sửa thành công');
         yield put({ type: actions.EDIT_FORM_RESPONSE, data: res.data });
+        yield history.push('/form-builder/list');
       } else {
         yield Error(res.message);
       }

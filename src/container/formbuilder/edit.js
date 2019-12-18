@@ -13,28 +13,27 @@ require('jquery-ui-sortable');
 require('formBuilder');
 
 const Proptype = {
-  created: Proptypes.func
+  formDetail: Proptypes.object,
+  editForm: Proptypes.func
 };
 
-function FormBuilder({ created }) {
+function FormBuilder({ formDetail, editForm }) {
   const fb = createRef();
   const { t } = useTranslation();
-
   const [formState, setFormState] = useState({
-    values: {},
+    values: formDetail,
     touched: {}
   });
 
-  const [formData, setFormData] = useState(null);
+  const [form, setForm] = useState(null);
 
   const [checkSubmit, setSubmit] = useState(true);
 
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
-
   useEffect(() => {
-    $(fb.current).formBuilder(options);
+    $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!fb.current, !options]);
 
@@ -56,14 +55,19 @@ function FormBuilder({ created }) {
 
   const onSend = formData => {
     setSubmit(false);
-    // setFormData(JSON.stringify(formData));
-    setFormData(formData);
+    setForm(formData);
   };
 
   const onSubmit = event => {
     event.preventDefault();
-    created({ ...formState.values, list: formData });
+    const data = {
+      name: formState.values.name,
+      status: formState.values.status,
+      list: form
+    };
+    editForm(formDetail.id, data);
   };
+
   return (
     <React.Fragment>
       <h4>{t('formBuilder.title')}</h4>
@@ -71,12 +75,17 @@ function FormBuilder({ created }) {
         <Form onSubmit={onSubmit}>
           <FormGroup>
             <Label>{t('name')}</Label>
-            <Input name="name" onChange={handleChange} />
+            <Input name="name" onChange={handleChange} value={formState.values.name} />
           </FormGroup>
           <div className="check__box">
             <Label>{t('status')}</Label>
             <div>
-              <Input type="checkbox" name="status" onChange={handleChange} />
+              <Input
+                type="checkbox"
+                name="status"
+                onChange={handleChange}
+                checked={formState.values.status === 0 ? false : true}
+              />
               <span>{t('category_page.form.activeCategory')}</span>
             </div>
           </div>
@@ -92,11 +101,17 @@ function FormBuilder({ created }) {
 
 FormBuilder.propTypes = Proptype;
 
+const mapStateToProps = state => {
+  return {
+    formDetail: state.FormBuilderReducer.detail
+  };
+};
+
 const mapDispatchToProps = {
-  created: FormBuilderActions.createFormAction
+  editForm: FormBuilderActions.editFormAction
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(FormBuilder);

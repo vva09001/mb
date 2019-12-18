@@ -2,27 +2,21 @@ import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getPages, addPages, editPages, deletePages, updatePositionPages } from '../../services/pages';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
-import { filter } from 'lodash';
 
 function* getPagesSaga() {
   yield takeLatest(actions.GET_PAGES_REQUEST, function*(params) {
     try {
       const res = yield getPages();
-      const data = [];
+      let data = [];
+
       if (res.status === 200) {
-        let listParent = filter(res.data, res => {
-          if (res.parentId === 0) {
-            return res;
-          }
-        });
-        listParent.forEach(element => {
-          const listChildren = filter(res.data, res => {
-            if (res.parentId === element.id) {
-              return res;
-            }
-          });
-          data.push({ ...element, children: [...listChildren] });
-        });
+        const nest = (items, id = 0, link = 'parentId') =>
+          items
+            .filter(item => item[link] === id)
+            .map(item => ({ ...item, title: item.name, children: nest(items, item.id), expanded: true }));
+
+        data = nest(res.data);
+
         for (let index = 0; index < data.length; index++) {
           if (data[index].children !== undefined) {
             let arr = data[index].children;
@@ -54,7 +48,7 @@ function* addPagesSaga() {
       const res = yield addPages(data);
       if (res.status === 200) {
         Success('Thêm thành công');
-        yield put({ type: actions.ADD_PAGES_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -88,7 +82,7 @@ function* deletePagesSaga() {
       const res = yield deletePages(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_PAGES_RESPONSE, data: id });
+        yield put({ type: actions.GET_PAGES_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

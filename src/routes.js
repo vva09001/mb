@@ -48,6 +48,13 @@ export const componentRoutes = {
   icon: 'book'
 };
 
+export const menuRoutes = {
+  name: 'Menu',
+  to: '/menu/list',
+  exact: true,
+  icon: 'book'
+};
+
 export const pluginRoutes = {
   name: 'Plugins',
   to: '/plugins',
@@ -106,5 +113,6 @@ export default [
   utilityRoutes,
   pluginRoutes,
   documentationRoutes,
-  settingRoutes
+  settingRoutes,
+  menuRoutes
 ];

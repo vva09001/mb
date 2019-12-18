@@ -1,6 +1,5 @@
 import actions from './actions';
 import { takeLatest, put, all, fork } from 'redux-saga/effects';
-import { filter } from 'lodash';
 import { Error, Success } from 'helpers/notify';
 import {
   getCategoryService,
@@ -14,21 +13,15 @@ function* getCategorySaga() {
   yield takeLatest(actions.GET_CATEGORY_REQUEST, function*(params) {
     try {
       const res = yield getCategoryService();
-      const data = [];
+      let data = [];
       if (res.status === 200) {
-        let listParent = filter(res.data, res => {
-          if (res.parentId === 0) {
-            return res;
-          }
-        });
-        listParent.forEach(element => {
-          const listChildren = filter(res.data, res => {
-            if (res.parentId === element.id) {
-              return res;
-            }
-          });
-          data.push({ ...element, children: [...listChildren] });
-        });
+        const nest = (items, id = 0, link = 'parentId') =>
+          items
+            .filter(item => item[link] === id)
+            .map(item => ({ ...item, title: item.name, children: nest(items, item.id), expanded: true }));
+
+        data = nest(res.data);
+
         for (let index = 0; index < data.length; index++) {
           if (data[index].children !== undefined) {
             let arr = data[index].children;

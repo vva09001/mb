@@ -1,8 +1,16 @@
-import request from 'helpers/request';
+import axios from 'axios';
+
+const request = axios.create({
+  baseURL: 'https://bank1712.herokuapp.com/vi/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
 
 const getMenus = () => {
   return request({
-    url: '/news',
+    url: '/menu',
     method: 'GET'
   })
     .then(res => {
@@ -15,7 +23,7 @@ const getMenus = () => {
 
 const addMenus = data => {
   return request({
-    url: `/news/category/${data.category_news_id}`,
+    url: '/menu',
     method: 'POST',
     data: data
   })
@@ -29,7 +37,7 @@ const addMenus = data => {
 
 const editMenus = data => {
   return request({
-    url: `/news/${data.id}`,
+    url: `/menu/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -43,7 +51,7 @@ const editMenus = data => {
 
 const deleteMenus = id => {
   return request({
-    url: `/news/${id}`,
+    url: `/menu/${id}`,
     method: 'DELETE'
   })
     .then(res => {

@@ -29,6 +29,12 @@ const Actions = {
   deleteFormAction: id => ({
     type: Actions.DELETE_FORM_REQUEST,
     id
+  }),
+
+  GET_FORM_DETAIL: 'GET_FORM_DETAIL',
+  getFormDetailAction: detail => ({
+    type: Actions.GET_FORM_DETAIL,
+    detail
   })
 };
 

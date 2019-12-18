@@ -30,7 +30,7 @@ const Actions = {
     id
   }),
 
-  EXPANSION_TOOGLE: 'EXPANSION_TOOGLE_PAGE',
+  EXPANSION_TOOGLE_PAGE: 'EXPANSION_TOOGLE_PAGE',
   expansionPageAction: data => ({
     type: Actions.EXPANSION_TOOGLE_PAGE,
     data

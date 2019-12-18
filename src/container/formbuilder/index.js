@@ -11,15 +11,11 @@ import { connect } from 'react-redux';
 const Proptype = {
   listForm: PropTypes.array,
   getListForm: PropTypes.func,
-  createForm: PropTypes.func,
-  editForm: PropTypes.func,
-  deleteForm: PropTypes.func,
-  getDetail: PropTypes.func,
+  getFormDetail: PropTypes.func,
+  deleteForm: PropTypes.func
 };
 
-function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm,getDetail }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formID, setformID] = useState(null);
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
   useEffect(() => {
     getListForm();
     
@@ -42,6 +38,11 @@ function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm,g
     }
   };
 
+  const getDetail = detail => {
+    getFormDetail(detail);
+    history.push('/form-builder/edit');
+  };
+
   return (
     <React.Fragment>
       <Row>
@@ -56,7 +57,7 @@ function Formbuilder({ listForm, getListForm, createForm, editForm, deleteForm,g
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForm}  getDetail={onGetDetail} getID={id => setformID(id)} />
+        <Table data={listForm} getDetail={detail => getDetail(detail)} />
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
@@ -74,8 +75,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getListForm: FormBuilderActions.getFormAction,
-  createForm: FormBuilderActions.createFormAction,
-  editForm: FormBuilderActions.editFormAction,
+  getFormDetail: FormBuilderActions.getFormDetailAction,
   deleteForm: FormBuilderActions.deleteFormAction
 };
 

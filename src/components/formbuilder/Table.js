@@ -33,9 +33,9 @@ const FormTable = ({ data, getID, getDetail }) => {
           </tr>
         </thead>
         <tbody>
-          {map(list, values => {
+          {map(list, (values, index) => {
             return (
-              <tr key={values.id}>
+              <tr key={index}>
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
