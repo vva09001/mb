@@ -10,9 +10,7 @@ const Category = (state = initialState, action) => {
     case Actions.GET_CATEGORY_RESPONSE:
       return {
         ...state,
-        listCategory: map(action.data, values => {
-          return { ...values, title: values.name, expanded: true };
-        })
+        listCategory: action.data
       };
     case Actions.ADD_CATEGORY_RESPONSE:
       return {
