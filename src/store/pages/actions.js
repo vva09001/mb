@@ -6,6 +6,13 @@ const Actions = {
     type: Actions.GET_PAGES_REQUEST
   }),
 
+  GET_ALL_PAGES_REQUEST: 'GET_ALL_PAGES_REQUEST',
+  GET_ALL_PAGES_RESPONSE: 'GET_ALL_PAGES_RESPONSE',
+
+  GetAllPages: () => ({
+    type: Actions.GET_ALL_PAGES_REQUEST
+  }),
+
   ADD_PAGES_REQUEST: 'ADD_PAGES_REQUEST',
   ADD_PAGES_RESPONSE: 'ADD_PAGES_RESPONSE',
 
@@ -42,6 +49,21 @@ const Actions = {
     idPage,
     idParent,
     positions
+  }),
+
+  GET_DETAIL_PAGE: 'GET_DETAIL_PAGE',
+
+  getDetailPages: data => ({
+    type: Actions.GET_DETAIL_PAGE,
+    data
+  }),
+
+  APPR_PAGES_REQUEST: 'APPR_PAGES_REQUEST',
+  APPR_PAGES_RESPONSE: 'APPR_PAGES_RESPONSE',
+
+  apprPages: data => ({
+    type: Actions.APPR_PAGES_REQUEST,
+    data
   })
 };
 

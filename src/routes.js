@@ -25,7 +25,7 @@ export const pageRoutes = {
   name: 'Trang',
   to: '/pages',
   icon: 'copy',
-  children: [{ to: '/pages/list', name: 'Trang' }]
+  children: [{ to: '/pages/list', name: 'Trang' }, { to: '/pages/approved_listings', name: 'Duyệt Trang' }]
 };
 
 export const emailRoutes = {
@@ -52,7 +52,7 @@ export const menuRoutes = {
   name: 'Menu',
   to: '/menu/list',
   exact: true,
-  icon: 'book'
+  icon: 'plug'
 };
 
 export const pluginRoutes = {

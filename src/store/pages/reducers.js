@@ -2,12 +2,18 @@ import Actions from './actions';
 import { filter, map } from 'lodash';
 
 const initialState = {
-  data: []
+  data: [],
+  detail: {}
 };
 
 const Pages = (state = initialState, action) => {
   switch (action.type) {
     case Actions.GET_PAGES_RESPONSE:
+      return {
+        ...state,
+        data: action.data
+      };
+    case Actions.GET_ALL_PAGES_RESPONSE:
       return {
         ...state,
         data: action.data
@@ -34,10 +40,22 @@ const Pages = (state = initialState, action) => {
           return values !== action.data;
         })
       };
+    case Actions.APPR_PAGES_RESPONSE:
+      return {
+        ...state,
+        data: filter(state.data, values => {
+          return values !== action.data;
+        })
+      };
     case Actions.EXPANSION_TOOGLE_PAGE:
       return {
         ...state,
         data: action.data
+      };
+    case Actions.GET_DETAIL_PAGE:
+      return {
+        ...state,
+        detail: action.data
       };
     default:
       return state;

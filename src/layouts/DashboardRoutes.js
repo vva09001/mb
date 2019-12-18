@@ -7,6 +7,8 @@ import Category from 'container/News/Category';
 import ListPage from '../container/Pages';
 import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
+import ApprPage from '../container/Pages/ApprovedPage';
+import PageAppr from '../container/Pages/ApprovedPage/Edit';
 import AprrEdit from '../container/ApprovingNews/Approving';
 import AprrNews from '../container/ApprovingNews';
 import ListMail from '../container/Mails';
@@ -62,6 +64,8 @@ const DashboardRoutes = () => (
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
     <Route path="/pages/edit" exact component={PageEdit} />
+    <Route path="/pages/approved_listings" exact component={ApprPage} />
+    <Route path="/pages/approved" exact component={PageAppr} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
