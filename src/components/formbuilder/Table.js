@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+import {Link} from 'react-router-dom'
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -39,8 +40,15 @@ const FormTable = ({ data, getID, getDetail }) => {
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{values.stricky === 1 ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>
+                  <span className ={values.status===0 ? 'green' : 'dot'}></span>
+                </td>
+                <td onClick={() => getDetail(values)}>
+                  <Link to="/">Form data</Link>|
+                  <Link to="/">Embeded form</Link>|
+                  <Link to="/">Thư phản hồi</Link>|
+                  {values.stricky === 1 ? 'true' : 'false'}
+                </td>
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
               </tr>
             );

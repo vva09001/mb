@@ -24,7 +24,6 @@ const PopupComfirm = ({ open, onClose, onComfirm }) => {
     </Modal>
   );
 };
-
 PopupComfirm.propTypes = PropsType;
 
 export default PopupComfirm;
