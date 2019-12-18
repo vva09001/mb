@@ -13,13 +13,18 @@ const Proptype = {
   getListForm: PropTypes.func,
   getFormDetail: PropTypes.func,
   deleteForm: PropTypes.func
+
 };
 
-function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
+
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm,getDetail }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formID, setformID] = useState(null);
   useEffect(() => {
     getListForm();
     
   }, [getListForm]);
+
   const { t } = useTranslation();
  
   const onGetDetail = detail => {
@@ -38,10 +43,7 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
     }
   };
 
-  const getDetail = detail => {
-    getFormDetail(detail);
-    history.push('/form-builder/edit');
-  };
+
 
   return (
     <React.Fragment>
@@ -57,7 +59,7 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForm} getDetail={detail => getDetail(detail)} />
+        <Table data={listForm} getID={id => setformID(id)} getDetail={onGetDetail} />
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
