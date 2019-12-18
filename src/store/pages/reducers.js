@@ -10,9 +10,7 @@ const Pages = (state = initialState, action) => {
     case Actions.GET_PAGES_RESPONSE:
       return {
         ...state,
-        data: map(action.data, values => {
-          return { ...values, title: values.name, expanded: true };
-        })
+        data: action.data
       };
     case Actions.ADD_PAGES_RESPONSE:
       return {

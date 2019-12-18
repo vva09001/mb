@@ -11,7 +11,9 @@ function* getPagesSaga() {
 
       if (res.status === 200) {
         const nest = (items, id = 0, link = 'parentId') =>
-          items.filter(item => item[link] === id).map(item => ({ ...item, children: nest(items, item.id) }));
+          items
+            .filter(item => item[link] === id)
+            .map(item => ({ ...item, title: item.name, children: nest(items, item.id), expanded: true }));
 
         data = nest(res.data);
 
