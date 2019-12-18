@@ -35,7 +35,7 @@ const Actions = {
   GET_DETAIL_MENU: 'GET_DETAIL_MENU',
 
   getDetailMenus: data => ({
-    type: Actions.GET_DETAIL_MENUS,
+    type: Actions.GET_DETAIL_MENU,
     data
   })
 };

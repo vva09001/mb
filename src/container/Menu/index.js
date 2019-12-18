@@ -39,7 +39,7 @@ const ListMenus = ({ data, getMenus, deleteMenus, getDetailMenus }) => {
 
   const onGetDetail = detail => {
     getDetailMenus(detail);
-    history.push('/menus/edit');
+    history.push('/menu/edit');
   };
 
   return (
@@ -57,7 +57,7 @@ const ListMenus = ({ data, getMenus, deleteMenus, getDetailMenus }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <MenuTable data={data} getID={id => setMenusID(id)} getDetailMenus={onGetDetail} />
+          <MenuTable data={data} getID={id => setMenusID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

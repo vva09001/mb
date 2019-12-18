@@ -18,6 +18,7 @@ import CreatedFormBuilder from 'container/formbuilder/created';
 import EditFormBuilder from 'container/formbuilder/edit';
 import ListMenus from 'container/Menu';
 import CreateMenus from 'container/Menu/Create';
+import CreateMenusItem from 'container/Menu/CreateItem';
 import EditMenus from 'container/Menu/Edit';
 import Borders from '../components/utilities/Borders';
 import Clearfix from '../components/utilities/Clearfix';
@@ -77,6 +78,7 @@ const DashboardRoutes = () => (
     <Route path="/menu/list" exact component={ListMenus} />
     <Route path="/menu/create" exact component={CreateMenus} />
     <Route path="/menu/edit" exact component={EditMenus} />
+    <Route path="/menu/edit/item" exact component={CreateMenusItem} />
 
     {/*Changelog*/}
 
