@@ -126,6 +126,7 @@
         "deny": "Từ chối",
         "denyall":"Từ chối tất cả",
         "inherit": "Kế thừa",
-        "inheritall": "Kế thừa tất cả"        
+        "inheritall": "Kế thừa tất cả",
+        "account": "Tài Khoản"        
     }
 }
