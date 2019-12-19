@@ -55,3 +55,19 @@ label {
     margin-left: 10px;
   }
 }
+
+.cardCustom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  .cardItems {
+    margin-top: 5px;
+    p {
+      cursor: context-menu;
+      margin: 0;
+      font-size: 12px;
+      padding-bottom: 5px;
+    }
+  }
+}

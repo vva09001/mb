@@ -2,7 +2,7 @@ import request from 'helpers/request';
 
 const getBlockService = () => {
   return request({
-    url: '/tags',
+    url: '/blocks',
     method: 'GET'
   })
     .then(res => {
@@ -15,7 +15,7 @@ const getBlockService = () => {
 
 const createBlockService = data => {
   return request({
-    url: '/tags',
+    url: '/blocks',
     method: 'POST',
     data: data
   })
@@ -29,7 +29,7 @@ const createBlockService = data => {
 
 const editBlockService = (id, data) => {
   return request({
-    url: `/tags/${id}`,
+    url: `/blocks/${id}`,
     method: 'PUT',
     data: data
   })
@@ -42,7 +42,7 @@ const editBlockService = (id, data) => {
 };
 const deleteBlockService = id => {
   return request({
-    url: `/tags/${id}`,
+    url: `/blocks/${id}`,
     method: 'DELETE'
   })
     .then(res => {

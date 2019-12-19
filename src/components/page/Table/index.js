@@ -50,6 +50,8 @@ const PageTable = ({ data, getID, getDetail }) => {
         pageCount={5}
         marginPagesDisplayed={3}
         pageRangeDisplayed={5}
+        previousLabel={t('previous')}
+        nextLabel={t('next')}
         nextLinkClassName={'page-link'}
         previousLinkClassName={'page-link'}
         pageClassName={'page-item'}
