@@ -24,6 +24,8 @@ import ListMenus from 'container/Menu';
 import CreateMenus from 'container/Menu/Create';
 import CreateMenusItem from 'container/Menu/CreateItem';
 import EditMenus from 'container/Menu/Edit';
+import ListUsers from 'container/Users';
+import UsersCreate from 'container/Users/Create';
 import Typed from '../components/plugins/Typed';
 import ImageLightbox from '../components/plugins/ImageLightbox';
 import GoogleMapExample from '../components/plugins/GoogleMap';
@@ -71,6 +73,9 @@ const DashboardRoutes = () => (
     <Route path="/menu/edit" exact component={EditMenus} />
     <Route path="/menu/edit/item" exact component={CreateMenusItem} />
 
+    {/* User */}
+    <Route path="/users/list" exact component={ListUsers} />
+    <Route path="/users/create" exact component={UsersCreate} />
     {/*Changelog*/}
 
     {/*Components*/}

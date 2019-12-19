@@ -7,6 +7,7 @@ import FormBuilderActions from './formbuilder/actions';
 import MenuActions from './menu/actions';
 import BlockActions from './block/actions';
 import TagActions from './tags/actions';
+import UserActions from './Users/actions';
 
 export {
   NewActions,
@@ -17,5 +18,6 @@ export {
   FormBuilderActions,
   MenuActions,
   BlockActions,
-  TagActions
+  TagActions,
+  UserActions
 };

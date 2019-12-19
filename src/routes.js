@@ -53,6 +53,14 @@ export const menuRoutes = {
   icon: 'plug'
 };
 
+export const userRoutes = {
+  name: 'User',
+  to: '/users',
+  exact: true,
+  icon: 'plug',
+  children: [{ to: '/users/list', name: 'User' }]
+};
+
 export const pluginRoutes = {
   name: 'Plugins',
   to: '/plugins',
@@ -81,4 +89,14 @@ export const settingRoutes = {
   icon: 'cog'
 };
 
-export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, pluginRoutes, settingRoutes];
+export default [
+  homeRoutes,
+  newRoutes,
+  pageRoutes,
+  emailRoutes,
+  formRoutes,
+  menuRoutes,
+  pluginRoutes,
+  settingRoutes,
+  userRoutes
+];
