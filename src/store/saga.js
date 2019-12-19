@@ -8,6 +8,8 @@ import FormBuilderSaga from './formbuilder/saga';
 import MenuSaga from './menu/saga';
 import BlockSaga from './block/saga';
 import TagSaga from './tags/saga';
+import UserSaga from './Users/sagas';
+import RoleSaga from './roles/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -19,6 +21,8 @@ export default function* rootSaga() {
     FormBuilderSaga(),
     MenuSaga(),
     BlockSaga(),
-    TagSaga()
+    TagSaga(),
+    UserSaga(),
+    RoleSaga()
   ]);
 }

@@ -107,6 +107,8 @@
         "pageAccept": "Page Accept",
         "mail": "Mail",
         "form": "Create Form",
-        "setting": "Setting"
+        "setting": "Setting",
+        "user": "User",
+        "role": "Role"
     }
 }

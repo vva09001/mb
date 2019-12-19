@@ -57,7 +57,6 @@ const DashboardRoutes = () => (
     <Route path="/menu/create" exact component={CreateMenus} />
     <Route path="/menu/edit" exact component={EditMenus} />
     <Route path="/menu/edit/item" exact component={CreateMenusItem} />
-
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />

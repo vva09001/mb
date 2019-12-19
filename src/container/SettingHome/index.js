@@ -36,7 +36,6 @@ function SettingHome({ settingHome }) {
                   toggle('1');
                 }}
               >
-                {' '}
                 {t('general')}
               </NavLink>
             </NavItem>

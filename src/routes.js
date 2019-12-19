@@ -49,6 +49,14 @@ export const menuRoutes = {
   icon: 'plug'
 };
 
+export const userRoutes = {
+  name: 'menu.user',
+  to: '/users',
+  exact: true,
+  icon: 'plug',
+  children: [{ to: '/users/list', name: 'menu.user' }, { to: '/users/listrole', name: 'menu.role' }]
+};
+
 export const settingRoutes = {
   name: 'menu.setting',
   to: '/setting',
@@ -56,4 +64,4 @@ export const settingRoutes = {
   icon: 'cog'
 };
 
-export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, settingRoutes];
+export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, userRoutes, settingRoutes];
