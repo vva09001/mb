@@ -54,11 +54,11 @@ export const menuRoutes = {
 };
 
 export const userRoutes = {
-  name: 'User',
+  name: 'Nhân Viên',
   to: '/users',
   exact: true,
   icon: 'plug',
-  children: [{ to: '/users/list', name: 'User' }]
+  children: [{ to: '/users/list', name: 'User' }, { to: '/users/listrole', name: 'Vai Trò' }]
 };
 
 export const pluginRoutes = {

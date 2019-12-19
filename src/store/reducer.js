@@ -12,6 +12,7 @@ import MenuReducer from './menu/reducers';
 import BlockReducer from './block/reducers';
 import TagReducer from './tags/reducers';
 import UserReducer from './Users/reducers';
+import RoleReducer from './roles/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -23,7 +24,8 @@ const reducers = combineReducers({
   MenuReducer,
   BlockReducer,
   TagReducer,
-  UserReducer
+  UserReducer,
+  RoleReducer
 });
 
 const persistConfig = {

@@ -9,6 +9,7 @@ import MenuSaga from './menu/saga';
 import BlockSaga from './block/saga';
 import TagSaga from './tags/saga';
 import UserSaga from './Users/sagas';
+import RoleSaga from './roles/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     MenuSaga(),
     BlockSaga(),
     TagSaga(),
-    UserSaga()
+    UserSaga(),
+    RoleSaga()
   ]);
 }

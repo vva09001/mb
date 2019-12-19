@@ -9,10 +9,10 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  addUser: PropTypes.func
+  editUser: PropTypes.func
 };
 
-function UsersCreate({ addUser }) {
+function UsersEdit({ editUser }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -43,11 +43,11 @@ function UsersCreate({ addUser }) {
 
   const onSubmitUsers = event => {
     event.preventDefault();
-    addUser(formState.values);
+    editUser(formState.values);
   };
   const onSubmitPermission = event => {
     event.preventDefault();
-    addUser(formState.values);
+    editUser(formState.values);
   };
   return (
     <React.Fragment>
@@ -72,6 +72,16 @@ function UsersCreate({ addUser }) {
                 }}
               >
                 {t('permissions')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '3' })}
+                onClick={() => {
+                  toggle('3');
+                }}
+              >
+                {t('account')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -286,6 +296,22 @@ function UsersCreate({ addUser }) {
                 </Col>
               </Row>
             </TabPane>
+            <TabPane tabId="1">
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
+                <h4>{t('newpassword')}</h4>
+                <FormGroup>
+                  <Label for="exampleName">{t('password')}</Label>
+                  <Input type="text" name="password" id="exampleName" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleName">{t('cpassword')}</Label>
+                  <Input type="text" name="cpassword" id="exampleName" onChange={handleChange} />
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
           </TabContent>
         </Col>
       </Row>
@@ -293,13 +319,13 @@ function UsersCreate({ addUser }) {
   );
 }
 
-UsersCreate.propTypes = PropsType;
+UsersEdit.propTypes = PropsType;
 
 const mapDispatchToProps = {
-  addUser: UserActions.AddUsers
+  editUser: UserActions.EditUsers
 };
 
 export default connect(
   null,
   mapDispatchToProps
-)(UsersCreate);
+)(UsersEdit);
