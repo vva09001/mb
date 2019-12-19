@@ -20,6 +20,24 @@
     "form": "Form",
     "tags": "Thẻ",
     "tagsName": "Tên thẻ",
+    "values": "Giá trị",
+    "addBlock": "Thêm khối mới",
+    "html": "HTML",
+    "key": "Key",
+    "title": "Lable",
+    "type": "Type",
+    "loading": "Đang xử lý",
+    "accept": "Chờ duyệt",
+    "Menu": "Menu",
+    "search": "Tìm kiếm...",
+    "previous": "Trước",
+    "next": "Kế tiếp",
+    "customer": {
+        "personal": "Khách hàng cá nhân",
+        "enterprise": "Khách hàng doanh nghiệp",
+        "institutions": "Khách hàng định chế",
+        "premium": "Khách hàng cá nhân cao cấp"
+    },
     "meta": {
         "title": "Meta Title",
         "keywords": "Meta keywords",
@@ -59,7 +77,7 @@
     },
     "formBuilder": {
         "title": "Tạo Form"
-    },     
+    },
     "setting": {
         "mail": "Mail",
         "css/js": "Tùy chỉnh CSS / JS",
@@ -67,10 +85,30 @@
         "settingeneral": "Cài đặt chung"
     },
     "block_page": {
-        "title": "Khối"
+        "title": "Khối",
+        "activeBock": "Kích hoạt khối"
     },
     "approved": {
         "approved_page": "Duyệt Trang",
         "approved": "Phê Duyệt"
+    },
+    "email": {
+        "email": "Thư"
+    },
+    "menu": {
+        "dashborad": "Bảng điều khiển",
+        "home": "Trang chủ",
+        "news": "Tin tức",
+        "category": "Danh mục",
+        "newsAccept": "Duyệt tin",
+        "page": "Trang",
+        "block": "Khối",
+        "tags": "Thẻ",
+        "pageAccept": "Duyệt trang",
+        "mail": "Thư",
+        "form": "Tạo from",
+        "setting": "Cài đặt",
+        "user": "Nhân viên",
+        "role": "Vài Trò"
     }
 }

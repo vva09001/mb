@@ -10,6 +10,7 @@ import './helpers/i18n';
 import '../node_modules/noty/lib/noty.css';
 import '../node_modules/noty/lib/themes/mint.css';
 import 'react-sortable-tree/style.css';
+import 'codemirror/lib/codemirror.css';
 import 'styles/index.scss';
 
 import { createStore, applyMiddleware } from 'redux';

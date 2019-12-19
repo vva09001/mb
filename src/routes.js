@@ -1,47 +1,43 @@
 export const homeRoutes = {
-  name: 'Home',
+  name: 'menu.dashborad',
   to: '/',
   exact: true,
   icon: 'chart-pie',
-  children: [
-    { to: '/', name: 'Dashboard', exact: true },
-    { to: '/dashboard-alt', name: 'Dashboard alt', badge: { text: 'new' } },
-    { to: '/landing', name: 'Landing' }
-  ]
+  children: [{ to: '/', name: 'menu.dashborad', exact: true }, { to: '/landing', name: 'menu.home' }]
 };
 
 export const newRoutes = {
-  name: 'Tin Tức',
+  name: 'menu.news',
   to: '/news',
   icon: 'copy',
   children: [
-    { to: '/news/list', name: 'Tin tức' },
-    { to: '/news/category', name: 'Danh mục' },
-    { to: '/news/approved_listings', name: 'Duyệt tin' }
+    { to: '/news/list', name: 'menu.news' },
+    { to: '/news/category', name: 'menu.category' },
+    { to: '/news/approved_listings', name: 'menu.newsAccept' }
   ]
 };
 
 export const pageRoutes = {
-  name: 'Trang',
+  name: 'menu.page',
   to: '/pages',
   icon: 'copy',
   children: [
-    { to: '/pages/list', name: 'Trang' },
-    { to: '/pages/block', name: 'Khối' },
-    { to: '/pages/tags', name: 'Thẻ' },
-    { to: '/pages/approved_listings', name: 'Duyệt Trang' }
+    { to: '/pages/list', name: 'menu.page' },
+    { to: '/pages/block', name: 'menu.block' },
+    { to: '/pages/tags', name: 'menu.tags' },
+    { to: '/pages/approved_listings', name: 'menu.pageAccept' }
   ]
 };
 
 export const emailRoutes = {
-  name: 'Mẫu Thư',
+  name: 'menu.mail',
   to: '/email',
   icon: 'envelope-open',
-  children: [{ to: '/emails/list', name: 'Mẫu Thư' }]
+  children: [{ to: '/emails/list', name: 'menu.mail' }]
 };
 
 export const formRoutes = {
-  name: 'Tạo Form',
+  name: 'menu.form',
   to: '/form-builder/list',
   icon: 'book'
 };
@@ -54,49 +50,18 @@ export const menuRoutes = {
 };
 
 export const userRoutes = {
-  name: 'Nhân Viên',
+  name: 'menu.user',
   to: '/users',
   exact: true,
   icon: 'plug',
-  children: [{ to: '/users/list', name: 'User' }, { to: '/users/listrole', name: 'Vai Trò' }]
-};
-
-export const pluginRoutes = {
-  name: 'Plugins',
-  to: '/plugins',
-  icon: 'plug',
-  children: [
-    { to: '/plugins/bulk-select', name: 'Bulk select' },
-    { to: '/plugins/chart', name: 'Chart' },
-    { to: '/plugins/countup', name: 'Countup' },
-    { to: '/plugins/datetime', name: 'Datetime' },
-    { to: '/plugins/echarts', name: 'Echarts' },
-    { to: '/plugins/fontawesome', name: 'Fontawesome' },
-    { to: '/plugins/google-map', name: 'Google map' },
-    { to: '/plugins/image-lightbox', name: 'Image lightbox' },
-    { to: '/plugins/progressbar', name: 'Progressbar' },
-    { to: '/plugins/select', name: 'Select' },
-    { to: '/plugins/toastify', name: 'Toastify' },
-    { to: '/plugins/typed', name: 'Typed' },
-    { to: '/plugins/wysiwyg', name: 'WYSIWYG editor' }
-  ]
+  children: [{ to: '/users/list', name: 'menu.user' }, { to: '/users/listrole', name: 'menu.role' }]
 };
 
 export const settingRoutes = {
-  name: 'Setting',
+  name: 'menu.setting',
   to: '/setting',
   exact: true,
   icon: 'cog'
 };
 
-export default [
-  homeRoutes,
-  newRoutes,
-  pageRoutes,
-  emailRoutes,
-  formRoutes,
-  menuRoutes,
-  pluginRoutes,
-  settingRoutes,
-  userRoutes
-];
+export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, userRoutes, settingRoutes];

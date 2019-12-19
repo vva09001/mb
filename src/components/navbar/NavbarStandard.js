@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import NavbarDropdown from './NavbarDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import handleNavbarTransparency from '../../helpers/handleNavbarTransparency';
-import { pageRoutes, pluginRoutes, formRoutes } from '../../routes';
+import { pageRoutes, formRoutes } from '../../routes';
 import Login from '../auth/basic/Login';
 import Registration from '../auth/basic/Registration';
 
@@ -52,7 +52,6 @@ const NavbarStandard = () => {
           <Nav navbar>
             <NavbarDropdown title={pageRoutes.name} items={pageRoutes.children} />
             <NavbarDropdown title={pageRoutes.name} items={pageRoutes.children} />
-            <NavbarDropdown title={pluginRoutes.name} items={pluginRoutes.children} />
             <NavbarDropdown title={formRoutes.name} items={formRoutes.children} />
           </Nav>
           <Nav navbar className="ml-auto">

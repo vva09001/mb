@@ -30,19 +30,6 @@ import UsersEdit from 'container/Users/Edit';
 import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
-import Typed from '../components/plugins/Typed';
-import ImageLightbox from '../components/plugins/ImageLightbox';
-import GoogleMapExample from '../components/plugins/GoogleMap';
-import Chart from '../components/plugins/Chart';
-import CountUpExample from '../components/plugins/Countup';
-import DatetimeExample from '../components/plugins/Datetime';
-import FontAwesome from '../components/plugins/FontAwesome';
-import Echarts from '../components/plugins/Echarts';
-import Toastify from '../components/plugins/Toastify';
-import Select from '../components/plugins/Select';
-import QuillEditorExample from '../components/plugins/Quill';
-import BulkSelect from '../components/plugins/BulkSelect';
-import ProgressBarJs from '../components/plugins/ProgressBarJs';
 import SettingHome from 'container/SettingHome/index';
 
 const DashboardRoutes = () => (
@@ -84,27 +71,11 @@ const DashboardRoutes = () => (
     <Route path="/users/listrole" exact component={ListRoles} />
     <Route path="/users/listrole/create" exact component={RolesCreate} />
     <Route path="/users/listrole/edit" exact component={RolesEdit} />
-    {/*Changelog*/}
 
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
     <Route path="/form-builder/edit" exact component={EditFormBuilder} />
-
-    {/*Plugins*/}
-    <Route path="/plugins/bulk-select" exact component={BulkSelect} />
-    <Route path="/plugins/typed" exact component={Typed} />
-    <Route path="/plugins/image-lightbox" exact component={ImageLightbox} />
-    <Route path="/plugins/google-map" exact component={GoogleMapExample} />
-    <Route path="/plugins/wysiwyg" exact component={QuillEditorExample} />
-    <Route path="/plugins/chart" exact component={Chart} />
-    <Route path="/plugins/countup" exact component={CountUpExample} />
-    <Route path="/plugins/datetime" exact component={DatetimeExample} />
-    <Route path="/plugins/fontawesome" exact component={FontAwesome} />
-    <Route path="/plugins/echarts" exact component={Echarts} />
-    <Route path="/plugins/toastify" exact component={Toastify} />
-    <Route path="/plugins/select" exact component={Select} />
-    <Route path="/plugins/progressbar" exact component={ProgressBarJs} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

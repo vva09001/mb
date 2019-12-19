@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { map, filter } from 'lodash';
+import CodeMirror from 'react-codemirror';
+import { BlockActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  newsCreate: PropTypes.func
+  createBlock: PropTypes.func
 };
 
-function BlockCreate({ newsCreate }) {
+const options = {
+  lineNumbers: true
+};
+
+function BlockCreate({ createBlock }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
   });
+  const [code, setCode] = useState('');
+  const [formAddMore, setFormAddMore] = useState([{ key: '', title: '', type_id: 0 }]);
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
@@ -31,7 +41,8 @@ function BlockCreate({ newsCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -40,9 +51,38 @@ function BlockCreate({ newsCreate }) {
     }));
   };
 
+  const handleChangeAddMore = (event, index) => {
+    let newFormAddMore = map(formAddMore, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [event.target.name]:
+            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+        };
+      }
+    });
+    setFormAddMore(newFormAddMore);
+  };
+
+  const addMore = () => {
+    const blockValues = {
+      key: '',
+      title: '',
+      type_id: 0
+    };
+    setFormAddMore([...formAddMore, blockValues]);
+  };
+
+  const removeItem = indexItems => {
+    const newValues = filter(formAddMore, (items, index) => index !== indexItems);
+    setFormAddMore(newValues);
+  };
+
   const createdNews = event => {
     event.preventDefault();
-    newsCreate(formState.values);
+    createBlock({ ...formState.values, html: code, blockValues: formAddMore });
   };
 
   return (
@@ -67,34 +107,79 @@ function BlockCreate({ newsCreate }) {
                   toggle('2');
                 }}
               >
-                {t('seo')}
+                {t('values')}
               </NavLink>
             </NavItem>
           </Nav>
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
-                <h4>{t('create')}</h4>
+                <h4>{t('general')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="name" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="category_news_id" id="exampleSelect" onChange={handleChange}>
+                  <Label for="exampleSelect">{t('tags')}</Label>
+                  <Input type="select" name="category_news_id" onChange={handleChange}>
                     <option>Chọn...</option>
-                    <option value={1}>Tin tức</option>
-                    <option value={2}>Doanh nghiệp</option>
-                    <option value={3}>Hoạt động</option>
+                    <option value={1}>Menu</option>
+                    <option value={2}>Icon</option>
+                    <option value={3}>Silder</option>
                   </Input>
+                </FormGroup>
+                <div className="check__box">
+                  <Label>{t('status')}</Label>
+                  <div>
+                    <Input type="checkbox" name="status" onChange={handleChange} />
+                    <span>{t('block_page.activeBock')}</span>
+                  </div>
+                </div>
+                <FormGroup>
+                  <Label>{t('html')}</Label>
+                  <CodeMirror options={options} name="html" onChange={newCode => setCode(newCode)} />
                 </FormGroup>
               </TabPane>
               <TabPane tabId="2">
-                <h4>{t('seo')}</h4>
-                <FormGroup>
-                  <Label for="exampleName">{t('meta.title')}</Label>
-                  <Input type="text" name="meta_title" onChange={handleChange} />
-                </FormGroup>
+                <h4>{t('values')}</h4>
+                {map(formAddMore, (items, index) => {
+                  return (
+                    <div key={index} style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+                      <FormGroup className="mr-4">
+                        <Label for="exampleName">{t('key')}</Label>
+                        <Input type="text" name="key" onChange={event => handleChangeAddMore(event, index)} />
+                      </FormGroup>
+                      <FormGroup className="mr-4">
+                        <Label for="exampleName">{t('title')}</Label>
+                        <Input type="text" name="title" onChange={event => handleChangeAddMore(event, index)} />
+                      </FormGroup>
+                      <FormGroup className="mr-4">
+                        <Label for="exampleSelect">{t('type')}</Label>
+                        <Input type="select" name="type_id" onChange={event => handleChangeAddMore(event, index)}>
+                          <option value={0}>Input</option>
+                          <option value={1}>Textarea</option>
+                          <option value={2}>Editor</option>
+                          <option value={3}>Single Image</option>
+                          <option value={4}>Multiple Images</option>
+                          <option value={5}>Button</option>
+                          <option value={6}>Group</option>
+                          <option value={7}>Repeat</option>
+                          <option value={8}>Contact form</option>
+                          <option value={9}>Custom multi images</option>
+                          <option value={10}>Products</option>
+                        </Input>
+                      </FormGroup>
+                      <div className="mt-3">
+                        <Button onClick={() => removeItem(index)}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+                <Button color="primary" className="mb-2" onClick={addMore}>
+                  {t('addBlock')}
+                </Button>
               </TabPane>
             </TabContent>
             <Button color="primary" type="submit">
@@ -110,7 +195,7 @@ function BlockCreate({ newsCreate }) {
 BlockCreate.propTypes = PropsType;
 
 const mamapDispatchToProps = {
-  newsCreate: NewActions.AddNews
+  createBlock: BlockActions.createBlockAction
 };
 
 export default connect(

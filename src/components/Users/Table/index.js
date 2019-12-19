@@ -27,7 +27,7 @@ const UsersTable = ({ data, getID, getDetail }) => {
             </th>
             <th>{t('firstname')}</th>
             <th>{t('lastname')}</th>
-            <th>{t('email')}</th>
+            <th>{t('email.email')}</th>
             <th>{t('login')}</th>
             <th>{t('create')}</th>
           </tr>

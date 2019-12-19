@@ -46,7 +46,7 @@ const ListMenus = ({ data, getMenus, deleteMenus, getDetailMenus }) => {
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('menu')}</h4>
+          <h4>{t('Menu')}</h4>
         </Row>
         <Row className="mb-2">
           <Button color="primary" className="mr-2" onClick={() => history.push('/menu/create')}>

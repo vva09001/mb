@@ -13,21 +13,19 @@ const Proptype = {
   getListForm: PropTypes.func,
   getFormDetail: PropTypes.func,
   deleteForm: PropTypes.func
-
 };
 
-
-function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm,getDetail }) {
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
   const [isOpen, setIsOpen] = useState(false);
   const [formID, setformID] = useState(null);
   useEffect(() => {
     getListForm();
-    
   }, [getListForm]);
 
   const { t } = useTranslation();
- 
+
   const onGetDetail = detail => {
+    getFormDetail(detail);
     history.push('/form-builder/edit');
   };
 
@@ -42,8 +40,6 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm,getDetai
       setIsOpen(!isOpen);
     }
   };
-
-
 
   return (
     <React.Fragment>
@@ -72,7 +68,6 @@ const mapStateToProps = state => {
   return {
     listForm: state.FormBuilderReducer.listForm
   };
-
 };
 
 const mapDispatchToProps = {
