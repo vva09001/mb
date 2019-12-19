@@ -110,5 +110,23 @@
         "setting": "Setting",
         "user": "User",
         "role": "Role"
+    },
+    "user": {
+        "fistname": "Fist Name",
+        "lastname": "Last Name",
+        "lastlogin": "Last Login",
+        "department": "Department ",
+        "position": "Position",
+        "permission": "Permissions",
+        "newpassword": "New Password",
+        "confirmpassword": "Confirm Password",
+        "sendtomail": "Send Mail",
+        "allow": "Allow",
+        "allowall": "Allow All",
+        "deny": "Deny",
+        "denyall":"Deny All",
+        "inherit": "Inherit",
+        "inheritall": "Inherit All",
+        "account": "Account"           
     }
 }

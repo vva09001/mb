@@ -61,7 +61,7 @@ function UsersEdit({ editUser }) {
                   toggle('1');
                 }}
               >
-                {t('account')}
+                {t('user.account')}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -71,7 +71,7 @@ function UsersEdit({ editUser }) {
                   toggle('2');
                 }}
               >
-                {t('permissions')}
+                {t('user.permissions')}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -81,28 +81,28 @@ function UsersEdit({ editUser }) {
                   toggle('3');
                 }}
               >
-                {t('account')}
+                {t('user.newpassword')}
               </NavLink>
             </NavItem>
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
-                <h4>{t('account')}</h4>
+                <h4>{t('user.account')}</h4>
                 <FormGroup>
-                  <Label for="exampleName">{t('fistname')}</Label>
+                  <Label for="exampleName">{t('user.fistname')}</Label>
                   <Input type="text" name="name" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('lastname')}</Label>
+                  <Label for="exampleName">{t('user.lastname')}</Label>
                   <Input type="text" name="lastname" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('department')}</Label>
+                  <Label for="exampleName">{t('user.department')}</Label>
                   <Input type="text" name="department" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('position')}</Label>
+                  <Label for="exampleName">{t('user.position')}</Label>
                   <Input type="text" name="position" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
@@ -114,11 +114,11 @@ function UsersEdit({ editUser }) {
                   <Input type="text" name="roles" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('password')}</Label>
+                  <Label for="exampleName">{t('loginForm.password')}</Label>
                   <Input type="text" name="password" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('cpassword')}</Label>
+                  <Label for="exampleName">{t('user.confirm')}</Label>
                   <Input type="text" name="cpassword" id="exampleName" onChange={handleChange} />
                 </FormGroup>
 

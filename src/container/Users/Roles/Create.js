@@ -71,7 +71,7 @@ function RolesCreate({ addRole }) {
                   toggle('2');
                 }}
               >
-                {t('permissions')}
+                {t('user.permissions')}
               </NavLink>
             </NavItem>
           </Nav>

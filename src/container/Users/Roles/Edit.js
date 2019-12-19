@@ -71,7 +71,7 @@ function RolesEdit({ editRole }) {
                   toggle('2');
                 }}
               >
-                {t('permissions')}
+                {t('user.permissions')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -80,7 +80,7 @@ function RolesEdit({ editRole }) {
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitRoles}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
-                  <Label for="exampleName">{t('fistname')}</Label>
+                  <Label for="exampleName">{t('user.fistname')}</Label>
                   <Input type="text" name="name" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit">

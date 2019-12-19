@@ -25,11 +25,11 @@ const UsersTable = ({ data, getID, getDetail }) => {
             <th>
               <input type="checkbox" />
             </th>
-            <th>{t('firstname')}</th>
-            <th>{t('lastname')}</th>
+            <th>{t('user.fistname')}</th>
+            <th>{t('user.lastname')}</th>
             <th>{t('email.email')}</th>
-            <th>{t('login')}</th>
-            <th>{t('create')}</th>
+            <th>{t('loginForm.login')}</th>
+            <th>{t('created')}</th>
           </tr>
         </thead>
         <tbody>

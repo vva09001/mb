@@ -26,7 +26,7 @@ const RolesTable = ({ data, getID, getDetail }) => {
               <input type="checkbox" />
             </th>
             <th>{t('name')}</th>
-            <th>{t('create')}</th>
+            <th>{t('created')}</th>
           </tr>
         </thead>
         <tbody>
