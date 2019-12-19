@@ -24,6 +24,12 @@ import ListMenus from 'container/Menu';
 import CreateMenus from 'container/Menu/Create';
 import CreateMenusItem from 'container/Menu/CreateItem';
 import EditMenus from 'container/Menu/Edit';
+import ListUsers from 'container/Users';
+import UsersCreate from 'container/Users/Create';
+import UsersEdit from 'container/Users/Edit';
+import ListRoles from 'container/Users/Roles';
+import RolesCreate from 'container/Users/Roles/Create';
+import RolesEdit from 'container/Users/Roles/Edit';
 import SettingHome from 'container/SettingHome/index';
 
 const DashboardRoutes = () => (
@@ -57,6 +63,15 @@ const DashboardRoutes = () => (
     <Route path="/menu/create" exact component={CreateMenus} />
     <Route path="/menu/edit" exact component={EditMenus} />
     <Route path="/menu/edit/item" exact component={CreateMenusItem} />
+
+    {/* User */}
+    <Route path="/users/list" exact component={ListUsers} />
+    <Route path="/users/create" exact component={UsersCreate} />
+    <Route path="/users/edit" exact component={UsersEdit} />
+    <Route path="/users/listrole" exact component={ListRoles} />
+    <Route path="/users/listrole/create" exact component={RolesCreate} />
+    <Route path="/users/listrole/edit" exact component={RolesEdit} />
+
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />

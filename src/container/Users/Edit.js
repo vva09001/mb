@@ -106,7 +106,7 @@ function UsersEdit({ editUser }) {
                   <Input type="text" name="position" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('email')}</Label>
+                  <Label for="exampleName">{t('email.email')}</Label>
                   <Input type="text" name="email" id="exampleName" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
