@@ -35,6 +35,8 @@ import Storefont from '../container/Storefont';
 import Slider from '../container/Slider';
 import SliderCreate from '../container/Slider/Created';
 
+import Media from 'container/media';
+
 const DashboardRoutes = () => (
   <Switch>
     <Route path="/news/list" exact component={Activity} />
@@ -86,6 +88,8 @@ const DashboardRoutes = () => (
     {/* Slider */}
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
+
+    <Route path="/media" exact component={Media} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

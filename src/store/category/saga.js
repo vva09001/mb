@@ -78,7 +78,7 @@ function* deleteCategorySaga() {
       const res = yield deleteCategoryService(id);
       if (res.status === 200) {
         Success('Xóa thành công');
-        yield put({ type: actions.DELETE_CATEGORY_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_CATEGORY_REQUEST, data: res.data });
       } else {
         Error(res.message);
       }

@@ -66,7 +66,7 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
         {t('save')}
       </Button>
       {deleteActive && (
-        <Button color="danger" className="ml-2" onClick={onDelete}>
+        <Button color="danger" className="ml-2" onClick={() => onDelete(value.id)}>
           {t('delete')}
         </Button>
       )}

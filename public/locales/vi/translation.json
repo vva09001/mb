@@ -110,7 +110,9 @@
         "setting": "Cài đặt",
         "user": "Nhân viên",
         "role": "Vai Trò",
-        "media": "Media"
+        "media": "Thư viện",
+        "storeFont": "Store Font",
+        "slider": "Slider"
     },
     "user": {
         "fistname": "Tên",
@@ -125,38 +127,41 @@
         "allow": "Cho phép",
         "allowall": "Cho phép tất cả",
         "deny": "Từ chối",
-        "denyall":"Từ chối tất cả",
+        "denyall": "Từ chối tất cả",
         "inherit": "Kế thừa",
         "inheritall": "Kế thừa tất cả",
-        "account": "Tài Khoản"        
+        "account": "Tài Khoản"
     },
-    "storefont":{
-        "title":"Storefont",
-        "logo":"Logo",
-        "footeraddress":"Footer Address",
-        "footerbrief":"Footer Brief"
+    "storefont": {
+        "title": "Storefont",
+        "logo": "Logo",
+        "footeraddress": "Footer Address",
+        "footerbrief": "Footer Brief"
     },
-    "slider":{
-        "createslider":"Tạo Slider",
-        "inforslider":"Thông tin Slider",
-        "slider":"Slider",
-        "logo":"Logo",
-        "sliderimg":"Slider Hình",
-        "caption1":"Caption 1",
-        "caption2":"Caption 2",
-        "caption3":"Caption 3",
-        "actiontext":"Call to Action Text",
-        "actionurl":"Call to Action URL",
-        "targetblank":"Mở trong cửa sổ mới",
-        "delay":"Delay",
-        "effect":"Hiệu ứng",
-        "addslier":"Thêm slider",
-        "establish":"Thiết lập",
-        "name":"Tên",
-        "autoplay":"Tự động phát",
-        "activatedplay":"Kích hoạt autoplay",
-        "speedplay":"Tốc độ phát",
-        "arrows":"Arrows",
-        "prev/next":"Show Prev/Next arrows"
+    "slider": {
+        "createslider": "Tạo Slider",
+        "inforslider": "Thông tin Slider",
+        "slider": "Slider",
+        "logo": "Logo",
+        "sliderimg": "Slider Hình",
+        "caption1": "Caption 1",
+        "caption2": "Caption 2",
+        "caption3": "Caption 3",
+        "actiontext": "Call to Action Text",
+        "actionurl": "Call to Action URL",
+        "targetblank": "Mở trong cửa sổ mới",
+        "delay": "Delay",
+        "effect": "Hiệu ứng",
+        "addslier": "Thêm slider",
+        "establish": "Thiết lập",
+        "name": "Tên",
+        "autoplay": "Tự động phát",
+        "activatedplay": "Kích hoạt autoplay",
+        "speedplay": "Tốc độ phát",
+        "arrows": "Arrows",
+        "prev/next": "Show Prev/Next arrows"
+    },
+    "media": {
+        "title": "Thư viện"
     }
 }

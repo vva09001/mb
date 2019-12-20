@@ -40,6 +40,7 @@ function Category({
     values: {},
     touched: {}
   });
+  const [idCategory, setIdCategoty] = useState(null);
   const [addChildrenActive, setAddChildrenActive] = useState(true);
   const [treeActive, setTreeActive] = useState({
     show: false,
@@ -160,6 +161,8 @@ function Category({
   };
 
   const onDelete = () => {
+    // console.log(id);
+    deleteCategory(idCategory);
     setIsOpen(!isOpen);
   };
 
@@ -236,7 +239,10 @@ function Category({
                         onSubmit={onSubmit}
                         value={formState.values}
                         deleteActive={deleteActive}
-                        onDelete={() => setIsOpen(!isOpen)}
+                        onDelete={id => {
+                          setIdCategoty(id);
+                          setIsOpen(!isOpen);
+                        }}
                       />
                     )}
                     {formChildren && (
@@ -245,6 +251,10 @@ function Category({
                         value={formState.values}
                         deleteActive={deleteActive}
                         onSubmit={onSubmitChildren}
+                        onDelete={id => {
+                          setIdCategoty(id);
+                          setIsOpen(!isOpen);
+                        }}
                       />
                     )}
                   </Col>

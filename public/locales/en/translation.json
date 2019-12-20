@@ -1,6 +1,6 @@
 {
     "name": "Name",
-    "status": "status",
+    "status": "Status",
     "sticky": "Sticky",
     "created": "Created",
     "active": "Active",
@@ -110,7 +110,9 @@
         "setting": "Setting",
         "user": "User",
         "role": "Role",
-        "media": "Media"
+        "media": "Media",
+        "storeFont": "Store Font",
+        "slider": "Slider"
     },
     "user": {
         "fistname": "Fist Name",
@@ -125,9 +127,12 @@
         "allow": "Allow",
         "allowall": "Allow All",
         "deny": "Deny",
-        "denyall":"Deny All",
+        "denyall": "Deny All",
         "inherit": "Inherit",
         "inheritall": "Inherit All",
-        "account": "Account"           
+        "account": "Account"
+    },
+    "media": {
+        "title": "Media"
     }
 }
