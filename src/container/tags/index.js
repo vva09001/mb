@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
-import NewTable from '../../components/New/Table';
+import TagTable from '../../components/tags/Table';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { TagActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
@@ -10,18 +10,18 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   data: PropTypes.array,
-  getNews: PropTypes.func,
-  deleteNews: PropTypes.func,
+  getTags: PropTypes.func,
+  deleteTags: PropTypes.func,
   getDetail: PropTypes.func
 };
 
-const Tags = ({ data, getNews, deleteNews, getDetail }) => {
+function Tags({ data, getTags, deleteTags, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [newsID, setNewsID] = useState(null);
+  const [newsID, setTagsID] = useState(null);
 
   useEffect(() => {
-    getNews();
-  }, [getNews]);
+    getTags();
+  }, [getTags]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
@@ -32,24 +32,24 @@ const Tags = ({ data, getNews, deleteNews, getDetail }) => {
 
   const onDelete = () => {
     if (newsID !== null) {
-      deleteNews(newsID);
+      deleteTags(newsID);
       setIsOpen(!isOpen);
     }
   };
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/news/edit');
+    history.push('/tags/edit');
   };
 
   return (
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('news')}</h4>
+          <h4>{t('tags')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/news/create')}>
+          <Button color="primary" className="mr-2" onClick={() => history.push('/tags/create')}>
             {t('create')}
           </Button>
           <Button color="danger" className="mr-2" onClick={openComfirm}>
@@ -57,24 +57,24 @@ const Tags = ({ data, getNews, deleteNews, getDetail }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <NewTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <TagTable data={data} getID={id => setTagsID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 Tags.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data };
+  return { data: state.TagReducer.ListTags };
 };
 
 const mapDispatchToProps = {
-  getNews: NewActions.GetNews,
-  deleteNews: NewActions.DeleteNews,
-  getDetail: NewActions.getDetail
+  getTags: TagActions.getTagAction,
+  deleteTags: TagActions.deleteTagAction,
+  getDetail: TagActions.getDetailTagAction
 };
 
 export default connect(
