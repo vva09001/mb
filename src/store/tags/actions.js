@@ -29,6 +29,13 @@ const Actions = {
   deleteTagAction: id => ({
     type: Actions.DELETE_TAG_REQUEST,
     id
+  }),
+
+  GET_DETAIL_TAG: 'GET_DETAIL_TAG',
+
+  getDetailTagAction: data => ({
+    type: Actions.GET_DETAIL_TAG,
+    data
   })
 };
 

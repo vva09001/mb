@@ -11,17 +11,17 @@ const Tags = (state = initialState, action) => {
     case Actions.GET_TAG_RESPONSE:
       return {
         ...state,
-        data: action.data
+        listTags: action.data
       };
     case Actions.CREATE_TAG_RESPONSE:
       return {
         ...state,
-        data: [...state.data, action.data]
+        listTags: [...state.data, action.data]
       };
     case Actions.EDIT_TAG_RESPONSE:
       return {
         ...state,
-        data: map(state.data, values => {
+        listTags: map(state.data, values => {
           if (values.id === action.data.id) {
             values = action.data;
           }
@@ -31,11 +31,11 @@ const Tags = (state = initialState, action) => {
     case Actions.DELETE_TAG_RESPONSE:
       return {
         ...state,
-        data: filter(state.data, values => {
+        listTags: filter(state.data, values => {
           return values.id !== action.data;
         })
       };
-    case Actions.GET_DETAIL:
+    case Actions.GET_DETAIL_TAG:
       return {
         ...state,
         detail: action.data

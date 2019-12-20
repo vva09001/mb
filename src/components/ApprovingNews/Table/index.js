@@ -46,7 +46,7 @@ const AprrTable = ({ data, getDetail }) => {
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data.length / 20)}
+          pageCount={Math.ceil(data && data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
           previousLabel={t('previous')}

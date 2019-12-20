@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const ListRoles = ({ data, getRoles, deleteRoles, getDetail }) => {
+function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [usersID, setRolesID] = useState(null);
 
@@ -63,7 +63,7 @@ const ListRoles = ({ data, getRoles, deleteRoles, getDetail }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 ListRoles.propTypes = PropsType;
 

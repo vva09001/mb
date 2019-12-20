@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
-import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +11,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const FormTable = ({ data, getID, getDetail }) => {
+const TagTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -25,10 +24,8 @@ const FormTable = ({ data, getID, getDetail }) => {
             <th>
               <input type="checkbox" />
             </th>
+            <th>{t('id')}</th>
             <th>{t('name')}</th>
-            <th>{t('status')}</th>
-            <th>{t('form')}</th>
-            <th>{t('created')}</th>
           </tr>
         </thead>
         <tbody>
@@ -38,10 +35,8 @@ const FormTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
+                <td onClick={() => getDetail(values)}>{values.id}</td>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{values.stricky === 1 ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
               </tr>
             );
           })}
@@ -49,7 +44,7 @@ const FormTable = ({ data, getID, getDetail }) => {
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data.length / 20)}
+          pageCount={Math.ceil(data && data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
           previousLabel={t('previous')}
@@ -70,6 +65,6 @@ const FormTable = ({ data, getID, getDetail }) => {
   );
 };
 
-FormTable.propTypes = PropsType;
+TagTable.propTypes = PropsType;
 
-export default FormTable;
+export default TagTable;

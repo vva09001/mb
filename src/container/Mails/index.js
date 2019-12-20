@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const ListMail = ({ data, getMails, deleteMails, getDetail }) => {
+function ListMail({ data, getMails, deleteMails, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mailsID, setmailsID] = useState(null);
 
@@ -64,7 +64,7 @@ const ListMail = ({ data, getMails, deleteMails, getDetail }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 ListMail.propTypes = PropsType;
 
