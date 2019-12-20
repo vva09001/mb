@@ -64,4 +64,28 @@ export const settingRoutes = {
   icon: 'cog'
 };
 
-export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, userRoutes, settingRoutes];
+export const storefontRoutes = {
+  name: 'Storefont',
+  to: '/storefont',
+  exact: true,
+  icon: 'crown'
+};
+
+export const sliderfontRoutes = {
+  name: 'Slider',
+  to: '/slider',
+  exact: true,
+  icon: 'book'
+};
+export default [
+  homeRoutes,
+  newRoutes,
+  pageRoutes,
+  emailRoutes,
+  formRoutes,
+  menuRoutes,
+  userRoutes,
+  settingRoutes,
+  storefontRoutes,
+  sliderfontRoutes
+];

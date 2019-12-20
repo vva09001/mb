@@ -31,6 +31,9 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import SettingHome from 'container/SettingHome/index';
+import Storefont from '../container/Storefont';
+import Slider from '../container/Slider';
+import SliderCreate from '../container/Slider/Created';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -76,6 +79,13 @@ const DashboardRoutes = () => (
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
     <Route path="/form-builder/edit" exact component={EditFormBuilder} />
+
+    {/* Storefont */}
+    <Route path="/storefont" exact component={Storefont} />
+
+    {/* Slider */}
+    <Route path="/slider" exact component={Slider} />
+    <Route path="/slider/create" exact component={SliderCreate} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />
