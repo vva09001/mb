@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const Block = ({ data, getBlock, deleteBlock, getDetail }) => {
+function Block({ data, getBlock, deleteBlock, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
@@ -63,12 +63,12 @@ const Block = ({ data, getBlock, deleteBlock, getDetail }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 Block.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data };
+  return { data: state.BlockReducer.listBlocks };
 };
 
 const mapDispatchToProps = {
