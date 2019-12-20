@@ -1,11 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import {
-  getRolesService,
-  addRolesService,
-  editRolesService,
-  deleteRolesService,
-  apprRolesService
-} from '../../services/roles';
+import { getRolesService, addRolesService, editRolesService, deleteRolesService } from '../../services/roles';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 
@@ -32,24 +26,6 @@ function* addRolesSaga() {
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.ADD_ROLES_RESPONSE, data: res.data });
-      } else {
-        yield onFail();
-        yield Error(res.message);
-      }
-    } catch (error) {
-      yield Error('Không thể kết nối đến server');
-    }
-  });
-}
-
-function* aprrRolesSaga() {
-  yield takeLatest(actions.APRR_ROLES_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
-    try {
-      const res = yield apprRolesService(data);
-      if (res.status === 200) {
-        yield onSuccess();
-        yield put({ type: actions.APRR_ROLES_RESPONSE, data: res.data });
       } else {
         yield onFail();
         yield Error(res.message);
@@ -96,5 +72,5 @@ function* deleteRolesSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getRolesSaga), fork(addRolesSaga), fork(editRolesSaga), fork(deleteRolesSaga), fork(aprrRolesSaga)]);
+  yield all([fork(getRolesSaga), fork(addRolesSaga), fork(editRolesSaga), fork(deleteRolesSaga)]);
 }

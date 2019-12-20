@@ -1,12 +1,4 @@
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/vi/api/',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from 'helpers/request';
 
 const getUsersService = () => {
   return request({

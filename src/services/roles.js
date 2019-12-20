@@ -1,16 +1,8 @@
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/vi/api/',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from 'helpers/request';
 
 const getRolesService = () => {
   return request({
-    url: '/users',
+    url: '/roles',
     method: 'GET'
   })
     .then(res => {
@@ -23,21 +15,8 @@ const getRolesService = () => {
 
 const addRolesService = data => {
   return request({
-    url: '/users',
+    url: '/roles',
     method: 'POST',
-    data: data
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(error => {
-      return error.response.data;
-    });
-};
-const apprRolesService = data => {
-  return request({
-    url: `/users/change_active/${data.id}`,
-    method: 'PUT',
     data: data
   })
     .then(res => {
@@ -50,7 +29,7 @@ const apprRolesService = data => {
 
 const editRolesService = data => {
   return request({
-    url: `/users/${data.id}`,
+    url: `/roles/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -64,7 +43,7 @@ const editRolesService = data => {
 
 const deleteRolesService = id => {
   return request({
-    url: `users/${id}`,
+    url: `roles/${id}`,
     method: 'DELETE'
   })
     .then(res => {
@@ -75,4 +54,4 @@ const deleteRolesService = id => {
     });
 };
 
-export { getRolesService, addRolesService, editRolesService, deleteRolesService, apprRolesService };
+export { getRolesService, addRolesService, editRolesService, deleteRolesService };
