@@ -122,7 +122,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
-                  <Input type="textarea" name="slug" rows="5" onChange={handleChange} />
+                  <Input type="textarea" name="shortDescription" rows="5" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('imgDescription')}</Label>

@@ -32,8 +32,12 @@ const AprrTable = ({ data, getDetail }) => {
             if (values.is_active === 0) {
               return (
                 <tr key={values.id}>
-                  <td onClick={() => getDetail(values)}>{values.name}</td>
-                  <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
+                  <td onClick={() => getDetail(values)}>
+                    {values.newsTranslation ? values.newsTranslation[0].name : values.name}
+                  </td>
+                  <td onClick={() => getDetail(values)}>
+                    <span className={values.status === 1 ? 'green' : 'dot'} />
+                  </td>
                   <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
                   <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
                 </tr>
