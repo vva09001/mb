@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import { map } from 'lodash';
 import history from 'helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 const PropsType = {
+  listForm: PropTypes.array,
+  listOptions: PropTypes.array,
   detail: PropTypes.object,
-  editNew: PropTypes.func
+  editNew: PropTypes.func,
+  getCategory: PropTypes.func,
+  getForm: PropTypes.func
 };
 
-function Edit({ detail, editNew }) {
+function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
@@ -25,6 +30,11 @@ function Edit({ detail, editNew }) {
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    getCategory();
+    getForm();
+  }, [getCategory, getForm]);
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -37,13 +47,27 @@ function Edit({ detail, editNew }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
         [event.target.name]: true
       }
     }));
+    if (event.target.name === 'name') {
+      setFormState(formState => ({
+        ...formState,
+        values: {
+          ...formState.values,
+          [event.target.name]: event.target.value
+        },
+        touched: {
+          ...formState.touched,
+          [event.target.name]: true
+        }
+      }));
+    }
   };
 
   const onSuccess = () => {
@@ -70,7 +94,11 @@ function Edit({ detail, editNew }) {
 
   const editNews = event => {
     event.preventDefault();
-    editNew(formState.values, onSuccess, onFail);
+    const body = {
+      ...formState.values,
+      newsTranslations: [formState.values]
+    };
+    editNew(body, onSuccess, onFail);
   };
   return (
     <React.Fragment>
@@ -110,7 +138,7 @@ function Edit({ detail, editNew }) {
             </FormGroup>
             <FormGroup>
               <Label for="exampleFile">{t('imgDescription')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
+              <Input type="file" name="file" />
             </FormGroup>
             <FormGroup>
               <Label>{t('description')}</Label>
@@ -129,7 +157,7 @@ function Edit({ detail, editNew }) {
             </FormGroup>
             <FormGroup>
               <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
+              <Input type="file" name="file" />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
@@ -139,9 +167,35 @@ function Edit({ detail, editNew }) {
                 value={formState.values.category_news_id}
                 onChange={handleChange}
               >
-                <option value={0}>Tin tức</option>
-                <option value={1}>Doanh nghiệp</option>
-                <option value={2}>Hoạt động</option>
+                <option>Chọn...</option>
+                {map(listOptions, value => (
+                  <option value={value.id} key={value.id}>
+                    {value.name}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+            <div className="check__box">
+              <Label>{t('sticky')}</Label>
+              <div>
+                <Input
+                  type="checkbox"
+                  name="is_sticky"
+                  checked={formState.values.is_sticky === 0 ? false : true}
+                  onChange={handleChange}
+                />
+                <span>{t('category_page.form.activeCategory')}</span>
+              </div>
+            </div>
+            <FormGroup>
+              <Label for="exampleSelect">{t('category')}</Label>
+              <Input type="select" name="builder_id" value={formState.values.builder_id} onChange={handleChange}>
+                <option>Chọn...</option>
+                {map(listForm, value => (
+                  <option value={value.id} key={value.id}>
+                    {value.name}
+                  </option>
+                ))}
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
@@ -183,11 +237,17 @@ function Edit({ detail, editNew }) {
 Edit.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { detail: state.NewReducer.detail };
+  return {
+    detail: state.NewReducer.detail,
+    listOptions: state.CategoryReducer.listOption,
+    listForm: state.FormBuilderReducer.listForm
+  };
 };
 
 const mamapDispatchToProps = {
-  editNew: NewActions.EditNew
+  editNew: NewActions.EditNew,
+  getCategory: CategoryActions.getCategoryAction,
+  getForm: FormBuilderActions.getFormAction
 };
 
 export default connect(

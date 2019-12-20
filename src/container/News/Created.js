@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import { ListGroup, ListGroupItem } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  newsCreate: PropTypes.func
+  listOptions: PropTypes.array,
+  listForm: PropTypes.array,
+  getCategory: PropTypes.func,
+  newsCreate: PropTypes.func,
+  getForm: PropTypes.func
 };
 
-function NewsCreate({ newsCreate }) {
+function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -29,6 +33,11 @@ function NewsCreate({ newsCreate }) {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  useEffect(() => {
+    getCategory();
+    getForm();
+  }, [getCategory, getForm]);
+
   const handleChange = event => {
     event.persist();
 
@@ -36,7 +45,8 @@ function NewsCreate({ newsCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -70,20 +80,16 @@ function NewsCreate({ newsCreate }) {
 
   const createdNews = event => {
     event.preventDefault();
-    newsCreate(formState.values, onSuccess, onFail);
+    const body = {
+      ...formState.values,
+      newsTranslations: [formState.values]
+    };
+    newsCreate(body, onSuccess, onFail);
   };
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
-        <Col lg={3} md={4}>
-          <div>
-            <ListGroup>
-              <ListGroupItem>Slider</ListGroupItem>
-              <ListGroupItem>Icon</ListGroupItem>
-            </ListGroup>
-          </div>
-        </Col>
-        <Col lg={9} md={8}>
+        <Col>
           <Nav tabs>
             <NavItem>
               <NavLink
@@ -112,7 +118,7 @@ function NewsCreate({ newsCreate }) {
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="name" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
@@ -120,7 +126,7 @@ function NewsCreate({ newsCreate }) {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('imgDescription')}</Label>
-                  <Input type="file" name="file" id="exampleFile" />
+                  <Input type="file" name="file" />
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
@@ -138,15 +144,35 @@ function NewsCreate({ newsCreate }) {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <Input type="file" name="file" id="exampleFile" />
+                  <Input type="file" name="file" />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="category_news_id" id="exampleSelect" onChange={handleChange}>
+                  <Input type="select" name="category_news_id" onChange={handleChange}>
                     <option>Chọn...</option>
-                    <option value={1}>Tin tức</option>
-                    <option value={2}>Doanh nghiệp</option>
-                    <option value={3}>Hoạt động</option>
+                    {map(listOptions, value => (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <div className="check__box">
+                  <Label>{t('sticky')}</Label>
+                  <div>
+                    <Input type="checkbox" name="is_sticky" onChange={handleChange} />
+                    <span>{t('category_page.form.activeCategory')}</span>
+                  </div>
+                </div>
+                <FormGroup>
+                  <Label for="exampleSelect">{t('category')}</Label>
+                  <Input type="select" name="builder_id" onChange={handleChange}>
+                    <option>Chọn...</option>
+                    {map(listForm, value => (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    ))}
                   </Input>
                 </FormGroup>
                 <Button color="primary" type="submit">
@@ -183,11 +209,20 @@ function NewsCreate({ newsCreate }) {
 
 NewsCreate.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return {
+    listOptions: state.CategoryReducer.listOption,
+    listForm: state.FormBuilderReducer.listForm
+  };
+};
+
 const mamapDispatchToProps = {
-  newsCreate: NewActions.AddNews
+  newsCreate: NewActions.AddNews,
+  getCategory: CategoryActions.getCategoryAction,
+  getForm: FormBuilderActions.getFormAction
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mamapDispatchToProps
 )(NewsCreate);
