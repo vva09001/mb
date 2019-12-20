@@ -109,7 +109,8 @@
         "form": "Tạo from",
         "setting": "Cài đặt",
         "user": "Nhân viên",
-        "role": "Vai Trò"
+        "role": "Vai Trò",
+        "media": "Media"
     },
     "user": {
         "fistname": "Tên",

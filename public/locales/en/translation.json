@@ -109,7 +109,8 @@
         "form": "Create Form",
         "setting": "Setting",
         "user": "User",
-        "role": "Role"
+        "role": "Role",
+        "media": "Media"
     },
     "user": {
         "fistname": "Fist Name",
