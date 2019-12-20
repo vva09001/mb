@@ -15,7 +15,7 @@ const PropsType = {
   getDetailMenus: PropTypes.func
 };
 
-const ListMenus = ({ data, getMenus, deleteMenus, getDetailMenus }) => {
+function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setMenusID] = useState(null);
 
@@ -63,7 +63,7 @@ const ListMenus = ({ data, getMenus, deleteMenus, getDetailMenus }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 ListMenus.propTypes = PropsType;
 

@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const AprrPages = ({ data, getPages, deletePages, getDetail }) => {
+function AprrPages({ data, getPages, deletePages, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
@@ -48,7 +48,7 @@ const AprrPages = ({ data, getPages, deletePages, getDetail }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 AprrPages.propTypes = PropsType;
 

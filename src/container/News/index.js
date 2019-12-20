@@ -15,7 +15,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const Activity = ({ data, getNews, deleteNews, getDetail }) => {
+function Activity({ data, getNews, deleteNews, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
@@ -63,7 +63,7 @@ const Activity = ({ data, getNews, deleteNews, getDetail }) => {
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
-};
+}
 
 Activity.propTypes = PropsType;
 
