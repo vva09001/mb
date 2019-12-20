@@ -1,7 +1,132 @@
 {
     "name": "Name",
-    "status": "Stautus",
+    "status": "status",
     "sticky": "Sticky",
     "created": "Created",
-    "active": "Active"
+    "active": "Active",
+    "create": "Create",
+    "delete": "Delete",
+    "news": "News",
+    "summary": "Summary",
+    "authName": "Auth Name",
+    "description": "Aescription",
+    "imgDescription": "Images Description",
+    "baseImages": "Base Images",
+    "category": "category",
+    "general": "General",
+    "seo": "SEO",
+    "edit": "Edit",
+    "save": "Save",
+    "form": "Form",
+    "tags": "Tags",
+    "tagsName": "Tags Name",
+    "values": "Values",
+    "addBlock": "Add new block",
+    "html": "HTML",
+    "key": "Key",
+    "title": "Lable",
+    "type": "Type",
+    "loading": "Loading",
+    "accept": "Accept",
+    "Menu": "Menu",
+    "search": "Search...",
+    "previous": "Previous",
+    "next": "Next",
+    "customer": {
+        "personal": "Personal customers",
+        "enterprise": "Enterprise customers",
+        "institutions": "Institutional customers",
+        "premium": "Personal premium customers"
+    },
+    "meta": {
+        "title": "Meta Title",
+        "keywords": "Meta keywords",
+        "description": "Meta Description"
+    },
+    "loginForm": {
+        "username": "Username",
+        "password": "Password",
+        "remember": "Remember",
+        "login": "Login",
+        "forgetPassword": "Forget Password ?"
+    },
+    "category_page": {
+        "title": "News category",
+        "addRoot": "Add parent category",
+        "addChildren": "Add sub categories",
+        "hideAll": "Collapse all",
+        "showAll": "Expand all",
+        "form": {
+            "search": "Search",
+            "active": "Activate category",
+            "coverImage": "Cover image",
+            "featuredImage": "Featured image",
+            "displayCategory": "Display this category in search box category list",
+            "activeCategory": "Activate category"
+        }
+    },
+    "page": {
+        "page": "Page",
+        "addRoot": "Add parent page",
+        "addChildren": "Add sub page",
+        "template": "Template",
+        "active": "Activate page",
+        "sidebar": "Activate sidebar",
+        "full": "Full",
+        "default": "Default"
+    },
+    "formBuilder": {
+        "title": "Create Form"
+    },
+    "setting": {
+        "mail": "Mail",
+        "css/js": "Customize CSS / JS",
+        "setting": "Setting",
+        "settingeneral": "General settings"
+    },
+    "block_page": {
+        "title": "Block",
+        "activeBock": "Activate block"
+    },
+    "approved": {
+        "approved_page": "Page Accept",
+        "approved": "Accept"
+    },
+    "email": {
+        "email": "Mail"
+    },
+    "menu": {
+        "dashborad": "Dashborad",
+        "home": "Home",
+        "news": "News",
+        "category": "Category",
+        "newsAccept": "News Accept",
+        "page": "Page",
+        "block": "Block",
+        "tags": "Tags",
+        "pageAccept": "Page Accept",
+        "mail": "Mail",
+        "form": "Create Form",
+        "setting": "Setting",
+        "user": "User",
+        "role": "Role"
+    },
+    "user": {
+        "fistname": "Fist Name",
+        "lastname": "Last Name",
+        "lastlogin": "Last Login",
+        "department": "Department ",
+        "position": "Position",
+        "permission": "Permissions",
+        "newpassword": "New Password",
+        "confirmpassword": "Confirm Password",
+        "sendtomail": "Send Mail",
+        "allow": "Allow",
+        "allowall": "Allow All",
+        "deny": "Deny",
+        "denyall":"Deny All",
+        "inherit": "Inherit",
+        "inheritall": "Inherit All",
+        "account": "Account"           
+    }
 }

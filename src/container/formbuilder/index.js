@@ -15,8 +15,7 @@ const Proptype = {
   deleteForm: PropTypes.func
 };
 
-// eslint-disable-next-line react/prop-types
-function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm, getDetail }) {
+function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
   const [isOpen, setIsOpen] = useState(false);
   const [formID, setformID] = useState(null);
   useEffect(() => {
@@ -26,7 +25,8 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm, getDeta
   const { t } = useTranslation();
 
   const onGetDetail = detail => {
-    history.push('/');
+    getFormDetail(detail);
+    history.push('/form-builder/edit');
   };
 
   const openComfirm = () => {

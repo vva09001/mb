@@ -8,7 +8,7 @@ const request = axios.create({
   }
 });
 
-const getPages = () => {
+const getPagesService = () => {
   return request({
     url: '/pages',
     method: 'GET'
@@ -21,7 +21,7 @@ const getPages = () => {
     });
 };
 
-const addPages = data => {
+const addPagesService = data => {
   return request({
     url: '/pages',
     method: 'POST',
@@ -34,8 +34,21 @@ const addPages = data => {
       return error.response.data;
     });
 };
+const apprPagesService = data => {
+  return request({
+    url: `/pages/change_active/${data.id}`,
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
 
-const editPages = data => {
+const editPagesService = data => {
   return request({
     url: `/pages/${data.id}`,
     method: 'PUT',
@@ -49,7 +62,7 @@ const editPages = data => {
     });
 };
 
-const deletePages = id => {
+const deletePagesService = id => {
   return request({
     url: `pages/${id}`,
     method: 'DELETE'
@@ -62,7 +75,7 @@ const deletePages = id => {
     });
 };
 
-const updatePositionPages = (idPage, idParent, positions) => {
+const updatePositionPagesService = (idPage, idParent, positions) => {
   return request({
     url: `/pages/update_position/${idParent}/${idPage}?position=${positions}`,
     method: 'PUT'
@@ -75,4 +88,11 @@ const updatePositionPages = (idPage, idParent, positions) => {
     });
 };
 
-export { getPages, addPages, editPages, deletePages, updatePositionPages };
+export {
+  getPagesService,
+  addPagesService,
+  editPagesService,
+  deletePagesService,
+  updatePositionPagesService,
+  apprPagesService
+};

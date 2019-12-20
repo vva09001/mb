@@ -18,6 +18,26 @@
     "edit": "Sửa",
     "save": "Lưu",
     "form": "Form",
+    "tags": "Thẻ",
+    "tagsName": "Tên thẻ",
+    "values": "Giá trị",
+    "addBlock": "Thêm khối mới",
+    "html": "HTML",
+    "key": "Key",
+    "title": "Lable",
+    "type": "Type",
+    "loading": "Đang xử lý",
+    "accept": "Chờ duyệt",
+    "Menu": "Menu",
+    "search": "Tìm kiếm...",
+    "previous": "Trước",
+    "next": "Kế tiếp",
+    "customer": {
+        "personal": "Khách hàng cá nhân",
+        "enterprise": "Khách hàng doanh nghiệp",
+        "institutions": "Khách hàng định chế",
+        "premium": "Khách hàng cá nhân cao cấp"
+    },
     "meta": {
         "title": "Meta Title",
         "keywords": "Meta keywords",
@@ -53,18 +73,60 @@
         "active": "Kích hoạt trang",
         "sidebar": "Kích hoạt thanh bên",
         "full": "Đầy đủ",
-        "default": "Mặc định"          
+        "default": "Mặc định"
     },
     "formBuilder": {
         "title": "Tạo Form"
     },
-    "setting":{
-        "mail":"Mail",
-        "css/js":"Tùy chỉnh CSS / JS",
-        "setting":"Cài đặt",
-        "settingeneral":"Cài đặt chung"
+    "setting": {
+        "mail": "Mail",
+        "css/js": "Tùy chỉnh CSS / JS",
+        "setting": "Cài đặt",
+        "settingeneral": "Cài đặt chung"
+    },
+    "block_page": {
+        "title": "Khối",
+        "activeBock": "Kích hoạt khối"
+    },
+    "approved": {
+        "approved_page": "Duyệt Trang",
+        "approved": "Phê Duyệt"
+    },
+    "email": {
+        "email": "Thư"
+    },
+    "menu": {
+        "dashborad": "Bảng điều khiển",
+        "home": "Trang chủ",
+        "news": "Tin tức",
+        "category": "Danh mục",
+        "newsAccept": "Duyệt tin",
+        "page": "Trang",
+        "block": "Khối",
+        "tags": "Thẻ",
+        "pageAccept": "Duyệt trang",
+        "mail": "Thư",
+        "form": "Tạo from",
+        "setting": "Cài đặt",
+        "user": "Nhân viên",
+        "role": "Vai Trò"
+    },
+    "user": {
+        "fistname": "Tên",
+        "lastname": "Họ",
+        "lastlogin": "Đăng nhập lần cuối",
+        "department": "Phòng ban ",
+        "position": "Vị Trí",
+        "permission": "Quyền hạn",
+        "newpassword": "Mật khẩu mới",
+        "confirmpassword": "Xác nhận mật khẩu",
+        "sendtomail": "Gửi mật khẩu đến mail",
+        "allow": "Cho phép",
+        "allowall": "Cho phép tất cả",
+        "deny": "Từ chối",
+        "denyall":"Từ chối tất cả",
+        "inherit": "Kế thừa",
+        "inheritall": "Kế thừa tất cả",
+        "account": "Tài Khoản"        
     }
 }
-
-
-

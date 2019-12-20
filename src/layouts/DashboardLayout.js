@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
-import Dashboard from '../components/dashboard/Dashboard';
-import DashboardAlt from '../components/dashboard-alt/DashboardAlt';
+import Dashboard from 'container/dashboard/';
 import NavbarTop from '../components/navbar/NavbarTop';
 import NavbarVertical from '../components/navbar/NavbarVertical';
 
@@ -25,7 +24,6 @@ const DashboardLayout = ({ location }) => {
         <NavbarTop />
         <Switch>
           <Route path="/" exact component={Dashboard} />
-          <Route path="/dashboard-alt" exact component={DashboardAlt} />
           <DashboardRoutes />
         </Switch>
       </div>

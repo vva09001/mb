@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
-import AprrTable from '../../components/ApprovingNews/Table'
+import AprrTable from '../../components/ApprovingNews/Table';
 import PropTypes from 'prop-types';
 import { NewActions } from '../../store/actions';
 import PopupComfirm from '../../components/common/PopupComfirm';
@@ -21,7 +21,7 @@ const AprrNews = ({ data, getNews, deleteNews, getDetail }) => {
   useEffect(() => {
     getNews();
   }, [getNews]);
-   
+
   const onDelete = () => {
     if (newsID !== null) {
       deleteNews(newsID);

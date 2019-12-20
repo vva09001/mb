@@ -47,7 +47,7 @@ const FormTable = ({ data, getID, getDetail }) => {
                   <Link to="/">Form data</Link>|<Link to="/">Embeded form</Link>|<Link to="/">Thư phản hồi</Link>|
                   {values.stricky === 1 ? 'true' : 'false'}
                 </td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
               </tr>
             );
           })}
@@ -58,6 +58,8 @@ const FormTable = ({ data, getID, getDetail }) => {
           pageCount={Math.ceil(data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
+          previousLabel={t('previous')}
+          nextLabel={t('next')}
           nextLinkClassName={'page-link'}
           previousLinkClassName={'page-link'}
           pageClassName={'page-item'}

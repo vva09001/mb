@@ -9,6 +9,10 @@ import CategoryReducer from './category/reducers';
 import MailReducer from './mail/reducers';
 import FormBuilderReducer from './formbuilder/reducers';
 import MenuReducer from './menu/reducers';
+import BlockReducer from './block/reducers';
+import TagReducer from './tags/reducers';
+import UserReducer from './Users/reducers';
+import RoleReducer from './roles/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -17,7 +21,11 @@ const reducers = combineReducers({
   CategoryReducer,
   MailReducer,
   FormBuilderReducer,
-  MenuReducer
+  MenuReducer,
+  BlockReducer,
+  TagReducer,
+  UserReducer,
+  RoleReducer
 });
 
 const persistConfig = {

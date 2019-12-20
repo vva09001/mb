@@ -8,11 +8,10 @@ import PropTypes from 'prop-types';
 
 const PropsType = {
   data: PropTypes.array,
-  getID: PropTypes.func,
   getDetail: PropTypes.func
 };
 
-const AprrTable = ({ data, getID, getDetail }) => {
+const AprrTable = ({ data, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -21,24 +20,27 @@ const AprrTable = ({ data, getID, getDetail }) => {
     <React.Fragment>
       <Table striped>
         <thead>
-          <tr>            
+          <tr>
             <th>{t('name')}</th>
-            <th>{t('active')}</th>            
+            <th>{t('active')}</th>
             <th>{t('created')}</th>
             <th>{t('status')}</th>
           </tr>
         </thead>
         <tbody>
           {map(list, values => {
-            if (values.status === 0) {    
-                return (
-                <tr key={values.id}>                    
-                    <td onClick={() => getDetail(values)}>{values.name}</td>
-                    <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'true' : 'false'}</td>                    
-                    <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                    <td onClick={() => getDetail(values)}>{values.status === 1 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
+            if (values.is_active === 0) {
+              return (
+                <tr key={values.id}>
+                  <td onClick={() => getDetail(values)}>{values.name}</td>
+                  <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
+                  <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                  <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
                 </tr>
-                )} else {return}
+              );
+            } else {
+              return;
+            }
           })}
         </tbody>
       </Table>
@@ -47,6 +49,8 @@ const AprrTable = ({ data, getID, getDetail }) => {
           pageCount={Math.ceil(data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
+          previousLabel={t('previous')}
+          nextLabel={t('next')}
           nextLinkClassName={'page-link'}
           previousLinkClassName={'page-link'}
           pageClassName={'page-item'}
