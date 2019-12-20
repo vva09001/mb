@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -41,12 +41,10 @@ const FormTable = ({ data, getID, getDetail }) => {
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
                 <td onClick={() => getDetail(values)}>
-                  <span className ={values.status===0 ? 'green' : 'dot'}></span>
+                  <span className={values.status === 0 ? 'green' : 'dot'} />
                 </td>
                 <td onClick={() => getDetail(values)}>
-                  <Link to="/">Form data</Link>|
-                  <Link to="/">Embeded form</Link>|
-                  <Link to="/">Thư phản hồi</Link>|
+                  <Link to="/">Form data</Link>|<Link to="/">Embeded form</Link>|<Link to="/">Thư phản hồi</Link>|
                   {values.stricky === 1 ? 'true' : 'false'}
                 </td>
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
