@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
 import SliderTable from '../../components/Slider/Table';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { SliderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
@@ -10,18 +10,18 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   data: PropTypes.array,
-  getNews: PropTypes.func,
-  deleteNews: PropTypes.func,
+  getSilder: PropTypes.func,
+  deleteSilder: PropTypes.func,
   getDetail: PropTypes.func
 };
 
-const Slider = ({ data, getNews, deleteNews, getDetail }) => {
+const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
   useEffect(() => {
-    getNews();
-  }, [getNews]);
+    getSilder();
+  }, [getSilder]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
@@ -29,10 +29,11 @@ const Slider = ({ data, getNews, deleteNews, getDetail }) => {
       setIsOpen(!isOpen);
     }
   };
+  // console.log(data);
 
   const onDelete = () => {
     if (newsID !== null) {
-      deleteNews(newsID);
+      deleteSilder(newsID);
       setIsOpen(!isOpen);
     }
   };
@@ -68,13 +69,13 @@ const Slider = ({ data, getNews, deleteNews, getDetail }) => {
 Slider.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data };
+  return { data: state.SilderReducer.listSlider };
 };
 
 const mapDispatchToProps = {
-  getNews: NewActions.GetNews,
-  deleteNews: NewActions.DeleteNews,
-  getDetail: NewActions.getDetail
+  getSilder: SliderActions.getSliderAction,
+  deleteSilder: SliderActions.deleteSliderAction,
+  getDetail: SliderActions.getDetailSliderAction
 };
 
 export default connect(
