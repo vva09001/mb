@@ -34,6 +34,7 @@ import SettingHome from 'container/SettingHome/index';
 import Storefont from '../container/Storefont';
 import Slider from '../container/Slider';
 import SliderCreate from '../container/Slider/Created';
+import SliderEdit from 'container/Slider/edit';
 
 import Media from 'container/media';
 
@@ -88,6 +89,8 @@ const DashboardRoutes = () => (
     {/* Slider */}
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
+    <Route path="/slider/edit" exact component={SliderEdit} />
+    
 
     <Route path="/media" exact component={Media} />
 

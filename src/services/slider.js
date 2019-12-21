@@ -1,8 +1,16 @@
-import request from 'helpers/request';
+import axios from 'axios';
 
-const getNews = () => {
+const request = axios.create({
+  baseURL: 'https://bank1712.herokuapp.com/api',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
+
+const getSliderService = () => {
   return request({
-    url: '/news',
+    url: '/slider',
     method: 'GET'
   })
     .then(res => {
@@ -13,9 +21,9 @@ const getNews = () => {
     });
 };
 
-const addNews = data => {
+const createSliderService = data => {
   return request({
-    url: `/news`,
+    url: '/slider',
     method: 'POST',
     data: data
   })
@@ -27,9 +35,9 @@ const addNews = data => {
     });
 };
 
-const editNews = data => {
+const editSliderService = (id, data) => {
   return request({
-    url: `/news/${data.id}`,
+    url: `/slider/${id}`,
     method: 'PUT',
     data: data
   })
@@ -40,24 +48,9 @@ const editNews = data => {
       return error.response.data;
     });
 };
-
-const aprrNews = data => {
+const deleteSliderService = id => {
   return request({
-    url: `/news/accept/${data.id}`,
-    method: 'PUT',
-    data: data
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(error => {
-      return error.response.data;
-    });
-};
-
-const deleteNews = id => {
-  return request({
-    url: `/news/${id}`,
+    url: `/slider/${id}`,
     method: 'DELETE'
   })
     .then(res => {
@@ -68,4 +61,4 @@ const deleteNews = id => {
     });
 };
 
-export { getNews, addNews, editNews, deleteNews, aprrNews };
+export { getSliderService, createSliderService, editSliderService, deleteSliderService };

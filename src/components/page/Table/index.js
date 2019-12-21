@@ -37,7 +37,9 @@ const PageTable = ({ data, getID, getDetail }) => {
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{values.status ? 'On' : 'Off'}</td>
+                <td onClick={() => getDetail(values)}>
+                  <span className={values.status === 1 ? 'green' : 'dot'} />
+                </td>
                 {/* <td onClick={() => getDetail(values)}>{values.stricky ? 'true' : 'false'}</td> */}
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
                 {/*<td onClick={() => getDetail(values)}>{values.is_active ? 'true' : 'false'}</td>*/}

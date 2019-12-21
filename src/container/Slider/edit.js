@@ -5,20 +5,20 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { NewActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
+import { Error, Success } from 'helpers/notify';
+import history from 'helpers/history';
 import { connect } from 'react-redux';
 import { Card, ListGroup, ListGroupItem } from 'reactstrap';
-import { map } from 'lodash';
 const PropsType = {
   sliderCreate: PropTypes.func
 };
 
 function SliderCreate({ sliderCreate }) {
-  // const [formState] = useState({
-  //   values: {},
-  //   touched: {}
-  // });
+  const [formState] = useState({
+    values: {},
+    touched: {}
+  });
 
-  const [fields, setFields] = useState([{}]);
   const [activeTab, setActiveTab] = useState('1');
   const [activeGroup, setActiveGroup] = useState('1');
 
@@ -28,31 +28,31 @@ function SliderCreate({ sliderCreate }) {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const onSuccess = () => {
+    Success('Tạo thành công');
+    history.goBack();
+  };
+
+  const onFail = () => {
+    Error('Tạo thất bại');
+  };
+
   const sliderCreates = event => {
     event.preventDefault();
-    console.log(fields);
-    // sliderCreate(formState.values, onSuccess, onFail);
+    sliderCreate(formState.values, onSuccess, onFail);
   };
   /*{add slider}*/
+  const [fields, setFields] = useState([{ value: null }]);
 
   function handleChange(i, event) {
-    let newFormAddMore = map(fields, (values, id) => {
-      if (i !== id) {
-        return values;
-      } else {
-        return {
-          ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-        };
-      }
-    });
-    setFields(newFormAddMore);
+    const values = [...fields];
+    values[i].value = event.target.value;
+    setFields(values);
   }
 
   function handleAdd() {
     const values = [...fields];
-    values.push({});
+    values.push({ value: null });
     setFields(values);
   }
 
@@ -76,6 +76,7 @@ function SliderCreate({ sliderCreate }) {
                 action
                 onClick={() => {
                   setActiveGroup(1);
+                  // console.log(activeGroup);
                 }}
               >
                 {t('slider.slider')}
@@ -84,6 +85,7 @@ function SliderCreate({ sliderCreate }) {
                 action
                 onClick={() => {
                   setActiveGroup(2);
+                  // console.log(activeGroup);
                 }}
               >
                 {t('slider.logo')}
@@ -164,19 +166,24 @@ function SliderCreate({ sliderCreate }) {
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="exampleEmail"> {t('slider.caption1')}</Label>
-                                          <Input type="text" name="caption1" onChange={e => handleChange(idx, e)} />
+                                          <Input
+                                            type="text"
+                                            name="caption1"
+                                            onChange={e => handleChange(idx, e)}
+                                            value={field.value || ''}
+                                          />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="examplePassword">{t('slider.caption2')}</Label>
-                                          <Input type="text" name="caption2" onChange={e => handleChange(idx, e)} />
+                                          <Input type="text" name="caption2" />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="exampleEmail">{t('slider.caption3')}</Label>
-                                          <Input type="text" name="caption3" onChange={e => handleChange(idx, e)} />
+                                          <Input type="text" name="email" id="caption3" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -184,26 +191,18 @@ function SliderCreate({ sliderCreate }) {
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="exampleEmail">{t('slider.actiontext')}</Label>
-                                          <Input
-                                            type="text"
-                                            name="calltoactiontext"
-                                            onChange={e => handleChange(idx, e)}
-                                          />
+                                          <Input type="text" name="calltoactiontext" />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="examplePassword">{t('slider.actionurl')}</Label>
-                                          <Input
-                                            type="text"
-                                            name="urlVideoYoutobe"
-                                            onChange={e => handleChange(idx, e)}
-                                          />
+                                          <Input type="text" name="calltoactionurl" />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup style={{ marginTop: '40px' }}>
-                                          <Input type="checkbox" name="email" onChange={e => handleChange(idx, e)} />
+                                          <Input type="checkbox" name="email" id="exampleEmail" />{' '}
                                           {t('slider.targetblank')}
                                         </FormGroup>
                                       </Col>
@@ -221,7 +220,7 @@ function SliderCreate({ sliderCreate }) {
                                       <Col md={4}> </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
+                                          <Input type="select" name="email" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -233,7 +232,7 @@ function SliderCreate({ sliderCreate }) {
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="number" name="email" onChange={e => handleChange(idx, e)} />
+                                          <Input type="number" name="email" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -245,7 +244,7 @@ function SliderCreate({ sliderCreate }) {
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
+                                          <Input type="select" name="email" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -281,22 +280,22 @@ function SliderCreate({ sliderCreate }) {
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.name')}
                     </Label>
-                    <Input type="text" name="name" className="col-md-9" />
+                    <Input type="text" name="meta_title" className="col-md-9" />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.autoplay')}</Label>
-                    <Input type="checkbox" name="autoPlay" style={{ width: '18px', height: '18px' }} />
+                    <Input type="checkbox" name="check" style={{ width: '18px', height: '18px' }} />
                     <Label style={{ marginLeft: '5px' }}>{t('slider.activatedplay')}</Label>
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.speedplay')}</Label>
-                    <Input type="number" name="autoPlaySpeed" className="col-md-9" placeholder="3000ms" />
+                    <Input type="number" name="meta_keyword" className="col-md-9" placeholder="3000ms" />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.arrows')}
                     </Label>
-                    <Input type="checkbox" name="arrows" style={{ width: '18px', height: '18px' }} />{' '}
+                    <Input type="checkbox" name="meta_title" style={{ width: '18px', height: '18px' }} />{' '}
                     <Label style={{ marginLeft: '5px' }}>{t('slider.prev/next')}</Label>
                   </FormGroup>
                   <Button color="primary" type="submit">

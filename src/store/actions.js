@@ -9,6 +9,8 @@ import BlockActions from './block/actions';
 import TagActions from './tags/actions';
 import UserActions from './Users/actions';
 import RoleActions from './roles/actions';
+import SliderActions from './slider/actions';
+import SettingActions from './/setting/actions';
 
 export {
   NewActions,
@@ -21,5 +23,7 @@ export {
   BlockActions,
   TagActions,
   UserActions,
-  RoleActions
+  RoleActions,
+  SliderActions,
+  SettingActions
 };

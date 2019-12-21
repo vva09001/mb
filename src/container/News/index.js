@@ -12,10 +12,11 @@ const PropsType = {
   data: PropTypes.array,
   getNews: PropTypes.func,
   deleteNews: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  getCategory: PropTypes.func
 };
 
-function Activity({ data, getNews, deleteNews, getDetail }) {
+function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 

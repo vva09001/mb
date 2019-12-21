@@ -42,7 +42,8 @@ const Actions = {
     idCategory,
     idParent,
     positions
-  })
+  }),
+  GET_CATEGORY_SELECT_RESPONSE: 'GET_CATEGORY_SELECT_RESPONSE'
 };
 
 export default Actions;

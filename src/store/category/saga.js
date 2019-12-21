@@ -28,6 +28,7 @@ function* getCategorySaga() {
 
         data = nest(res.data);
         yield put({ type: actions.GET_CATEGORY_RESPONSE, data: data });
+        yield put({ type: actions.GET_CATEGORY_SELECT_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);
       }
