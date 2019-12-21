@@ -37,6 +37,59 @@ const Actions = {
   getDetailMenus: data => ({
     type: Actions.GET_DETAIL_MENU,
     data
+  }),
+  GET_MENUITEMS_REQUEST: 'GET_MENUITEMS_REQUEST',
+  GET_MENUITEM_RESPONSE: 'GET_MENUITEMS_RESPONSE',
+
+  GetMenuItems: () => ({
+    type: Actions.GET_MENUITEMS_REQUEST
+  }),
+
+  ADD_MENUITEMS_REQUEST: 'ADD_MENUITEMS_REQUEST',
+  ADD_MENUITEMS_RESPONSE: 'ADD_MENUITEMS_RESPONSE',
+
+  AddMenuItems: data => ({
+    type: Actions.ADD_MENUITEMS_REQUEST,
+    data
+  }),
+
+  EDIT_MENUITEMS_REQUEST: 'EDIT_MENUITEMS_REQUEST',
+  EDIT_MENUITEMS_RESPONSE: 'EDIT_MENUITEMS_RESPONSE',
+
+  EditMenuItems: (data, onSuccess, onFail) => ({
+    type: Actions.EDIT_MENUITEMS_REQUEST,
+    data,
+    onSuccess,
+    onFail
+  }),
+
+  DELETE_MENUITEMS_REQUEST: 'DELETE_MENUITEMS_REQUEST',
+  DELETE_MENUITEMS_RESPONSE: 'DELETE_MENUITEMS_RESPONSE',
+
+  DeleteMenuItems: id => ({
+    type: Actions.DELETE_MENUITEMS_REQUEST,
+    id
+  }),
+
+  GET_DETAIL_MENUITEM: 'GET_DETAIL_MENUITEM',
+
+  getDetailMenuItems: data => ({
+    type: Actions.GET_DETAIL_MENUITEM,
+    data
+  }),
+
+  EXPANSION_TOOGLE_MENUITEM: 'EXPANSION_TOOGLE_MENUITEM',
+  expansionMenuItemAction: data => ({
+    type: Actions.EXPANSION_TOOGLE_MENUITEM,
+    data
+  }),
+
+  UPDATE_POSITION_MENUITEM: 'UPDATE_POSITION_MENUITEM',
+  updatePositionMenuItems: (idMenuItem, idParent, positions) => ({
+    type: Actions.UPDATE_POSITION_MENUITEM,
+    idMenuItem,
+    idParent,
+    positions
   })
 };
 
