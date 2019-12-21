@@ -22,6 +22,7 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   useEffect(() => {
     getMenus();
   }, [getMenus]);
+
   const { t } = useTranslation();
 
   const openComfirm = () => {

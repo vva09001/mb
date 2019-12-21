@@ -76,6 +76,18 @@ function PagesCreateChildren({ onSubmit, handleChange, value, onDelete, deleteAc
               <Label check>
                 <Input
                   type="checkbox"
+                  name="status"
+                  checked={value.status === 0 || value.status === undefined ? false : true}
+                  value={value.status === 0 ? false : value.status}
+                  onChange={handleChange}
+                />
+                {t('status')}
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
                   name="has_sidebar"
                   checked={value.has_sidebar === 0 || value.has_sidebar === undefined ? false : true}
                   value={value.has_sidebar === 0 ? false : value.has_sidebar}
@@ -86,9 +98,15 @@ function PagesCreateChildren({ onSubmit, handleChange, value, onDelete, deleteAc
             </FormGroup>
             <FormGroup>
               <Label for="template">{t('page.template')}</Label>
-              <Input type="select" name="template" onChange={handleChange}>
-                <option>{t('page.default')}</option>
-                <option>{t('page.full')}</option>
+              <Input
+                type="select"
+                name="template"
+                value={value.template === undefined ? 1 : value.template}
+                onChange={handleChange}
+              >
+                <option value={1}>{t('Select')}</option>
+                <option value={2}>{t('page.default')}</option>
+                <option value={3}>{t('page.full')}</option>
               </Input>
             </FormGroup>
             <Button color="primary" type="submit">
@@ -106,15 +124,31 @@ function PagesCreateChildren({ onSubmit, handleChange, value, onDelete, deleteAc
             <h4>{t('seo')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
-              <Input type="text" name="meta_title" onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_title"
+                value={value.meta_title === undefined ? '' : value.meta_title}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <Input type="text" name="meta_keywords" onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_keywords"
+                value={value.meta_keywords === undefined ? '' : value.meta_keywords}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
-              <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
+              <Input
+                type="textarea"
+                name="meta_description"
+                value={value.meta_description === undefined ? '' : value.meta_description}
+                rows="5"
+                onChange={handleChange}
+              />
             </FormGroup>
             <Button color="primary" type="submit">
               {t('save')}

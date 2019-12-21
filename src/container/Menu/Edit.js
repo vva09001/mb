@@ -17,10 +17,9 @@ function EditMenus({ editMenu, data }) {
     values: data,
     touched: {}
   });
-  useEffect(() => {
-    console.log(data);
-  });
+
   const { t } = useTranslation();
+
   const handleChange = event => {
     event.persist();
 
@@ -68,12 +67,7 @@ function EditMenus({ editMenu, data }) {
               <h4>Tạo Menu</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
-                <Input
-                  type="text"
-                  name="menuItemtranslations[0].name"
-                  value={formState.values.menuItemtranslations[0].name}
-                  onChange={handleChange}
-                />
+                <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
               </FormGroup>
               <FormGroup>
                 <div className="check__box">

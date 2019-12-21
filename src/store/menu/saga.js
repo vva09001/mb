@@ -2,6 +2,7 @@ import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getMenus, addMenus, editMenus, deleteMenus } from 'services/menu';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
+import history from 'helpers/history';
 
 function* getMenusSaga() {
   yield takeLatest(actions.GET_MENUS_REQUEST, function*(params) {
@@ -24,8 +25,9 @@ function* addMenusSaga() {
     try {
       const res = yield addMenus(data);
       if (res.status === 200) {
-        Success('Thêm thành công');
+        Success('Thêm Thành Công');
         yield put({ type: actions.ADD_MENUS_RESPONSE, data: res.data });
+        history.push('/menu/edit');
       } else {
         yield Error(res.message);
       }

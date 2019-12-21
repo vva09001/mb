@@ -18,6 +18,7 @@ function CreateMenus({ addMenu }) {
   });
 
   const { t } = useTranslation();
+
   const handleChange = event => {
     event.persist();
 
@@ -36,8 +37,16 @@ function CreateMenus({ addMenu }) {
   };
   const onSubmit = event => {
     event.preventDefault();
-    addMenu(formState.values);
-    history.push('/menu/edit');
+
+    const body = {
+      ...formState.values,
+      menuTranslations: {
+        name: formState.values.name
+      }
+    };
+    console.log(body);
+
+    addMenu(body);
   };
 
   return (
@@ -61,7 +70,7 @@ function CreateMenus({ addMenu }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="_Active" onChange={handleChange} />
+                    <Input type="checkbox" name="idActive" onChange={handleChange} />
                     <span>{t('active')}</span>
                   </div>
                 </div>

@@ -16,7 +16,7 @@ const Menus = (state = initialState, action) => {
     case Actions.ADD_MENUS_RESPONSE:
       return {
         ...state,
-        data: [...state.data, action.data]
+        detail: { ...action.data, name: action.data.menuTranslations.name }
       };
     case Actions.EDIT_MENUS_REQUEST:
       return {
@@ -36,9 +36,10 @@ const Menus = (state = initialState, action) => {
         })
       };
     case Actions.GET_DETAIL_MENU:
+      console.log(action.data);
       return {
         ...state,
-        detail: action.data
+        detail: { ...action.data, name: action.data.menuTranslations.name }
       };
     default:
       return state;
