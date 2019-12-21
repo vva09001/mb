@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Alert } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useTranslation } from 'react-i18next';

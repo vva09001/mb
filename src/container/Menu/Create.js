@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { MenuActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
-import history from 'helpers/history';
 
 const Proptype = {
   addMenu: Proptypes.func
