@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,26 +7,32 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { map, filter } from 'lodash';
 import CodeMirror from 'react-codemirror';
-import { BlockActions } from '../../store/actions';
+import { BlockActions, TagActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  createBlock: PropTypes.func
+  listTags: PropTypes.array,
+  createBlock: PropTypes.func,
+  getTags: PropTypes.func
 };
 
 const options = {
   lineNumbers: true
 };
 
-function BlockCreate({ createBlock }) {
+function BlockCreate({ listTags, getTags, createBlock }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
   });
   const [code, setCode] = useState('');
-  const [formAddMore, setFormAddMore] = useState([{ key: '', title: '', type_id: 0 }]);
+  const [formAddMore, setFormAddMore] = useState([{ key: '', title: '', type_id: 1, id: 0, position: 0 }]);
   const [activeTab, setActiveTab] = useState('1');
+
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
 
   const { t } = useTranslation();
 
@@ -70,7 +76,9 @@ function BlockCreate({ createBlock }) {
     const blockValues = {
       key: '',
       title: '',
-      type_id: 0
+      type_id: 1,
+      id: 0,
+      position: 0
     };
     setFormAddMore([...formAddMore, blockValues]);
   };
@@ -117,27 +125,29 @@ function BlockCreate({ createBlock }) {
                 <h4>{t('general')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" onChange={handleChange} />
+                  <Input type="text" name="name" onChange={handleChange} required />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleSelect">{t('tags')}</Label>
-                  <Input type="select" name="category_news_id" onChange={handleChange}>
+                  <Input type="select" name="tagId" onChange={handleChange} required>
                     <option>Chọn...</option>
-                    <option value={1}>Menu</option>
-                    <option value={2}>Icon</option>
-                    <option value={3}>Silder</option>
+                    {map(listTags, value => (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    ))}
                   </Input>
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="status" onChange={handleChange} />
+                    <Input type="checkbox" name="isActive" onChange={handleChange} />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>
                 <FormGroup>
                   <Label>{t('html')}</Label>
-                  <CodeMirror options={options} name="html" onChange={newCode => setCode(newCode)} />
+                  <CodeMirror options={options} name="html" onChange={newCode => setCode(newCode)} required />
                 </FormGroup>
               </TabPane>
               <TabPane tabId="2">
@@ -147,26 +157,31 @@ function BlockCreate({ createBlock }) {
                     <div key={index} style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
                       <FormGroup className="mr-4">
                         <Label for="exampleName">{t('key')}</Label>
-                        <Input type="text" name="key" onChange={event => handleChangeAddMore(event, index)} />
+                        <Input type="text" name="key" onChange={event => handleChangeAddMore(event, index)} required />
                       </FormGroup>
                       <FormGroup className="mr-4">
                         <Label for="exampleName">{t('title')}</Label>
-                        <Input type="text" name="title" onChange={event => handleChangeAddMore(event, index)} />
+                        <Input
+                          type="text"
+                          name="title"
+                          onChange={event => handleChangeAddMore(event, index)}
+                          required
+                        />
                       </FormGroup>
                       <FormGroup className="mr-4">
                         <Label for="exampleSelect">{t('type')}</Label>
                         <Input type="select" name="type_id" onChange={event => handleChangeAddMore(event, index)}>
-                          <option value={0}>Input</option>
-                          <option value={1}>Textarea</option>
-                          <option value={2}>Editor</option>
-                          <option value={3}>Single Image</option>
-                          <option value={4}>Multiple Images</option>
-                          <option value={5}>Button</option>
-                          <option value={6}>Group</option>
-                          <option value={7}>Repeat</option>
-                          <option value={8}>Contact form</option>
-                          <option value={9}>Custom multi images</option>
-                          <option value={10}>Products</option>
+                          <option value={1}>Input</option>
+                          <option value={2}>Textarea</option>
+                          <option value={3}>Editor</option>
+                          <option value={4}>Single Image</option>
+                          <option value={5}>Multiple Images</option>
+                          <option value={6}>Button</option>
+                          <option value={7}>Group</option>
+                          <option value={8}>Repeat</option>
+                          <option value={9}>Contact form</option>
+                          <option value={10}>Custom multi images</option>
+                          <option value={11}>Products</option>
                         </Input>
                       </FormGroup>
                       <div className="mt-3">
@@ -194,11 +209,18 @@ function BlockCreate({ createBlock }) {
 
 BlockCreate.propTypes = PropsType;
 
-const mamapDispatchToProps = {
-  createBlock: BlockActions.createBlockAction
+const mapDistpatchToProps = state => {
+  return {
+    listTags: state.TagReducer.listTags
+  };
+};
+
+const mapDispatchToProps = {
+  createBlock: BlockActions.createBlockAction,
+  getTags: TagActions.getTagAction
 };
 
 export default connect(
-  null,
-  mamapDispatchToProps
+  mapDistpatchToProps,
+  mapDispatchToProps
 )(BlockCreate);

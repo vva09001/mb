@@ -41,10 +41,11 @@ const FormTable = ({ data, getID, getDetail }) => {
                 </th>
                 <td onClick={() => getDetail(values)}>{values.name}</td>
                 <td onClick={() => getDetail(values)}>
-                  <span className={values.status === 0 ? 'green' : 'dot'} />
+                  <span className={'values.status === 0' ? 'green' : 'dot'} />
                 </td>
-                <td onClick={() => getDetail(values)}>
-                  <Link to="/">Form data</Link>|<Link to="/">Embeded form</Link>|<Link to="/">Thư phản hồi</Link>|
+                <td>
+                  <Link to={values.id + '/formdata'}>Form data</Link>|<Link to="/">Embeded form</Link>|
+                  <Link to={values.id + '/email'}>Thư phản hồi</Link>
                   {values.stricky === 1 ? 'true' : 'false'}
                 </td>
                 <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
