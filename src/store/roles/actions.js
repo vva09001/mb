@@ -37,12 +37,21 @@ const Actions = {
     data
   }),
 
-  APRR_ROLES_REQUEST: 'APRR_ROLES_REQUEST',
-  APRR_ROLES_RESPONSE: 'APRR_ROLES_RESPONSE',
+  SET_PERMISSION_ROLE: 'SET_PERMISSION_ROLE',
 
-  AprrRole: data => ({
-    type: Actions.APRR_ROLES_REQUEST,
-    data
+  setPermission: (id, allowData, denyData) => ({
+    type: Actions.SET_PERMISSION_ROLE,
+    id,
+    allowData,
+    denyData
+  }),
+
+  GET_PRIVILEGE_ROLE_REQUEST: 'GET_PRIVILEGE_ROLE_REQUEST',
+  GET_PRIVILEGE_ROLE_RESPONSE: 'GET_PRIVILEGE_ROLE_RESPONSE',
+
+  getPrivilegeRole: id => ({
+    type: Actions.GET_PRIVILEGE_ROLE_REQUEST,
+    id
   })
 };
 

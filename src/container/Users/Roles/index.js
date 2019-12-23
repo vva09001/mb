@@ -74,7 +74,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getRoles: RoleActions.GetRoles,
   deleteRoles: RoleActions.DeleteRoles,
-  getDetailRoles: RoleActions.getDetailRoles
+  getDetail: RoleActions.getDetailRoles
 };
 
 export default connect(
