@@ -14,7 +14,7 @@ import TagReducer from './tags/reducers';
 import UserReducer from './Users/reducers';
 import RoleReducer from './roles/reducers';
 import SilderReducer from './slider/reducers';
-import SettingReducer from './setting/reducers'
+import SettingReducer from './setting/reducers';
 
 const reducers = combineReducers({
   NewReducer,

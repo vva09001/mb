@@ -36,16 +36,7 @@ function CreateMenus({ addMenu }) {
   };
   const onSubmit = event => {
     event.preventDefault();
-
-    const body = {
-      ...formState.values,
-      menuTranslations: {
-        name: formState.values.name
-      }
-    };
-    console.log(body);
-
-    addMenu(body);
+    addMenu(formState.values);
   };
 
   return (
@@ -69,7 +60,7 @@ function CreateMenus({ addMenu }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="idActive" onChange={handleChange} />
+                    <Input type="checkbox" name="status" onChange={handleChange} />
                     <span>{t('active')}</span>
                   </div>
                 </div>

@@ -37,7 +37,7 @@ const MenuTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.menuTranslations.name}</td>
+                <td onClick={() => getDetail(values)}>{values.name}</td>
                 <td onClick={() => getDetail(values)}>
                   <span className={values.status === 1 ? 'green' : 'dot'} />
                 </td>

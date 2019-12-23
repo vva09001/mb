@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col, Alert } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { MenuActions } from '../../store/actions';
@@ -7,8 +7,6 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
-import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
-import { getMenuItems } from '../../services/menu';
 
 const Proptype = {
   editMenu: Proptypes.func,
@@ -16,14 +14,24 @@ const Proptype = {
   data: Proptypes.object,
   deleteMenuItem: Proptypes.func,
   expanstion: Proptypes.func,
-  updatePositionMenuItem: Proptypes.func
+  updatePositionMenuItem: Proptypes.func,
+  getMenuItems: Proptypes.func
 };
 
-function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updatePositionMenuItem }) {
+function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updatePositionMenuItem, getMenuItems }) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
   });
+
+  useEffect(() => {
+    getMenuItems(formState.values.id);
+  });
+
+  useEffect(() => {
+    console.log(formState.values);
+  });
+
   // const [isOpen, setIsOpen] = useState(false);
   const [treeActive, setTreeActive] = useState({
     show: false,
@@ -51,7 +59,6 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
   const onSubmit = event => {
     event.preventDefault();
     editMenu(formState.values);
-    history.push('/menu/edit');
   };
   const changeTree = treeData => {
     expanstion(treeData);
@@ -106,8 +113,8 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
-      <Row className="category__wapper">
-        <Col lg={7} md={4}>
+      <Row className="category__wapper" style={{ height: '650px' }}>
+        <Col lg={7} sm={10}>
           <div>
             <Button
               color="primary"
@@ -141,14 +148,10 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
                 onClick: () => click(node, path)
               })}
               onMoveNode={treeData => onMove(treeData)}
-              theme={FileExplorerTheme}
             />
           </div>
-          <div>
-            <Alert color="primary">Dang cho API</Alert>
-          </div>
         </Col>
-        <Col lg={5} md={4}>
+        <Col lg={5} md={8}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
               <h4>Tạo Menu</h4>
@@ -189,7 +192,8 @@ const mapDispatchToProps = {
   editMenu: MenuActions.EditMenus,
   deleteMenuItem: MenuActions.DeleteMenuItems,
   expanstion: MenuActions.expansionMenuItemAction,
-  updatePositionMenuItem: MenuActions.updatePositionMenuItems
+  updatePositionMenuItem: MenuActions.updatePositionMenuItems,
+  getMenuItems: MenuActions.GetMenuItems
 };
 
 export default connect(
