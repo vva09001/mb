@@ -31,7 +31,7 @@ const FormBuilder = (state = initialState, action) => {
     case Actions.DELETE_FORM_RESPONSE:
       return {
         ...state,
-        listForm: filter(state.listForm, values => values.id !== action.id)
+        listForm: filter(state.listForm, values => values.id !== action.data)
       };
     case Actions.GET_FORM_DETAIL:
       return {

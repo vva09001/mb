@@ -67,7 +67,7 @@ function* deleteFormSaga() {
       const res = yield deleteFormbuilderService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_FORM_RESPONSE, data: res.data });
+        yield put({ type: actions.DELETE_FORM_RESPONSE, data: id });
       } else {
         yield Error(res.message);
       }
