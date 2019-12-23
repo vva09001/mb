@@ -142,7 +142,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleSelect">{t('tags')}</Label>
-                  <Input type="select" name="tagId" value={formState.values.tagId} onChange={handleChange}>
+                  <Input type="select" name="tagId" value={formState.values.tagId} onChange={handleChange} required>
                     <option>Chọn...</option>
                     {map(listTags, value => (
                       <option value={value.id} key={value.id}>
