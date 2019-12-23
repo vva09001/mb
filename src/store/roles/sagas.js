@@ -83,7 +83,6 @@ function* setPermissionRoleSaga() {
   yield takeLatest(actions.SET_PERMISSION_ROLE, function*(params) {
     const { id, allowData, denyData } = params;
     try {
-      console.log(allowData);
       yield removePrivilegeService(id, denyData);
       const res = yield acceptPrivilegeService(id, allowData);
       if (res.status === 200) {
