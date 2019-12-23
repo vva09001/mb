@@ -7,8 +7,6 @@ import Category from 'container/News/Category';
 import ListPage from '../container/Pages';
 import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
-<<<<<<< HEAD
-=======
 import ApprPage from '../container/Pages/ApprovedPage';
 import PageAppr from '../container/Pages/ApprovedPage/Edit';
 import Block from 'container/block';
@@ -17,7 +15,6 @@ import EditBlock from 'container/block/edit';
 import Tags from 'container/tags';
 import CreateTags from 'container/tags/created';
 import EditTags from 'container/tags/edit';
->>>>>>> 859d3d8951e371cea33aac8640a0ab7b5c910683
 import AprrEdit from '../container/ApprovingNews/Approving';
 import AprrNews from '../container/ApprovingNews';
 import ListMail from '../container/Mails';
