@@ -183,11 +183,11 @@ function NewsCreate({ newsCreate }) {
 
 NewsCreate.propTypes = PropsType;
 
-const mamapDispatchToProps = {
+const mapDispatchToProps = {
   newsCreate: NewActions.AddNews
 };
 
 export default connect(
   null,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(NewsCreate);
