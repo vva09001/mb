@@ -13,6 +13,8 @@ import BlockReducer from './block/reducers';
 import TagReducer from './tags/reducers';
 import UserReducer from './Users/reducers';
 import RoleReducer from './roles/reducers';
+import SilderReducer from './slider/reducers';
+import SettingReducer from './setting/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -25,7 +27,9 @@ const reducers = combineReducers({
   BlockReducer,
   TagReducer,
   UserReducer,
-  RoleReducer
+  RoleReducer,
+  SilderReducer,
+  SettingReducer
 });
 
 const persistConfig = {

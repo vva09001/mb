@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Alert } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { MenuActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
+import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 
 const Proptype = {
   editMenu: Proptypes.func,
-  data: Proptypes.object
+  detail: Proptypes.object,
+  data: Proptypes.object,
+  deleteMenuItem: Proptypes.func,
+  expanstion: Proptypes.func,
+  updatePositionMenuItem: Proptypes.func,
+  getMenuItems: Proptypes.func
 };
 
-function EditMenus({ editMenu, data }) {
+function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updatePositionMenuItem, getMenuItems }) {
   const [formState, setFormState] = useState({
-    values: data,
+    values: detail,
     touched: {}
   });
+
   useEffect(() => {
-    console.log(data);
+    getMenuItems(formState.values.id);
   });
+
+  useEffect(() => {
+    console.log(formState.values);
+  });
+
+  // const [isOpen, setIsOpen] = useState(false);
+  const [treeActive, setTreeActive] = useState({
+    show: false,
+    hiden: false
+  });
+
   const { t } = useTranslation();
+
   const handleChange = event => {
     event.persist();
 
@@ -40,14 +59,62 @@ function EditMenus({ editMenu, data }) {
   const onSubmit = event => {
     event.preventDefault();
     editMenu(formState.values);
-    history.push('/menu/edit');
+  };
+  const changeTree = treeData => {
+    expanstion(treeData);
+  };
+  const expansion = expanded => {
+    if (expanded) {
+      setTreeActive(treeActive => ({
+        ...treeActive,
+        show: true,
+        hiden: false
+      }));
+    } else {
+      setTreeActive(treeActive => ({
+        ...treeActive,
+        show: false,
+        hiden: true
+      }));
+    }
+    const newData = toggleExpandedForAll({ treeData: data, expanded });
+    expanstion(newData);
   };
 
+  const click = (node, path) => {
+    setFormState(formState => ({
+      ...formState,
+      values: node
+    }));
+  };
+
+  const onMove = treeData => {
+    if (treeData.nextParentNode !== null) {
+      let idParent = treeData.nextParentNode.id;
+      let idPage = treeData.node.id;
+      let positions = 0;
+      let childrenData = treeData.nextParentNode.children;
+      for (let i = 0; i < childrenData.length; i++) {
+        if (childrenData[i].id === idPage) {
+          positions = i;
+          break;
+        }
+      }
+      updatePositionMenuItem(idPage, idParent, positions);
+    } else {
+      getMenuItems();
+    }
+  };
+
+  /*const onDelete = () => {
+    deleteMenuItem(formState.values.id);
+    setIsOpen(!isOpen);
+  };*/
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
-      <Row className="category__wapper">
-        <Col lg={7} md={4}>
+      <Row className="category__wapper" style={{ height: '650px' }}>
+        <Col lg={7} sm={10}>
           <div>
             <Button
               color="primary"
@@ -59,21 +126,38 @@ function EditMenus({ editMenu, data }) {
             </Button>
           </div>
           <div>
-            <Alert color="primary">Dang cho API</Alert>
+            <span
+              className={treeActive.hiden ? 'active__tree span__link' : 'span__link'}
+              onClick={() => expansion(false)}
+            >
+              {t('category_page.hideAll')}
+            </span>
+            |
+            <span
+              className={treeActive.show ? 'active__tree span__link' : 'span__link'}
+              onClick={() => expansion(true)}
+            >
+              {t('category_page.showAll')}
+            </span>
+          </div>
+          <div style={{ height: '100%' }}>
+            <SortableTree
+              treeData={data}
+              onChange={treeData => changeTree(treeData)}
+              generateNodeProps={({ node, path }) => ({
+                onClick: () => click(node, path)
+              })}
+              onMoveNode={treeData => onMove(treeData)}
+            />
           </div>
         </Col>
-        <Col lg={5} md={4}>
+        <Col lg={5} md={8}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
               <h4>Tạo Menu</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
-                <Input
-                  type="text"
-                  name="menuItemtranslations[0].name"
-                  value={formState.values.menuItemtranslations[0].name}
-                  onChange={handleChange}
-                />
+                <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
@@ -99,12 +183,17 @@ EditMenus.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    data: state.MenuReducer.detail
+    detail: state.MenuReducer.detail,
+    data: state.MenuReducer.data
   };
 };
 
 const mapDispatchToProps = {
-  editMenu: MenuActions.EditMenus
+  editMenu: MenuActions.EditMenus,
+  deleteMenuItem: MenuActions.DeleteMenuItems,
+  expanstion: MenuActions.expansionMenuItemAction,
+  updatePositionMenuItem: MenuActions.updatePositionMenuItems,
+  getMenuItems: MenuActions.GetMenuItems
 };
 
 export default connect(

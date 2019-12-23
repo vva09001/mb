@@ -11,17 +11,17 @@ const Block = (state = initialState, action) => {
     case Actions.GET_BLOCK_RESPONSE:
       return {
         ...state,
-        data: action.data
+        listBlocks: action.data
       };
     case Actions.CREATE_BLOCK_RESPONSE:
       return {
         ...state,
-        data: [...state.data, action.data]
+        listBlocks: [...state.listBlocks, action.data]
       };
     case Actions.EDIT_BLOCK_RESPONSE:
       return {
         ...state,
-        data: map(state.data, values => {
+        listBlocks: map(state.listBlocks, values => {
           if (values.id === action.data.id) {
             values = action.data;
           }
@@ -31,8 +31,8 @@ const Block = (state = initialState, action) => {
     case Actions.DELETE_BLOCK_RESPONSE:
       return {
         ...state,
-        data: filter(state.data, values => {
-          return values.id !== action.data;
+        listBlocks: filter(state.listBlocks, values => {
+          return values.id !== action.id;
         })
       };
     case Actions.GET_BLOCK_DETAIL:

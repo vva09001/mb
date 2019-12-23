@@ -2,7 +2,7 @@ import request from 'helpers/request';
 
 const getTagService = () => {
   return request({
-    url: '/tags',
+    url: '/tag',
     method: 'GET'
   })
     .then(res => {
@@ -15,7 +15,7 @@ const getTagService = () => {
 
 const createTagService = data => {
   return request({
-    url: '/tags',
+    url: '/tag',
     method: 'POST',
     data: data
   })
@@ -29,7 +29,7 @@ const createTagService = data => {
 
 const editTagService = (id, data) => {
   return request({
-    url: `/tags/${id}`,
+    url: `/tag/${id}`,
     method: 'PUT',
     data: data
   })
@@ -42,7 +42,7 @@ const editTagService = (id, data) => {
 };
 const deleteTagService = id => {
   return request({
-    url: `/tags/${id}`,
+    url: `/tag/${id}`,
     method: 'DELETE'
   })
     .then(res => {

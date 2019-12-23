@@ -10,6 +10,8 @@ import BlockSaga from './block/saga';
 import TagSaga from './tags/saga';
 import UserSaga from './Users/sagas';
 import RoleSaga from './roles/sagas';
+import SliderSaga from './slider/saga';
+import SettingSaga from './setting/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -23,6 +25,8 @@ export default function* rootSaga() {
     BlockSaga(),
     TagSaga(),
     UserSaga(),
-    RoleSaga()
+    RoleSaga(),
+    SliderSaga(),
+    SettingSaga()
   ]);
 }

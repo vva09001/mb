@@ -37,7 +37,6 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete })
               name="is_active"
               checked={value.is_active === 0 || value.is_active === undefined ? false : true}
               value={value.is_active === 0 ? false : value.is_active}
-              // checked={}
               onChange={handleChange}
             />
             <span>{t('category_page.form.activeCategory')}</span>
@@ -55,7 +54,7 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete })
       </FormGroup>
       <FormGroup>
         <Label>{t('category_page.form.coverImage')}</Label>
-        <Input type="file" name="name" onChange={handleChange} />
+        <Input type="file" name="coverImage" onChange={handleChange} />
       </FormGroup>
       <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
@@ -66,7 +65,7 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete })
         {t('save')}
       </Button>
       {deleteActive && (
-        <Button color="danger" className="ml-2" onClick={onDelete}>
+        <Button color="danger" className="ml-2" onClick={() => onDelete(value.id)}>
           {t('delete')}
         </Button>
       )}

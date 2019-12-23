@@ -1,6 +1,6 @@
 {
     "name": "Name",
-    "status": "status",
+    "status": "Status",
     "sticky": "Sticky",
     "created": "Created",
     "active": "Active",
@@ -32,6 +32,9 @@
     "search": "Search...",
     "previous": "Previous",
     "next": "Next",
+    "close": "Close",
+    "confirm": "Comfirm",
+    "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
         "enterprise": "Enterprise customers",
@@ -109,7 +112,10 @@
         "form": "Create Form",
         "setting": "Setting",
         "user": "User",
-        "role": "Role"
+        "role": "Role",
+        "media": "Media",
+        "storeFont": "Store Font",
+        "slider": "Slider"
     },
     "user": {
         "fistname": "Fist Name",
@@ -124,9 +130,12 @@
         "allow": "Allow",
         "allowall": "Allow All",
         "deny": "Deny",
-        "denyall":"Deny All",
+        "denyall": "Deny All",
         "inherit": "Inherit",
         "inheritall": "Inherit All",
-        "account": "Account"           
+        "account": "Account"
+    },
+    "media": {
+        "title": "Media"
     }
 }

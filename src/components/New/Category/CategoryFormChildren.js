@@ -55,7 +55,7 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
       </FormGroup>
       <FormGroup>
         <Label>{t('category_page.form.coverImage')}</Label>
-        <Input type="file" name="name" onChange={handleChange} />
+        <Input type="file" name="coverImage" onChange={handleChange} />
       </FormGroup>
       <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
@@ -66,7 +66,7 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
         {t('save')}
       </Button>
       {deleteActive && (
-        <Button color="danger" className="ml-2" onClick={onDelete}>
+        <Button color="danger" className="ml-2" onClick={() => onDelete(value.id)}>
           {t('delete')}
         </Button>
       )}

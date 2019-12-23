@@ -1,7 +1,13 @@
 import actions from './actions';
 import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getBlockService, createBlockService, editBlockService, deleteBlockService } from 'services/block';
+import {
+  getBlockService,
+  createBlockService,
+  editBlockService,
+  deleteBlockService,
+  deleteBlockValuesService
+} from 'services/block';
 import { Error, Success } from 'helpers/notify';
 
 function* getBlockSaga() {
@@ -62,7 +68,23 @@ function* deleteBlockSaga() {
       const res = yield deleteBlockService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_BLOCK_RESPONSE, data: res.data });
+        yield put({ type: actions.DELETE_BLOCK_RESPONSE, id: id });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
+function* deleteBlockValueSaga(params) {
+  yield takeLatest(actions.DELETE_BLOCK_VALUE_REQUEST, function*(params) {
+    const { blockID, blockValueID } = params;
+    try {
+      const res = yield deleteBlockValuesService(blockID, blockValueID);
+      if (res.status === 200) {
+        yield Success('Xóa thành công');
       } else {
         yield Error(res.message);
       }
@@ -73,5 +95,11 @@ function* deleteBlockSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getBlockSaga), fork(createBlockSaga), fork(editBlockSaga), fork(deleteBlockSaga)]);
+  yield all([
+    fork(getBlockSaga),
+    fork(createBlockSaga),
+    fork(editBlockSaga),
+    fork(deleteBlockSaga),
+    fork(deleteBlockValueSaga)
+  ]);
 }

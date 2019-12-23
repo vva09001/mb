@@ -23,14 +23,15 @@ const FormBuilder = (state = initialState, action) => {
         ...state,
         listForm: map(state.listForm, values => {
           if (values.id === action.id) {
-            return (values = action.data);
+            values = action.data;
           }
+          return values;
         })
       };
     case Actions.DELETE_FORM_RESPONSE:
       return {
         ...state,
-        listForm: filter(state.listForm, values => values.id !== action.id)
+        listForm: filter(state.listForm, values => values.id !== action.data)
       };
     case Actions.GET_FORM_DETAIL:
       return {

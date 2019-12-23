@@ -127,7 +127,7 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
               <Input
                 type="text"
                 name="meta_title"
-                value={value.meta_title === undefined ? '' : value.name}
+                value={value.meta_title === undefined ? '' : value.meta_title}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -136,7 +136,7 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
               <Input
                 type="text"
                 name="meta_keywords"
-                value={value.meta_keywords === undefined ? '' : value.name}
+                value={value.meta_keywords === undefined ? '' : value.meta_keywords}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -145,7 +145,7 @@ function PagesCreate({ onSubmit, handleChange, value, onDelete, deleteActive }) 
               <Input
                 type="textarea"
                 name="meta_description"
-                value={value.meta_description === undefined ? '' : value.name}
+                value={value.meta_description === undefined ? '' : value.meta_description}
                 rows="5"
                 onChange={handleChange}
               />

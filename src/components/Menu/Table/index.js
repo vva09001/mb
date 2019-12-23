@@ -37,8 +37,10 @@ const MenuTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.menuItemtranslations[0].name}</td>
-                <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
+                <td onClick={() => getDetail(values)}>{values.name}</td>
+                <td onClick={() => getDetail(values)}>
+                  <span className={values.status === 1 ? 'green' : 'dot'} />
+                </td>
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
               </tr>
             );
@@ -47,7 +49,7 @@ const MenuTable = ({ data, getID, getDetail }) => {
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data.length / 20)}
+          pageCount={Math.ceil(data && data.length / 20)}
           previousLabel={t('previous')}
           nextLabel={t('next')}
           marginPagesDisplayed={5}

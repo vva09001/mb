@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
-import NewTable from '../../components/New/Table';
+import BlockTable from '../../components/block/Table';
 import PropTypes from 'prop-types';
 import { BlockActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -39,7 +39,7 @@ function Block({ data, getBlock, deleteBlock, getDetail }) {
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/news/edit');
+    history.push('/pages/block/edit');
   };
 
   return (
@@ -57,7 +57,7 @@ function Block({ data, getBlock, deleteBlock, getDetail }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <NewTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <BlockTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -68,7 +68,9 @@ function Block({ data, getBlock, deleteBlock, getDetail }) {
 Block.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.BlockReducer.listBlocks };
+  return {
+    data: state.BlockReducer.listBlocks
+  };
 };
 
 const mapDispatchToProps = {

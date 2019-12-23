@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { MenuActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
-import history from 'helpers/history';
 
 const Proptype = {
   addMenu: Proptypes.func
@@ -18,6 +17,7 @@ function CreateMenus({ addMenu }) {
   });
 
   const { t } = useTranslation();
+
   const handleChange = event => {
     event.persist();
 
@@ -37,7 +37,6 @@ function CreateMenus({ addMenu }) {
   const onSubmit = event => {
     event.preventDefault();
     addMenu(formState.values);
-    history.push('/menu/edit');
   };
 
   return (
@@ -61,7 +60,7 @@ function CreateMenus({ addMenu }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="_Active" onChange={handleChange} />
+                    <Input type="checkbox" name="status" onChange={handleChange} />
                     <span>{t('active')}</span>
                   </div>
                 </div>

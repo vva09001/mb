@@ -39,21 +39,21 @@ export const emailRoutes = {
 export const formRoutes = {
   name: 'menu.form',
   to: '/form-builder/list',
-  icon: 'book'
+  icon: 'file-alt'
 };
 
 export const menuRoutes = {
   name: 'Menu',
   to: '/menu/list',
   exact: true,
-  icon: 'plug'
+  icon: 'sliders-h'
 };
 
 export const userRoutes = {
   name: 'menu.user',
   to: '/users',
   exact: true,
-  icon: 'plug',
+  icon: 'user',
   children: [{ to: '/users/list', name: 'menu.user' }, { to: '/users/listrole', name: 'menu.role' }]
 };
 
@@ -64,4 +64,37 @@ export const settingRoutes = {
   icon: 'cog'
 };
 
-export default [homeRoutes, newRoutes, pageRoutes, emailRoutes, formRoutes, menuRoutes, userRoutes, settingRoutes];
+export const storefontRoutes = {
+  name: 'menu.storeFont',
+  to: '/storefont',
+  exact: true,
+  icon: 'pencil-alt'
+};
+
+export const sliderfontRoutes = {
+  name: 'menu.slider',
+  to: '/slider',
+  exact: true,
+  icon: 'sliders-h'
+};
+
+export const mediaRouter = {
+  name: 'menu.media',
+  to: '/media',
+  exact: true,
+  icon: 'image'
+};
+
+export default [
+  homeRoutes,
+  newRoutes,
+  pageRoutes,
+  emailRoutes,
+  formRoutes,
+  menuRoutes,
+  sliderfontRoutes,
+  storefontRoutes,
+  mediaRouter,
+  userRoutes,
+  settingRoutes
+];

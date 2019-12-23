@@ -7,6 +7,17 @@ import Category from 'container/News/Category';
 import ListPage from '../container/Pages';
 import PagesCreate from '../container/Pages/Created';
 import PageEdit from '../container/Pages/Edit';
+<<<<<<< HEAD
+=======
+import ApprPage from '../container/Pages/ApprovedPage';
+import PageAppr from '../container/Pages/ApprovedPage/Edit';
+import Block from 'container/block';
+import CreateBlock from 'container/block/created';
+import EditBlock from 'container/block/edit';
+import Tags from 'container/tags';
+import CreateTags from 'container/tags/created';
+import EditTags from 'container/tags/edit';
+>>>>>>> 859d3d8951e371cea33aac8640a0ab7b5c910683
 import AprrEdit from '../container/ApprovingNews/Approving';
 import AprrNews from '../container/ApprovingNews';
 import ListMail from '../container/Mails';
@@ -17,6 +28,12 @@ import CreatedFormBuilder from 'container/formbuilder/created';
 import Resemail from 'container/formbuilder/reponsivemail/index';
 import Formdata from 'container/formbuilder/formdata/index';
 import SettingHome from 'container/SettingHome/index';
+import Storefont from '../container/Storefont';
+import Slider from '../container/Slider';
+import SliderCreate from '../container/Slider/Created';
+import SliderEdit from 'container/Slider/edit';
+
+import Media from 'container/media';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -30,6 +47,14 @@ const DashboardRoutes = () => (
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
     <Route path="/pages/edit" exact component={PageEdit} />
+    <Route path="/pages/approved_listings" exact component={ApprPage} />
+    <Route path="/pages/approved" exact component={PageAppr} />
+    <Route path="/pages/block" exact component={Block} />
+    <Route path="/pages/block/create" exact component={CreateBlock} />
+    <Route path="/pages/block/edit" exact component={EditBlock} />
+    <Route path="/pages/tags" exact component={Tags} />
+    <Route path="/pages/tags/create" exact component={CreateTags} />
+    <Route path="/pages/tags/edit" exact component={EditTags} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
@@ -45,6 +70,16 @@ const DashboardRoutes = () => (
 
     {/* Setting */}
     <Route path="/setting" exact component={SettingHome} />
+
+    {/* Storefont */}
+    <Route path="/storefont" exact component={Storefont} />
+
+    {/* Slider */}
+    <Route path="/slider" exact component={Slider} />
+    <Route path="/slider/create" exact component={SliderCreate} />
+    <Route path="/slider/edit" exact component={SliderEdit} />
+
+    <Route path="/media" exact component={Media} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

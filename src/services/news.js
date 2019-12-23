@@ -23,7 +23,7 @@ const getNews = () => {
 
 const addNews = data => {
   return request({
-    url: `/news/category/${data.category_news_id}`,
+    url: `/news`,
     method: 'POST',
     data: data
   })

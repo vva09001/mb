@@ -51,8 +51,8 @@ const editCategoryService = data => {
 
 const deleteCategoryService = id => {
   return request({
-    url: `categorys/change_active/${id}`,
-    method: 'PUT'
+    url: `categorys/${id}`,
+    method: 'DELETE'
   })
     .then(res => {
       return res;
