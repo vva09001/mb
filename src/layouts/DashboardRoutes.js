@@ -11,7 +11,10 @@ import ApprPage from '../container/Pages/ApprovedPage';
 import PageAppr from '../container/Pages/ApprovedPage/Edit';
 import Block from 'container/block';
 import CreateBlock from 'container/block/created';
+import EditBlock from 'container/block/edit';
 import Tags from 'container/tags';
+import CreateTags from 'container/tags/created';
+import EditTags from 'container/tags/edit';
 import AprrEdit from '../container/ApprovingNews/Approving';
 import AprrNews from '../container/ApprovingNews';
 import ListMail from '../container/Mails';
@@ -54,7 +57,10 @@ const DashboardRoutes = () => (
     <Route path="/pages/approved" exact component={PageAppr} />
     <Route path="/pages/block" exact component={Block} />
     <Route path="/pages/block/create" exact component={CreateBlock} />
+    <Route path="/pages/block/edit" exact component={EditBlock} />
     <Route path="/pages/tags" exact component={Tags} />
+    <Route path="/pages/tags/create" exact component={CreateTags} />
+    <Route path="/pages/tags/edit" exact component={EditTags} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
@@ -90,7 +96,6 @@ const DashboardRoutes = () => (
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
     <Route path="/slider/edit" exact component={SliderEdit} />
-    
 
     <Route path="/media" exact component={Media} />
 

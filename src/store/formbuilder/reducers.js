@@ -23,8 +23,9 @@ const FormBuilder = (state = initialState, action) => {
         ...state,
         listForm: map(state.listForm, values => {
           if (values.id === action.id) {
-            return (values = action.data);
+            values = action.data;
           }
+          return values;
         })
       };
     case Actions.DELETE_FORM_RESPONSE:

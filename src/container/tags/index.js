@@ -39,9 +39,8 @@ function Tags({ data, getTags, deleteTags, getDetail }) {
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/tags/edit');
+    history.push('/pages/tags/edit');
   };
-
   return (
     <React.Fragment>
       <div>
@@ -49,7 +48,7 @@ function Tags({ data, getTags, deleteTags, getDetail }) {
           <h4>{t('tags')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/tags/create')}>
+          <Button color="primary" className="mr-2" onClick={() => history.push('/pages/tags/create')}>
             {t('create')}
           </Button>
           <Button color="danger" className="mr-2" onClick={openComfirm}>
@@ -68,7 +67,7 @@ function Tags({ data, getTags, deleteTags, getDetail }) {
 Tags.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.TagReducer.ListTags };
+  return { data: state.TagReducer.listTags };
 };
 
 const mapDispatchToProps = {

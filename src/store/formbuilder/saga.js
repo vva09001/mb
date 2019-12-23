@@ -49,7 +49,7 @@ function* editFormSaga() {
       const res = yield editFormbuilderService(id, data);
       if (res.status === 200) {
         yield Success('Sửa thành công');
-        yield put({ type: actions.EDIT_FORM_RESPONSE, data: res.data });
+        yield put({ type: actions.EDIT_FORM_RESPONSE, data: res.data, id: id });
         yield history.push('/form-builder/list');
       } else {
         yield Error(res.message);

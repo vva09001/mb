@@ -62,7 +62,7 @@ function* deleteTagSaga() {
       const res = yield deleteTagService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_TAG_RESPONSE, data: res.data });
+        yield put({ type: actions.DELETE_TAG_RESPONSE, data: id });
       } else {
         yield Error(res.message);
       }
