@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 import history from 'helpers/history';
 
 const Proptype = {
-  editMenu: Proptypes.func
+  addMenuItem: Proptypes.func,
+  detail: Proptypes.object
 };
 
-function CreateMenusItem({ editMenu }) {
+function CreateMenusItem({ addMenuItem, detail }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -35,7 +36,7 @@ function CreateMenusItem({ editMenu }) {
   };
   const onSubmit = event => {
     event.preventDefault();
-    editMenu(formState.values);
+    addMenuItem(formState.values);
     history.push('/menu/edit');
   };
 

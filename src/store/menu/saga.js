@@ -83,9 +83,9 @@ function* deleteMenusSaga() {
 }
 function* getMenuItemsSaga() {
   yield takeLatest(actions.GET_MENUITEMS_REQUEST, function*(params) {
+    const { id } = params;
     try {
-      const res = yield getMenuItems();
-
+      const res = yield getMenuItems(id);
       let data = [];
       if (res.status === 200) {
         const nest = (items, id = 0, link = 'parentId') => {

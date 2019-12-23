@@ -1,5 +1,6 @@
 import Actions from './actions';
 import { filter, map } from 'lodash';
+import { actionChannel } from 'redux-saga/effects';
 
 const initialState = {
   data: [],
@@ -16,7 +17,7 @@ const Menus = (state = initialState, action) => {
     case Actions.ADD_MENUS_RESPONSE:
       return {
         ...state,
-        detail: { ...action.data, name: action.data.menuTranslations.name }
+        detail: action.data
       };
     case Actions.EDIT_MENUS_REQUEST:
       return {
@@ -38,9 +39,10 @@ const Menus = (state = initialState, action) => {
     case Actions.GET_DETAIL_MENU:
       return {
         ...state,
-        detail: { ...action.data, name: action.data.menuTranslations.name }
+        detail: action.data
       };
     case Actions.GET_MENUITEMS_RESPONSE:
+      console.log(action.data);
       return {
         ...state,
         data: action.data
@@ -48,7 +50,7 @@ const Menus = (state = initialState, action) => {
     case Actions.ADD_MENUITEMS_RESPONSE:
       return {
         ...state,
-        detail: { ...action.data, name: action.data.menuTranslations.name }
+        detail: action.data
       };
     case Actions.EDIT_MENUITEMS_REQUEST:
       return {
@@ -70,7 +72,7 @@ const Menus = (state = initialState, action) => {
     case Actions.GET_DETAIL_MENUITEM:
       return {
         ...state,
-        detail: { ...action.data, name: action.data.menuTranslations.name }
+        detail: { ...action.data }
       };
     case Actions.EXPANSION_TOOGLE_MENUITEM:
       return {

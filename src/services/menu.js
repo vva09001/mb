@@ -62,9 +62,9 @@ const deleteMenus = id => {
     });
 };
 
-const getMenuItems = () => {
+const getMenuItems = id => {
   return request({
-    url: '/menu',
+    url: `/menu/${id}/menuItem`,
     method: 'GET'
   })
     .then(res => {
@@ -77,7 +77,7 @@ const getMenuItems = () => {
 
 const addMenuItems = data => {
   return request({
-    url: '/menu',
+    url: `/menu/${data.menuid}/menuItem`,
     method: 'POST',
     data: data
   })
@@ -91,7 +91,7 @@ const addMenuItems = data => {
 
 const editMenuItems = data => {
   return request({
-    url: `/menu/${data.id}`,
+    url: `/menu/${data.menuid}/menuItem/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -103,9 +103,9 @@ const editMenuItems = data => {
     });
 };
 
-const deleteMenuItems = id => {
+const deleteMenuItems = (id, menuid) => {
   return request({
-    url: `/menu/${id}`,
+    url: `/menu/${menuid}/menuItem/${id}`,
     method: 'DELETE'
   })
     .then(res => {
