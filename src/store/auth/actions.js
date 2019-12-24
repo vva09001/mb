@@ -5,6 +5,11 @@ const Actions = {
   loginAction: data => ({
     type: Actions.LOGIN_REQUEST,
     data
+  }),
+
+  LOGOUT_REQUEST: 'LOGOUT_REQUEST',
+  logout: () => ({
+    type: Actions.LOGOUT_REQUEST
   })
 };
 
