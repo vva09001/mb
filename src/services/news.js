@@ -1,12 +1,4 @@
-// import request from 'helpers/request';
-import axios from 'axios';
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/v2/api',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from 'helpers/request';
 
 const getNews = () => {
   return request({
