@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
 
@@ -7,16 +7,32 @@ import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+//import { map } from 'lodash';
 
 const PropsType = {
-  editRole: PropTypes.func
+  editRole: PropTypes.func,
+  detail: PropTypes.object,
+  setpermission: PropTypes.func,
+  listPrivilege: PropTypes.array,
+  getListPrivilege: PropTypes.func
 };
 
-function RolesEdit({ editRole }) {
+function RolesEdit({ editRole, detail, setpermission, listPrivilege, getListPrivilege }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: detail,
     touched: {}
   });
+
+  useEffect(() => {
+    getListPrivilege(formState.values.idRole);
+  }, [formState.values.idRole, getListPrivilege]);
+
+  useEffect(() => {
+    console.log(listPrivilege);
+  });
+
+  const [dataallow, setallowdata] = useState([]);
+  const [datadeny, setdatadeny] = useState([]);
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
@@ -32,7 +48,7 @@ function RolesEdit({ editRole }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        id: event.target.value
       },
       touched: {
         ...formState.touched,
@@ -41,13 +57,22 @@ function RolesEdit({ editRole }) {
     }));
   };
 
+  const allow = event => {
+    event.persist();
+    setallowdata([...dataallow, parseInt(event.target.value)]);
+  };
+
+  const deny = event => {
+    event.persist();
+    setdatadeny([...datadeny, parseInt(event.target.value)]);
+  };
   const onSubmitRoles = event => {
     event.preventDefault();
     editRole(formState.values);
   };
   const onSubmitPermission = event => {
     event.preventDefault();
-    editRole(formState.values);
+    setpermission(formState.values.idRole, dataallow, datadeny);
   };
   return (
     <React.Fragment>
@@ -81,7 +106,12 @@ function RolesEdit({ editRole }) {
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('user.fistname')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <Input
+                    type="text"
+                    name="name"
+                    value={formState.values.name === undefined ? '' : formState.values.name}
+                    onChange={handleChange}
+                  />
                 </FormGroup>
                 <Button color="primary" type="submit">
                   {t('save')}
@@ -96,14 +126,14 @@ function RolesEdit({ editRole }) {
                     style={{ background: '#fff', justifyContent: 'center' }}
                     onSubmit={onSubmitPermission}
                   >
-                    <h4>{t('Attribute')}</h4>
+                    <h4>{t('New')}</h4>
                     <hr />
                     <FormGroup>
                       <Row>
                         <Col xs="6">
                           <div>
                             <Label for="exampleCheckbox" inline>
-                              <h5>{t('admin.banners')}</h5>
+                              <h5>{t('adminNew')}</h5>
                             </Label>
                           </div>
                         </Col>
@@ -112,7 +142,6 @@ function RolesEdit({ editRole }) {
                             <ButtonGroup size="sm">
                               <Button>{t('Allow All')}</Button>
                               <Button>{t('Deny All')}</Button>
-                              <Button>{t('Inherit All')}</Button>
                             </ButtonGroup>
                           </div>
                         </Col>
@@ -121,13 +150,31 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('getNew')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="getNew1"
+                              value={13}
+                              /* checked={map(listPrivilege, value =>
+                                !value.privilegeId === 13 || value.privilegeId === undefined ? false : true
+                              )}*/
+                              name="ROLE_XEM TIN TỨC"
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="getNew2"
+                              value={13}
+                              name="ROLE_XEM TIN TỨC"
+                              label="Deny"
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -135,13 +182,28 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('createNew')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="createNew1"
+                              name="ROLE_TẠO TIN TỨC"
+                              label="Allow"
+                              value={11}
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="createNew2"
+                              name="ROLE_TẠO TIN TỨC"
+                              label="Deny"
+                              value={11}
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -149,13 +211,28 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('editNew')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="editNew1"
+                              name="ROLE_CHỈNH SỬA TIN TỨC"
+                              value={15}
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="editNew2"
+                              name="ROLE_CHỈNH SỬA TIN TỨC"
+                              value={15}
+                              label="Deny "
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -163,23 +240,40 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('deleteNew')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="deleteNew1"
+                              value={17}
+                              name="ROLE_XÓA TIN TỨC"
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="deleteNew2"
+                              value={17}
+                              name="ROLE_XÓA TIN TỨC"
+                              label="Deny"
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
                     </FormGroup>
+                    <h4>{t('category')}</h4>
+                    <hr />
                     <FormGroup>
                       <Row>
                         <Col xs="6">
                           <div>
                             <Label for="exampleCheckbox" inline>
-                              <h5>{t('admin.banners')}</h5>
+                              <h5>{t('admincategory')}</h5>
                             </Label>
                           </div>
                         </Col>
@@ -188,7 +282,6 @@ function RolesEdit({ editRole }) {
                             <ButtonGroup size="sm">
                               <Button>{t('Allow All')}</Button>
                               <Button>{t('Deny All')}</Button>
-                              <Button>{t('Inherit ALL')}</Button>
                             </ButtonGroup>
                           </div>
                         </Col>
@@ -197,13 +290,28 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('getcategory')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="getcategory1"
+                              value={3}
+                              name="ROLE_XEM THƯ MỤC"
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="getcategory2"
+                              value={3}
+                              name="ROLE_XEM THƯ MỤC"
+                              label="Deny"
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -211,13 +319,28 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('createcategory')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="createcategory1"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="createcategory2"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Deny"
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -225,13 +348,28 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('editcategory')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="editcategory1"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              label="Allow"
+                              value={5}
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="editcategory2"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              value={5}
+                              label="Deny "
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -239,13 +377,57 @@ function RolesEdit({ editRole }) {
                     <FormGroup>
                       <Row>
                         <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                          <Label for="exampleCheckbox">{t('deletecategory')}</Label>
                         </Col>
                         <Col xs="6">
                           <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
+                            <CustomInput
+                              type="radio"
+                              id="deletecategory11"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Allow"
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="deletecategory22"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Deny"
+                              inline
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('positioncategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="positioncategory1"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Allow"
+                              value={7}
+                              inline
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="positioncategory2"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Deny"
+                              value={7}
+                              inline
+                              onChange={deny}
+                            />
                           </div>
                         </Col>
                       </Row>
@@ -266,11 +448,16 @@ function RolesEdit({ editRole }) {
 
 RolesEdit.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return { detail: state.RoleReducer.detail, listPrivilege: state.RoleReducer.listPrivilege };
+};
 const mapDispatchToProps = {
-  editRole: RoleActions.EditRoles
+  editRole: RoleActions.EditRoles,
+  setpermission: RoleActions.setPermission,
+  getListPrivilege: RoleActions.getPrivilegeRole
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(RolesEdit);

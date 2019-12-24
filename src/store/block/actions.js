@@ -34,6 +34,15 @@ const Actions = {
   getBlockDetail: data => ({
     type: Actions.GET_BLOCK_DETAIL,
     data
+  }),
+
+  DELETE_BLOCK_VALUE_REQUEST: 'DELETE_BLOCK_VALUE_REQUEST',
+  DELETE_BLOCK_VALUE_RESPONSE: 'DELETE_BLOCK_VALUE_RESPONSE',
+
+  deleteBlockValueAction: (blockID, blockValueID) => ({
+    type: Actions.DELETE_BLOCK_VALUE_REQUEST,
+    blockID,
+    blockValueID
   })
 };
 

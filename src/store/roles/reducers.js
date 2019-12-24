@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  listPrivilege: []
 };
 
 const Roles = (state = initialState, action) => {
@@ -35,10 +36,15 @@ const Roles = (state = initialState, action) => {
           return values.id !== action.data;
         })
       };
-    case Actions.GET_DETAIL:
+    case Actions.GET_DETAIL_ROLES:
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_PRIVILEGE_ROLE_RESPONSE:
+      return {
+        ...state,
+        listPrivilege: action.data
       };
     default:
       return state;

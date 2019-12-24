@@ -32,6 +32,9 @@
     "search": "Search...",
     "previous": "Previous",
     "next": "Next",
+    "close": "Close",
+    "confirm": "Comfirm",
+    "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
         "enterprise": "Enterprise customers",

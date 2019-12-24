@@ -54,4 +54,51 @@ const deleteRolesService = id => {
     });
 };
 
-export { getRolesService, addRolesService, editRolesService, deleteRolesService };
+const acceptPrivilegeService = (id, data) => {
+  return request({
+    url: `/roles/accept_privilege/${id}`,
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+const removePrivilegeService = (id, data) => {
+  return request({
+    url: `/roles/accept_privilege/${id}`,
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+const getPrivilegeRoleService = id => {
+  return request({
+    url: `/privileges/role/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export {
+  getRolesService,
+  addRolesService,
+  editRolesService,
+  deleteRolesService,
+  acceptPrivilegeService,
+  removePrivilegeService,
+  getPrivilegeRoleService
+};

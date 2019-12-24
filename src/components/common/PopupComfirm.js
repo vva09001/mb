@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const PropsType = {
@@ -9,16 +10,17 @@ const PropsType = {
 };
 
 const PopupComfirm = ({ open, onClose, onComfirm }) => {
+  const { t } = useTranslation();
   return (
     <Modal isOpen={open} toggle={onClose} id="exampleModalCenter">
-      <ModalHeader toggle={onClose}>Xác nhận</ModalHeader>
-      <ModalBody>Bạn có chắc chắn muốn xóa ?</ModalBody>
+      <ModalHeader toggle={onClose}>{t('confirm')}</ModalHeader>
+      <ModalBody>{t('questionConfirm')}</ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={onComfirm}>
-          Xóa
+          {t('delete')}
         </Button>
         <Button color="secondary" onClick={onClose}>
-          Đóng
+          {t('close')}
         </Button>
       </ModalFooter>
     </Modal>

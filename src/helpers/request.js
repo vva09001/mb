@@ -13,9 +13,9 @@ const request = axios.create({
 request.interceptors.request.use(
   async config => {
     const token = await getToken();
-    request.defaults.headers.common['Authorization'] = token;
+    request.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     if (token !== null) {
-      config.headers.token = token;
+      config.headers.token = `Bearer ${token}`;
     }
     return config;
   },

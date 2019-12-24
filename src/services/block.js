@@ -53,4 +53,17 @@ const deleteBlockService = id => {
     });
 };
 
-export { getBlockService, createBlockService, editBlockService, deleteBlockService };
+const deleteBlockValuesService = (blockID, blockValueID) => {
+  return request({
+    url: `/blocks/${blockID}/blockValues/${blockValueID}`,
+    method: 'DELETE'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export { getBlockService, createBlockService, editBlockService, deleteBlockService, deleteBlockValuesService };

@@ -16,12 +16,12 @@ const Tags = (state = initialState, action) => {
     case Actions.CREATE_TAG_RESPONSE:
       return {
         ...state,
-        listTags: [...state.data, action.data]
+        listTags: [...state.listTags, action.data]
       };
     case Actions.EDIT_TAG_RESPONSE:
       return {
         ...state,
-        listTags: map(state.data, values => {
+        listTags: map(state.listTags, values => {
           if (values.id === action.data.id) {
             values = action.data;
           }
@@ -31,7 +31,7 @@ const Tags = (state = initialState, action) => {
     case Actions.DELETE_TAG_RESPONSE:
       return {
         ...state,
-        listTags: filter(state.data, values => {
+        listTags: filter(state.listTags, values => {
           return values.id !== action.data;
         })
       };
