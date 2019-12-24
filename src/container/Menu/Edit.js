@@ -26,7 +26,8 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
 
   useEffect(() => {
     getMenuItems(formState.values.id);
-  });
+    console.log(1);
+  }, [formState.values.id, getMenuItems]);
 
   useEffect(() => {
     console.log(formState.values);
