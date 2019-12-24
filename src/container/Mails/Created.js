@@ -91,7 +91,7 @@ function MailsCreate({ MailsCreate }) {
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">Gửi Đến</Label>
-              <Input type="text" name="email_cc" id="exampleName" onChange={handleChange} />
+              <Input type="text" name="emailCc" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label>Nội Dung</Label>

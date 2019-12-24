@@ -6,7 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { MailActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import history from 'helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -63,7 +62,6 @@ function MailEdit({ detail, editMail }) {
   const editMails = event => {
     event.preventDefault();
     editMail(formState.values);
-    history.push('/emails/list');
   };
 
   return (

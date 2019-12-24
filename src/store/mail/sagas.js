@@ -1,6 +1,7 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getMails, addMails, editMails, deleteMails } from '../../services/mails';
 import { Error, Success } from '../../helpers/notify';
+import history from 'helpers/history';
 import actions from './actions';
 
 function* getMailsSaga() {
@@ -25,6 +26,7 @@ function* addMailsSaga() {
       if (res.status === 200) {
         Success('Thêm mới thành công');
         yield put({ type: actions.ADD_MAILS_RESPONSE, data: res.data });
+        yield history.push('/emails/list');
       } else {
         yield Error(res.message);
       }
@@ -37,10 +39,12 @@ function* editMailsSaga() {
   yield takeLatest(actions.EDIT_MAILS_REQUEST, function*(params) {
     const { data } = params;
     try {
+      console.log(data);
       const res = yield editMails(data);
       if (res.status === 200) {
-        Success('Sửa thành công');
-        yield put({ type: actions.EDIT_MAILS_RESPONSE, data: res.data });
+        yield Success('Sửa thành công');
+        yield put({ type: actions.GET_MAILS_REQUEST, data: res.data });
+        yield history.push('/emails/list');
       } else {
         yield Error(res.message);
       }
