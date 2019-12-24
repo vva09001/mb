@@ -1,5 +1,4 @@
 import request from 'helpers/request';
-
 const getFormbuilderService = () => {
   return request({
     url: '/forms',

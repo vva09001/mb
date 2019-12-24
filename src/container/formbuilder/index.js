@@ -25,7 +25,7 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
   const { t } = useTranslation();
   const onGetDetail = detail => {
     getFormDetail(detail);
-    history.push('/form-builder/edit'); 
+    history.push('/form-builder/edit');
   };
   const openComfirm = () => {
     if (formID !== null) {
