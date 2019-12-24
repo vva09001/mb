@@ -74,7 +74,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getUsers: UserActions.GetUsers,
   deleteUsers: UserActions.DeleteUsers,
-  getDetailUsers: UserActions.getDetailUsers
+  getDetail: UserActions.getDetailUsers
 };
 
 export default connect(
