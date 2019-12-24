@@ -9,12 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  editUser: PropTypes.func
+  editUser: PropTypes.func,
+  detail: PropTypes.object
 };
 
-function UsersEdit({ editUser }) {
+function UsersEdit({ editUser, detail }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: detail,
     touched: {}
   });
   const [activeTab, setActiveTab] = useState('1');
@@ -296,7 +297,7 @@ function UsersEdit({ editUser }) {
                 </Col>
               </Row>
             </TabPane>
-            <TabPane tabId="1">
+            <TabPane tabId="3">
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
                 <h4>{t('newpassword')}</h4>
                 <FormGroup>
@@ -321,11 +322,15 @@ function UsersEdit({ editUser }) {
 
 UsersEdit.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return { detail: state.UserReducer.detail };
+};
+
 const mapDispatchToProps = {
   editUser: UserActions.EditUsers
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(UsersEdit);

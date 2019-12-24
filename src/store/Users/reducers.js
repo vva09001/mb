@@ -35,7 +35,7 @@ const Users = (state = initialState, action) => {
           return values.id !== action.data;
         })
       };
-    case Actions.GET_DETAIL:
+    case Actions.GET_DETAIL_USERS:
       return {
         ...state,
         detail: action.data

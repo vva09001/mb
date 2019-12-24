@@ -27,6 +27,10 @@ function RolesEdit({ editRole, detail, setpermission, listPrivilege, getListPriv
     getListPrivilege(formState.values.idRole);
   }, [formState.values.idRole, getListPrivilege]);
 
+  useEffect(() => {
+    console.log(listPrivilege);
+  });
+
   const [dataallow, setallowdata] = useState([]);
   const [datadeny, setdatadeny] = useState([]);
   const [activeTab, setActiveTab] = useState('1');
