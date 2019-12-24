@@ -1,6 +1,5 @@
 import Actions from './actions';
 import { filter, map } from 'lodash';
-import { actionChannel } from 'redux-saga/effects';
 
 const initialState = {
   data: [],

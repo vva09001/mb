@@ -7,8 +7,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { MailActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import { Error, Success } from '../../helpers/notify';
-import history from '../../helpers/history';
 import { connect } from 'react-redux';
 
 const PropsType = {
@@ -55,21 +53,11 @@ function MailsCreate({ MailsCreate }) {
         content: true
       }
     }));
-    console.log(formState);
+    // console.log(formState);
   };
-
-  const onSuccess = () => {
-    Success('Tạo thành công');
-    history.goBack();
-  };
-
-  const onFail = () => {
-    Error('Tạo thất bại');
-  };
-
   const createdMails = event => {
     event.preventDefault();
-    MailsCreate(formState.values, onSuccess, onFail);
+    MailsCreate(formState.values);
   };
   return (
     <React.Fragment>

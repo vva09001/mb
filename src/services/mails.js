@@ -16,7 +16,7 @@ const getMails = () => {
 const addMails = data => {
   return request({
     url: '/email',
-    methot: 'POST',
+    method: 'POST',
     data: data
   })
     .then(res => {
