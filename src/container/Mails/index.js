@@ -12,10 +12,10 @@ const PropsType = {
   data: PropTypes.array,
   getMails: PropTypes.func,
   deleteMails: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetailMails: PropTypes.func
 };
 
-function ListMail({ data, getMails, deleteMails, getDetail }) {
+function ListMail({ data, getMails, deleteMails, getDetailMails }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mailsID, setmailsID] = useState(null);
 
@@ -31,16 +31,16 @@ function ListMail({ data, getMails, deleteMails, getDetail }) {
     }
   };
 
+  const onGetDetail = detail => {
+    getDetailMails(detail);
+    history.push('/emails/edit');
+  };
+
   const onDelete = () => {
     if (mailsID !== null) {
       deleteMails(mailsID);
       setIsOpen(!isOpen);
     }
-  };
-
-  const onGetDetail = detail => {
-    getDetail(detail);
-    history.push('/emails/edit');
   };
 
   return (
@@ -74,8 +74,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getMails: MailActions.GetMails,
-  deleteMails: MailActions.DeleteMails,
-  getDetail: MailActions.getDetail
+  getDetailMails: MailActions.GetDetailMails,
+  deleteMails: MailActions.DeleteMails
 };
 
 export default connect(

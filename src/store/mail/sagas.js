@@ -1,6 +1,7 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getMails, addMails, editMails, deleteMails } from '../../services/mails';
 import { Error, Success } from '../../helpers/notify';
+import history from 'helpers/history';
 import actions from './actions';
 
 function* getMailsSaga() {
@@ -19,14 +20,14 @@ function* getMailsSaga() {
 }
 function* addMailsSaga() {
   yield takeLatest(actions.ADD_MAILS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield addMails(data);
       if (res.status === 200) {
-        yield onSuccess();
+        Success('Thêm mới thành công');
         yield put({ type: actions.ADD_MAILS_RESPONSE, data: res.data });
+        yield history.push('/emails/list');
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -36,14 +37,15 @@ function* addMailsSaga() {
 }
 function* editMailsSaga() {
   yield takeLatest(actions.EDIT_MAILS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
+      console.log(data);
       const res = yield editMails(data);
       if (res.status === 200) {
-        yield onSuccess();
-        yield put({ type: actions.EDIT_MAILS_RESPONSE, data: res.data });
+        yield Success('Sửa thành công');
+        yield put({ type: actions.GET_MAILS_REQUEST, data: res.data });
+        yield history.push('/emails/list');
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -57,7 +59,7 @@ function* deleteMailsSaga() {
     try {
       const res = yield deleteMails(id);
       if (res.status === 200) {
-        yield Success('Xóa thành công');
+        Success('Xóa thành công');
         yield put({ type: actions.DELETE_MAILS_RESPONSE, data: id });
       } else {
         yield Error('Xóa lỗi');
