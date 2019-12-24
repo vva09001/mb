@@ -49,8 +49,9 @@ const Actions = {
   ADD_MENUITEMS_REQUEST: 'ADD_MENUITEMS_REQUEST',
   ADD_MENUITEMS_RESPONSE: 'ADD_MENUITEMS_RESPONSE',
 
-  AddMenuItems: data => ({
+  AddMenuItems: (id, data) => ({
     type: Actions.ADD_MENUITEMS_REQUEST,
+    id,
     data
   }),
 
@@ -91,7 +92,9 @@ const Actions = {
     idMenuItem,
     idParent,
     positions
-  })
+  }),
+
+  GET_ALL_MENUITEM: 'GET_ALL_MENUITEM'
 };
 
 export default Actions;

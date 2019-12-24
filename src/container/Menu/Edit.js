@@ -15,10 +15,22 @@ const Proptype = {
   deleteMenuItem: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionMenuItem: Proptypes.func,
-  getMenuItems: Proptypes.func
+  getMenuItems: Proptypes.func,
+  detailItem: Proptypes.object,
+  dataItem: Proptypes.object
 };
 
-function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updatePositionMenuItem, getMenuItems }) {
+function EditMenus({
+  editMenu,
+  data,
+  detail,
+  deleteMenuItem,
+  expanstion,
+  updatePositionMenuItem,
+  getMenuItems,
+  detailItem,
+  dataItem
+}) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
@@ -26,11 +38,10 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
 
   useEffect(() => {
     getMenuItems(formState.values.id);
-    console.log(1);
   }, [formState.values.id, getMenuItems]);
 
   useEffect(() => {
-    console.log(formState.values);
+    console.log(dataItem);
   });
 
   // const [isOpen, setIsOpen] = useState(false);
@@ -185,7 +196,9 @@ EditMenus.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     detail: state.MenuReducer.detail,
-    data: state.MenuReducer.data
+    data: state.MenuReducer.data,
+    detailItem: state.MenuReducer.detailItem,
+    dataItem: state.MenuReducer.dataItem
   };
 };
 

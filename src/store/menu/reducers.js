@@ -3,7 +3,10 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  dataItem: [],
+  detailItem: {},
+  dataAllItem: []
 };
 
 const Menus = (state = initialState, action) => {
@@ -41,20 +44,19 @@ const Menus = (state = initialState, action) => {
         detail: action.data
       };
     case Actions.GET_MENUITEMS_RESPONSE:
-      console.log(action.data);
       return {
         ...state,
-        data: action.data
+        dataItem: action.data
       };
     case Actions.ADD_MENUITEMS_RESPONSE:
       return {
         ...state,
-        detail: action.data
+        dataItem: action.data
       };
     case Actions.EDIT_MENUITEMS_REQUEST:
       return {
         ...state,
-        data: map(state.data, values => {
+        dataItem: map(state.dataItem, values => {
           if (values.id === action.data.id) {
             values = action.data;
           }
@@ -64,19 +66,24 @@ const Menus = (state = initialState, action) => {
     case Actions.DELETE_MENUITEMS_RESPONSE:
       return {
         ...state,
-        data: filter(state.data, values => {
+        dataItem: filter(state.dataItem, values => {
           return values.id !== action.data;
         })
       };
     case Actions.GET_DETAIL_MENUITEM:
       return {
         ...state,
-        detail: { ...action.data }
+        detailItem: { ...action.data }
       };
     case Actions.EXPANSION_TOOGLE_MENUITEM:
       return {
         ...state,
-        data: action.data
+        dataItem: action.data
+      };
+    case Actions.GET_ALL_MENUITEM:
+      return {
+        ...state,
+        dataAllItem: action.data
       };
     default:
       return state;
