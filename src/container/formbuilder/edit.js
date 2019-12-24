@@ -1,4 +1,4 @@
-import React, { createRef, useState, useEffect } from 'react';
+import React, { createRef, useState } from 'react';
 import $ from 'jquery';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ const Proptype = {
   editForm: Proptypes.func
 };
 
-function FormBuilder({ formDetail, editForm }) {
+function EditFormBuilder({ formDetail, editForm }) {
   const fb = createRef();
   const { t } = useTranslation();
   const [formState, setFormState] = useState({
@@ -32,10 +32,10 @@ function FormBuilder({ formDetail, editForm }) {
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
-  useEffect(() => {
-    $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [!fb.current, !options]);
+  // useEffect(() => {
+  //   $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [!fb.current, !options]);
 
   const handleChange = event => {
     event.persist();
@@ -90,7 +90,7 @@ function FormBuilder({ formDetail, editForm }) {
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
-          <Button type="submit" color="primary" disabled={checkSubmit}>
+          <Button type="submit" color="primary">
             {t('save')}
           </Button>
         </Form>
@@ -99,7 +99,7 @@ function FormBuilder({ formDetail, editForm }) {
   );
 }
 
-FormBuilder.propTypes = Proptype;
+EditFormBuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
@@ -114,4 +114,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FormBuilder);
+)(EditFormBuilder);

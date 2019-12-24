@@ -22,6 +22,7 @@ import MailsCreate from '../container/Mails/Created';
 import MailEdit from '../container/Mails/Edit';
 import ListFormBuilder from 'container/formbuilder';
 import CreatedFormBuilder from 'container/formbuilder/created';
+import EditFormBuilder from 'container/formbuilder/edit';
 import Resemail from 'container/formbuilder/reponsivemail/index';
 import Formdata from 'container/formbuilder/formdata/index';
 import SettingHome from 'container/SettingHome/index';
@@ -61,6 +62,7 @@ const DashboardRoutes = () => (
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
+    <Route path="/form-builder/edit" exact component={EditFormBuilder} />
     <Route path="/form-builder/:id/email" exact component={Resemail} />
     <Route path="/form-builder/:id/formdata" exact component={Formdata} />
     {/* <Route path="/form-builder/email" exact component={Resemail} /> */}
