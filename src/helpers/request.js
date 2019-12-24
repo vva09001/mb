@@ -10,13 +10,10 @@ const request = axios.create({
   }
 });
 
+request.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
+
 request.interceptors.request.use(
   async config => {
-    const token = await getToken();
-    request.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    if (token !== null) {
-      config.headers.token = `Bearer ${token}`;
-    }
     return config;
   },
   error => {
