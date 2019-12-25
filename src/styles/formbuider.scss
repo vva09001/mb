@@ -12,3 +12,20 @@
     display: inline-block;
     background-color: #f53a0b;
   }
+  
+  input[type="radio"],
+  input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+    margin-right: 10px;
+  }
+
+  .table_data{
+    background: rgb(255, 255, 255);
+    padding: 10px;
+  }
+
+  
+.cetegoryFrom textarea{
+  min-height:150px;
+}
