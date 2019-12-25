@@ -137,5 +137,11 @@
     },
     "media": {
         "title": "Media"
+    },
+    "mail": {
+        "code": "Code",
+        "subject": "Subject",
+        "emailCc": "To",
+        "content": "Content"
     }
 }

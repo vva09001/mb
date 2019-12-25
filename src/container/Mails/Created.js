@@ -82,19 +82,19 @@ function MailsCreate({ MailsCreate }) {
               <Input type="text" name="name" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Mã</Label>
+              <Label for="exampleName">{t('mail.code')}</Label>
               <Input type="text" name="code" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Chủ Đề</Label>
+              <Label for="exampleName">{t('mail.subject')}</Label>
               <Input type="text" name="subject" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Gửi Đến</Label>
+              <Label for="exampleName">{t('mail.emailCc')}</Label>
               <Input type="text" name="emailCc" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label>Nội Dung</Label>
+              <Label>{t('mail.content')}</Label>
               <CKEditor
                 editor={ClassicEditor}
                 onChange={(event, editor) => {

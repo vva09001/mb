@@ -87,11 +87,11 @@ function MailEdit({ detail, editMail }) {
               <Input type="text" name="name" value={formState.values.name} id="exampleName1" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Mã</Label>
+              <Label for="exampleName">{t('mail.code')}</Label>
               <Input type="text" name="code" value={formState.values.code} id="exampleName2" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Chủ Đề</Label>
+              <Label for="exampleName">{t('mail.subject')}</Label>
               <Input
                 type="text"
                 name="subject"
@@ -101,7 +101,7 @@ function MailEdit({ detail, editMail }) {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Gửi Đến</Label>
+              <Label for="exampleName">{t('mail.emailCc')}</Label>
               <Input
                 type="text"
                 name="emailCc"
