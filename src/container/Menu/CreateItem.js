@@ -57,8 +57,8 @@ function CreateMenusItem({
         [event.target.name]: true
       }
     }));
-    console.log(active);
-    setActive(event.target.name === 'loai' ? parseInt(event.target.value) : 0);
+
+    setActive(event.target.name === 'type' ? parseInt(event.target.value) : 0);
   };
   const onSubmit = event => {
     event.preventDefault();
