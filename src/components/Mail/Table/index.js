@@ -15,7 +15,6 @@ const PropsType = {
 const MailTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
@@ -31,9 +30,9 @@ const MailTable = ({ data, getID, getDetail }) => {
           </tr>
         </thead>
         <tbody>
-          {map(list, values => {
+          {map(list, (values, index) => {
             return (
-              <tr key={values.id}>
+              <tr key={index}>
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>

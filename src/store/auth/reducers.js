@@ -11,6 +11,12 @@ const Auth = (state = initialState, action) => {
         ...state,
         profile: action.data
       };
+    case Actions.LOGOUT_REQUEST:
+      localStorage.setItem('logged', false);
+      return {
+        ...state,
+        profile: {}
+      };
     default:
       return state;
   }

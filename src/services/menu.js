@@ -67,9 +67,9 @@ const getMenuItems = id => {
     });
 };
 
-const addMenuItems = data => {
+const addMenuItems = (id, data) => {
   return request({
-    url: `/menu/${data.menuid}/menuItem`,
+    url: `/menu/${id}/menuItem`,
     method: 'POST',
     data: data
   })
