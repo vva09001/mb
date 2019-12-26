@@ -6,8 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { MailActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import { Error, Success } from '../../helpers/notify';
-import history from '../../helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -52,28 +50,20 @@ function MailEdit({ detail, editMail }) {
       ...formState,
       values: {
         ...formState.values,
-        description: data
+        content: data
       },
       touched: {
         ...formState.touched,
-        description: true
+        content: true
       }
     }));
   };
 
-  const onSuccess = () => {
-    Success('Sửa thành công');
-    history.goBack();
-  };
-
-  const onFail = () => {
-    Error('Sửa thất bại');
-  };
-
   const editMails = event => {
     event.preventDefault();
-    editMail(formState.values, onSuccess, onFail);
+    editMail(formState.values);
   };
+
   return (
     <React.Fragment>
       <Nav tabs>
@@ -91,26 +81,39 @@ function MailEdit({ detail, editMail }) {
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <Form className="p-3" style={{ background: '#fff' }} onSubmit={editMails}>
-            <h4>{t('create')}</h4>
+            <h4>Chỉnh sửa</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+              <Input type="text" name="name" value={formState.values.name} id="exampleName1" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Mã</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+              <Label for="exampleName">{t('mail.code')}</Label>
+              <Input type="text" name="code" value={formState.values.code} id="exampleName2" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Chủ Đề</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+              <Label for="exampleName">{t('mail.subject')}</Label>
+              <Input
+                type="text"
+                name="subject"
+                value={formState.values.subject}
+                id="exampleName3"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">Gửi Đến</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+              <Label for="exampleName">{t('mail.emailCc')}</Label>
+              <Input
+                type="text"
+                name="emailCc"
+                value={formState.values.emailCc}
+                id="exampleName4"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>Nội Dung</Label>
               <CKEditor
+                data={formState.values.content}
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -134,11 +137,11 @@ const mapStateToProps = state => {
   return { detail: state.MailReducer.detail };
 };
 
-const mamapDispatchToProps = {
-  editMail: MailActions.EditMail
+const mapDispatchToProps = {
+  editMail: MailActions.EditMails
 };
 
 export default connect(
   mapStateToProps,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(MailEdit);

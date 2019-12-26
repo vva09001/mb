@@ -38,12 +38,16 @@ const News = (state = initialState, action) => {
     case Actions.GET_DETAIL:
       return {
         ...state,
+<<<<<<< HEAD
         detail: {
           ...action.data,
           name: action.data.name,
           shortDescription: action.data.shortDescription,
           description: action.data.description
         }
+=======
+        detail: action.data
+>>>>>>> b702429fcde75cd9b4484ec84845a701058011cd
       };
     default:
       return state;

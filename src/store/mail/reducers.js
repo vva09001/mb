@@ -16,7 +16,7 @@ const Mails = (state = initialState, action) => {
     case Actions.ADD_MAILS_RESPONSE:
       return {
         ...state,
-        data: [...state.data, action.data]
+        data: action.data
       };
     case Actions.EDIT_MAILS_RESPONSE:
       return {
