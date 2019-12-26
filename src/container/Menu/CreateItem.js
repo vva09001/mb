@@ -41,6 +41,9 @@ function CreateMenusItem({
     getMenuItems(dataMenu.id);
   }, [getPages, getCategorys, getMenu, getMenuItems, dataMenu.id]);
 
+  useEffect(() => {
+    console.log(formState.values);
+  });
   const { t } = useTranslation();
   const handleChange = event => {
     event.persist();
@@ -58,7 +61,7 @@ function CreateMenusItem({
       }
     }));
 
-    setActive(event.target.name === 'type' ? parseInt(event.target.value) : 0);
+    setActive(event.target.name === 'type' ? parseInt(event.target.value) : active);
   };
   const onSubmit = event => {
     event.preventDefault();
@@ -163,7 +166,7 @@ function CreateMenusItem({
               <div className="check__box">
                 <Label>{t('status')}</Label>
                 <div>
-                  <Input type="checkbox" name="_Active" onChange={handleChange} />
+                  <Input type="checkbox" name="active" onChange={handleChange} />
                   <span>{t('Enablethemenuitem')}</span>
                 </div>
               </div>

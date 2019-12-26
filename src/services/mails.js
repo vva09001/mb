@@ -1,4 +1,4 @@
-import request from '../helpers/request';
+import request from 'helpers/request';
 
 const getMails = () => {
   return request({

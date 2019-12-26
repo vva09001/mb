@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
-import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 const PropsType = {
   data: PropTypes.array,

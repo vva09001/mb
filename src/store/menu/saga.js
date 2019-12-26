@@ -85,10 +85,11 @@ function* getMenuItemsSaga() {
   yield takeLatest(actions.GET_MENUITEMS_REQUEST, function*(params) {
     const { id } = params;
     try {
+      console.log(id);
       const res = yield getMenuItems(id);
       let data = [];
       if (res.status === 200) {
-        const nest = (items, id = 0, link = 'parentId') => {
+        const nest = (items, id = null, link = 'parentId') => {
           return items
             .filter(item => item[link] === id)
             .map(item => ({

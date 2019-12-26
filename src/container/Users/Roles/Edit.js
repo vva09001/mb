@@ -12,16 +12,20 @@ import { connect } from 'react-redux';
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
-  setpermission: PropTypes.func,
+  getpermission: PropTypes.func,
   listPrivilege: PropTypes.array,
   getListPrivilege: PropTypes.func
 };
 
-function RolesEdit({ editRole, detail, setpermission, listPrivilege, getListPrivilege }) {
+function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPrivilege }) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
   });
+
+  // const [activeTab, setActiveTab] = useState('1');
+
+  // const []
 
   useEffect(() => {
     getListPrivilege(formState.values.idRole);
@@ -72,7 +76,7 @@ function RolesEdit({ editRole, detail, setpermission, listPrivilege, getListPriv
   };
   const onSubmitPermission = event => {
     event.preventDefault();
-    setpermission(formState.values.idRole, dataallow, datadeny);
+    getpermission(formState.values.idRole, dataallow, datadeny);
   };
   return (
     <React.Fragment>
@@ -453,7 +457,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = {
   editRole: RoleActions.EditRoles,
-  setpermission: RoleActions.setPermission,
+  getpermission: RoleActions.setPermission,
   getListPrivilege: RoleActions.getPrivilegeRole
 };
 

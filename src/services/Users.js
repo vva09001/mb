@@ -36,7 +36,7 @@ const addUsersService = data => {
 };
 const apprUsersService = data => {
   return request({
-    url: '/users/change_active/${data.id}',
+    url: `/users/change_active/${data.id}`,
     method: 'PUT',
     data: data
   })
