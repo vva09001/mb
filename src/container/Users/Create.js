@@ -43,10 +43,16 @@ function UsersCreate({ addUser }) {
 
   const onSubmitUsers = event => {
     event.preventDefault();
-    addUser(formState.values);
+    console.log(formState.values);
+    const body = {
+      ...formState.values,
+      roles: [formState.values.roles]
+    };
+    addUser(body);
   };
   const onSubmitPermission = event => {
     event.preventDefault();
+    
     addUser(formState.values);
   };
   return (
@@ -81,19 +87,27 @@ function UsersCreate({ addUser }) {
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('user.fistname')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="fistName"  onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleName">{t('user.lastname')}</Label>
-                  <Input type="text" name="lastname" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="lastName"  onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleName">{t('user.username')}</Label>
+                  <Input type="text" name="username"  onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleName">{t('user.nickname')}</Label>
+                  <Input type="text" name="nickname"  onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleName">{t('user.department')}</Label>
-                  <Input type="text" name="department" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="department"  onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleName">{t('user.position')}</Label>
-                  <Input type="text" name="position" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="position"  onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleName">{t('email.email')}</Label>

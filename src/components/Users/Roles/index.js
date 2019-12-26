@@ -15,7 +15,6 @@ const PropsType = {
 const RolesTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>

@@ -1,9 +1,17 @@
-import request from 'helpers/request';
+import axios from 'axios';
+
+const request = axios.create({
+  baseURL: 'https://bank1712.herokuapp.com/api',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
 
 const getUsersService = () => {
   return request({
     url: '/users',
-    method: 'GET'
+   method: 'GET'
   })
     .then(res => {
       return res;
@@ -15,7 +23,7 @@ const getUsersService = () => {
 
 const addUsersService = data => {
   return request({
-    url: '/users',
+    url: '/users/register',
     method: 'POST',
     data: data
   })
@@ -28,7 +36,7 @@ const addUsersService = data => {
 };
 const apprUsersService = data => {
   return request({
-    url: `/users/change_active/${data.id}`,
+    url: '/users/change_active/${data.id}',
     method: 'PUT',
     data: data
   })
