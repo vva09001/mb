@@ -35,6 +35,8 @@
     "close": "Đóng",
     "confirm": "Xác nhận",
     "questionConfirm": "Bạn có chắc chắn muốn xóa ?",
+    "sidebar": "Thanh bên",
+    "select": "Chọn...",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",

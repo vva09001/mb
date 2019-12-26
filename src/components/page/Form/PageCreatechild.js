@@ -76,18 +76,6 @@ function PagesCreateChildren({ onSubmit, handleChange, value, onDelete, deleteAc
               <Label check>
                 <Input
                   type="checkbox"
-                  name="status"
-                  checked={value.status === 0 || value.status === undefined ? false : true}
-                  value={value.status === 0 ? false : value.status}
-                  onChange={handleChange}
-                />
-                {t('status')}
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="checkbox"
                   name="has_sidebar"
                   checked={value.has_sidebar === 0 || value.has_sidebar === undefined ? false : true}
                   value={value.has_sidebar === 0 ? false : value.has_sidebar}

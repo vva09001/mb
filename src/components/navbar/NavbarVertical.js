@@ -23,42 +23,6 @@ const NavbarVertical = () => {
         <Nav navbar vertical>
           <NavbarVerticalMenu routes={routes} handleNavbarVerticalCollapse={handleNavbarVerticalCollapse} />
         </Nav>
-        {/* <div className={`px-3 px-${navbarBreakPoint}-0`}>
-          <hr className="border-300 my-3" />
-          <h6 className="text-uppercase fs--2 font-weight-semi-bold ls text-600">Settings</h6>
-          <div
-            className="bg-light border py-card rounded"
-            style={{ paddingLeft: '1.4375rem', paddingRight: '1.4375rem' }}
-          >
-            <CustomInput
-              type="checkbox"
-              id="rtl"
-              name="rtl"
-              label="RTL Layout"
-              checked={isRTL}
-              onChange={({ target }) => setRTL(target.checked)}
-            />
-            <CustomInput
-              type="checkbox"
-              id="fluid"
-              name="fluid"
-              label="Fluid Container"
-              checked={isFluid}
-              onChange={({ target }) => setFluid(target.checked)}
-            />
-          </div>
-        </div>
-        <Button
-          tag={'a'}
-          href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template-react/"
-          target="_blank"
-          color="primary"
-          size="sm"
-          block
-          className="my-3"
-        >
-          Purchase
-        </Button> */}
       </Collapse>
     </Navbar>
   );

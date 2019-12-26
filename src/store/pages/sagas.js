@@ -15,9 +15,8 @@ function* getPagesSaga() {
     try {
       const res = yield getPagesService();
       let data = [];
-
       if (res.status === 200) {
-        const nest = (items, id = 0, link = 'parentId') => {
+        const nest = (items, id = 0, link = 'parent_id') => {
           return items
             .filter(item => item[link] === id)
             .map(item => ({
