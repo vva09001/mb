@@ -82,7 +82,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
     event.preventDefault();
     const body = {
       ...formState.values,
-      newsTranslations: [formState.values]
+      newsBlocks: []
     };
     newsCreate(body, onSuccess, onFail);
   };
@@ -118,15 +118,11 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" onChange={handleChange} />
+                  <Input type="text" name="title" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
                   <Input type="textarea" name="shortDescription" rows="5" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleFile">{t('imgDescription')}</Label>
-                  <Input type="file" name="file" />
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
@@ -144,18 +140,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <Input type="file" name="file" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="category_news_id" onChange={handleChange}>
-                    <option>Chọn...</option>
-                    {map(listOptions, value => (
-                      <option value={value.id} key={value.id}>
-                        {value.name}
-                      </option>
-                    ))}
-                  </Input>
+                  <Input type="file" name="base_Images" />
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('sticky')}</Label>
@@ -166,9 +151,9 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </div>
                 <FormGroup>
                   <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="builder_id" onChange={handleChange}>
+                  <Input type="select" name="category" onChange={handleChange}>
                     <option>Chọn...</option>
-                    {map(listForm, value => (
+                    {map(listOptions, value => (
                       <option value={value.id} key={value.id}>
                         {value.name}
                       </option>
@@ -186,6 +171,10 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 <FormGroup>
                   <Label for="exampleName">{t('meta.title')}</Label>
                   <Input type="text" name="meta_title" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('URL')}</Label>
+                  <Input type="text" name="url" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('meta.keywords')}</Label>
@@ -216,7 +205,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mamapDispatchToProps = {
+const mapDispatchToProps = {
   newsCreate: NewActions.AddNews,
   getCategory: CategoryActions.getCategoryAction,
   getForm: FormBuilderActions.getFormAction
@@ -224,5 +213,5 @@ const mamapDispatchToProps = {
 
 export default connect(
   mapStateToProps,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(NewsCreate);

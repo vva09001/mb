@@ -1,5 +1,12 @@
 import request from 'helpers/request';
-
+// import axios from 'axios';
+// const request = axios.create({
+//   baseURL: 'https://bank1712.herokuapp.com/vi/api/',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     Accept: 'application/json'
+//   }
+// });
 const getNews = () => {
   return request({
     url: '/news',
@@ -29,7 +36,7 @@ const addNews = data => {
 
 const editNews = data => {
   return request({
-    url: `/news/${data.id}`,
+    url: `/news/${data.newsId}`,
     method: 'PUT',
     data: data
   })
@@ -43,7 +50,7 @@ const editNews = data => {
 
 const aprrNews = data => {
   return request({
-    url: `/news/accept/${data.id}`,
+    url: `/news/accept/${data.newsId}`,
     method: 'PUT',
     data: data
   })
