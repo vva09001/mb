@@ -6,7 +6,6 @@ import DashboardLayout from './DashboardLayout';
 import { PrivateRoute } from 'helpers/PrivateRoute';
 import ErrorLayout from './ErrorLayout';
 import history from 'helpers/history';
-
 import loadable from '@loadable/component';
 const AuthBasicLayout = loadable(() => import('./AuthBasicLayout'));
 const Landing = loadable(() => import('../components/landing/Landing'));
