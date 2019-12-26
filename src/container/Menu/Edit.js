@@ -38,6 +38,7 @@ function EditMenus({
 
   useEffect(() => {
     getMenuItems(formState.values.id);
+    console.log(formState.values.id)
   }, [formState.values.id, getMenuItems]);
 
   // const [isOpen, setIsOpen] = useState(false);
@@ -87,13 +88,6 @@ function EditMenus({
     }
     const newData = toggleExpandedForAll({ treeData: dataItem, expanded });
     expanstion(newData);
-  };
-
-  const click = (node, path) => {
-    setFormState(formState => ({
-      ...formState,
-      values: node
-    }));
   };
 
   const onMove = treeData => {
@@ -152,9 +146,6 @@ function EditMenus({
             <SortableTree
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
-              generateNodeProps={({ node, path }) => ({
-                onClick: () => click(node, path)
-              })}
               onMoveNode={treeData => onMove(treeData)}
             />
           </div>

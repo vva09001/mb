@@ -118,7 +118,7 @@ function* addMenuItemsSaga() {
       const res = yield addMenuItems(id, data);
       if (res.status === 200) {
         Success('Thêm Thành Công');
-        yield put({ type: actions.ADD_MENUITEMS_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data.menuId });
         history.push('/menu/edit');
       } else {
         yield Error(res.message);
