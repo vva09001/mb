@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
-import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -26,11 +25,7 @@ const UsersTable = ({ data, getID, getDetail }) => {
               <input type="checkbox" />
             </th>
             <th>{t('user.username')}</th>
-            <th>{t('user.fistname')}</th>
-            <th>{t('user.lastname')}</th>
-            <th>{t('email.email')}</th>
-            <th>{t('loginForm.login')}</th>
-            <th>{t('created')}</th>
+            <th>{t('user.nickname')}</th>
           </tr>
         </thead>
         <tbody>
@@ -41,11 +36,7 @@ const UsersTable = ({ data, getID, getDetail }) => {
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td onClick={() => getDetail(values)}>{values.username}</td>
-                <td onClick={() => getDetail(values)}>{values.firstname}</td>
-                <td onClick={() => getDetail(values)}>{values.lastname}</td>
-                <td onClick={() => getDetail(values)}>{values.email}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.login).fromNow()}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>{values.nickname}</td>
               </tr>
             );
           })}

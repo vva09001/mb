@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
-
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { UserActions } from '../../store/actions';
@@ -44,10 +43,13 @@ function UsersEdit({ editUser, detail }) {
 
   const onSubmitUsers = event => {
     event.preventDefault();
+    console.log(formState.values);
     editUser(formState.values);
   };
+  
   const onSubmitPermission = event => {
     event.preventDefault();
+    console.log(formState.values);
     editUser(formState.values);
   };
   return (
@@ -92,35 +94,16 @@ function UsersEdit({ editUser, detail }) {
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('user.fistname')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="username" id="exampleName"  />
                 </FormGroup>
+                
                 <FormGroup>
                   <Label for="exampleName">{t('user.lastname')}</Label>
-                  <Input type="text" name="lastname" id="exampleName" onChange={handleChange} />
+                  <Input type="text" name="nickname" id="exampleName"/>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.department')}</Label>
-                  <Input type="text" name="department" id="exampleName" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('user.position')}</Label>
-                  <Input type="text" name="position" id="exampleName" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('email.email')}</Label>
-                  <Input type="text" name="email" id="exampleName" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('roles')}</Label>
-                  <Input type="text" name="roles" id="exampleName" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('loginForm.password')}</Label>
-                  <Input type="text" name="password" id="exampleName" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('user.confirm')}</Label>
-                  <Input type="text" name="cpassword" id="exampleName" onChange={handleChange} />
+                  <Label for="exampleName">pass</Label>
+                  <Input type="text" name="password" id="exampleName"  />
                 </FormGroup>
 
                 <Button color="primary" type="submit">
