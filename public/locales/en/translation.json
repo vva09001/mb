@@ -9,10 +9,10 @@
     "news": "News",
     "summary": "Summary",
     "authName": "Auth Name",
-    "description": "Aescription",
+    "description": "Description",
     "imgDescription": "Images Description",
     "baseImages": "Base Images",
-    "category": "category",
+    "category": "Category",
     "general": "General",
     "seo": "SEO",
     "edit": "Edit",
@@ -137,5 +137,11 @@
     },
     "media": {
         "title": "Media"
+    },
+    "mail": {
+        "code": "Code",
+        "subject": "Subject",
+        "emailCc": "To",
+        "content": "Content"
     }
 }

@@ -37,12 +37,12 @@ const NewTable = ({ data, getID, getDetail }) => {
             return (
               <tr key={values.id}>
                 <th>
-                  <input type="checkbox" onClick={() => getID(values.id)} />
+                  <input type="checkbox" onClick={() => getID(values.newsId)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.newsTranslation[0].name}</td>
+                <td onClick={() => getDetail(values)}>{values.title}</td>
                 <td onClick={() => getDetail(values)}>
                   <td onClick={() => getDetail(values)}>
-                    <span className={values.status === 1 ? 'green' : 'dot'} />
+                    <span className={values.is_active === 1 ? 'green' : 'dot'} />
                   </td>
                 </td>
                 <td onClick={() => getDetail(values)}>{values.is_sticky === 1 ? 'true' : 'false'}</td>

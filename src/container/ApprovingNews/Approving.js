@@ -70,7 +70,10 @@ function AprrEdit({ detail, AprrNew }) {
   };
   const aprrNews = event => {
     event.preventDefault();
-    AprrNew(formState.values, onSuccess, onFail);
+    const body = {
+      newsBlocks: []
+    };
+    AprrNew(formState.values, onSuccess, onFail, body);
   };
   return (
     <React.Fragment>
@@ -102,15 +105,17 @@ function AprrEdit({ detail, AprrNew }) {
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
+              <Input type="text" name="title" value={formState.values.title} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('summary')}</Label>
-              <Input type="textarea" name="slug" rows="5" value={formState.values.slug} onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleFile">{t('imgDescription')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
+              <Input
+                type="textarea"
+                name="shortDescription"
+                rows="5"
+                value={formState.values.shortDescription}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>{t('description')}</Label>
@@ -129,16 +134,11 @@ function AprrEdit({ detail, AprrNew }) {
             </FormGroup>
             <FormGroup>
               <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="file" id="exampleFile" />
+              <Input type="file" name="base_image" id="exampleFile" />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
-              <Input
-                type="select"
-                name="category_news_id"
-                value={formState.values.category_news_id}
-                onChange={handleChange}
-              >
+              <Input type="select" name="category" value={formState.values.category} onChange={handleChange}>
                 <option value={0}>Tin tức</option>
                 <option value={1}>Doanh nghiệp</option>
                 <option value={2}>Hoạt động</option>
