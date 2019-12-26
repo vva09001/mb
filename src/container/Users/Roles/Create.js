@@ -45,6 +45,7 @@ function RolesCreate({ addRole }) {
   const onSubmitRoles = event => {
     event.preventDefault();
     addRole(formState.values);
+    console.log(formState.values)
   };
   const onSubmitPermission = event => {
     event.preventDefault();

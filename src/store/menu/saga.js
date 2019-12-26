@@ -85,10 +85,11 @@ function* getMenuItemsSaga() {
   yield takeLatest(actions.GET_MENUITEMS_REQUEST, function*(params) {
     const { id } = params;
     try {
+      console.log(id);
       const res = yield getMenuItems(id);
       let data = [];
       if (res.status === 200) {
-        const nest = (items, id = 0, link = 'parentId') => {
+        const nest = (items, id = null, link = 'parentId') => {
           return items
             .filter(item => item[link] === id)
             .map(item => ({
@@ -100,6 +101,7 @@ function* getMenuItemsSaga() {
         };
         data = nest(res.data);
         yield put({ type: actions.GET_MENUITEMS_RESPONSE, data: data });
+        yield put({ type: actions.GET_ALL_MENUITEM, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -111,9 +113,9 @@ function* getMenuItemsSaga() {
 
 function* addMenuItemsSaga() {
   yield takeLatest(actions.ADD_MENUITEMS_REQUEST, function*(params) {
-    const { data } = params;
+    const { id, data } = params;
     try {
-      const res = yield addMenuItems(data);
+      const res = yield addMenuItems(id, data);
       if (res.status === 200) {
         Success('Thêm Thành Công');
         yield put({ type: actions.ADD_MENUITEMS_RESPONSE, data: res.data });

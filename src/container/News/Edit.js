@@ -96,7 +96,8 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
     event.preventDefault();
     const body = {
       ...formState.values,
-      newsTranslations: [formState.values]
+      url: '',
+      newsBlocks: []
     };
     editNew(body, onSuccess, onFail);
   };
@@ -130,7 +131,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
+              <Input type="text" name="title" value={formState.values.title} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('summary')}</Label>
@@ -138,13 +139,9 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
                 type="textarea"
                 name="shortDescription"
                 rows="5"
-                value={formState.values.slug}
+                value={formState.values.shortDescription}
                 onChange={handleChange}
               />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleFile">{t('imgDescription')}</Label>
-              <Input type="file" name="file" />
             </FormGroup>
             <FormGroup>
               <Label>{t('description')}</Label>
@@ -163,16 +160,11 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             </FormGroup>
             <FormGroup>
               <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="file" />
+              <Input type="file" name="base_Images" />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
-              <Input
-                type="select"
-                name="category_news_id"
-                value={formState.values.category_news_id}
-                onChange={handleChange}
-              >
+              <Input type="select" name="category" value={formState.values.category} onChange={handleChange}>
                 <option>Chọn...</option>
                 {map(listOptions, value => (
                   <option value={value.id} key={value.id}>
@@ -193,17 +185,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>
-            <FormGroup>
-              <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="builder_id" value={formState.values.builder_id} onChange={handleChange}>
-                <option>Chọn...</option>
-                {map(listForm, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.name}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
             <Button color="primary" type="submit">
               {t('edit')}
             </Button>

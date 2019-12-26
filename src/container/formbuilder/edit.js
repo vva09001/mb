@@ -17,7 +17,7 @@ const Proptype = {
   editForm: Proptypes.func
 };
 
-function FormBuilder({ formDetail, editForm }) {
+function EditFormBuilder({ formDetail, editForm }) {
   const fb = createRef();
   const { t } = useTranslation();
   const [formState, setFormState] = useState({
@@ -90,7 +90,7 @@ function FormBuilder({ formDetail, editForm }) {
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
-          <Button type="submit" color="primary" disabled={checkSubmit}>
+          <Button type="submit" color="primary">
             {t('save')}
           </Button>
         </Form>
@@ -99,7 +99,7 @@ function FormBuilder({ formDetail, editForm }) {
   );
 }
 
-FormBuilder.propTypes = Proptype;
+EditFormBuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
@@ -114,4 +114,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FormBuilder);
+)(EditFormBuilder);

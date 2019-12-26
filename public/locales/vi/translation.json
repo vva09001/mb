@@ -168,5 +168,11 @@
     },
     "media": {
         "title": "Thư viện"
+    },
+    "mail": {
+        "code": "Mã",
+        "subject": "Chủ đề",
+        "emailCc": "Gửi đến",
+        "content": "Nội dung"
     }
 }

@@ -1,4 +1,4 @@
-import request from '../helpers/request';
+import request from 'helpers/request';
 
 const getMails = () => {
   return request({
@@ -16,7 +16,7 @@ const getMails = () => {
 const addMails = data => {
   return request({
     url: '/email',
-    methot: 'POST',
+    method: 'POST',
     data: data
   })
     .then(res => {
@@ -26,7 +26,6 @@ const addMails = data => {
       return error.response.data;
     });
 };
-
 const editMails = data => {
   return request({
     url: `/email/${data.id}`,
@@ -41,16 +40,15 @@ const editMails = data => {
     });
 };
 
-const deleteMails = idMail => {
-  return request({
-    url: `/email/${idMail}`,
-    method: 'DELETE'
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(error => {
-      return error.response.data;
+const deleteMails = async id => {
+  try {
+    const res = await request({
+      url: `/email/${id}`,
+      method: 'DELETE'
     });
+    return res;
+  } catch (error) {
+    return error.response.data;
+  }
 };
 export { getMails, addMails, editMails, deleteMails };

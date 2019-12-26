@@ -15,10 +15,22 @@ const Proptype = {
   deleteMenuItem: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionMenuItem: Proptypes.func,
-  getMenuItems: Proptypes.func
+  getMenuItems: Proptypes.func,
+  detailItem: Proptypes.object,
+  dataItem: Proptypes.object
 };
 
-function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updatePositionMenuItem, getMenuItems }) {
+function EditMenus({
+  editMenu,
+  data,
+  detail,
+  deleteMenuItem,
+  expanstion,
+  updatePositionMenuItem,
+  getMenuItems,
+  detailItem,
+  dataItem
+}) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
@@ -26,11 +38,7 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
 
   useEffect(() => {
     getMenuItems(formState.values.id);
-  });
-
-  useEffect(() => {
-    console.log(formState.values);
-  });
+  }, [formState.values.id, getMenuItems]);
 
   // const [isOpen, setIsOpen] = useState(false);
   const [treeActive, setTreeActive] = useState({
@@ -77,7 +85,7 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
         hiden: true
       }));
     }
-    const newData = toggleExpandedForAll({ treeData: data, expanded });
+    const newData = toggleExpandedForAll({ treeData: dataItem, expanded });
     expanstion(newData);
   };
 
@@ -142,7 +150,7 @@ function EditMenus({ editMenu, data, detail, deleteMenuItem, expanstion, updateP
           </div>
           <div style={{ height: '100%' }}>
             <SortableTree
-              treeData={data}
+              treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
               generateNodeProps={({ node, path }) => ({
                 onClick: () => click(node, path)
@@ -184,7 +192,9 @@ EditMenus.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     detail: state.MenuReducer.detail,
-    data: state.MenuReducer.data
+    data: state.MenuReducer.data,
+    detailItem: state.MenuReducer.detailItem,
+    dataItem: state.MenuReducer.dataItem
   };
 };
 

@@ -13,6 +13,7 @@ function* getUsersSaga() {
   yield takeLatest(actions.GET_USERS_REQUEST, function*(params) {
     try {
       const res = yield getUsersService();
+      console.log(res);
       if (res.status === 200) {
         yield put({ type: actions.GET_USERS_RESPONSE, data: res.data });
       } else {
@@ -26,14 +27,13 @@ function* getUsersSaga() {
 
 function* addUsersSaga() {
   yield takeLatest(actions.ADD_USERS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
+      console.log(data);
       const res = yield addUsersService(data);
-      if (res.status === 200) {
-        yield onSuccess();
+      if (res.status === 200) {        
         yield put({ type: actions.ADD_USERS_RESPONSE, data: res.data });
-      } else {
-        yield onFail();
+      } else {        
         yield Error(res.message);
       }
     } catch (error) {

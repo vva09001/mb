@@ -77,3 +77,15 @@ label {
   justify-content: space-between;
   align-items: center;
 }
+.rstcustom__rowLabel::first-letter {
+  text-transform: capitalize;
+}
+
+.table thead th::first-letter {
+  text-transform: capitalize;
+}
+
+.ck-editor__editable  p{
+  min-height: 100px;
+}
+

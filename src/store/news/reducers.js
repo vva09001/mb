@@ -22,7 +22,7 @@ const News = (state = initialState, action) => {
       return {
         ...state,
         data: map(state.data, values => {
-          if (values.id === action.data.id) {
+          if (values.newsId === action.data.id) {
             values = action.data;
           }
           return values;
@@ -32,18 +32,13 @@ const News = (state = initialState, action) => {
       return {
         ...state,
         data: filter(state.data, values => {
-          return values.id !== action.data;
+          return values.newsId !== action.data;
         })
       };
     case Actions.GET_DETAIL:
       return {
         ...state,
-        detail: {
-          ...action.data,
-          name: action.data.newsTranslation[0].name,
-          shortDescription: action.data.newsTranslation[0].shortDescription,
-          description: action.data.newsTranslation[0].description
-        }
+        detail: action.data
       };
     default:
       return state;

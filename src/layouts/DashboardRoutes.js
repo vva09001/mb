@@ -22,6 +22,7 @@ import MailsCreate from '../container/Mails/Created';
 import MailEdit from '../container/Mails/Edit';
 import ListFormBuilder from 'container/formbuilder';
 import CreatedFormBuilder from 'container/formbuilder/created';
+import EditFormBuilder from 'container/formbuilder/edit';
 import Resemail from 'container/formbuilder/reponsivemail/index';
 import Formdata from 'container/formbuilder/formdata/index';
 import SettingHome from 'container/SettingHome/index';
@@ -29,7 +30,6 @@ import Storefont from '../container/Storefont';
 import Slider from '../container/Slider';
 import SliderCreate from '../container/Slider/Created';
 import SliderEdit from 'container/Slider/edit';
-import EditFormBuilder from 'container/formbuilder/edit';
 import ListMenus from 'container/Menu';
 import CreateMenus from 'container/Menu/Create';
 import CreateMenusItem from 'container/Menu/CreateItem';
@@ -40,8 +40,6 @@ import UsersEdit from 'container/Users/Edit';
 import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
-
-
 import Media from 'container/media';
 
 const DashboardRoutes = () => (
