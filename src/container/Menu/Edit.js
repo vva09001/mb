@@ -40,10 +40,6 @@ function EditMenus({
     getMenuItems(formState.values.id);
   }, [formState.values.id, getMenuItems]);
 
-  useEffect(() => {
-    console.log(dataItem);
-  });
-
   // const [isOpen, setIsOpen] = useState(false);
   const [treeActive, setTreeActive] = useState({
     show: false,
