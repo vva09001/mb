@@ -22,7 +22,9 @@ function* addNewsSaga() {
   yield takeLatest(actions.ADD_NEWS_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
     try {
+      console.log(data);
       const res = yield addNews(data);
+      console.log(res.data);
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.ADD_NEWS_RESPONSE, data: res.data });
@@ -41,6 +43,7 @@ function* aprrNewsSaga() {
     const { data, onSuccess, onFail } = params;
     try {
       const res = yield aprrNews(data);
+      console.log(data);
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.APRR_NEWS_RESPONSE, data: res.data });

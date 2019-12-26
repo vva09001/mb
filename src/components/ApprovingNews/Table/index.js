@@ -33,13 +33,13 @@ const AprrTable = ({ data, getDetail }) => {
               return (
                 <tr key={values.id}>
                   <td onClick={() => getDetail(values)}>
-                    {values.newsTranslation ? values.newsTranslation[0].name : values.name}
+                    {values.newsTranslation ? values.newsTranslation[0].title : values.title}
                   </td>
                   <td onClick={() => getDetail(values)}>
-                    <span className={values.status === 1 ? 'green' : 'dot'} />
+                    <span className={values.status === 0 ? 'green' : 'dot'} />
                   </td>
                   <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                  <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
+                  <td onClick={() => getDetail(values)}>{values.is_active === 0 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
                 </tr>
               );
             } else {

@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useState, useEffect } from 'react';
 import $ from 'jquery';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
@@ -32,10 +32,10 @@ function EditFormBuilder({ formDetail, editForm }) {
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
-  // useEffect(() => {
-  //   $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [!fb.current, !options]);
+  useEffect(() => {
+    $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!fb.current, !options]);
 
   const handleChange = event => {
     event.persist();
