@@ -34,6 +34,8 @@
     "next": "Next",
     "close": "Close",
     "confirm": "Comfirm",
+    "sidebar": "Sidebar",
+    "select": "Select...",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",

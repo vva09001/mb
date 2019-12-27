@@ -72,6 +72,11 @@ label {
   }
 }
 
+.block__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .rstcustom__rowLabel::first-letter {
   text-transform: capitalize;
 }
@@ -83,3 +88,4 @@ label {
 .ck-editor__editable  p{
   min-height: 100px;
 }
+
