@@ -8,7 +8,7 @@ import history from 'helpers/history';
 import { map } from 'lodash';
 
 const Proptype = {
-  addMenuItem: Proptypes.func,
+  editMenuItem: Proptypes.func,
   getCategorys: Proptypes.func,
   getPages: Proptypes.func,
   getMenu: Proptypes.func,
@@ -16,11 +16,12 @@ const Proptype = {
   dataCategory: Proptypes.array,
   dataPage: Proptypes.array,
   dataMenu: Proptypes.object,
-  dataAllItem: Proptypes.array
+  dataAllItem: Proptypes.array,
+  detailItem: Proptypes.object
 };
 
-function CreateMenusItem({
-  addMenuItem,
+function EditMenusItem({
+  editMenuItem,
   dataPage,
   dataCategory,
   getPages,
@@ -28,11 +29,12 @@ function CreateMenusItem({
   dataMenu,
   getMenu,
   getMenuItems,
-  dataAllItem
+  dataAllItem,
+  detailItem
 }) {
   const [active, setActive] = useState(0);
   const [formState, setFormState] = useState({
-    values: {},
+    values: detailItem,
     touched: {}
   });
   useEffect(() => {
@@ -43,7 +45,8 @@ function CreateMenusItem({
 
   useEffect(() => {
     console.log(formState.values);
-  });
+    setActive(parseInt(formState.values.type));
+  }, [formState.values]);
   const { t } = useTranslation();
   const handleChange = event => {
     event.persist();
@@ -60,12 +63,10 @@ function CreateMenusItem({
         [event.target.name]: true
       }
     }));
-
-    setActive(event.target.name === 'type' ? parseInt(event.target.value) : active);
   };
   const onSubmit = event => {
     event.preventDefault();
-    addMenuItem(dataMenu.id, formState.values);
+    editMenuItem(formState.values);
     history.push('/menu/edit');
   };
 
@@ -77,11 +78,11 @@ function CreateMenusItem({
             <h4>{t('createMenuItem')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" onChange={handleChange} />
+              <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">Loại</Label>
-              <Input type="select" name="type" onChange={handleChange}>
+              <Input type="select" name="type" value={formState.values.type} onChange={handleChange}>
                 <option>Chọn...</option>
                 <option value={1}>Page</option>
                 <option value={2}>Category</option>
@@ -92,7 +93,7 @@ function CreateMenusItem({
             {active === 1 && (
               <FormGroup>
                 <Label for="exampleSelect">{t('page.page')}</Label>
-                <Input type="select" name="pagesId" onChange={handleChange}>
+                <Input type="select" name="pagesId" value={formState.values.pageId} onChange={handleChange}>
                   <option>Chọn...</option>
                   {map(dataPage, value => (
                     <option value={value.id} key={value.id}>
@@ -105,7 +106,7 @@ function CreateMenusItem({
             {active === 2 && (
               <FormGroup>
                 <Label for="exampleSelect">{t('category')}</Label>
-                <Input type="select" name="categoryId" onChange={handleChange}>
+                <Input type="select" name="categoryId" value={formState.values.categoryId} onChange={handleChange}>
                   <option>Chọn...</option>
                   {map(dataCategory, value => (
                     <option value={value.id} key={value.id}>
@@ -118,7 +119,12 @@ function CreateMenusItem({
             {active === 3 && (
               <FormGroup>
                 <Label for="exampleSelect">{t('categoryNew')}</Label>
-                <Input type="select" name="categoryNewId" onChange={handleChange}>
+                <Input
+                  type="select"
+                  name="categoryNewId"
+                  value={formState.values.categoryNewId}
+                  onChange={handleChange}
+                >
                   <option>Chọn...</option>
                   {map(dataCategory, value => (
                     <option value={value.id} key={value.id}>
@@ -131,29 +137,40 @@ function CreateMenusItem({
             {active === 4 && (
               <FormGroup>
                 <Label for="exampleName">{t('url')}</Label>
-                <Input type="text" name="url" onChange={handleChange} />
+                <Input
+                  type="text"
+                  name="url"
+                  value={formState.values.url === undefined ? '' : formState.values.url}
+                  onChange={handleChange}
+                />
               </FormGroup>
             )}
             <FormGroup>
               <div className="check__box">
                 <Label>{t('FluidMenu')}</Label>
                 <div>
-                  <Input type="checkbox" name="fluid" onChange={handleChange} />
+                  <Input
+                    type="checkbox"
+                    name="fluid"
+                    checked={formState.values.fluid === 0 || formState.values.fluid === undefined ? false : true}
+                    value={formState.values.fluid === 0 ? false : formState.values.fluid}
+                    onChange={handleChange}
+                  />
                   <span>{t('Thisisafullwidthmenu')}</span>
                 </div>
               </div>
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">Target</Label>
-              <Input type="select" name="target" id="exampleSelect" onChange={handleChange}>
-                <option value={1}>Chọn...</option>
-                <option value={2}>Same Tab</option>
-                <option value={3}>New Tab</option>
+              <Input type="select" name="targetId" value={formState.values.targetId} onChange={handleChange}>
+                <option value={3}>Chọn...</option>
+                <option value={1}>Same Tab</option>
+                <option value={2}>New Tab</option>
               </Input>
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('parentMenu')}</Label>
-              <Input type="select" name="parentId" onChange={handleChange}>
+              <Input type="select" name="parentId" value={formState.values.parentId} onChange={handleChange}>
                 <option>Chọn...</option>
                 {map(dataAllItem, value => (
                   <option value={value.id} key={value.id}>
@@ -166,7 +183,13 @@ function CreateMenusItem({
               <div className="check__box">
                 <Label>{t('status')}</Label>
                 <div>
-                  <Input type="checkbox" name="active" onChange={handleChange} />
+                  <Input
+                    type="checkbox"
+                    name="active"
+                    checked={formState.values.active === 0 || formState.values.active === undefined ? false : true}
+                    value={formState.values.active === 0 ? false : formState.values.active}
+                    onChange={handleChange}
+                  />
                   <span>{t('Enablethemenuitem')}</span>
                 </div>
               </div>
@@ -181,18 +204,19 @@ function CreateMenusItem({
   );
 }
 
-CreateMenusItem.propTypes = Proptype;
+EditMenusItem.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
     dataPage: state.PageReducer.data,
     dataCategory: state.CategoryReducer.listOption,
     dataMenu: state.MenuReducer.detail,
-    dataAllItem: state.MenuReducer.dataAllItem
+    dataAllItem: state.MenuReducer.dataAllItem,
+    detailItem: state.MenuReducer.detailItem
   };
 };
 const mapDispatchToProps = {
-  addMenuItem: MenuActions.AddMenuItems,
+  editMenuItem: MenuActions.EditMenuItems,
   getCategorys: CategoryActions.getCategoryAction,
   getPages: PageActions.GetAllPages,
   getMenu: MenuActions.GetMenus,
@@ -202,4 +226,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateMenusItem);
+)(EditMenusItem);

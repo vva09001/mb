@@ -58,11 +58,9 @@ const Actions = {
   EDIT_MENUITEMS_REQUEST: 'EDIT_MENUITEMS_REQUEST',
   EDIT_MENUITEMS_RESPONSE: 'EDIT_MENUITEMS_RESPONSE',
 
-  EditMenuItems: (data, onSuccess, onFail) => ({
+  EditMenuItems: data => ({
     type: Actions.EDIT_MENUITEMS_REQUEST,
-    data,
-    onSuccess,
-    onFail
+    data
   }),
 
   DELETE_MENUITEMS_REQUEST: 'DELETE_MENUITEMS_REQUEST',

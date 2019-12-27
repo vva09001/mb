@@ -7,17 +7,19 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
+import PopupComfirm from '../../components/common/PopupComfirm';
 
 const Proptype = {
   editMenu: Proptypes.func,
   detail: Proptypes.object,
-  data: Proptypes.object,
+  data: Proptypes.array,
   deleteMenuItem: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionMenuItem: Proptypes.func,
   getMenuItems: Proptypes.func,
   detailItem: Proptypes.object,
-  dataItem: Proptypes.object
+  dataItem: Proptypes.array,
+  getDetailMenuItem: Proptypes.func
 };
 
 function EditMenus({
@@ -29,7 +31,8 @@ function EditMenus({
   updatePositionMenuItem,
   getMenuItems,
   detailItem,
-  dataItem
+  dataItem,
+  getDetailMenuItem
 }) {
   const [formState, setFormState] = useState({
     values: detail,
@@ -38,10 +41,9 @@ function EditMenus({
 
   useEffect(() => {
     getMenuItems(formState.values.id);
-    console.log(formState.values.id)
   }, [formState.values.id, getMenuItems]);
 
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [treeActive, setTreeActive] = useState({
     show: false,
     hiden: false
@@ -89,7 +91,14 @@ function EditMenus({
     const newData = toggleExpandedForAll({ treeData: dataItem, expanded });
     expanstion(newData);
   };
-
+  const click = (node, path) => {
+    getDetailMenuItem(node);
+    history.push('/menu/edit/item/edit');
+  };
+  const clickDelete = (node, path) => {
+    getDetailMenuItem(node);
+    setIsOpen(!isOpen);
+  };
   const onMove = treeData => {
     if (treeData.nextParentNode !== null) {
       let idParent = treeData.nextParentNode.id;
@@ -108,10 +117,10 @@ function EditMenus({
     }
   };
 
-  /*const onDelete = () => {
-    deleteMenuItem(formState.values.id);
+  const onDelete = () => {
+    deleteMenuItem(detailItem.id);
     setIsOpen(!isOpen);
-  };*/
+  };
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
@@ -147,13 +156,37 @@ function EditMenus({
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
               onMoveNode={treeData => onMove(treeData)}
+              generateNodeProps={({ node, path }) => ({
+                buttons: [
+                  // eslint-disable-next-line react/jsx-key
+                  <button
+                    type="button"
+                    style={{
+                      verticalAlign: 'middle'
+                    }}
+                    onClick={() => click(node, path)}
+                  >
+                    ℹ
+                  </button>,
+                  // eslint-disable-next-line react/jsx-key
+                  <button
+                    type="button"
+                    style={{
+                      verticalAlign: 'middle'
+                    }}
+                    onClick={() => clickDelete(node, path)}
+                  >
+                    x
+                  </button>
+                ]
+              })}
             />
           </div>
         </Col>
         <Col lg={5} md={8}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
-              <h4>Tạo Menu</h4>
+              <h4>{t('EditMenu')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
                 <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
@@ -174,6 +207,7 @@ function EditMenus({
           </div>
         </Col>
       </Row>
+      <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
   );
 }
@@ -194,7 +228,8 @@ const mapDispatchToProps = {
   deleteMenuItem: MenuActions.DeleteMenuItems,
   expanstion: MenuActions.expansionMenuItemAction,
   updatePositionMenuItem: MenuActions.updatePositionMenuItems,
-  getMenuItems: MenuActions.GetMenuItems
+  getMenuItems: MenuActions.GetMenuItems,
+  getDetailMenuItem: MenuActions.getDetailMenuItems
 };
 
 export default connect(

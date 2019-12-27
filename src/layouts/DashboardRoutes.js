@@ -33,6 +33,7 @@ import SliderEdit from 'container/Slider/edit';
 import ListMenus from 'container/Menu';
 import CreateMenus from 'container/Menu/Create';
 import CreateMenusItem from 'container/Menu/CreateItem';
+import EditMenusItem from 'container/Menu/EditItem';
 import EditMenus from 'container/Menu/Edit';
 import ListUsers from 'container/Users';
 import UsersCreate from 'container/Users/Create';
@@ -93,6 +94,7 @@ const DashboardRoutes = () => (
     <Route path="/menu/create" exact component={CreateMenus} />
     <Route path="/menu/edit" exact component={EditMenus} />
     <Route path="/menu/edit/item" exact component={CreateMenusItem} />
+    <Route path="/menu/edit/item/edit" exact component={EditMenusItem} />
 
     <Route path="/storefont" exact component={Storefont} />
 

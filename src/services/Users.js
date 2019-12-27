@@ -11,7 +11,7 @@ const request = axios.create({
 const getUsersService = () => {
   return request({
     url: '/users',
-   method: 'GET'
+    method: 'GET'
   })
     .then(res => {
       return res;

@@ -83,7 +83,7 @@ const addMenuItems = (id, data) => {
 
 const editMenuItems = data => {
   return request({
-    url: `/menu/${data.menuid}/menuItem/${data.id}`,
+    url: `/menu/${data.menuId}/menuItem/${data.id}`,
     method: 'PUT',
     data: data
   })
