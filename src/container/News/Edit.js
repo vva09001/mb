@@ -82,7 +82,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
 
   const onSuccess = () => {
     Success('Sửa thành công');
-    history.goBack();
+    history.push('/news/list');
   };
 
   const onFail = () => {
@@ -106,7 +106,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
     event.preventDefault();
     const body = {
       ...formState.values,
-      url: '',
       newsBlocks: []
     };
     editNew(body, onSuccess, onFail);
