@@ -180,6 +180,25 @@ function PagesCreate({
           <TabPane tabId="2">
             <h4>{t('seo')}</h4>
             <FormGroup>
+              {(() => {
+                if (value.id) {
+                  return (
+                    <div>
+                      <Label for="exampleSlug">{t('slug')}</Label>
+                      <Input
+                        type="text"
+                        name="slug"
+                        value={value.slug === undefined ? '' : value.slug}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )
+                } else {
+                  return false
+                }
+              })()}
+            </FormGroup>
+            <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
               <Input
                 type="text"
