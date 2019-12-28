@@ -36,6 +36,7 @@
     "confirm": "Comfirm",
     "sidebar": "Sidebar",
     "select": "Select...",
+    "slug": "slug",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
