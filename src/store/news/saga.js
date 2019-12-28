@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getNews, addNews, editNews, deleteNews, aprrNews } from 'services/news';
+import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId } from 'services/news';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 
@@ -9,6 +9,21 @@ function* getNewsSaga() {
       const res = yield getNews();
       if (res.status === 200) {
         yield put({ type: actions.GET_NEWS_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+function* getNewsIdSaga() {
+  yield takeLatest(actions.GET_NEWS_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getNewsId(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_NEWS_BY_ID_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -93,5 +108,12 @@ function* deleteNewsSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getNewsSaga), fork(addNewsSaga), fork(editNewsSaga), fork(deleteNewsSaga), fork(aprrNewsSaga)]);
+  yield all([
+    fork(getNewsSaga),
+    fork(addNewsSaga),
+    fork(editNewsSaga),
+    fork(deleteNewsSaga),
+    fork(aprrNewsSaga),
+    fork(getNewsIdSaga)
+  ]);
 }

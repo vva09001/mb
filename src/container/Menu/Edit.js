@@ -118,7 +118,7 @@ function EditMenus({
   };
 
   const onDelete = () => {
-    deleteMenuItem(detailItem.id);
+    deleteMenuItem(detailItem);
     setIsOpen(!isOpen);
   };
   return (

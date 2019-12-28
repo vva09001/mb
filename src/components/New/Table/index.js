@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -39,15 +40,23 @@ const NewTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.newsId)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.title}</td>
-                <td onClick={() => getDetail(values)}>
-                  <td onClick={() => getDetail(values)}>
-                    <span className={values.is_active === 1 ? 'green' : 'dot'} />
-                  </td>
+                <td>
+                  <Link to={`/news/edit/${values.newsId}`}>{values.title}</Link>
                 </td>
-                <td onClick={() => getDetail(values)}>{values.is_sticky === 1 ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                <td onClick={() => getDetail(values)}>{values.is_active === 1 ? 'true' : 'false'}</td>
+                <td>
+                  <Link to={`/news/edit/${values.newsId}`}>
+                    <span className={values.is_active === 1 ? 'green' : 'dot'} />
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/news/edit/${values.newsId}`}>{values.is_sticky === 1 ? 'true' : 'false'}</Link>
+                </td>
+                <td>
+                  <Link to={`/news/edit/${values.newsId}`}>{moment(values.created_at).fromNow()}</Link>
+                </td>
+                <td>
+                  <Link to={`/news/edit/${values.newsId}`}>{values.is_active === 1 ? 'true' : 'false'}</Link>
+                </td>
               </tr>
             );
           })}

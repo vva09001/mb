@@ -40,7 +40,6 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
 
   const onGetDetail = detail => {
     getDetail(detail);
-    history.push('/news/edit');
   };
 
   return (

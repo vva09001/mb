@@ -66,9 +66,9 @@ const Actions = {
   DELETE_MENUITEMS_REQUEST: 'DELETE_MENUITEMS_REQUEST',
   DELETE_MENUITEMS_RESPONSE: 'DELETE_MENUITEMS_RESPONSE',
 
-  DeleteMenuItems: id => ({
+  DeleteMenuItems: data => ({
     type: Actions.DELETE_MENUITEMS_REQUEST,
-    id
+    data
   }),
 
   GET_DETAIL_MENUITEM: 'GET_DETAIL_MENUITEM',

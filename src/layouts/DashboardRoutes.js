@@ -47,7 +47,7 @@ const DashboardRoutes = () => (
   <Switch>
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
-    <Route path="/news/edit" exact component={NewsEdit} />
+    <Route path="/news/edit/:id" exact component={NewsEdit} />
     <Route path="/news/category" component={Category} />
     <Route path="/news/approved_listings" exact component={AprrNews} />
     <Route path="/news/approving" exact component={AprrEdit} />

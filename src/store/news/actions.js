@@ -6,6 +6,14 @@ const Actions = {
     type: Actions.GET_NEWS_REQUEST
   }),
 
+  GET_NEWS_BY_ID_REQUEST: 'GET_NEWS_BY_ID_REQUEST',
+  GET_NEWS_BY_ID_RESPONSE: 'GET_NEWS_BY_ID_RESPONSE',
+
+  GetNewsId: id => ({
+    type: Actions.GET_NEWS_BY_ID_REQUEST,
+    id
+  }),
+
   ADD_NEWS_REQUEST: 'ADD_NEWS_REQUEST',
   ADD_NEWS_RESPONSE: 'ADD_NEWS_RESPONSE',
 
