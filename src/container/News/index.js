@@ -4,7 +4,7 @@ import NewTable from '../../components/New/Table';
 import PropTypes from 'prop-types';
 import { NewActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import PopupComfirm from 'components/common/PopupComfirm';
+import PopupComfirm from '../../components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 

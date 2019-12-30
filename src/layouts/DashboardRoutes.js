@@ -50,7 +50,7 @@ const DashboardRoutes = () => (
     <Route path="/news/edit/:id" exact component={NewsEdit} />
     <Route path="/news/category" component={Category} />
     <Route path="/news/approved_listings" exact component={AprrNews} />
-    <Route path="/news/approving" exact component={AprrEdit} />
+    <Route path="/news/approving/:id" exact component={AprrEdit} />
 
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
