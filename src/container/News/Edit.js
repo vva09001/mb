@@ -184,7 +184,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
               <Input type="select" name="category" value={formState.values.category} onChange={handleChange}>
-                <option>Chọn...</option>
+                <option>{t('select')}</option>
                 {map(listOptions, value => (
                   <option value={value.id} key={value.id}>
                     {value.name}
@@ -201,6 +201,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                   checked={formState.values.is_sticky === 0 ? false : true}
                   onChange={handleChange}
                 />
+                <Input
+                  type="checkbox"
+                  name="is_active"
+                  checked={formState.values.is_active === 0 ? false : true}
+                  onChange={handleChange}
+                /> 
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>

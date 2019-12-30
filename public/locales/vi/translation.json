@@ -96,7 +96,8 @@
     },
     "approved": {
         "approved_page": "Duyệt Trang",
-        "approved": "Phê Duyệt"
+        "approved": "Phê Duyệt",
+        "notapproved": "Chưa phê duyệt"
     },
     "email": {
         "email": "Thư"
