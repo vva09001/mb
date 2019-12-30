@@ -36,7 +36,7 @@ const NewTable = ({ data, getID, getDetail }) => {
         <tbody>
           {map(list, values => {
             return (
-              <tr key={values.id}>
+              <tr key={values.newsId}>
                 <th>
                   <input type="checkbox" onClick={() => getID(values.newsId)} />
                 </th>

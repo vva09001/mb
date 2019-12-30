@@ -6,6 +6,7 @@ export const getToken = () => {
 
 export const setLang = lang => {
   if (lang) {
+    window.location.reload();
     return localStorage.setItem('lang', JSON.stringify(lang));
   }
   return null;
