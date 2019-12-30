@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getMails, addMails, editMails, deleteMails } from '../../services/mails';
+import { getMails, addMails, editMails, deleteMails, getMailsId } from '../../services/mails';
 import { Error, Success } from '../../helpers/notify';
 import history from 'helpers/history';
 import actions from './actions';
@@ -18,6 +18,23 @@ function* getMailsSaga() {
     }
   });
 }
+
+function* getMailsIdSaga() {
+  yield takeLatest(actions.GET_MAILS_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getMailsId(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_MAILS_BY_ID_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 function* addMailsSaga() {
   yield takeLatest(actions.ADD_MAILS_REQUEST, function*(params) {
     const { data } = params;
@@ -71,5 +88,5 @@ function* deleteMailsSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getMailsSaga), fork(addMailsSaga), fork(editMailsSaga), fork(deleteMailsSaga)]);
+  yield all([fork(getMailsSaga), fork(addMailsSaga), fork(editMailsSaga), fork(deleteMailsSaga), fork(getMailsIdSaga)]);
 }

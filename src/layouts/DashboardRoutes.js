@@ -67,7 +67,7 @@ const DashboardRoutes = () => (
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
     <Route path="/emails/create" exact component={MailsCreate} />
-    <Route path="/emails/edit" exact component={MailEdit} />
+    <Route path="/emails/edit/:id" exact component={MailEdit} />
 
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
