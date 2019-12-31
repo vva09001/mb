@@ -64,6 +64,14 @@ const Actions = {
   apprPages: data => ({
     type: Actions.APPR_PAGES_REQUEST,
     data
+  }),
+
+  DELETE_PAGE_BLOCK_REQUEST: 'DELETE_PAGE_BLOCK_REQUEST',
+  DELETE_PAGE_BLOCK_RESPONE: 'DELETE_PAGE_BLOCK_RESPONE',
+  detelePageBlockAction: (id, idBlock) => ({
+    type: Actions.DELETE_PAGE_BLOCK_REQUEST,
+    id,
+    idBlock
   })
 };
 
