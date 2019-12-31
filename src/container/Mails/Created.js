@@ -33,7 +33,8 @@ function MailsCreate({ MailsCreate }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -57,7 +58,8 @@ function MailsCreate({ MailsCreate }) {
   };
   const createdMails = event => {
     event.preventDefault();
-    MailsCreate(formState.values);
+    console.log(formState.values);
+    //MailsCreate(formState.values);
   };
   return (
     <React.Fragment>
@@ -79,23 +81,24 @@ function MailsCreate({ MailsCreate }) {
             <h4>{t('create')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="name" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input type="text" name="code" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="code" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
-              <Input type="text" name="subject" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="subject" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.emailCc')}</Label>
-              <Input type="text" name="emailCc" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="emailCc" id="exampleName" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label>{t('mail.content')}</Label>
               <CKEditor
+                required
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
                   const data = editor.getData();

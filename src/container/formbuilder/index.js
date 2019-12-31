@@ -9,13 +9,13 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 
 const Proptype = {
-  listForm: PropTypes.array,
+  listForms: PropTypes.array,
   getListForm: PropTypes.func,
   getFormDetail: PropTypes.func,
   deleteForm: PropTypes.func
 };
 
-function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
+function Formbuilder({ listForms, getListForm, getFormDetail, deleteForm }) {
   const [isOpen, setIsOpen] = useState(false);
   const [formID, setformID] = useState(null);
   useEffect(() => {
@@ -53,7 +53,7 @@ function Formbuilder({ listForm, getListForm, getFormDetail, deleteForm }) {
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForm} getID={id => setformID(id)} getDetail={onGetDetail} />
+        <Table data={listForms} getID={id => setformID(id)} getDetail={onGetDetail} />
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
@@ -64,7 +64,7 @@ Formbuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    listForm: state.FormBuilderReducer.listForm
+    listForms: state.FormBuilderReducer.listForm
   };
 };
 

@@ -27,7 +27,7 @@ function EditFormBuilder({ formDetail, editForm }) {
 
   const [form, setForm] = useState(null);
 
-  const [checkSubmit, setSubmit] = useState(true);
+  const [setSubmit] = useState(true);
 
   const options = {
     onSave: (event, formData) => onSend(formData)
