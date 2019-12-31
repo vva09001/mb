@@ -39,16 +39,26 @@ const FormTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>
-                  <span className={'values.status === 0' ? 'green' : 'dot'} />
+                <td>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    {values.name}
+                  </Link>
                 </td>
                 <td>
-                  <Link to={values.id + '/formdata'}>Form data</Link>|<Link to="/">Embeded form</Link>|
-                  <Link to={values.id + '/email'}>Thư phản hồi</Link>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    <span className={'values.status === 0' ? 'green' : 'dot'} />
+                  </Link>
+                </td>
+                <td>
+                  <Link to={values.id + '/formdata'}>{t('formBuilder.form_data')}</Link>|<Link to="/">{t('formBuilder.embeded_form')}</Link>|
+                  <Link to={values.id + '/email'}>{t('formBuilder.feedback_mail')}</Link>
                   {values.stricky === 1 ? 'true' : 'false'}
                 </td>
-                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    {moment(values.createdAt).fromNow()}
+                  </Link>
+                </td>
               </tr>
             );
           })}
