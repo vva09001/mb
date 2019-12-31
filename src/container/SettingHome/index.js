@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 //   SettingHome: PropTypes.func
 // };
 
-function SettingHome({ settingHome }) {
+function SettingHome() {
   // const [formState, setFormState] = useState({
   //   values: {},
   //   touched: {}

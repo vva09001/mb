@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, * as react from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
@@ -15,7 +15,7 @@ const PropsType = {
 
 const FormTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = react.useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
@@ -44,9 +44,9 @@ const FormTable = ({ data, getID, getDetail }) => {
                   <span className={'values.status === 0' ? 'green' : 'dot'} />
                 </td>
                 <td>
-                  <Link to={values.id + '/formdata'}>Form data</Link>|<Link to="/">Embeded form</Link>|
-                  <Link to={values.id + '/email'}>Thư phản hồi</Link>
-                  {values.stricky === 1 ? 'true' : 'false'}
+                  <Link to={values.id + '/formdata'}>{t('formBuilder.formdata')}</Link>|
+                  <Link to={values.id + '/emmbed'}>{t('formBuilder.embededform')}</Link>|
+                  <Link to={values.id + '/email'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
                 </td>
                 <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
               </tr>

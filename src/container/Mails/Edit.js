@@ -84,17 +84,32 @@ function MailEdit({ detail, editMail }) {
             <h4>Chỉnh sửa</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" value={formState.values.name} id="exampleName1" onChange={handleChange} />
+              <Input
+                type="text"
+                required
+                name="name"
+                value={formState.values.name}
+                id="exampleName1"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input type="text" name="code" value={formState.values.code} id="exampleName2" onChange={handleChange} />
+              <Input
+                type="text"
+                required
+                name="code"
+                value={formState.values.code}
+                id="exampleName2"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
               <Input
                 type="text"
                 name="subject"
+                required
                 value={formState.values.subject}
                 id="exampleName3"
                 onChange={handleChange}
@@ -105,6 +120,7 @@ function MailEdit({ detail, editMail }) {
               <Input
                 type="text"
                 name="emailCc"
+                required
                 value={formState.values.emailCc}
                 id="exampleName4"
                 onChange={handleChange}
@@ -113,6 +129,7 @@ function MailEdit({ detail, editMail }) {
             <FormGroup>
               <Label>Nội Dung</Label>
               <CKEditor
+                required
                 data={formState.values.content}
                 editor={ClassicEditor}
                 onChange={(event, editor) => {

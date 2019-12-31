@@ -36,6 +36,7 @@
     "confirm": "Comfirm",
     "sidebar": "Sidebar",
     "select": "Select...",
+    "feedback":"FeedBack",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
@@ -81,7 +82,11 @@
         "default": "Default"
     },
     "formBuilder": {
-        "title": "Create Form"
+        
+        "title": "Create Form",
+        "formdata": "Form data",
+        "embededform": "Embeded form",
+        "responsemail": "Response mail"
     },
     "setting": {
         "mail": "Mail",

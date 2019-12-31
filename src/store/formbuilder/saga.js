@@ -4,7 +4,8 @@ import {
   getFormbuilderService,
   createFormbuilderService,
   editFormbuilderService,
-  deleteFormbuilderService
+  deleteFormbuilderService,
+  getFormbuilderByIdService
 } from 'services/formbuilder';
 import history from 'helpers/history';
 import { Error, Success } from 'helpers/notify';
@@ -24,6 +25,21 @@ function* getFormSaga() {
   });
 }
 
+function* getFormIdSaga() {
+  yield takeLatest(actions.GET_FORM_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getFormbuilderByIdService(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_FORM_BY_ID_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 function* createFormSaga() {
   yield takeLatest(actions.CREATE_FROM_REQUEST, function*(params) {
     const { data } = params;
@@ -78,5 +94,5 @@ function* deleteFormSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getFormSaga), fork(createFormSaga), fork(editFormSaga), fork(deleteFormSaga)]);
+  yield all([fork(getFormSaga), fork(createFormSaga), fork(editFormSaga), fork(deleteFormSaga), fork(getFormIdSaga)]);
 }
