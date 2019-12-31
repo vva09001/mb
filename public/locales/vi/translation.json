@@ -37,6 +37,7 @@
     "questionConfirm": "Bạn có chắc chắn muốn xóa ?",
     "sidebar": "Thanh bên",
     "select": "Chọn...",
+    "feedback":"Phản hồi",
     "slug": "Đường dẫn",
     "customer": {
         "personal": "Khách hàng cá nhân",
@@ -82,7 +83,10 @@
         "default": "Mặc định"
     },
     "formBuilder": {
-        "title": "Tạo Form"
+        "title": "Tạo Form",
+        "formdata": "Dữ liệu mẫu",
+        "embededform": "Hình thức nhúng",
+        "responsemail": "Thư phản hồi"
     },
     "setting": {
         "mail": "Mail",
@@ -173,7 +177,7 @@
     },
     "mail": {
         "code": "Mã",
-        "subject": "Chủ đề",
+        "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
     }

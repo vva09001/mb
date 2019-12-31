@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, * as react from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
@@ -15,7 +15,7 @@ const PropsType = {
 
 const FormTable = ({ data, getID, getDetail }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = react.useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
@@ -39,16 +39,26 @@ const FormTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>
-                  <span className={'values.status === 0' ? 'green' : 'dot'} />
+                <td>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    {values.name}
+                  </Link>
                 </td>
                 <td>
-                  <Link to={values.id + '/formdata'}>Form data</Link>|<Link to="/">Embeded form</Link>|
-                  <Link to={values.id + '/email'}>Thư phản hồi</Link>
-                  {values.stricky === 1 ? 'true' : 'false'}
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    <span className={'values.status === 0' ? 'green' : 'dot'} />
+                  </Link>
                 </td>
-                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
+                <td>
+                  <Link to={values.id + '/formdata'}>{t('formBuilder.formdata')}</Link>|
+                  <Link to={values.id + '/emmbed'}>{t('formBuilder.embededform')}</Link>|
+                  <Link to={values.id + '/email'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
+                </td>
+                <td onClick={() => getDetail(values)}>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    {moment(values.createdAt).fromNow()}
+                  </Link>
+                </td>
               </tr>
             );
           })}

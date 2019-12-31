@@ -1,13 +1,4 @@
-// import request from 'helpers/request';
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/vi/api/',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from '../helpers/request';
 
 const getFormbuilderService = () => {
   return request({
@@ -62,4 +53,23 @@ const deleteFormbuilderService = id => {
     });
 };
 
-export { getFormbuilderService, createFormbuilderService, editFormbuilderService, deleteFormbuilderService };
+const getFormbuilderByIdService = id => {
+  return request({
+    url: `/forms/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export {
+  getFormbuilderService,
+  createFormbuilderService,
+  editFormbuilderService,
+  deleteFormbuilderService,
+  getFormbuilderByIdService
+};

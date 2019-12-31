@@ -38,6 +38,11 @@ const FormBuilder = (state = initialState, action) => {
         ...state,
         detail: action.detail
       };
+    case Actions.GET_FORM_BY_ID_RESPONSE:
+      return {
+        ...state,
+        detail: action.data
+      };
     default:
       return state;
   }

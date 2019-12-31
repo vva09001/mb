@@ -27,7 +27,7 @@ function EditFormBuilder({ formDetail, editForm }) {
 
   const [form, setForm] = useState(null);
 
-  const [checkSubmit, setSubmit] = useState(true);
+  const [setSubmit] = useState(true);
 
   const options = {
     onSave: (event, formData) => onSend(formData)
@@ -103,12 +103,14 @@ EditFormBuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    formDetail: state.FormBuilderReducer.detail
+    formDetail: state.FormBuilderReducer.detail,
+    getForm: state.FormBuilderReducer.detail
   };
 };
 
 const mapDispatchToProps = {
-  editForm: FormBuilderActions.editFormAction
+  editForm: FormBuilderActions.editFormAction,
+  getFormId: FormBuilderActions.GetNewsId
 };
 
 export default connect(
