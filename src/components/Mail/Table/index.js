@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -32,13 +33,23 @@ const MailTable = ({ data, getID, getDetail }) => {
         <tbody>
           {map(list, (values, index) => {
             return (
-              <tr key={index}>
+              <tr key={values.id}>
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{values.status === 1 ? 'true' : 'false'}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td>
+                  <Link to={`/emails/edit/${values.id}`}>{values.name}</Link>
+                </td>
+                <td>
+                  <Link to={`/emails/edit/${values.id}`}>
+                    {values.status === 1 ? 'true' : 'false'}
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/emails/edit/${values.id}`}>
+                    {moment(values.created_at).fromNow()}
+                  </Link>
+                </td>
               </tr>
             );
           })}

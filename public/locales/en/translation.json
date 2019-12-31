@@ -96,7 +96,8 @@
     },
     "approved": {
         "approved_page": "Page Accept",
-        "approved": "Accept"
+        "approved": "Accept",
+        "notapproved": "Not accept"
     },
     "email": {
         "email": "Mail"
