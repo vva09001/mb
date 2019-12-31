@@ -39,6 +39,11 @@ const Mails = (state = initialState, action) => {
         ...state,
         detail: action.data
       };
+    case Actions.GET_MAILS_BY_ID_RESPONSE:
+      return {
+        ...state,
+        detail: action.data
+      };
     default:
       return state;
   }

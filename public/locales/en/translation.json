@@ -37,6 +37,7 @@
     "sidebar": "Sidebar",
     "select": "Select...",
     "feedback":"FeedBack",
+    "slug": "slug",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
@@ -100,7 +101,8 @@
     },
     "approved": {
         "approved_page": "Page Accept",
-        "approved": "Accept"
+        "approved": "Accept",
+        "notapproved": "Not accept"
     },
     "email": {
         "email": "Mail"

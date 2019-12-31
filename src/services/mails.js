@@ -13,6 +13,19 @@ const getMails = () => {
     });
 };
 
+const getMailsId = id => {
+  return request({
+    url: `/email/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 const addMails = data => {
   return request({
     url: '/email',
@@ -51,4 +64,4 @@ const deleteMails = async id => {
     return error.response.data;
   }
 };
-export { getMails, addMails, editMails, deleteMails };
+export { getMails, addMails, editMails, deleteMails, getMailsId };

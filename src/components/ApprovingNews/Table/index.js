@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
@@ -11,7 +12,7 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const AprrTable = ({ data, getDetail }) => {
+const AprrTable = ({ data, getDetail, getID }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -21,6 +22,9 @@ const AprrTable = ({ data, getDetail }) => {
       <Table striped>
         <thead>
           <tr>
+          <th>
+              <input type="checkbox" />
+            </th>
             <th>{t('name')}</th>
             <th>{t('active')}</th>
             <th>{t('created')}</th>
@@ -31,15 +35,28 @@ const AprrTable = ({ data, getDetail }) => {
           {map(list, values => {
             if (values.is_active === 0) {
               return (
-                <tr key={values.id}>
-                  <td onClick={() => getDetail(values)}>
-                    {values.newsTranslation ? values.newsTranslation[0].title : values.title}
-                  </td>
-                  <td onClick={() => getDetail(values)}>
-                    <span className={values.status === 0 ? 'green' : 'dot'} />
-                  </td>
-                  <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                  <td onClick={() => getDetail(values)}>{values.is_active === 0 ? 'Đã Duyệt' : 'Chưa Duyệt'}</td>
+                <tr key={values.newsId}>
+                   <th>
+                  <input type="checkbox" onClick={() => getID(values.newsId)} />
+                </th> 
+                <td>
+                  <Link to={`/news/approving/${values.newsId}`}>
+                  {values.title}
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/news/approving/${values.newsId}`}>
+                  <span className={values.is_active === 0 ? 'green' : 'dot'} />
+                  </Link>
+                </td>
+                <td>
+                  <Link to={`/news/approving/${values.newsId}`}>{moment(values.created_at).fromNow()}</Link>
+                </td>
+                <td>
+                  <Link to={`/news/approving/${values.newsId}`}>
+                  {values.is_active === 1 ? `${t('approved.approved')}` : `${t('approved.notapproved')}`}
+                  </Link>
+                </td>
                 </tr>
               );
             } else {

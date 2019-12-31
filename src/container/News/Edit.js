@@ -11,6 +11,7 @@ import { map } from 'lodash';
 import history from 'helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const PropsType = {
   listForm: PropTypes.array,
@@ -18,24 +19,33 @@ const PropsType = {
   detail: PropTypes.object,
   editNew: PropTypes.func,
   getCategory: PropTypes.func,
-  getForm: PropTypes.func
+  getForm: PropTypes.func,
+  getNewsId: PropTypes.func
 };
 
-function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) {
+function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, getNewsId }) {
+  let { id } = useParams();
+  useEffect(() => {
+    getNewsId(id);
+    getCategory();
+    getForm();
+  }, [getCategory, getForm, getNewsId, id]);
+
+  useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+      values: detail
+    }));
+  }, [detail]);
+
   const [formState, setFormState] = useState({
-    values: detail,
+    values: {},
     touched: {}
   });
 
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
-
-  useEffect(() => {
-    getCategory();
-    getForm();
-  }, [getCategory, getForm]);
-
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -72,7 +82,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
 
   const onSuccess = () => {
     Success('Sửa thành công');
-    history.goBack();
+    history.push('/news/list');
   };
 
   const onFail = () => {
@@ -96,7 +106,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
     event.preventDefault();
     const body = {
       ...formState.values,
-      url: '',
       newsBlocks: []
     };
     editNew(body, onSuccess, onFail);
@@ -131,7 +140,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="title" value={formState.values.title} onChange={handleChange} />
+              <Input
+                type="text"
+                name="title"
+                value={formState.values.title === undefined ? '' : formState.values.title}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('summary')}</Label>
@@ -139,7 +153,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
                 type="textarea"
                 name="shortDescription"
                 rows="5"
-                value={formState.values.shortDescription}
+                value={formState.values.shortDescription === undefined ? '' : formState.values.shortDescription}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -147,7 +161,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
               <Label>{t('description')}</Label>
               <CKEditor
                 editor={ClassicEditor}
-                data={formState.values.description}
+                data={formState.values.description === undefined ? '' : formState.values.description}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   ckEditorChange(event, data);
@@ -156,7 +170,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             </FormGroup>
             <FormGroup>
               <Label>{t('authName')}</Label>
-              <Input type="text" name="author_name" value={formState.values.author_name} onChange={handleChange} />
+              <Input
+                type="text"
+                name="author_name"
+                value={formState.values.author_name === undefined ? '' : formState.values.author_name}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleFile">{t('baseImages')}</Label>
@@ -165,7 +184,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
               <Input type="select" name="category" value={formState.values.category} onChange={handleChange}>
-                <option>Chọn...</option>
+                <option>{t('select')}</option>
                 {map(listOptions, value => (
                   <option value={value.id} key={value.id}>
                     {value.name}
@@ -182,6 +201,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
                   checked={formState.values.is_sticky === 0 ? false : true}
                   onChange={handleChange}
                 />
+                <Input
+                  type="checkbox"
+                  name="is_active"
+                  checked={formState.values.is_active === 0 ? false : true}
+                  onChange={handleChange}
+                /> 
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>
@@ -195,19 +220,38 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm }) 
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
-              <Input type="text" name="meta_title" value={formState.values.meta_title} onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_title"
+                value={formState.values.meta_title === undefined ? '' : formState.values.meta_title}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <Input type="text" name="meta_keyword" value={formState.values.meta_keyword} onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_keyword"
+                value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
               <Input
                 type="textarea"
                 name="meta_description"
-                value={formState.values.meta_description}
+                value={formState.values.meta_description === undefined ? '' : formState.values.meta_description}
                 rows="5"
+                onChange={handleChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>{t('URL')}</Label>
+              <Input
+                type="text"
+                name="url"
+                value={formState.values.url === undefined ? '' : formState.values.url}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -231,13 +275,14 @@ const mapStateToProps = state => {
   };
 };
 
-const mamapDispatchToProps = {
+const mapDispatchToProps = {
   editNew: NewActions.EditNew,
   getCategory: CategoryActions.getCategoryAction,
-  getForm: FormBuilderActions.getFormAction
+  getForm: FormBuilderActions.getFormAction,
+  getNewsId: NewActions.GetNewsId
 };
 
 export default connect(
   mapStateToProps,
-  mamapDispatchToProps
+  mapDispatchToProps
 )(Edit);

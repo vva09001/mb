@@ -6,6 +6,14 @@ const Actions = {
     type: Actions.GET_MAILS_REQUEST
   }),
 
+  GET_MAILS_BY_ID_REQUEST: 'GET_MAILS_BY_ID_REQUEST',
+  GET_MAILS_BY_ID_RESPONSE: 'GET_MAILS_BY_ID_RESPONSE',
+
+  GetMailsId: id => ({
+    type: Actions.GET_MAILS_BY_ID_REQUEST,
+    id
+  }),
+
   ADD_MAILS_REQUEST: 'ADD_MAILS_REQUEST',
   ADD_MAILS_RESPONSE: 'ADD_MAILS_RESPONSE',
 

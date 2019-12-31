@@ -20,6 +20,18 @@ const getNews = () => {
     });
 };
 
+const getNewsId = id => {
+  return request({
+    url: `/news/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
 const addNews = data => {
   return request({
     url: `/news`,
@@ -75,4 +87,4 @@ const deleteNews = id => {
     });
 };
 
-export { getNews, addNews, editNews, deleteNews, aprrNews };
+export { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId };

@@ -38,6 +38,7 @@
     "sidebar": "Thanh bên",
     "select": "Chọn...",
     "feedback":"Phản hồi",
+    "slug": "Đường dẫn",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
@@ -99,7 +100,8 @@
     },
     "approved": {
         "approved_page": "Duyệt Trang",
-        "approved": "Phê Duyệt"
+        "approved": "Phê Duyệt",
+        "notapproved": "Chưa phê duyệt"
     },
     "email": {
         "email": "Thư"

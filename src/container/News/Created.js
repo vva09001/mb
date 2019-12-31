@@ -173,16 +173,16 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                   <Input type="text" name="meta_title" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label>{t('URL')}</Label>
-                  <Input type="text" name="url" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
                   <Label>{t('meta.keywords')}</Label>
                   <Input type="text" name="meta_keyword" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('meta.description')}</Label>
                   <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('URL')}</Label>
+                  <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit">
                   {t('save')}

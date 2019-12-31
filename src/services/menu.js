@@ -95,9 +95,9 @@ const editMenuItems = data => {
     });
 };
 
-const deleteMenuItems = (id, menuid) => {
+const deleteMenuItems = data => {
   return request({
-    url: `/menu/${menuid}/menuItem/${id}`,
+    url: `/menu/${data.menuId}/menuItem/${data.id}`,
     method: 'DELETE'
   })
     .then(res => {

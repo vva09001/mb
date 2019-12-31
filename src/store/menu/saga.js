@@ -148,12 +148,13 @@ function* editMenuItemsSaga() {
 
 function* deleteMenuItemsSaga() {
   yield takeLatest(actions.DELETE_MENUITEMS_REQUEST, function*(params) {
-    const { id } = params;
+    const { data } = params;
     try {
-      const res = yield deleteMenuItems(id);
+      console.log(data);
+      const res = yield deleteMenuItems(data);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data.menuId });
+        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data });
       } else {
         yield Error('Xóa lỗi');
       }
