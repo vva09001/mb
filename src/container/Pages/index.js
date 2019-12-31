@@ -99,25 +99,41 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
-      editPage(formState.values);
+      // editPage(formState.values);
+      console.log(formBlock);
     } else {
       for (let i = 0; i < formBlock.length; i++) {
-        console.log(formBlock);
+        let html = listBlock[i].html;
+        let key = Object.keys(contentData[i]);
+        let regexp = '';
+        let replaceHTML = '';
+        key.forEach(items => {
+          regexp += items + '|';
+        });
+        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+        replaceHTML = html.replace(regex, function(match) {
+          return contentData[i][match];
+        });
+        let contentHtml = replaceHTML.replace(/[{}]/g, '');
         formBlock[i] = {
           ...formBlock[i],
-          content: JSON.stringify(contentData[i])
+          content: JSON.stringify(contentData[i]),
+          contentHtml: contentHtml
         };
       }
       const data = {
         ...formState.values,
         pageBlocks: [...formBlock]
       };
-      // console.log(data);
-      addPage(data);
+      console.log(data);
+      // addPage(data);
       setFormState({
         values: {},
         touched: {}
       });
+      setListBlock([]);
+      setFormBlock([]);
+      setContentData([]);
     }
   };
 
@@ -172,6 +188,15 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
       ...formState,
       values: node
     }));
+    let test = [];
+    map(node.pageBlocks, (values, index) => {
+      let content = JSON.parse(values.content);
+      test = [...test, content];
+    });
+    console.log(test);
+
+    setListBlock(node.pageBlocks);
+    setFormBlock(node.pageBlocks[0].blocks.blockValues);
     setAddChildrenActive(false);
     setDeleteActive(true);
     setPageDetai(node);
@@ -253,7 +278,7 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '30%' }}>
+          <div style={{ height: '35%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
@@ -283,27 +308,16 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
           <div>
             <Row>
               <Col sm="12">
-                {!formChildren && (
-                  <PagesCreate
-                    handleChange={handleChange}
-                    onSubmit={onSubmit}
-                    value={formState.values}
-                    blockData={listBlock}
-                    handleFomBlock={(event, index) => handleFomBlock(event, index)}
-                    onRemoveBlock={index => removeItem(index)}
-                    deleteActive={deleteActive}
-                    onDelete={() => setIsOpen(!isOpen)}
-                  />
-                )}
-                {formChildren && (
-                  <PagesCreateChild
-                    handleChange={handleChange}
-                    value={formState.values}
-                    deleteActive={deleteActive}
-                    onSubmit={onSubmitChildren}
-                    onDelete={() => setIsOpen(!isOpen)}
-                  />
-                )}
+                <PagesCreate
+                  handleChange={handleChange}
+                  onSubmit={onSubmit}
+                  value={formState.values}
+                  blockData={listBlock}
+                  handleFomBlock={(event, index) => handleFomBlock(event, index)}
+                  onRemoveBlock={index => removeItem(index)}
+                  deleteActive={deleteActive}
+                  onDelete={() => setIsOpen(!isOpen)}
+                />
               </Col>
             </Row>
           </div>

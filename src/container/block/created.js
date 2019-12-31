@@ -141,7 +141,7 @@ function BlockCreate({ listTags, getTags, createBlock }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="isActive" onChange={handleChange} />
+                    <Input type="checkbox" name="active" onChange={handleChange} />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>

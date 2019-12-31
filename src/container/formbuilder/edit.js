@@ -90,7 +90,7 @@ function EditFormBuilder({ formDetail, editForm }) {
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={checkSubmit}>
             {t('save')}
           </Button>
         </Form>

@@ -28,7 +28,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
     values: detail,
     touched: {}
   });
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(formState.values.html);
   const [formAddMore, setFormAddMore] = useState(detail.blockValues);
   const [activeTab, setActiveTab] = useState('1');
 
@@ -101,7 +101,6 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
     editBlock(formState.values.id, {
       ...formState.values,
       html: code,
-      isActive: formState.values.active,
       blockValues: formAddMore
     });
   };
@@ -154,7 +153,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="isActive" checked={formState.values.active} onChange={handleChange} />
+                    <Input type="checkbox" name="active" checked={formState.values.active} onChange={handleChange} />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>

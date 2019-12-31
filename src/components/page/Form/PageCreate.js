@@ -40,8 +40,6 @@ function PagesCreate({
 
   const { t } = useTranslation();
   const [opened, setOpened] = useState(null);
-  // console.log(blockData);
-
   const toggleOpened = (e, index) => {
     e.preventDefault();
     return setOpened(opened === index ? null : index);
@@ -145,7 +143,7 @@ function PagesCreate({
                 map(blockData, (value, index) => (
                   <div key={index} className="mt-2 mb-2">
                     <ListGroupItem className="block__title" onClick={e => toggleOpened(e, index)}>
-                      Khối mới
+                      {value.title === undefined ? `Khối mới` : value.title}
                       <div>
                         <Button onClick={() => onRemoveBlock(index)}>
                           <FontAwesomeIcon icon={faTrash} />
@@ -157,19 +155,59 @@ function PagesCreate({
                         <ListGroupItem>
                           <FormGroup>
                             <Label>Tên khối</Label>
-                            <Input type="text" name="title" required onChange={event => handleFomBlock(event, index)} />
-                          </FormGroup>
-                          {map(value.blockValues, (items, itemIndex) => (
-                            <FormGroup key={items.id}>
-                              <Label>{items.title}</Label>
+                            {value.title === undefined && (
                               <Input
                                 type="text"
-                                name={items.key}
-                                required
+                                name="title"
                                 onChange={event => handleFomBlock(event, index)}
+                                required
                               />
-                            </FormGroup>
-                          ))}
+                            )}
+                            {value.title !== undefined && (
+                              <Input
+                                type="text"
+                                name="title"
+                                value={value.title}
+                                onChange={event => handleFomBlock(event, index)}
+                                required
+                              />
+                            )}
+                          </FormGroup>
+                          {value.blockValues !== undefined &&
+                            map(value.blockValues, (items, itemIndex) => {
+                              return (
+                                <FormGroup key={items.id}>
+                                  <Label>{items.title}</Label>
+                                  <Input
+                                    type="text"
+                                    name={items.key}
+                                    required
+                                    onChange={event => handleFomBlock(event, index)}
+                                  />
+                                </FormGroup>
+                              );
+                            })}
+                          {value.blocks !== undefined &&
+                            map(value.blocks.blockValues, (items, indexItems) => {
+                              let values = JSON.parse(value.content);
+                              let key = Object.keys(values);
+                              let arr = [];
+                              map(key, content => {
+                                arr = [...arr, values[content]];
+                              });
+                              return (
+                                <FormGroup key={items.id}>
+                                  <Label>{items.title}</Label>
+                                  <Input
+                                    type="text"
+                                    name={items.key}
+                                    // value={value.vanh}
+                                    required
+                                    onChange={event => handleFomBlock(event, index)}
+                                  />
+                                </FormGroup>
+                              );
+                            })}
                         </ListGroupItem>
                       </ListGroup>
                     </Collapse>
@@ -192,9 +230,9 @@ function PagesCreate({
                         onChange={handleChange}
                       />
                     </div>
-                  )
+                  );
                 } else {
-                  return false
+                  return false;
                 }
               })()}
             </FormGroup>
