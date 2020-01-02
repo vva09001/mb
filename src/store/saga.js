@@ -12,6 +12,7 @@ import UserSaga from './Users/sagas';
 import RoleSaga from './roles/sagas';
 import SliderSaga from './slider/saga';
 import SettingSaga from './setting/saga';
+import MediaSaga from './media/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     UserSaga(),
     RoleSaga(),
     SliderSaga(),
-    SettingSaga()
+    SettingSaga(),
+    MediaSaga()
   ]);
 }

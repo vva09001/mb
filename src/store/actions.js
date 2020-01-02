@@ -10,7 +10,8 @@ import TagActions from './tags/actions';
 import UserActions from './Users/actions';
 import RoleActions from './roles/actions';
 import SliderActions from './slider/actions';
-import SettingActions from './/setting/actions';
+import SettingActions from './setting/actions';
+import MediaActions from './media/actions';
 
 export {
   NewActions,
@@ -25,5 +26,6 @@ export {
   UserActions,
   RoleActions,
   SliderActions,
-  SettingActions
+  SettingActions,
+  MediaActions
 };
