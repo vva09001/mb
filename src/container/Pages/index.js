@@ -112,12 +112,16 @@ function Page({
   const handleEidt = (event, index) => {
     event.persist();
     let newValues = map(formEdit, (values, indexs) => {
-      return {
-        ...values,
-        [event.target.name]:
-          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
-        id: 0
-      };
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [event.target.name]:
+            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
+          id: 0
+        };
+      }
     });
     let newContent = map(contentData, (values, id) => {
       if (index !== id) {
@@ -132,6 +136,7 @@ function Page({
         // }
       }
     });
+    // console.log(newValues);
     setContentData(newContent);
     setFormEdit(newValues);
   };
@@ -154,6 +159,7 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
+          title: contentData[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
@@ -274,7 +280,7 @@ function Page({
       ];
     });
     setFormBlock(stateEdit);
-    setContentData([...newContent,{}]);
+    setContentData([...newContent, {}]);
     setFormEdit([...stateEdit]);
     setListBlock(listBlock);
     setAddChildrenActive(false);
@@ -340,7 +346,7 @@ function Page({
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper" style={{height: '100vh'}}>
+      <Row className="category__wapper" style={{ height: '100vh' }}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
