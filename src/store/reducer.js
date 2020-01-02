@@ -16,6 +16,7 @@ import RoleReducer from './roles/reducers';
 import SilderReducer from './slider/reducers';
 import SettingReducer from './setting/reducers';
 import MediaReducer from './media/reducers';
+import FeedbackReducer from './backmail/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -31,7 +32,8 @@ const reducers = combineReducers({
   RoleReducer,
   SilderReducer,
   SettingReducer,
-  MediaReducer
+  MediaReducer,
+  FeedbackReducer
 });
 
 const persistConfig = {

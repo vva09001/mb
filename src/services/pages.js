@@ -67,6 +67,19 @@ const deletePagesService = id => {
     });
 };
 
+const deletePageBlockService = (id, idBlock) => {
+  return request({
+    url: `pages/${id}/pageBlock/${idBlock}`,
+    method: 'DELETE'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 const updatePositionPagesService = (idPage, idParent, positions) => {
   return request({
     url: `/pages/update_position/${idParent}/${idPage}?position=${positions}`,
@@ -86,5 +99,6 @@ export {
   editPagesService,
   deletePagesService,
   updatePositionPagesService,
-  apprPagesService
+  apprPagesService,
+  deletePageBlockService
 };

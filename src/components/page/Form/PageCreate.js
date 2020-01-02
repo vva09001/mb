@@ -13,13 +13,17 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   deleteActive: PropTypes.bool,
+  detail: PropTypes.object,
   blockData: PropTypes.array,
+  stateEdit: PropTypes.array,
   onSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   value: PropTypes.object,
   onDelete: PropTypes.func,
   onRemoveBlock: PropTypes.func,
-  handleFomBlock: PropTypes.func
+  handleFomBlock: PropTypes.func,
+  handleEidt: PropTypes.func,
+  onRemoveBlockValue: PropTypes.func
 };
 
 function PagesCreate({
@@ -27,10 +31,14 @@ function PagesCreate({
   onSubmit,
   handleChange,
   value,
+  detail,
+  stateEdit,
   onDelete,
   onRemoveBlock,
   deleteActive,
-  handleFomBlock
+  handleFomBlock,
+  handleEidt,
+  onRemoveBlockValue
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -40,8 +48,6 @@ function PagesCreate({
 
   const { t } = useTranslation();
   const [opened, setOpened] = useState(null);
-  // console.log(blockData);
-
   const toggleOpened = (e, index) => {
     e.preventDefault();
     return setOpened(opened === index ? null : index);
@@ -145,11 +151,18 @@ function PagesCreate({
                 map(blockData, (value, index) => (
                   <div key={index} className="mt-2 mb-2">
                     <ListGroupItem className="block__title" onClick={e => toggleOpened(e, index)}>
-                      Khối mới
+                      {value.newItem !== 0 && deleteActive ? value.title : `Khối mới`}
                       <div>
-                        <Button onClick={() => onRemoveBlock(index)}>
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Button>
+                        {!deleteActive && (
+                          <Button onClick={() => onRemoveBlock(index)}>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                        )}
+                        {deleteActive && (
+                          <Button onClick={() => onRemoveBlockValue(detail.id, detail.pageBlocks[index].id)}>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                        )}
                       </div>
                     </ListGroupItem>
                     <Collapse isOpen={opened === index}>
@@ -157,19 +170,76 @@ function PagesCreate({
                         <ListGroupItem>
                           <FormGroup>
                             <Label>Tên khối</Label>
-                            <Input type="text" name="title" required onChange={event => handleFomBlock(event, index)} />
-                          </FormGroup>
-                          {map(value.blockValues, (items, itemIndex) => (
-                            <FormGroup key={items.id}>
-                              <Label>{items.title}</Label>
+                            {value.newItem === 0 && (
                               <Input
                                 type="text"
-                                name={items.key}
-                                required
+                                name="title"
                                 onChange={event => handleFomBlock(event, index)}
+                                required
                               />
-                            </FormGroup>
-                          ))}
+                            )}
+
+                            {value.newItem !== 0 && deleteActive && (
+                              <Input
+                                type="text"
+                                name="title"
+                                value={stateEdit[index] === undefined ? '' : stateEdit[index].title}
+                                onChange={event => handleEidt(event, index)}
+                                required
+                              />
+                            )}
+                          </FormGroup>
+                          {/* {console.log(value)} */}
+                          {!deleteActive &&
+                            map(value.blockValues, (items, itemIndex) => {
+                              return (
+                                <FormGroup key={items.id}>
+                                  <Label>{items.title}</Label>
+                                  <Input
+                                    type="text"
+                                    name={items.key}
+                                    required
+                                    onChange={event => handleFomBlock(event, index)}
+                                  />
+                                </FormGroup>
+                              );
+                            })}
+                          {deleteActive &&
+                            map(value.blockValues, (items, indexItems) => {
+                              if (value.newItem === 0) {
+                                return (
+                                  <FormGroup key={items.id}>
+                                    <Label>{items.title}</Label>
+                                    <Input
+                                      type="text"
+                                      name={items.key}
+                                      required
+                                      onChange={event => handleFomBlock(event, index)}
+                                    />
+                                  </FormGroup>
+                                );
+                              } else {
+                                let values = JSON.parse(value.content);
+                                let key = Object.keys(values);
+                                let arr = [];
+                                map(key, content => {
+                                  arr = [...arr, content];
+                                });
+                                let tem = arr[indexItems];
+                                return (
+                                  <FormGroup key={items.id}>
+                                    <Label>{items.title}</Label>
+                                    <Input
+                                      type="text"
+                                      name={items.key}
+                                      value={stateEdit[index][tem]}
+                                      required
+                                      onChange={event => handleEidt(event, index)}
+                                    />
+                                  </FormGroup>
+                                );
+                              }
+                            })}
                         </ListGroupItem>
                       </ListGroup>
                     </Collapse>
@@ -192,9 +262,9 @@ function PagesCreate({
                         onChange={handleChange}
                       />
                     </div>
-                  )
+                  );
                 } else {
-                  return false
+                  return false;
                 }
               })()}
             </FormGroup>

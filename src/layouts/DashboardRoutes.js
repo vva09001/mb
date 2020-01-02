@@ -25,6 +25,7 @@ import CreatedFormBuilder from 'container/formbuilder/created';
 import EditFormBuilder from 'container/formbuilder/edit';
 import Resemail from 'container/formbuilder/reponsivemail/index';
 import Formdata from 'container/formbuilder/formdata/index';
+import Embeded from 'container/formbuilder/emmbedform/index';
 import SettingHome from 'container/SettingHome/index';
 import Storefont from '../container/Storefont';
 import Slider from '../container/Slider';
@@ -50,7 +51,7 @@ const DashboardRoutes = () => (
     <Route path="/news/edit/:id" exact component={NewsEdit} />
     <Route path="/news/category" component={Category} />
     <Route path="/news/approved_listings" exact component={AprrNews} />
-    <Route path="/news/approving" exact component={AprrEdit} />
+    <Route path="/news/approving/:id" exact component={AprrEdit} />
 
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create" exact component={PagesCreate} />
@@ -67,14 +68,15 @@ const DashboardRoutes = () => (
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
     <Route path="/emails/create" exact component={MailsCreate} />
-    <Route path="/emails/edit" exact component={MailEdit} />
+    <Route path="/emails/edit/:id" exact component={MailEdit} />
 
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
-    <Route path="/form-builder/edit" exact component={EditFormBuilder} />
+    <Route path="/form-builder/edit/:id" exact component={EditFormBuilder} />
     <Route path="/form-builder/:id/email" exact component={Resemail} />
     <Route path="/form-builder/:id/formdata" exact component={Formdata} />
+    <Route path="/form-builder/:id/emmbed" exact component={Embeded} />
 
     {/* Setting */}
     <Route path="/setting" exact component={SettingHome} />

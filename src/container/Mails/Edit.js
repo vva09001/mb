@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -8,15 +8,30 @@ import { MailActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const PropsType = {
   detail: PropTypes.object,
-  editMail: PropTypes.func
+  editMail: PropTypes.func,
+  getMailsId: PropTypes.func
 };
 
-function MailEdit({ detail, editMail }) {
+function MailEdit({ detail, editMail, getMailsId }) {
+  let { id } = useParams();
+
+  useEffect(() => {
+    getMailsId(id);
+  }, [getMailsId, id]);
+
+   useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+     values: detail
+     }));
+  }, [detail]);
+
   const [formState, setFormState] = useState({
-    values: detail,
+    values: {},
     touched: {}
   });
 
@@ -35,8 +50,7 @@ function MailEdit({ detail, editMail }) {
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -84,17 +98,32 @@ function MailEdit({ detail, editMail }) {
             <h4>Chỉnh sửa</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" value={formState.values.name} id="exampleName1" onChange={handleChange} />
+              <Input
+                type="text"
+                required
+                name="name"
+                value={formState.values.name}
+                id="exampleName1"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input type="text" name="code" value={formState.values.code} id="exampleName2" onChange={handleChange} />
+              <Input
+                type="text"
+                required
+                name="code"
+                value={formState.values.code}
+                id="exampleName2"
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
               <Input
                 type="text"
                 name="subject"
+                required
                 value={formState.values.subject}
                 id="exampleName3"
                 onChange={handleChange}
@@ -105,6 +134,7 @@ function MailEdit({ detail, editMail }) {
               <Input
                 type="text"
                 name="emailCc"
+                required
                 value={formState.values.emailCc}
                 id="exampleName4"
                 onChange={handleChange}
@@ -113,6 +143,7 @@ function MailEdit({ detail, editMail }) {
             <FormGroup>
               <Label>Nội Dung</Label>
               <CKEditor
+                required
                 data={formState.values.content}
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
@@ -138,7 +169,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  editMail: MailActions.EditMails
+  editMail: MailActions.EditMails,
+  getMailsId: MailActions.GetMailsId
 };
 
 export default connect(

@@ -6,6 +6,14 @@ const Actions = {
     type: Actions.GET_FORM_REQUEST
   }),
 
+  GET_FORM_BY_ID_REQUEST: 'GET_FORM_BY_ID_REQUEST',
+  GET_FORM_BY_ID_RESPONSE: 'GET_FORM_BY_ID_RESPONSE',
+
+  getformbyIDAction: id => ({
+    type: Actions.GET_FORM_BY_ID_REQUEST,
+    id
+  }),
+
   CREATE_FROM_REQUEST: 'CREATE_FROM_REQUEST',
   CREATE_FORM_RESPONSE: 'CREATE_FORM_RESPONSE',
 

@@ -12,6 +12,7 @@ import RoleActions from './roles/actions';
 import SliderActions from './slider/actions';
 import SettingActions from './setting/actions';
 import MediaActions from './media/actions';
+import FeedbackActions from './backmail/actions';
 
 export {
   NewActions,
@@ -27,5 +28,6 @@ export {
   RoleActions,
   SliderActions,
   SettingActions,
-  MediaActions
+  MediaActions,
+  FeedbackActions
 };
