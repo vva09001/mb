@@ -299,8 +299,6 @@ function Page({
       getPage();
     }
   };
-  // console.log(formEdit);
-  // console.log(contentData);
   const onDelete = () => {
     deletePage(formState.values.id);
     setIsOpen(!isOpen);

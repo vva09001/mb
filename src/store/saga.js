@@ -30,7 +30,7 @@ export default function* rootSaga() {
     RoleSaga(),
     SliderSaga(),
     SettingSaga(),
-    // MediaSaga(),
+    MediaSaga(),
     FeedbackSaga()
   ]);
 }
