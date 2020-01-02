@@ -98,11 +98,13 @@ function Page({
       if (index !== id) {
         return values;
       } else {
-        return {
-          ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-        };
+        if (event.target.name !== 'title') {
+          return {
+            ...values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        }
       }
     });
     setContentData(newContent);
@@ -126,11 +128,13 @@ function Page({
       if (index !== id) {
         return values;
       } else {
-        return {
-          ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-        };
+        if (event.target.name !== 'title') {
+          return {
+            ...values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        }
       }
     });
     setContentData(newContent);
@@ -154,6 +158,7 @@ function Page({
         let contentHtml = replaceHTML.replace(/[{}]/g, '');
         formEdit[i] = {
           ...formEdit[i],
+          ...formBlock[i],
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
@@ -304,6 +309,14 @@ function Page({
   const onDelete = () => {
     deletePage(formState.values.id);
     setIsOpen(!isOpen);
+    setListBlock([]);
+    setFormBlock([]);
+    setContentData([]);
+    setFormState(formState => ({
+      ...formState,
+      values: {}
+    }));
+    setDeleteActive(false);
   };
   const toggleOpened = (e, index) => {
     e.preventDefault();
