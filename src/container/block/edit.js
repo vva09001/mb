@@ -179,6 +179,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                           name="key"
                           value={items.key}
                           onChange={event => handleChangeAddMore(event, index)}
+                          required
                         />
                       </FormGroup>
                       <FormGroup className="mr-4">
@@ -188,6 +189,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                           name="title"
                           value={items.title}
                           onChange={event => handleChangeAddMore(event, index)}
+                          required
                         />
                       </FormGroup>
                       <FormGroup className="mr-4">

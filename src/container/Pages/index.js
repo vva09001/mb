@@ -76,11 +76,9 @@ function Page({
       }
     }));
   };
-
   const handleFomBlock = (event, index) => {
     event.persist();
     let newFormAddMore = map(formBlock, (values, id) => {
-      // console.log(values);
       if (index !== id) {
         return values;
       } else {
@@ -114,27 +112,23 @@ function Page({
   const handleEidt = (event, index) => {
     event.persist();
     let newValues = map(formEdit, (values, indexs) => {
-      if (index !== indexs) {
+      return {
+        ...values,
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
+        id: 0
+      };
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
         return values;
       } else {
+        // if (event.target.name !== 'title') {
         return {
           ...values,
           [event.target.name]:
             event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
         };
-      }
-    });
-    let newContent = map(contentData, (values, id) => {
-      console.log(values);
-      if (index !== id) {
-        return values;
-      } else {
-        // if (event.target.name !== 'title') {
-          return {
-            ...values,
-            [event.target.name]:
-              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-          };
         // }
       }
     });
@@ -279,9 +273,9 @@ function Page({
         { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
       ];
     });
-    // setFormBlock([...formBlock, {}]);
-    setContentData(newContent);
-    setFormEdit(stateEdit);
+    setFormBlock(stateEdit);
+    setContentData([...newContent,{}]);
+    setFormEdit([...stateEdit]);
     setListBlock(listBlock);
     setAddChildrenActive(false);
     setDeleteActive(true);
@@ -305,8 +299,8 @@ function Page({
       getPage();
     }
   };
-  // console.log(formBlock)
-
+  // console.log(formEdit);
+  // console.log(contentData);
   const onDelete = () => {
     deletePage(formState.values.id);
     setIsOpen(!isOpen);
@@ -335,22 +329,20 @@ function Page({
       ...items,
       newItem: 0
     };
-    // console.log(index)
-    // console.log(items);
+    // console.log(formEdit);
     setListBlock([...listBlock, newItems]);
     setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
   };
 
   const deletePageBlockItems = (id, pageid) => {
-    // console.log('123');
     deletePageBlock(id, pageid);
   };
 
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper">
+      <Row className="category__wapper" style={{height: '100vh'}}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
@@ -386,7 +378,7 @@ function Page({
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '35%' }}>
+          <div style={{ height: '45%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
