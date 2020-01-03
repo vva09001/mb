@@ -125,16 +125,17 @@ function Page({
       }
     });
     let newContent = map(contentData, (values, id) => {
+      console.log(values);
       if (index !== id) {
         return values;
       } else {
-        if (event.target.name !== 'title') {
+        // if (event.target.name !== 'title') {
           return {
             ...values,
             [event.target.name]:
               event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
           };
-        }
+        // }
       }
     });
     setContentData(newContent);
@@ -261,7 +262,6 @@ function Page({
   };
 
   const click = (node, path) => {
-    // console.log(node);
     setFormState(formState => ({
       ...formState,
       values: node
@@ -279,7 +279,7 @@ function Page({
         { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
       ];
     });
-    setFormBlock([...formBlock, {}]);
+    // setFormBlock([...formBlock, {}]);
     setContentData(newContent);
     setFormEdit(stateEdit);
     setListBlock(listBlock);
@@ -305,6 +305,7 @@ function Page({
       getPage();
     }
   };
+  // console.log(formBlock)
 
   const onDelete = () => {
     deletePage(formState.values.id);
@@ -334,8 +335,10 @@ function Page({
       ...items,
       newItem: 0
     };
+    // console.log(index)
+    // console.log(items);
     setListBlock([...listBlock, newItems]);
-    setFormBlock([...formBlock, items.blockValues[index]]);
+    setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
   };
 
