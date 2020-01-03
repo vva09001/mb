@@ -6,12 +6,13 @@ import {
   createBlockService,
   editBlockService,
   deleteBlockService,
-  deleteBlockValuesService
+  deleteBlockValuesService,
+  getTypeService
 } from 'services/block';
 import { Error, Success } from 'helpers/notify';
 
 function* getBlockSaga() {
-  yield takeLatest(actions.GET_BLOCK_REQUEST, function*(params) {
+  yield takeLatest(actions.GET_BLOCK_REQUEST, function*() {
     try {
       const res = yield getBlockService();
       if (res.status === 200) {
@@ -78,7 +79,7 @@ function* deleteBlockSaga() {
   });
 }
 
-function* deleteBlockValueSaga(params) {
+function* deleteBlockValueSaga() {
   yield takeLatest(actions.DELETE_BLOCK_VALUE_REQUEST, function*(params) {
     const { blockID, blockValueID } = params;
     try {
@@ -94,12 +95,28 @@ function* deleteBlockValueSaga(params) {
   });
 }
 
+function* getTypeSaga() {
+  yield takeLatest(actions.GET_TYPE_REQUEST, function*(params) {
+    try {
+      const res = yield getTypeService();
+      if (res.status === 200) {
+        yield put({ type: actions.GET_TYPE_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getBlockSaga),
     fork(createBlockSaga),
     fork(editBlockSaga),
     fork(deleteBlockSaga),
-    fork(deleteBlockValueSaga)
+    fork(deleteBlockValueSaga),
+    fork(getTypeSaga)
   ]);
 }

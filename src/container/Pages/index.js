@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 import PagesCreate from '../../components/page/Form/PageCreate';
-// import PagesCreateChild from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
@@ -16,16 +15,19 @@ const Proptype = {
   listTags: Proptypes.array.isRequired,
   getPage: Proptypes.func.isRequired,
   getTags: Proptypes.func.isRequired,
+  homeID: Proptypes.number,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionPages: Proptypes.func,
-  deletePageBlock: Proptypes.func
+  deletePageBlock: Proptypes.func,
+  getHomeID: Proptypes.func
 };
 
 function Page({
   data,
+  homeID,
   listTags,
   getPage,
   getTags,
@@ -34,7 +36,8 @@ function Page({
   deletePage,
   expanstion,
   updatePositionPages,
-  deletePageBlock
+  deletePageBlock,
+  getHomeID
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -53,11 +56,13 @@ function Page({
   const [formBlock, setFormBlock] = useState([]);
   const [contentData, setContentData] = useState([]);
   const [formEdit, setFormEdit] = useState([]);
+  const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
 
   useEffect(() => {
     getPage();
     getTags();
-  }, [getPage, getTags]);
+    getHomeID();
+  }, [getPage, getTags, getHomeID]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -197,10 +202,21 @@ function Page({
           contentHtml: contentHtml
         };
       }
-      const data = {
-        ...formState.values,
-        pageBlocks: [...formBlock]
-      };
+      let data = {};
+      if (actionChildrenSubmit) {
+        data = {
+          ...formState.values,
+          parent_id: PageDetail.id,
+          pageBlocks: [...formBlock]
+        };
+      } else {
+        data = {
+          ...formState.values,
+          parent_id: homeID,
+          pageBlocks: [...formBlock]
+        };
+      }
+
       addPage(data);
       setFormState({
         values: {},
@@ -211,24 +227,6 @@ function Page({
       setContentData([]);
     }
   };
-
-  // const onSubmitChildren = event => {
-  //   event.preventDefault();
-  //   if (deleteActive) {
-  //     editPage(formState.values);
-  //   } else {
-  //     const values = {
-  //       ...formState.values,
-  //       parentId: PageDetail.id
-  //     };
-  //     addPage(values);
-  //     setFormState({
-  //       values: {},
-  //       touched: {}
-  //     });
-  //   }
-  // };
-
   const changeTree = treeData => {
     expanstion(treeData);
   };
@@ -259,6 +257,8 @@ function Page({
     setFormBlock([]);
     setContentData([]);
     setDeleteActive(false);
+    setAddChildrenActive(true);
+    setActionChildrenSubmit(false);
   };
 
   const click = (node, path) => {
@@ -363,6 +363,7 @@ function Page({
               setListBlock([]);
               setFormBlock([]);
               setContentData([]);
+              setActionChildrenSubmit(true);
             }}
           >
             {t('page.addChildren')}
@@ -441,7 +442,8 @@ Page.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
-    listTags: state.TagReducer.listTags
+    listTags: state.TagReducer.listTags,
+    homeID: state.PageReducer.homeID
   };
 };
 
@@ -453,7 +455,8 @@ const mapDispatchToProps = {
   deletePage: PageActions.DeletePages,
   expanstion: PageActions.expansionPageAction,
   updatePositionPages: PageActions.updatePositionPages,
-  deletePageBlock: PageActions.detelePageBlockAction
+  deletePageBlock: PageActions.detelePageBlockAction,
+  getHomeID: PageActions.getHomepageIDAction
 };
 
 export default connect(

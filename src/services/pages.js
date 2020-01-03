@@ -93,6 +93,19 @@ const updatePositionPagesService = (idPage, idParent, positions) => {
     });
 };
 
+const getHomepageIDService = () => {
+  return request({
+    url: `/pages/homepage`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getPagesService,
   addPagesService,
@@ -100,5 +113,6 @@ export {
   deletePagesService,
   updatePositionPagesService,
   apprPagesService,
-  deletePageBlockService
+  deletePageBlockService,
+  getHomepageIDService
 };

@@ -66,4 +66,24 @@ const deleteBlockValuesService = (blockID, blockValueID) => {
     });
 };
 
-export { getBlockService, createBlockService, editBlockService, deleteBlockService, deleteBlockValuesService };
+const getTypeService = () => {
+  return request({
+    url: `/type`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export {
+  getBlockService,
+  createBlockService,
+  editBlockService,
+  deleteBlockService,
+  deleteBlockValuesService,
+  getTypeService
+};

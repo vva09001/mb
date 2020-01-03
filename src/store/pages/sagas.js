@@ -6,7 +6,8 @@ import {
   deletePagesService,
   updatePositionPagesService,
   apprPagesService,
-  deletePageBlockService
+  deletePageBlockService,
+  getHomepageIDService
 } from '../../services/pages';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -156,6 +157,21 @@ function* updatePositionPagesSaga() {
   });
 }
 
+function* getHomepageIDSaga() {
+  yield takeLatest(actions.GET_ID_HOMEPAGE_REQUEST, function*(params) {
+    try {
+      const res = yield getHomepageIDService();
+      if (res.status === 200) {
+        yield put({ type: actions.GET_ID_HOMEPAGE_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getPagesSaga),
@@ -165,6 +181,7 @@ export default function* rootSaga() {
     fork(updatePositionPagesSaga),
     fork(getAllPagesSaga),
     fork(apprPagesSaga),
-    fork(deletePageBlockSaga)
+    fork(deletePageBlockSaga),
+    fork(getHomepageIDSaga)
   ]);
 }
