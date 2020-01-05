@@ -84,6 +84,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
       ...formState.values,
       newsBlocks: []
     };
+    console.log(body);
     newsCreate(body, onSuccess, onFail);
   };
   return (
@@ -140,7 +141,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <Input type="file" name="base_Images" />
+                  <Input type="file" name="base_image" />
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('sticky')}</Label>

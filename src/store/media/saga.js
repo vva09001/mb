@@ -57,6 +57,7 @@ function* editImagesSaga() {
 function* deleteImagesSaga() {
   yield takeLatest(actions.DELETE_IMAGES_REQUEST, function*(params) {
     const { id } = params;
+    console.log(id)
     try {
       const res = yield deleteImagesService(id);
       if (res.status === 200) {
