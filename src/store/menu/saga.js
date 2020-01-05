@@ -9,10 +9,10 @@ import {
   editMenuItems,
   deleteMenuItems,
   updatePositionMenuItemsService
-} from 'services/menu';
-import { Error, Success } from 'helpers/notify';
+} from '../../services/menu';
+import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
-import history from 'helpers/history';
+import history from '../../helpers/history';
 
 function* getMenusSaga() {
   yield takeLatest(actions.GET_MENUS_REQUEST, function*(params) {

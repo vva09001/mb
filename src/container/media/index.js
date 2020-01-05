@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Row, Button } from 'reactstrap';
 import NewTable from '../../components/New/Table';
 import PropTypes, { array } from 'prop-types';
-import { MediaActions, NewActions } from '../../store/actions';
+// import { MediaActions, NewActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import PopupComfirm from '../../components/common/PopupComfirm';
-import history from 'helpers/history';
+import history from '../../helpers/history';
 import { connect } from 'react-redux';
 import Moment from 'moment';
 import FileBrowser from 'react-keyed-file-browser';
@@ -68,13 +68,13 @@ Media.propTypes = PropsType;
 
 const mapStateToProps = state => {
   return {
-    data: state.MediaReducer.data,
+    // data: state.MediaReducer.data,
     // dataImages: state.MediaReducer.data
   };
 };
 
 const mapDispatchToProps = {
-  getImages: MediaActions.GetImages,
+  // getImages: MediaActions.GetImages,
 };
 
 export default connect(

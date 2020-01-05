@@ -6,7 +6,7 @@ import {
   deleteUsersService,
   apprUsersService
 } from '../../services/Users';
-import { Error, Success } from 'helpers/notify';
+import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
 
 function* getUsersSaga() {
