@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  homeID: null
 };
 
 const Pages = (state = initialState, action) => {
@@ -56,6 +57,11 @@ const Pages = (state = initialState, action) => {
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_ID_HOMEPAGE_RESPONSE:
+      return {
+        ...state,
+        homeID: action.data
       };
     default:
       return state;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 import PagesCreate from '../../components/page/Form/PageCreate';
-// import PagesCreateChild from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
@@ -16,16 +15,19 @@ const Proptype = {
   listTags: Proptypes.array.isRequired,
   getPage: Proptypes.func.isRequired,
   getTags: Proptypes.func.isRequired,
+  homeID: Proptypes.number,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionPages: Proptypes.func,
-  deletePageBlock: Proptypes.func
+  deletePageBlock: Proptypes.func,
+  getHomeID: Proptypes.func
 };
 
 function Page({
   data,
+  homeID,
   listTags,
   getPage,
   getTags,
@@ -34,7 +36,8 @@ function Page({
   deletePage,
   expanstion,
   updatePositionPages,
-  deletePageBlock
+  deletePageBlock,
+  getHomeID
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -53,11 +56,13 @@ function Page({
   const [formBlock, setFormBlock] = useState([]);
   const [contentData, setContentData] = useState([]);
   const [formEdit, setFormEdit] = useState([]);
+  const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
 
   useEffect(() => {
     getPage();
     getTags();
-  }, [getPage, getTags]);
+    getHomeID();
+  }, [getPage, getTags, getHomeID]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -112,12 +117,16 @@ function Page({
   const handleEidt = (event, index) => {
     event.persist();
     let newValues = map(formEdit, (values, indexs) => {
-      return {
-        ...values,
-        [event.target.name]:
-          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
-        id: 0
-      };
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [event.target.name]:
+            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
+          id: 0
+        };
+      }
     });
     let newContent = map(contentData, (values, id) => {
       if (index !== id) {
@@ -132,6 +141,7 @@ function Page({
         // }
       }
     });
+    // console.log(newValues);
     setContentData(newContent);
     setFormEdit(newValues);
   };
@@ -154,6 +164,7 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
+          title: contentData[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
@@ -191,10 +202,21 @@ function Page({
           contentHtml: contentHtml
         };
       }
-      const data = {
-        ...formState.values,
-        pageBlocks: [...formBlock]
-      };
+      let data = {};
+      if (actionChildrenSubmit) {
+        data = {
+          ...formState.values,
+          parent_id: PageDetail.id,
+          pageBlocks: [...formBlock]
+        };
+      } else {
+        data = {
+          ...formState.values,
+          parent_id: homeID,
+          pageBlocks: [...formBlock]
+        };
+      }
+
       addPage(data);
       setFormState({
         values: {},
@@ -205,24 +227,6 @@ function Page({
       setContentData([]);
     }
   };
-
-  // const onSubmitChildren = event => {
-  //   event.preventDefault();
-  //   if (deleteActive) {
-  //     editPage(formState.values);
-  //   } else {
-  //     const values = {
-  //       ...formState.values,
-  //       parentId: PageDetail.id
-  //     };
-  //     addPage(values);
-  //     setFormState({
-  //       values: {},
-  //       touched: {}
-  //     });
-  //   }
-  // };
-
   const changeTree = treeData => {
     expanstion(treeData);
   };
@@ -253,6 +257,8 @@ function Page({
     setFormBlock([]);
     setContentData([]);
     setDeleteActive(false);
+    setAddChildrenActive(true);
+    setActionChildrenSubmit(false);
   };
 
   const click = (node, path) => {
@@ -274,7 +280,7 @@ function Page({
       ];
     });
     setFormBlock(stateEdit);
-    setContentData([...newContent,{}]);
+    setContentData([...newContent, {}]);
     setFormEdit([...stateEdit]);
     setListBlock(listBlock);
     setAddChildrenActive(false);
@@ -340,7 +346,7 @@ function Page({
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper" style={{height: '100vh'}}>
+      <Row className="category__wapper" style={{ height: '100vh' }}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
@@ -357,6 +363,7 @@ function Page({
               setListBlock([]);
               setFormBlock([]);
               setContentData([]);
+              setActionChildrenSubmit(true);
             }}
           >
             {t('page.addChildren')}
@@ -435,7 +442,8 @@ Page.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
-    listTags: state.TagReducer.listTags
+    listTags: state.TagReducer.listTags,
+    homeID: state.PageReducer.homeID
   };
 };
 
@@ -447,7 +455,8 @@ const mapDispatchToProps = {
   deletePage: PageActions.DeletePages,
   expanstion: PageActions.expansionPageAction,
   updatePositionPages: PageActions.updatePositionPages,
-  deletePageBlock: PageActions.detelePageBlockAction
+  deletePageBlock: PageActions.detelePageBlockAction,
+  getHomeID: PageActions.getHomepageIDAction
 };
 
 export default connect(

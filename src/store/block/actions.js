@@ -43,6 +43,12 @@ const Actions = {
     type: Actions.DELETE_BLOCK_VALUE_REQUEST,
     blockID,
     blockValueID
+  }),
+  GET_TYPE_REQUEST: 'GET_TYPE_REQUEST',
+  GET_TYPE_RESPONSE: 'GET_TYPE_RESPONSE',
+
+  getTypeAction: () => ({
+    type: Actions.GET_TYPE_REQUEST
   })
 };
 
