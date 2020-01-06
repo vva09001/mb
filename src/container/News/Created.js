@@ -11,6 +11,7 @@ import { Error, Success } from 'helpers/notify';
 import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+// import Iframe from 'react-iframe';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -141,6 +142,15 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
+                  {/* <Iframe
+                    url="http://localhost:3000/media"
+                    width="800px"
+                    height="450px"
+                    id="myId"
+                    className="myClassname"
+                    display="initial"
+                    position="relative"
+                  /> */}
                   <Input type="file" name="base_image" />
                 </FormGroup>
                 <div className="check__box">

@@ -48,8 +48,7 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
   };
 
   const handleRenameFile =(a,prefix) =>{
-    console.log(a);
-    let re = /[/]/g
+    console.log(a);   
     console.log(prefix.substring(prefix.lastIndexOf('/')+1, prefix.length));
     
     
