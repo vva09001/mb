@@ -108,6 +108,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       ...formState.values,
       newsBlocks: []
     };
+    console.log(body)
     editNew(body, onSuccess, onFail);
   };
   return (
