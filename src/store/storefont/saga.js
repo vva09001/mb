@@ -1,78 +1,80 @@
 import actions from './actions';
 import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getStoreFont,  editStoreFontGeneral, editStoreFontLogo, editStoreFontSocialLink} from 'services/storefont';
+import { getStoreFont, editStoreFontGeneral, editStoreFontLogo, editStoreFontSocialLink } from 'services/storefont';
 import { Error, Success } from 'helpers/notify';
 
 function* getStoreFontSaga() {
-    yield takeLatest(actions.GET_STORE_FONT_REQUEST, function*(params) {
-      const { name } = params;
-      try {
-        const res = yield getStoreFont(name);
-        if (res.status === 200) {
-          yield put({ type: actions.GET_STORE_FONT_RESPONSE, data: res.data });
-        } else {
-          yield Error(res.message);
-        }
-      } catch (error) {
-        yield Error('Không thể kết nối đến server');
+  yield takeLatest(actions.GET_STORE_FONT_REQUEST, function*(params) {
+    const { name } = params;
+    try {
+      const res = yield getStoreFont(name);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_STORE_FONT_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
       }
-    });
-  }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 function* editStoreFontGeneralSaga() {
-    yield takeLatest(actions.EDIT_STORE_FONT_GENERAL_REQUEST, function*(params) {
-      const { data } = params;
-      try {
-        const res = yield editStoreFontGeneral(data);
-        if (res.status === 200) {
-          yield Success('Sửa thành công');
-          yield put({ type: actions.EDIT_STORE_FONT_GENERAL_RESPONSE, data: res.data });
-          // yield window.location.reload();
-        } else {
-          yield Error(res.message);
-        }
-      } catch (error) {
-        yield Error('Không thể kết nối đến server');
+  yield takeLatest(actions.EDIT_STORE_FONT_GENERAL_REQUEST, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield editStoreFontGeneral(data);
+      if (res.status === 200) {
+        yield Success('Sửa thành công');
+        yield put({ type: actions.EDIT_STORE_FONT_GENERAL_RESPONSE, data: res.data });
+        // yield window.location.reload();
+      } else {
+        yield Error(res.message);
       }
-    });
-  }
-  function* editStoreFontLogoSaga() {
-    yield takeLatest(actions.EDIT_STORE_FONT_LOGO_REQUEST, function*(params) {
-      const { data } = params;
-      try {
-        const res = yield editStoreFontLogo(data);
-        if (res.status === 200) {
-          yield Success('Sửa thành công');
-          yield put({ type: actions.EDIT_STORE_FONT_LOGO_RESPONSE, data: res.data });
-          // yield window.location.reload();
-        } else {
-          yield Error(res.message);
-        }
-      } catch (error) {
-        yield Error('Không thể kết nối đến server');
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+function* editStoreFontLogoSaga() {
+  yield takeLatest(actions.EDIT_STORE_FONT_LOGO_REQUEST, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield editStoreFontLogo(data);
+      if (res.status === 200) {
+        yield Success('Sửa thành công');
+        yield put({ type: actions.EDIT_STORE_FONT_LOGO_RESPONSE, data: res.data });
+        // yield window.location.reload();
+      } else {
+        yield Error(res.message);
       }
-    });
-  }
-  function* editStoreFontSocialLinkSaga() {
-    yield takeLatest(actions.EDIT_STORE_FONT_SOCIALLINK_REQUEST, function*(params) {
-      const { data } = params;
-      try {
-        const res = yield editStoreFontSocialLink(data);
-        if (res.status === 200) {
-          yield Success('Sửa thành công');
-          yield put({ type: actions.EDIT_STORE_FONT_SOCIALLINK_RESPONSE, data: res.data });
-          // yield window.location.reload();
-        } else {
-          yield Error(res.message);
-        }
-      } catch (error) {
-        yield Error('Không thể kết nối đến server');
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+function* editStoreFontSocialLinkSaga() {
+  yield takeLatest(actions.EDIT_STORE_FONT_SOCIALLINK_REQUEST, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield editStoreFontSocialLink(data);
+      if (res.status === 200) {
+        yield Success('Sửa thành công');
+        yield put({ type: actions.EDIT_STORE_FONT_SOCIALLINK_RESPONSE, data: res.data });
+        // yield window.location.reload();
+      } else {
+        yield Error(res.message);
       }
-    });
-  }
-  export default function* rootSaga() {
-    yield all([fork(getStoreFontSaga), 
-      fork(editStoreFontGeneralSaga), 
-      fork(editStoreFontLogoSaga), 
-      fork(editStoreFontSocialLinkSaga)]);
-  }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+export default function* rootSaga() {
+  yield all([
+    fork(getStoreFontSaga),
+    fork(editStoreFontGeneralSaga),
+    fork(editStoreFontLogoSaga),
+    fork(editStoreFontSocialLinkSaga)
+  ]);
+}

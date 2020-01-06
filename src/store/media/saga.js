@@ -8,7 +8,6 @@ function* getImagesSaga() {
     try {
       const res = yield getImagesService();
       if (res.status === 200) {
-        console.log(res.data);
         yield put({ type: actions.GET_IMAGES_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);

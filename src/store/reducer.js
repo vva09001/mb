@@ -34,7 +34,7 @@ const reducers = combineReducers({
   SilderReducer,
   SettingReducer,
   StoreFontReducer,
-  // MediaReducer,
+  MediaReducer,
   FeedbackReducer
 });
 

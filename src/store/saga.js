@@ -32,7 +32,7 @@ export default function* rootSaga() {
     SliderSaga(),
     SettingSaga(),
     StoreFontSaga(),
-    // MediaSaga(),
+    MediaSaga(),
     FeedbackSaga()
   ]);
 }
