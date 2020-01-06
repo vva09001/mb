@@ -17,7 +17,7 @@ const PropsType = {
 
 const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [newsID, setNewsID] = useState(null);
+  const [sliderID, setSliderID] = useState(null);
 
   useEffect(() => {
     getSilder();
@@ -25,15 +25,7 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (newsID !== null) {
-      setIsOpen(!isOpen);
-    }
-  };
-  // console.log(data);
-
-  const onDelete = () => {
-    if (newsID !== null) {
-      deleteSilder(newsID);
+    if (sliderID !== null) {
       setIsOpen(!isOpen);
     }
   };
@@ -42,6 +34,15 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
     getDetail(detail);
     history.push('/slider/edit');
   };
+
+  const onDelete = () => {
+    if (sliderID !== null) {
+      deleteSilder(sliderID);
+      setIsOpen(!isOpen);
+    }
+  };
+
+
 
   return (
     <React.Fragment>
@@ -58,7 +59,7 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <SliderTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <SliderTable data={data} getID={id => setSliderID(id)} getDetail={onGetDetail} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -69,7 +70,7 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
 Slider.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.SilderReducer.listSlider };
+  return { data: state.SilderReducer.data };
 };
 
 const mapDispatchToProps = {

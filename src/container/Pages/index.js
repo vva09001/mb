@@ -132,16 +132,13 @@ function Page({
       if (index !== id) {
         return values;
       } else {
-        // if (event.target.name !== 'title') {
         return {
           ...values,
           [event.target.name]:
             event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
         };
-        // }
       }
     });
-    // console.log(newValues);
     setContentData(newContent);
     setFormEdit(newValues);
   };
@@ -164,7 +161,7 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
-          title: contentData[i].title,
+          title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
@@ -346,7 +343,7 @@ function Page({
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper" style={{ height: '100vh' }}>
+      <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}

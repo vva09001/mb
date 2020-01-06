@@ -103,7 +103,7 @@ const DashboardRoutes = () => (
     {/* Slider */}
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
-    <Route path="/slider/edit" exact component={SliderEdit} />
+    <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
     <Route path="/media" exact component={Media} />
 
