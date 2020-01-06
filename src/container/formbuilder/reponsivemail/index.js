@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+/* eslint-disable no-undef */
+import React, { useState, useEffect } from 'react';
 import { Form, FormGroup, Input, Label, Button, Col, Row, Table } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FeedbackActions } from '../../../store/actions';
+import { FormBuilderActions } from '../../../store/actions';
+import { map } from 'lodash';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  ReponmailCreate: PropTypes.func
+  formDetail: PropTypes.object,
+  ReponmailCreate: PropTypes.func,
+  getFormId: PropTypes.func
 };
-function ReponmailCreate({ ReponmailCreate }) {
+let listform = null;
+function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
+  let { id } = useParams();
+  useEffect(() => {
+    getFormId(id);
+  }, [getFormId, id]);
+
+  if (formDetail.list) {
+    listform = JSON.parse(formDetail.list);
+  }
+
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -51,7 +67,6 @@ function ReponmailCreate({ ReponmailCreate }) {
 
   const resbackMail = event => {
     event.preventDefault();
-    //console.log(formState.values);
     ReponmailCreate(formState.values);
   };
   return (
@@ -70,7 +85,12 @@ function ReponmailCreate({ ReponmailCreate }) {
             </Col>
             <Col sm="10">
               <FormGroup>
-                <Input name="subject" required onChange={handleChange} />
+                <Input
+                  name="subject"
+                  value={formState.values.subject === undefined ? '' : formState.values.subject}
+                  required
+                  onChange={handleChange}
+                />
               </FormGroup>
             </Col>
           </Row>
@@ -122,15 +142,19 @@ function ReponmailCreate({ ReponmailCreate }) {
               </FormGroup>
             </Col>
             <Col sm="10">
-              <Table striped>
-                <thead>
-                  <tr>
-                    <td>
-                      <span>TextArea</span>:<span>[mg_30_field]</span>
-                    </td>
-                  </tr>
-                </thead>
-              </Table>
+              <FormGroup>
+                {map(listform, (value, index) => (
+                  <div key={value + index}>
+                    {value.type === 'button' ? (
+                      <p />
+                    ) : (
+                      <div>
+                        <span>{value.label}</span> : <span> [mg_{index}_field]</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </FormGroup>
             </Col>
           </Row>
           <Row>
@@ -153,7 +177,7 @@ function ReponmailCreate({ ReponmailCreate }) {
             </Col>
           </Row>
           <Button type="submit" color="primary">
-            {t('feedback')}
+            {t('save')}
           </Button>
         </Form>
       </div>
@@ -163,11 +187,18 @@ function ReponmailCreate({ ReponmailCreate }) {
 
 ReponmailCreate.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return {
+    formDetail: state.FormBuilderReducer.detail
+  };
+};
+
 const mapDispatchToProps = {
-  ReponmailCreate: FeedbackActions.AddFeedbackMail
+  ReponmailCreate: FeedbackActions.AddFeedbackMail,
+  getFormId: FormBuilderActions.getformbyIDAction
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ReponmailCreate);

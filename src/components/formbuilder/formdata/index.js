@@ -2,7 +2,7 @@ import React, * as react from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -13,45 +13,36 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const FormTable = ({ data, getID, getDetail }) => {
+const FormDataTable = ({ data }) => {
   const { t } = useTranslation();
   const [page, setPage] = react.useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
-      <Table striped>
-        <thead>
+      <Table striped style={{ backgroundColor: '#fff' }}>
+        <thead style={{ borderBottom: '1px solid #e6edf5' }}>
           <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>{t('name')}</th>
-            <th>{t('status')}</th>
-            <th>{t('form')}</th>
-            <th>{t('created')}</th>
+            {map(list, (values, index) => {
+              if (values.type === 'button') {
+                return;
+              } else {
+                return <td key={index}>{values.label}</td>;
+              }
+            })}
+            <td>Đã tạo mới</td>
           </tr>
         </thead>
         <tbody>
-          {map(list, (values, index) => {
-            return (
-              <tr key={index}>
-                <th>
-                  <input type="checkbox" onClick={() => getID(values.id)} />
-                </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>
-                  <span className={'values.status === 0' ? 'green' : 'dot'} />
-                </td>
-                <td>
-                  <Link to={values.id + '/formdata'}>{t('formBuilder.formdata')}</Link>|
-                  <Link to={values.id + '/emmbed'}>{t('formBuilder.embededform')}</Link>|
-                  <Link to={values.id + '/rely'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
-                </td>
-                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
-              </tr>
-            );
-          })}
+          <tr>
+            {map(list, (values, texts) => {
+              return <td key={texts} />;
+            })}
+            {map(list, values => {
+              // eslint-disable-next-line no-unused-expressions
+              <td>{moment(values.createdAt).fromNow()}</td>;
+            })}
+          </tr>
         </tbody>
       </Table>
       <div className="pagination__wapper">
@@ -77,6 +68,6 @@ const FormTable = ({ data, getID, getDetail }) => {
   );
 };
 
-FormTable.propTypes = PropsType;
+FormDataTable.propTypes = PropsType;
 
-export default FormTable;
+export default FormDataTable;

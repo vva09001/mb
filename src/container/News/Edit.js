@@ -206,7 +206,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                   name="is_active"
                   checked={formState.values.is_active === 0 ? false : true}
                   onChange={handleChange}
-                /> 
+                />
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>

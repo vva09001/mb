@@ -5,6 +5,10 @@ import { FormBuilderActions } from '../../../store/actions';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import $ from 'jquery';
+
+window.jQuery = $;
+window.$ = $;
 
 const PropsType = {
   detail: PropTypes.object,
