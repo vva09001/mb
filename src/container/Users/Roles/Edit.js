@@ -130,13 +130,349 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                     style={{ background: '#fff', justifyContent: 'center' }}
                     onSubmit={onSubmitPermission}
                   >
+                    <h4>{t('category')}</h4>
+                    <hr />
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <div>
+                            <Label for="exampleCheckbox" inline="true">
+                              <h5>{t('admincategory')}</h5>
+                            </Label>
+                          </div>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <ButtonGroup size="sm">
+                              <Button>{t('Allow All')}</Button>
+                              <Button>{t('Deny All')}</Button>
+                            </ButtonGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('getcategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="getcategory1"
+                              value={3}
+                              name="getcategory"
+                              name2="getcategory1"
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                              // checked={}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="getcategory2"
+                              value={3}
+                              name="getcategory"
+                              name2="getcategory2"
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('createcategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="createcategory1"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="createcategory2"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('editcategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="editcategory1"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              label="Allow"
+                              value={5}
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="editcategory2"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              value={5}
+                              label="Deny "
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('deletecategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="deletecategory11"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="deletecategory22"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('positioncategory')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="positioncategory1"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Allow"
+                              value={7}
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="positioncategory2"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Deny"
+                              value={7}
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+
+                    <h4>{t('page')}</h4>
+                    <hr />
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <div>
+                            <Label for="exampleCheckbox" inline="true">
+                              <h5>{t('adminpage')}</h5>
+                            </Label>
+                          </div>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <ButtonGroup size="sm">
+                              <Button>{t('Allow All')}</Button>
+                              <Button>{t('Deny All')}</Button>
+                            </ButtonGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('getpage')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="getpage1"
+                              value={3}
+                              name="ROLE_XEM THƯ MỤC"
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="getpage2"
+                              value={3}
+                              name="ROLE_XEM THƯ MỤC"
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('createpage')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="createpage1"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="createpage2"
+                              name="ROLE_TẠO THƯ MỤC"
+                              value={1}
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('editpage')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="editpage1"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              label="Allow"
+                              value={5}
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="editpage2"
+                              name="ROLE_CHỈNH SỬA THƯ MỤC"
+                              value={5}
+                              label="Deny "
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('deletepage')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="deletepage11"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Allow"
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="deletepage22"
+                              name="ROLE_XÓA THƯ MỤC"
+                              value={9}
+                              label="Deny"
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('positionpage')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput
+                              type="radio"
+                              id="positionpage1"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Allow"
+                              value={7}
+                              inline="true"
+                              onChange={allow}
+                            />
+                            <CustomInput
+                              type="radio"
+                              id="positionpage2"
+                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
+                              label="Deny"
+                              value={7}
+                              inline="true"
+                              onChange={deny}
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
                     <h4>{t('New')}</h4>
                     <hr />
                     <FormGroup>
                       <Row>
                         <Col xs="6">
                           <div>
-                            <Label for="exampleCheckbox" inline>
+                            <Label for="exampleCheckbox" inline="true">
                               <h5>{t('adminNew')}</h5>
                             </Label>
                           </div>
@@ -167,7 +503,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               )}*/
                               name="ROLE_XEM TIN TỨC"
                               label="Allow"
-                              inline
+                              inline="true"
                               onChange={allow}
                             />
                             <CustomInput
@@ -176,7 +512,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               value={13}
                               name="ROLE_XEM TIN TỨC"
                               label="Deny"
-                              inline
+                              inline="true"
                               onChange={deny}
                             />
                           </div>
@@ -196,7 +532,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               name="ROLE_TẠO TIN TỨC"
                               label="Allow"
                               value={11}
-                              inline
+                              inline="true"
                               onChange={allow}
                             />
                             <CustomInput
@@ -205,7 +541,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               name="ROLE_TẠO TIN TỨC"
                               label="Deny"
                               value={11}
-                              inline
+                              inline="true"
                               onChange={deny}
                             />
                           </div>
@@ -225,7 +561,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               name="ROLE_CHỈNH SỬA TIN TỨC"
                               value={15}
                               label="Allow"
-                              inline
+                              inline="true"
                               onChange={allow}
                             />
                             <CustomInput
@@ -234,7 +570,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               name="ROLE_CHỈNH SỬA TIN TỨC"
                               value={15}
                               label="Deny "
-                              inline
+                              inline="true"
                               onChange={deny}
                             />
                           </div>
@@ -254,7 +590,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               value={17}
                               name="ROLE_XÓA TIN TỨC"
                               label="Allow"
-                              inline
+                              inline="true"
                               onChange={allow}
                             />
                             <CustomInput
@@ -263,173 +599,7 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
                               value={17}
                               name="ROLE_XÓA TIN TỨC"
                               label="Deny"
-                              inline
-                              onChange={deny}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <h4>{t('category')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline>
-                              <h5>{t('admincategory')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('getcategory')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput
-                              type="radio"
-                              id="getcategory1"
-                              value={3}
-                              name="ROLE_XEM THƯ MỤC"
-                              label="Allow"
-                              inline
-                              onChange={allow}
-                            />
-                            <CustomInput
-                              type="radio"
-                              id="getcategory2"
-                              value={3}
-                              name="ROLE_XEM THƯ MỤC"
-                              label="Deny"
-                              inline
-                              onChange={deny}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('createcategory')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput
-                              type="radio"
-                              id="createcategory1"
-                              name="ROLE_TẠO THƯ MỤC"
-                              value={1}
-                              label="Allow"
-                              inline
-                              onChange={allow}
-                            />
-                            <CustomInput
-                              type="radio"
-                              id="createcategory2"
-                              name="ROLE_TẠO THƯ MỤC"
-                              value={1}
-                              label="Deny"
-                              inline
-                              onChange={deny}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('editcategory')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput
-                              type="radio"
-                              id="editcategory1"
-                              name="ROLE_CHỈNH SỬA THƯ MỤC"
-                              label="Allow"
-                              value={5}
-                              inline
-                              onChange={allow}
-                            />
-                            <CustomInput
-                              type="radio"
-                              id="editcategory2"
-                              name="ROLE_CHỈNH SỬA THƯ MỤC"
-                              value={5}
-                              label="Deny "
-                              inline
-                              onChange={deny}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('deletecategory')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput
-                              type="radio"
-                              id="deletecategory11"
-                              name="ROLE_XÓA THƯ MỤC"
-                              value={9}
-                              label="Allow"
-                              inline
-                              onChange={allow}
-                            />
-                            <CustomInput
-                              type="radio"
-                              id="deletecategory22"
-                              name="ROLE_XÓA THƯ MỤC"
-                              value={9}
-                              label="Deny"
-                              inline
-                              onChange={deny}
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('positioncategory')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput
-                              type="radio"
-                              id="positioncategory1"
-                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
-                              label="Allow"
-                              value={7}
-                              inline
-                              onChange={allow}
-                            />
-                            <CustomInput
-                              type="radio"
-                              id="positioncategory2"
-                              name="ROLE_CHỈNH SỬA VỊ TRÍ THƯ MỤC"
-                              label="Deny"
-                              value={7}
-                              inline
+                              inline="true"
                               onChange={deny}
                             />
                           </div>

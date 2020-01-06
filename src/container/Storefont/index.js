@@ -20,13 +20,20 @@ const PropsType = {
   editStoreFontSocialLink: PropTypes.func
 };
 let dataChange = {};
-function Storefont({ data, getStoreFont, 
-  editStoreFontGeneral,editStoreFontLogo,editStoreFontSocialLink, 
-  dataSociallink, dataGeneral, dataLogo }) {
+function Storefont({
+  data,
+  getStoreFont,
+  editStoreFontGeneral,
+  editStoreFontLogo,
+  editStoreFontSocialLink,
+  dataSociallink,
+  dataGeneral,
+  dataLogo
+}) {
   const [StoreFontName, setStoreFontName] = useState('general');
   dataChange = Object.assign(data, dataChange);
   useEffect(() => {
-    getStoreFont(StoreFontName)
+    getStoreFont(StoreFontName);
     // dataGeneral = getStoreFont('general');
     // dataLogo = getStoreFont('logo');
     // dataSociallink = getStoreFont('socialLink');
@@ -34,7 +41,7 @@ function Storefont({ data, getStoreFont,
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
-      values: (activeTab === '1' ? dataGeneral : (activeTab==='2' ? dataLogo: dataSociallink))
+      values: activeTab === '1' ? dataGeneral : activeTab === '2' ? dataLogo : dataSociallink
     }));
   }, [dataGeneral, dataLogo, dataSociallink]);
   const [formState, setFormState] = useState({
@@ -45,18 +52,16 @@ function Storefont({ data, getStoreFont,
   const { t } = useTranslation();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
-    (tab === '1' ? setStoreFontName('general') : (tab === '2') ? setStoreFontName('logo') : setStoreFontName('socialLink'))
+    tab === '1' ? setStoreFontName('general') : tab === '2' ? setStoreFontName('logo') : setStoreFontName('socialLink');
   };
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
       values: {
-        ...formState.values,
-        
+        ...formState.values
       },
       touched: {
-        ...formState.touched,
-        
+        ...formState.touched
       }
     }));
   };
@@ -89,15 +94,15 @@ function Storefont({ data, getStoreFont,
     }
   };
   const editStoreFontsGeneral = event => {
-    event.preventDefault();   
+    event.preventDefault();
     editStoreFontGeneral(formState.values);
   };
   const editStoreFontsLogo = event => {
-    event.preventDefault();   
+    event.preventDefault();
     editStoreFontLogo(formState.values);
   };
   const editStoreFontsSocialLink = event => {
-    event.preventDefault();   
+    event.preventDefault();
     editStoreFontSocialLink(formState.values);
   };
 
@@ -145,7 +150,7 @@ function Storefont({ data, getStoreFont,
           <Nav tabs>
             <NavItem>
               <NavLink activeTab={activeTab}>
-                {(activeTab === '1' ? t('general') : (activeTab === '2') ? 'Logo' : t('storefont.sociallinks'))}
+                {activeTab === '1' ? t('general') : activeTab === '2' ? 'Logo' : t('storefont.sociallinks')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -154,7 +159,9 @@ function Storefont({ data, getStoreFont,
               <Form className="p-3" onSubmit={editStoreFontsGeneral}>
                 <FormGroup>
                   <Label>{t('storefont.footeraddress')}</Label>
-                  <Input type="text" name="footer_address"
+                  <Input
+                    type="text"
+                    name="footer_address"
                     value={formState.values.footer_address === undefined ? '' : formState.values.footer_address}
                     onChange={handleChange}
                   />
@@ -181,25 +188,30 @@ function Storefont({ data, getStoreFont,
                   <Label for="favicon">Favicon</Label>
                   <Row>
                     <Col>
-                      <Input type="text" name="favicon"
+                      <Input
+                        type="text"
+                        name="favicon"
                         value={formState.values.favicon === null ? '' : formState.values.favicon}
                         onChange={handleChange}
                       />
                     </Col>
                     <Col>
-                      <Input type="file" name="favicon"
-                      // value={formState.values.favicon === undefined ? '' : formState.values.favicon}
-                      // onChange={handleChange}
+                      <Input
+                        type="file"
+                        name="favicon"
+                        // value={formState.values.favicon === undefined ? '' : formState.values.favicon}
+                        // onChange={handleChange}
                       />
                     </Col>
                   </Row>
-
                 </FormGroup>
                 <FormGroup>
                   <Label for="hearderLogo">Header Logo</Label>
                   <Row>
                     <Col>
-                      <Input type="text" name="hearderLogo"
+                      <Input
+                        type="text"
+                        name="hearderLogo"
                         value={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
                         onChange={handleChange}
                       />
@@ -213,7 +225,9 @@ function Storefont({ data, getStoreFont,
                   <Label for="footerLogo">Footer Logo</Label>
                   <Row>
                     <Col>
-                      <Input type="text" name="footerLogo"
+                      <Input
+                        type="text"
+                        name="footerLogo"
                         value={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
                         onChange={handleChange}
                       />
@@ -227,7 +241,9 @@ function Storefont({ data, getStoreFont,
                   <Label for="footerBackground">Footer Background</Label>
                   <Row>
                     <Col>
-                      <Input type="text" name="footerBackground"
+                      <Input
+                        type="text"
+                        name="footerBackground"
                         value={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
                         onChange={handleChange}
                       />
@@ -246,49 +262,63 @@ function Storefont({ data, getStoreFont,
               <Form className="p-3" onSubmit={editStoreFontsSocialLink}>
                 <FormGroup>
                   <Label for="facebook">Facebook</Label>
-                  <Input type="text" name="facebook"
+                  <Input
+                    type="text"
+                    name="facebook"
                     value={formState.values.facebook === undefined ? '' : formState.values.facebook}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="twitter">Twitter</Label>
-                  <Input type="text" name="twitter"
+                  <Input
+                    type="text"
+                    name="twitter"
                     value={formState.values.twitter === undefined ? '' : formState.values.twitter}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="instagram">Instagram</Label>
-                  <Input type="text" name="instagram"
+                  <Input
+                    type="text"
+                    name="instagram"
                     value={formState.values.instagram === undefined ? '' : formState.values.instagram}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="linkedin">Linkedin</Label>
-                  <Input type="text" name="linkedin"
+                  <Input
+                    type="text"
+                    name="linkedin"
                     value={formState.values.linkedin === undefined ? '' : formState.values.linkedin}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="pinterest">Pinterest</Label>
-                  <Input type="text" name="pinterest"
+                  <Input
+                    type="text"
+                    name="pinterest"
                     value={formState.values.pinterest === undefined ? '' : formState.values.pinterest}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="googleplus">Google Plus</Label>
-                  <Input type="text" name="googleplus"
+                  <Input
+                    type="text"
+                    name="googleplus"
                     value={formState.values.googleplus === undefined ? '' : formState.values.googleplus}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
                   <Label for="youtube">Youtube</Label>
-                  <Input type="text" name="youtube"
+                  <Input
+                    type="text"
+                    name="youtube"
                     value={formState.values.youtube === undefined ? '' : formState.values.youtube}
                     onChange={handleChange}
                   />
@@ -312,7 +342,7 @@ const mapStateToProps = state => {
     dataGeneral: state.StoreFontReducer.dataStoreFontGeneral,
     dataLogo: state.StoreFontReducer.dataStoreFontLogo,
     dataSociallink: state.StoreFontReducer.dataStoreFontSociallink
-    //  detail:  
+    //  detail:
   };
 };
 
