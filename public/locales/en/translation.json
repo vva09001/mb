@@ -126,6 +126,9 @@
         "storeFont": "Store Font",
         "slider": "Slider"
     },
+    "storefont": {
+        "sociallinks": "Social links"
+    },
     "user": {
         "fistname": "Fist Name",
         "lastname": "Last Name",

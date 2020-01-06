@@ -5,7 +5,9 @@ import {
   editPagesService,
   deletePagesService,
   updatePositionPagesService,
-  apprPagesService
+  apprPagesService,
+  deletePageBlockService,
+  getHomepageIDService
 } from '../../services/pages';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -120,6 +122,23 @@ function* deletePagesSaga() {
   });
 }
 
+function* deletePageBlockSaga() {
+  yield takeLatest(actions.DELETE_PAGE_BLOCK_REQUEST, function*(params) {
+    const { id, idBlock } = params;
+    try {
+      const res = yield deletePageBlockService(id, idBlock);
+      if (res.status === 200) {
+        yield Success('Xóa thành công');
+        // yield put({ type: actions.GET_PAGES_REQUEST, data: id });
+      } else {
+        yield Error('Xóa lỗi');
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 function* updatePositionPagesSaga() {
   yield takeLatest(actions.UPDATE_POSITION_PAGE, function*(params) {
     const { idPage, idParent, positions } = params;
@@ -139,6 +158,21 @@ function* updatePositionPagesSaga() {
   });
 }
 
+function* getHomepageIDSaga() {
+  yield takeLatest(actions.GET_ID_HOMEPAGE_REQUEST, function*(params) {
+    try {
+      const res = yield getHomepageIDService();
+      if (res.status === 200) {
+        yield put({ type: actions.GET_ID_HOMEPAGE_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getPagesSaga),
@@ -147,6 +181,8 @@ export default function* rootSaga() {
     fork(deletePagesSaga),
     fork(updatePositionPagesSaga),
     fork(getAllPagesSaga),
-    fork(apprPagesSaga)
+    fork(apprPagesSaga),
+    fork(deletePageBlockSaga),
+    fork(getHomepageIDSaga)
   ]);
 }

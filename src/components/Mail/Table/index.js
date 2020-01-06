@@ -41,14 +41,10 @@ const MailTable = ({ data, getID, getDetail }) => {
                   <Link to={`/emails/edit/${values.id}`}>{values.name}</Link>
                 </td>
                 <td>
-                  <Link to={`/emails/edit/${values.id}`}>
-                    {values.status === 1 ? 'true' : 'false'}
-                  </Link>
+                  <Link to={`/emails/edit/${values.id}`}>{values.status === 1 ? 'true' : 'false'}</Link>
                 </td>
                 <td>
-                  <Link to={`/emails/edit/${values.id}`}>
-                    {moment(values.created_at).fromNow()}
-                  </Link>
+                  <Link to={`/emails/edit/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
                 </td>
               </tr>
             );

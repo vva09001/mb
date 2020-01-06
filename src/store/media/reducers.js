@@ -6,19 +6,27 @@ const initialState = {
   detail: {}
 };
 
-const Slider = (state = initialState, action) => {
+const Images = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.GET_SLIDER_RESPONSE:
+    case Actions.GET_IMAGES_RESPONSE:
       return {
         ...state,
-        data: action.data
+        data: map(action.data, values => ({
+          key: `${values.path}${values.name}`,
+          modified: values.createdAt,
+          id: values.id,
+          path: values.path,
+          size: values.size,
+          name: values.name,
+          url: values.url
+        }))
       };
-    case Actions.CREATE_SLIDER_RESPONSE:
+    case Actions.ADD_IMAGES_RESPONSE:
       return {
         ...state,
         data: [...state.data, action.data]
       };
-    case Actions.EDIT_SLIDER_RESPONSE:
+    case Actions.EDIT_IMAGES_RESPONSE:
       return {
         ...state,
         data: map(state.data, values => {
@@ -28,19 +36,14 @@ const Slider = (state = initialState, action) => {
           return values;
         })
       };
-    case Actions.DELETE_SLIDER_RESPONSE:
+    case Actions.DELETE_IMAGES_RESPONSE:
       return {
         ...state,
         data: filter(state.data, values => {
           return values.id !== action.data;
         })
       };
-    case Actions.GET_DETAIL_SLIDER:
-      return {
-        ...state,
-        detail: action.data
-      };
-    case Actions.GET_SLIDER_BY_ID_RESPONSE:
+    case Actions.GET_DETAIL_IMAGE:
       return {
         ...state,
         detail: action.data
@@ -50,4 +53,4 @@ const Slider = (state = initialState, action) => {
   }
 };
 
-export default Slider;
+export default Images;

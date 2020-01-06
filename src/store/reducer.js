@@ -15,7 +15,9 @@ import UserReducer from './Users/reducers';
 import RoleReducer from './roles/reducers';
 import SilderReducer from './slider/reducers';
 import SettingReducer from './setting/reducers';
+import MediaReducer from './media/reducers';
 import FeedbackReducer from './backmail/reducers';
+import StoreFontReducer from './storefont/reducer';
 
 const reducers = combineReducers({
   NewReducer,
@@ -31,6 +33,8 @@ const reducers = combineReducers({
   RoleReducer,
   SilderReducer,
   SettingReducer,
+  StoreFontReducer,
+  MediaReducer,
   FeedbackReducer
 });
 

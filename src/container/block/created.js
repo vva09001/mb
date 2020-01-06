@@ -13,15 +13,17 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   listTags: PropTypes.array,
+  listTypes: PropTypes.array,
   createBlock: PropTypes.func,
-  getTags: PropTypes.func
+  getTags: PropTypes.func,
+  getTypes: PropTypes.func
 };
 
 const options = {
   lineNumbers: true
 };
 
-function BlockCreate({ listTags, getTags, createBlock }) {
+function BlockCreate({ listTags, listTypes, getTags, getTypes, createBlock }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -32,10 +34,10 @@ function BlockCreate({ listTags, getTags, createBlock }) {
 
   useEffect(() => {
     getTags();
-  }, [getTags]);
+    getTypes();
+  }, [getTags, getTypes]);
 
   const { t } = useTranslation();
-
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -141,7 +143,7 @@ function BlockCreate({ listTags, getTags, createBlock }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="isActive" onChange={handleChange} />
+                    <Input type="checkbox" name="active" onChange={handleChange} />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>
@@ -171,17 +173,11 @@ function BlockCreate({ listTags, getTags, createBlock }) {
                       <FormGroup className="mr-4">
                         <Label for="exampleSelect">{t('type')}</Label>
                         <Input type="select" name="type_id" onChange={event => handleChangeAddMore(event, index)}>
-                          <option value={1}>Input</option>
-                          <option value={2}>Textarea</option>
-                          <option value={3}>Editor</option>
-                          <option value={4}>Single Image</option>
-                          <option value={5}>Multiple Images</option>
-                          <option value={6}>Button</option>
-                          <option value={7}>Group</option>
-                          <option value={8}>Repeat</option>
-                          <option value={9}>Contact form</option>
-                          <option value={10}>Custom multi images</option>
-                          <option value={11}>Products</option>
+                          {map(listTypes, value => (
+                            <option key={value.id} value={value.id} name={value.names}>
+                              {value.names}
+                            </option>
+                          ))}
                         </Input>
                       </FormGroup>
                       <div className="mt-3">
@@ -211,13 +207,15 @@ BlockCreate.propTypes = PropsType;
 
 const mapDistpatchToProps = state => {
   return {
-    listTags: state.TagReducer.listTags
+    listTags: state.TagReducer.listTags,
+    listTypes: state.BlockReducer.listTypes
   };
 };
 
 const mapDispatchToProps = {
   createBlock: BlockActions.createBlockAction,
-  getTags: TagActions.getTagAction
+  getTags: TagActions.getTagAction,
+  getTypes: BlockActions.getTypeAction
 };
 
 export default connect(

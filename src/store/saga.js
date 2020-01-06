@@ -12,7 +12,9 @@ import UserSaga from './Users/sagas';
 import RoleSaga from './roles/sagas';
 import SliderSaga from './slider/saga';
 import SettingSaga from './setting/saga';
+import MediaSaga from './media/saga';
 import FeedbackSaga from './backmail/sagas';
+import StoreFontSaga from './storefont/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -29,6 +31,8 @@ export default function* rootSaga() {
     RoleSaga(),
     SliderSaga(),
     SettingSaga(),
+    StoreFontSaga(),
+    MediaSaga(),
     FeedbackSaga()
   ]);
 }

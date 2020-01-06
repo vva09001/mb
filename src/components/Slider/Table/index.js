@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -36,8 +37,12 @@ const SliderTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td>
+                  <Link to={`/slider/edit/${values.id}`}>{values.sliderTranslations.name}</Link>
+                </td>
+                <td>
+                  <Link to={`/slider/edit/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
+                </td>
               </tr>
             );
           })}
@@ -45,7 +50,7 @@ const SliderTable = ({ data, getID, getDetail }) => {
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data.length / 20)}
+          pageCount={Math.ceil(data && data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
           nextLinkClassName={'page-link'}

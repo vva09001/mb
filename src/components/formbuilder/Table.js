@@ -39,16 +39,22 @@ const FormTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>
-                  <span className={'values.status === 0' ? 'green' : 'dot'} />
+                <td>
+                  <Link to={`/form-builder/edit/${values.id}`}>{values.name}</Link>
+                </td>
+                <td>
+                  <Link to={`/form-builder/edit/${values.id}`}>
+                    <span className={'values.status === 0' ? 'green' : 'dot'} />
+                  </Link>
                 </td>
                 <td>
                   <Link to={values.id + '/formdata'}>{t('formBuilder.formdata')}</Link>|
                   <Link to={values.id + '/emmbed'}>{t('formBuilder.embededform')}</Link>|
                   <Link to={values.id + '/rely'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
                 </td>
-                <td onClick={() => getDetail(values)}>{moment(values.createdAt).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>
+                  <Link to={`/form-builder/edit/${values.id}`}>{moment(values.createdAt).fromNow()}</Link>
+                </td>
               </tr>
             );
           })}

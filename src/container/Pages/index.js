@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 import PagesCreate from '../../components/page/Form/PageCreate';
-import PagesCreateChild from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
@@ -16,17 +15,32 @@ const Proptype = {
   listTags: Proptypes.array.isRequired,
   getPage: Proptypes.func.isRequired,
   getTags: Proptypes.func.isRequired,
+  homeID: Proptypes.number,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
-  updatePositionPages: Proptypes.func
+  updatePositionPages: Proptypes.func,
+  deletePageBlock: Proptypes.func,
+  getHomeID: Proptypes.func
 };
 
-function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage, expanstion, updatePositionPages }) {
+function Page({
+  data,
+  homeID,
+  listTags,
+  getPage,
+  getTags,
+  addPage,
+  editPage,
+  deletePage,
+  expanstion,
+  updatePositionPages,
+  deletePageBlock,
+  getHomeID
+}) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
-  const [formChildren, setFormChildren] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [formState, setFormState] = useState({
     values: {},
@@ -41,11 +55,14 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
   const [listBlock, setListBlock] = useState([]);
   const [formBlock, setFormBlock] = useState([]);
   const [contentData, setContentData] = useState([]);
+  const [formEdit, setFormEdit] = useState([]);
+  const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
 
   useEffect(() => {
     getPage();
     getTags();
-  }, [getPage, getTags]);
+    getHomeID();
+  }, [getPage, getTags, getHomeID]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -64,7 +81,6 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
       }
     }));
   };
-
   const handleFomBlock = (event, index) => {
     event.persist();
     let newFormAddMore = map(formBlock, (values, id) => {
@@ -76,7 +92,8 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
           [event.target.name]:
             event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
           position: index,
-          id_block: values.block_id
+          id_block: values.block_id,
+          id: 0
         };
       }
     });
@@ -96,48 +113,117 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
     setContentData(newContent);
     setFormBlock(newFormAddMore);
   };
+
+  const handleEidt = (event, index) => {
+    event.persist();
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [event.target.name]:
+            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
+          id: 0
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [event.target.name]:
+            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
-      editPage(formState.values);
-    } else {
-      for (let i = 0; i < formBlock.length; i++) {
-        console.log(formBlock);
-        formBlock[i] = {
+      for (let i = 0; i < listBlock.length; i++) {
+        let html = listBlock[i].html;
+        let key = Object.keys(contentData[i]);
+        let regexp = '';
+        let replaceHTML = '';
+        key.forEach(items => {
+          regexp += items + '|';
+        });
+        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+        replaceHTML = html.replace(regex, function(match) {
+          return contentData[i][match];
+        });
+        let contentHtml = replaceHTML.replace(/[{}]/g, '');
+        formEdit[i] = {
+          ...formEdit[i],
           ...formBlock[i],
-          content: JSON.stringify(contentData[i])
+          title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+          content: JSON.stringify(contentData[i]),
+          contentHtml: contentHtml
         };
       }
       const data = {
         ...formState.values,
-        pageBlocks: [...formBlock]
+        pageBlocks: [...formEdit]
       };
-      // console.log(data);
+      editPage(data);
+      setFormState({
+        values: {},
+        touched: {}
+      });
+      setListBlock([]);
+      setFormBlock([]);
+      setContentData([]);
+    } else {
+      for (let i = 0; i < listBlock.length; i++) {
+        let html = listBlock[i].html;
+        let key = Object.keys(contentData[i]);
+
+        let regexp = '';
+        let replaceHTML = '';
+        key.forEach(items => {
+          regexp += items + '|';
+        });
+        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+        replaceHTML = html.replace(regex, function(match) {
+          return contentData[i][match];
+        });
+        let contentHtml = replaceHTML.replace(/[{}]/g, '');
+        formBlock[i] = {
+          ...formBlock[i],
+          content: JSON.stringify(contentData[i]),
+          contentHtml: contentHtml
+        };
+      }
+      let data = {};
+      if (actionChildrenSubmit) {
+        data = {
+          ...formState.values,
+          parent_id: PageDetail.id,
+          pageBlocks: [...formBlock]
+        };
+      } else {
+        data = {
+          ...formState.values,
+          parent_id: homeID,
+          pageBlocks: [...formBlock]
+        };
+      }
+
       addPage(data);
       setFormState({
         values: {},
         touched: {}
       });
+      setListBlock([]);
+      setFormBlock([]);
+      setContentData([]);
     }
   };
-
-  const onSubmitChildren = event => {
-    event.preventDefault();
-    if (deleteActive) {
-      editPage(formState.values);
-    } else {
-      const values = {
-        ...formState.values,
-        parentId: PageDetail.id
-      };
-      addPage(values);
-      setFormState({
-        values: {},
-        touched: {}
-      });
-    }
-  };
-
   const changeTree = treeData => {
     expanstion(treeData);
   };
@@ -164,7 +250,12 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
       values: {},
       touched: {}
     });
+    setListBlock([]);
+    setFormBlock([]);
+    setContentData([]);
     setDeleteActive(false);
+    setAddChildrenActive(true);
+    setActionChildrenSubmit(false);
   };
 
   const click = (node, path) => {
@@ -172,6 +263,23 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
       ...formState,
       values: node
     }));
+    setPageDetai(node);
+    let stateEdit = [];
+    let newContent = [];
+    let listBlock = [];
+    map(node.pageBlocks, (values, index) => {
+      newContent.push(JSON.parse(values.content));
+      listBlock.push({ ...values.blocks, content: values.content, title: values.title });
+      let content = JSON.parse(values.content);
+      stateEdit = [
+        ...stateEdit,
+        { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
+      ];
+    });
+    setFormBlock(stateEdit);
+    setContentData([...newContent, {}]);
+    setFormEdit([...stateEdit]);
+    setListBlock(listBlock);
     setAddChildrenActive(false);
     setDeleteActive(true);
     setPageDetai(node);
@@ -194,10 +302,17 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
       getPage();
     }
   };
-
   const onDelete = () => {
     deletePage(formState.values.id);
     setIsOpen(!isOpen);
+    setListBlock([]);
+    setFormBlock([]);
+    setContentData([]);
+    setFormState(formState => ({
+      ...formState,
+      values: {}
+    }));
+    setDeleteActive(false);
   };
   const toggleOpened = (e, index) => {
     e.preventDefault();
@@ -211,15 +326,24 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
   };
 
   const setListData = (items, index) => {
-    setListBlock([...listBlock, items]);
-    setFormBlock([...formBlock, items.blockValues[index]]);
+    let newItems = {
+      ...items,
+      newItem: 0
+    };
+    // console.log(formEdit);
+    setListBlock([...listBlock, newItems]);
+    setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
+  };
+
+  const deletePageBlockItems = (id, pageid) => {
+    deletePageBlock(id, pageid);
   };
 
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper">
+      <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
@@ -228,12 +352,15 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
             className="mb-2"
             disabled={addChildrenActive}
             onClick={() => {
-              setFormChildren(true);
               setDeleteActive(false);
               setFormState({
                 values: {},
                 touched: {}
               });
+              setListBlock([]);
+              setFormBlock([]);
+              setContentData([]);
+              setActionChildrenSubmit(true);
             }}
           >
             {t('page.addChildren')}
@@ -253,7 +380,7 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '30%' }}>
+          <div style={{ height: '45%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
@@ -283,27 +410,20 @@ function Page({ data, listTags, getPage, getTags, addPage, editPage, deletePage,
           <div>
             <Row>
               <Col sm="12">
-                {!formChildren && (
-                  <PagesCreate
-                    handleChange={handleChange}
-                    onSubmit={onSubmit}
-                    value={formState.values}
-                    blockData={listBlock}
-                    handleFomBlock={(event, index) => handleFomBlock(event, index)}
-                    onRemoveBlock={index => removeItem(index)}
-                    deleteActive={deleteActive}
-                    onDelete={() => setIsOpen(!isOpen)}
-                  />
-                )}
-                {formChildren && (
-                  <PagesCreateChild
-                    handleChange={handleChange}
-                    value={formState.values}
-                    deleteActive={deleteActive}
-                    onSubmit={onSubmitChildren}
-                    onDelete={() => setIsOpen(!isOpen)}
-                  />
-                )}
+                <PagesCreate
+                  handleChange={handleChange}
+                  onSubmit={onSubmit}
+                  value={formState.values}
+                  stateEdit={formEdit}
+                  detail={PageDetail}
+                  blockData={listBlock}
+                  handleEidt={(event, index) => handleEidt(event, index)}
+                  handleFomBlock={(event, index) => handleFomBlock(event, index)}
+                  onRemoveBlock={index => removeItem(index)}
+                  onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
+                  deleteActive={deleteActive}
+                  onDelete={() => setIsOpen(!isOpen)}
+                />
               </Col>
             </Row>
           </div>
@@ -319,7 +439,8 @@ Page.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
-    listTags: state.TagReducer.listTags
+    listTags: state.TagReducer.listTags,
+    homeID: state.PageReducer.homeID
   };
 };
 
@@ -330,7 +451,9 @@ const mapDispatchToProps = {
   editPage: PageActions.EditPages,
   deletePage: PageActions.DeletePages,
   expanstion: PageActions.expansionPageAction,
-  updatePositionPages: PageActions.updatePositionPages
+  updatePositionPages: PageActions.updatePositionPages,
+  deletePageBlock: PageActions.detelePageBlockAction,
+  getHomeID: PageActions.getHomepageIDAction
 };
 
 export default connect(

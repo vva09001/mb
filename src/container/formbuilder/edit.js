@@ -103,12 +103,14 @@ EditFormBuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    formDetail: state.FormBuilderReducer.detail
+    formDetail: state.FormBuilderReducer.detail,
+    getForm: state.FormBuilderReducer.detail
   };
 };
 
 const mapDispatchToProps = {
-  editForm: FormBuilderActions.editFormAction
+  editForm: FormBuilderActions.editFormAction,
+  getFormId: FormBuilderActions.GetNewsId
 };
 
 export default connect(

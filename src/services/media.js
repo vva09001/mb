@@ -1,8 +1,15 @@
-import request from 'helpers/request';
+import axios from 'axios';
+const request = axios.create({
+  baseURL: 'https://bank1712.herokuapp.com/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
 
-const getBlockService = () => {
+const getImagesService = () => {
   return request({
-    url: '/blocks',
+    url: '/image',
     method: 'GET'
   })
     .then(res => {
@@ -13,9 +20,9 @@ const getBlockService = () => {
     });
 };
 
-const createBlockService = data => {
+const addImagesService = data => {
   return request({
-    url: '/blocks',
+    url: '/image/addImageWithFolder',
     method: 'POST',
     data: data
   })
@@ -27,9 +34,9 @@ const createBlockService = data => {
     });
 };
 
-const editBlockService = (id, data) => {
+const editImagesService = data => {
   return request({
-    url: `/blocks/${id}`,
+    url: `/image/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -40,9 +47,10 @@ const editBlockService = (id, data) => {
       return error.response.data;
     });
 };
-const deleteBlockService = id => {
+
+const deleteImagesService = id => {
   return request({
-    url: `/blocks/${id}`,
+    url: `image/${id}`,
     method: 'DELETE'
   })
     .then(res => {
@@ -53,10 +61,11 @@ const deleteBlockService = id => {
     });
 };
 
-const deleteBlockValuesService = (blockID, blockValueID) => {
+const moveFolderService = data => {
   return request({
-    url: `/blocks/${blockID}/blockValues/${blockValueID}`,
-    method: 'DELETE'
+    url: 'image/move-folder',
+    method: 'POST',
+    data: data
   })
     .then(res => {
       return res;
@@ -66,10 +75,11 @@ const deleteBlockValuesService = (blockID, blockValueID) => {
     });
 };
 
-const getTypeService = () => {
+const moveFileService = (id, data) => {
   return request({
-    url: `/type`,
-    method: 'GET'
+    url: `image/${id}`,
+    method: 'PUT',
+    data: data
   })
     .then(res => {
       return res;
@@ -80,10 +90,10 @@ const getTypeService = () => {
 };
 
 export {
-  getBlockService,
-  createBlockService,
-  editBlockService,
-  deleteBlockService,
-  deleteBlockValuesService,
-  getTypeService
+  getImagesService,
+  addImagesService,
+  editImagesService,
+  deleteImagesService,
+  moveFolderService,
+  moveFileService
 };
