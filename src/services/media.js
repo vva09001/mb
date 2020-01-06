@@ -61,4 +61,39 @@ const deleteImagesService = id => {
     });
 };
 
-export { getImagesService, addImagesService, editImagesService, deleteImagesService };
+const moveFolderService = data => {
+  return request({
+    url: 'image/move-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const moveFileService = (id, data) => {
+  return request({
+    url: `image/${id}`,
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export {
+  getImagesService,
+  addImagesService,
+  editImagesService,
+  deleteImagesService,
+  moveFolderService,
+  moveFileService
+};

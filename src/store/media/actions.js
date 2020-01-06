@@ -35,6 +35,21 @@ const Actions = {
   GetDetailImage: data => ({
     type: Actions.GET_DETAIL_IMAGE,
     data
+  }),
+
+  MOVE_FOLDER: 'MOVE_FOLDER',
+
+  MoveFolder: data => ({
+    type: Actions.MOVE_FOLDER,
+    data
+  }),
+
+  MOVE_FILE: 'MOVE_FILE',
+
+  MoveFile: (id, data) => ({
+    type: Actions.MOVE_FILE,
+    id,
+    data
   })
 };
 

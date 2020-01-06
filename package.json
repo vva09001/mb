@@ -51,6 +51,7 @@
     "react-form-builder2": "^0.4.3",
     "react-i18next": "^11.2.5",
     "react-iframe": "^1.8.0",
+    "react-image": "^2.2.2",
     "react-image-lightbox": "^5.1.0",
     "react-keyed-file-browser": "^1.6.0",
     "react-live": "^2.2.1",
