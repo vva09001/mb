@@ -23,10 +23,6 @@ function* addImagesSaga() {
   yield takeLatest(actions.ADD_IMAGES_REQUEST, function*(params) {
     const { data } = params;
     try {
-<<<<<<< HEAD
-=======
-      console.log(data);
->>>>>>> 5af6be177b5c138267def4941777173598afb5ef
       const res = yield addImagesService(data);
       if (res.status === 200) {
         Success('Thêm thành công');
@@ -79,10 +75,7 @@ export default function* rootSaga() {
     fork(getImagesSaga),
     fork(addImagesSaga),
     fork(editImagesSaga),
-<<<<<<< HEAD
     fork(deleteImagesSaga),
-=======
-    fork(deleteImagesSaga)    
->>>>>>> 5af6be177b5c138267def4941777173598afb5ef
+    fork(deleteImagesSaga)
   ]);
 }
