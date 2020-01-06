@@ -13,8 +13,10 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   detail: PropTypes.object,
+  listTypes: PropTypes.array,
   listTags: PropTypes.array,
   getTags: PropTypes.func,
+  getTypes: PropTypes.func,
   deleteBlockValue: PropTypes.func,
   editBlock: PropTypes.func
 };
@@ -23,18 +25,19 @@ const options = {
   lineNumbers: true
 };
 
-function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
+function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlockValue, editBlock }) {
   const [formState, setFormState] = useState({
     values: detail,
     touched: {}
   });
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(formState.values.html);
   const [formAddMore, setFormAddMore] = useState(detail.blockValues);
   const [activeTab, setActiveTab] = useState('1');
 
   useEffect(() => {
     getTags();
-  }, [getTags]);
+    getTypes();
+  }, [getTags, getTypes]);
 
   const { t } = useTranslation();
 
@@ -101,7 +104,6 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
     editBlock(formState.values.id, {
       ...formState.values,
       html: code,
-      isActive: formState.values.active,
       blockValues: formAddMore
     });
   };
@@ -154,7 +156,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="isActive" checked={formState.values.active} onChange={handleChange} />
+                    <Input type="checkbox" name="active" checked={formState.values.active} onChange={handleChange} />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>
@@ -180,6 +182,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                           name="key"
                           value={items.key}
                           onChange={event => handleChangeAddMore(event, index)}
+                          required
                         />
                       </FormGroup>
                       <FormGroup className="mr-4">
@@ -189,6 +192,7 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                           name="title"
                           value={items.title}
                           onChange={event => handleChangeAddMore(event, index)}
+                          required
                         />
                       </FormGroup>
                       <FormGroup className="mr-4">
@@ -199,17 +203,11 @@ function BlockEdit({ detail, listTags, getTags, deleteBlockValue, editBlock }) {
                           value={items.type_id}
                           onChange={event => handleChangeAddMore(event, index)}
                         >
-                          <option value={1}>Input</option>
-                          <option value={2}>Textarea</option>
-                          <option value={3}>Editor</option>
-                          <option value={4}>Single Image</option>
-                          <option value={5}>Multiple Images</option>
-                          <option value={6}>Button</option>
-                          <option value={7}>Group</option>
-                          <option value={8}>Repeat</option>
-                          <option value={9}>Contact form</option>
-                          <option value={10}>Custom multi images</option>
-                          <option value={11}>Products</option>
+                          {map(listTypes, value => (
+                            <option key={value.id} value={value.id} name={value.names}>
+                              {value.names}
+                            </option>
+                          ))}
                         </Input>
                       </FormGroup>
                       <div className="mt-3">
@@ -240,13 +238,15 @@ BlockEdit.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     detail: state.BlockReducer.detail,
-    listTags: state.TagReducer.listTags
+    listTags: state.TagReducer.listTags,
+    listTypes: state.BlockReducer.listTypes
   };
 };
 const mapDispatchToProps = {
   editBlock: BlockActions.editBlockAction,
   getTags: TagActions.getTagAction,
-  deleteBlockValue: BlockActions.deleteBlockValueAction
+  deleteBlockValue: BlockActions.deleteBlockValueAction,
+  getTypes: BlockActions.getTypeAction
 };
 
 export default connect(

@@ -36,6 +36,7 @@
     "confirm": "Comfirm",
     "sidebar": "Sidebar",
     "select": "Select...",
+    "feedback":"FeedBack",
     "slug": "slug",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
@@ -82,7 +83,11 @@
         "default": "Default"
     },
     "formBuilder": {
-        "title": "Create Form"
+        
+        "title": "Create Form",
+        "formdata": "Form data",
+        "embededform": "Embeded form",
+        "responsemail": "Response mail"
     },
     "setting": {
         "mail": "Mail",
@@ -120,6 +125,9 @@
         "media": "Media",
         "storeFont": "Store Font",
         "slider": "Slider"
+    },
+    "storefont": {
+        "sociallinks": "Social links"
     },
     "user": {
         "fistname": "Fist Name",

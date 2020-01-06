@@ -75,7 +75,7 @@ function EditMenusItem({
       <Row style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }}>
         <Col lg={7} md={4}>
           <Form className="p-3" onSubmit={onSubmit}>
-            <h4>{t('createMenuItem')}</h4>
+            <h4>{t('menu.editMenuItem')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
               <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />

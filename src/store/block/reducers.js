@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   listBlocks: [],
-  detail: {}
+  detail: {},
+  listTypes: []
 };
 
 const Block = (state = initialState, action) => {
@@ -39,6 +40,11 @@ const Block = (state = initialState, action) => {
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_TYPE_RESPONSE:
+      return {
+        ...state,
+        listTypes: action.data
       };
     default:
       return state;

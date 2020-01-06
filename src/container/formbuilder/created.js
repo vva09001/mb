@@ -62,6 +62,7 @@ function FormBuilder({ created }) {
 
   const onSubmit = event => {
     event.preventDefault();
+    // console.log({ ...formState.values, list: formData });
     created({ ...formState.values, list: formData });
   };
   return (
