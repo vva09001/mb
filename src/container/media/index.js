@@ -16,10 +16,21 @@ const PropsType = {
   addFiles: PropTypes.func,
   getDetailImage: PropTypes.func,
   moveFolder: PropTypes.func,
-  moveFile: PropTypes.func
+  moveFile: PropTypes.func,
+  renameFolder: PropTypes.func
 };
 
-function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage, moveFolder, moveFile }) {
+function Media({
+  data,
+  getImages,
+  detail,
+  deleteImages,
+  addFiles,
+  getDetailImage,
+  moveFolder,
+  moveFile,
+  renameFolder
+}) {
   const [formState, setFormState] = useState([]);
   const { t } = useTranslation();
 
@@ -43,7 +54,6 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
   };
   const onCreateFiles = (files, path) => {
     let formData = new FormData();
-    console.log(files[0].size);
     formData.append('file', files[0]);
     formData.append('folderName', path);
     formData.append('size', files[0].size);
@@ -81,8 +91,10 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
     moveFolder(moveFolderData);
   };
   const handleRenameFolder = (oldKey, newKey) => {
-    console.log(oldKey);
-    console.log(newKey);
+    let renameFolderData = new FormData();
+    renameFolderData.append('folderOld', oldKey);
+    renameFolderData.append('folderNew', newKey);
+    renameFolder(renameFolderData);
   };
   return (
     <React.Fragment>
@@ -131,7 +143,8 @@ const mapDispatchToProps = {
   getDetailImage: MediaActions.GetDetailImage,
   deleteImages: MediaActions.DeleteImages,
   moveFolder: MediaActions.MoveFolder,
-  moveFile: MediaActions.MoveFile
+  moveFile: MediaActions.MoveFile,
+  renameFolder: MediaActions.RenameFolder
 };
 
 export default connect(

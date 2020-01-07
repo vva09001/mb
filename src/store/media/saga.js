@@ -5,7 +5,8 @@ import {
   editImagesService,
   deleteImagesService,
   moveFolderService,
-  moveFileService
+  moveFileService,
+  renameFolderService
 } from '../../services/media';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -110,6 +111,23 @@ function* moveFile() {
     }
   });
 }
+
+function* renameFoldfer() {
+  yield takeLatest(actions.RENAME_FOLDER, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield renameFolderService(data);
+      if (res.status === 200) {
+        yield Success('Sửa thành công');
+        yield put({ type: actions.GET_IMAGES_REQUEST, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 export default function* rootSaga() {
   yield all([
     fork(getImagesSaga),
@@ -117,6 +135,7 @@ export default function* rootSaga() {
     fork(editImagesSaga),
     fork(deleteImagesSaga),
     fork(moveFolder),
-    fork(moveFile)
+    fork(moveFile),
+    fork(renameFoldfer)
   ]);
 }
