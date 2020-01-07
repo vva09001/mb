@@ -17,7 +17,9 @@ const PropsType = {
   getDetailImage: PropTypes.func,
   moveFolder: PropTypes.func,
   moveFile: PropTypes.func,
-  renameFolder: PropTypes.func
+  renameFolder: PropTypes.func,
+  createFolder: PropTypes.func,
+  deleteFolder: PropTypes.func
 };
 
 function Media({
@@ -29,7 +31,9 @@ function Media({
   getDetailImage,
   moveFolder,
   moveFile,
-  renameFolder
+  renameFolder,
+  createFolder,
+  deleteFolder
 }) {
   const [formState, setFormState] = useState([]);
   const { t } = useTranslation();
@@ -43,14 +47,9 @@ function Media({
   }, [data]);
 
   const handleCreateFolder = key => {
-    setFormState(formState => {
-      formState = formState.concat([
-        {
-          key: key
-        }
-      ]);
-      return formState;
-    });
+    let createFolderData = new FormData();
+    createFolderData.append('path', key);
+    createFolder(createFolderData);
   };
   const onCreateFiles = (files, path) => {
     let formData = new FormData();
@@ -75,7 +74,9 @@ function Media({
     moveFile(detail.id, moveFileData);
   };
   const handleDeleteFolder = key => {
-    console.log(key);
+    let deleteFolderData = new FormData();
+    deleteFolderData.append('path', key);
+    deleteFolder(deleteFolderData);
   };
 
   const handleBrowse = key => {
@@ -117,7 +118,7 @@ function Media({
           onMoveFolder={handleMoveFolder}
           onMoveFile={handleMoveFile}
           onRenameFolder={handleRenameFolder}
-          // onDeleteFolder={handleDeleteFolder}
+          onDeleteFolder={handleDeleteFolder}
           onSelectFile={handleBrowse}
           onDeleteFile={handleDeleteFile}
           onRenameFile={handleRenameFile}
@@ -144,7 +145,9 @@ const mapDispatchToProps = {
   deleteImages: MediaActions.DeleteImages,
   moveFolder: MediaActions.MoveFolder,
   moveFile: MediaActions.MoveFile,
-  renameFolder: MediaActions.RenameFolder
+  renameFolder: MediaActions.RenameFolder,
+  createFolder: MediaActions.CreatFolder,
+  deleteFolder: MediaActions.DeleteFolder
 };
 
 export default connect(

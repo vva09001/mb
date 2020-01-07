@@ -6,7 +6,9 @@ import {
   deleteImagesService,
   moveFolderService,
   moveFileService,
-  renameFolderService
+  renameFolderService,
+  createFolderService,
+  deleteFolderService
 } from '../../services/media';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -128,6 +130,40 @@ function* renameFoldfer() {
     }
   });
 }
+
+function* createFoldfer() {
+  yield takeLatest(actions.CREATE_FOLDER, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield createFolderService(data);
+      if (res.status === 200) {
+        yield Success('Thêm thành công');
+        yield put({ type: actions.GET_IMAGES_REQUEST, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
+function* deleteFolder() {
+  yield takeLatest(actions.DELETE_FOLDER, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield deleteFolderService(data);
+      if (res.status === 200) {
+        yield Success('Xóa thành công');
+        yield put({ type: actions.GET_IMAGES_REQUEST, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 export default function* rootSaga() {
   yield all([
     fork(getImagesSaga),
@@ -136,6 +172,8 @@ export default function* rootSaga() {
     fork(deleteImagesSaga),
     fork(moveFolder),
     fork(moveFile),
-    fork(renameFoldfer)
+    fork(renameFoldfer),
+    fork(createFoldfer),
+    fork(deleteFolder)
   ]);
 }

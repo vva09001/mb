@@ -103,6 +103,34 @@ const renameFolderService = data => {
     });
 };
 
+const createFolderService = data => {
+  return request({
+    url: 'image/add-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const deleteFolderService = data => {
+  return request({
+    url: 'image/delete-folder',
+    method: 'DELETE',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getImagesService,
   addImagesService,
@@ -110,5 +138,7 @@ export {
   deleteImagesService,
   moveFolderService,
   moveFileService,
-  renameFolderService
+  renameFolderService,
+  createFolderService,
+  deleteFolderService
 };

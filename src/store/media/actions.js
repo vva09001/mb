@@ -57,6 +57,20 @@ const Actions = {
   RenameFolder: data => ({
     type: Actions.RENAME_FOLDER,
     data
+  }),
+
+  CREATE_FOLDER: "CREATE_FOLDER",
+
+  CreatFolder: data => ({
+    type: Actions.CREATE_FOLDER,
+    data
+  }),
+
+  DELETE_FOLDER: "DELETE_FOLDER",
+
+  DeleteFolder: data => ({
+    type: Actions.DELETE_FOLDER,
+    data
   })
 };
 
