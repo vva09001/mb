@@ -16,7 +16,6 @@ const Proptype = {
   created: Proptypes.func
 };
 let renderhtml = null;
-let renderstringify = null;
 function FormBuilder({ created }) {
   const fb = createRef();
   const { t } = useTranslation();
@@ -67,14 +66,12 @@ function FormBuilder({ created }) {
       dataType: 'json',
       formData: formdatabuilder
     };
-
     var renderedForm = $('<div>');
 
     renderedForm.formRender(formRenderOpts);
 
     renderhtml = renderedForm.html();
 
-    renderstringify = JSON.stringify(renderhtml);
   });
 
   const onSubmit = event => {
@@ -83,7 +80,7 @@ function FormBuilder({ created }) {
       name: formState.values.name,
       status: formState.values.status,
       list: formDataBuilDer,
-      embeded: 'formDataBuilDer'
+      embedded: renderhtml
     };
     //console.log(body);
     created(body);

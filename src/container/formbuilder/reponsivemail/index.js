@@ -146,7 +146,7 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
                 {map(listform, (value, index) => (
                   <div key={value + index}>
                     {value.type === 'button' ? (
-                      <p />
+                      ''
                     ) : (
                       <div>
                         <span>{value.label}</span> : <span> [mg_{index}_field]</span>

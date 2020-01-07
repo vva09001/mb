@@ -73,7 +73,7 @@ const DashboardRoutes = () => (
     {/*Components*/}
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
-    <Route path="/form-builder/edit" exact component={EditFormBuilder} />
+    <Route path="/form-builder/edit/:id" exact component={EditFormBuilder} />
     <Route path="/form-builder/:id/rely" exact component={Resemail} />
     <Route path="/form-builder/:id/formdata" exact component={Formdata} />
     <Route path="/form-builder/:id/emmbed" exact component={Embeded} />

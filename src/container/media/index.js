@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -16,10 +17,25 @@ const PropsType = {
   addFiles: PropTypes.func,
   getDetailImage: PropTypes.func,
   moveFolder: PropTypes.func,
-  moveFile: PropTypes.func
+  moveFile: PropTypes.func,
+  renameFolder: PropTypes.func,
+  createFolder: PropTypes.func,
+  deleteFolder: PropTypes.func
 };
 
-function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage, moveFolder, moveFile }) {
+function Media({
+  data,
+  getImages,
+  detail,
+  deleteImages,
+  addFiles,
+  getDetailImage,
+  moveFolder,
+  moveFile,
+  renameFolder,
+  createFolder,
+  deleteFolder
+}) {
   const [formState, setFormState] = useState([]);
   const { t } = useTranslation();
 
@@ -32,21 +48,16 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
   }, [data]);
 
   const handleCreateFolder = key => {
-    setFormState(formState => {
-      formState = formState.concat([
-        {
-          key: key
-        }
-      ]);
-      return formState;
-    });
+    let createFolderData = new FormData();
+    createFolderData.append('path', key);
+    createFolder(createFolderData);
   };
   const onCreateFiles = (files, path) => {
     let formData = new FormData();
-    console.log(files[0].size);
-    formData.append('file', files[0]);
+    map(files, value => {
+      formData.append('files', value);
+    });
     formData.append('folderName', path);
-    formData.append('size', files[0].size);
     addFiles(formData);
   };
 
@@ -65,7 +76,9 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
     moveFile(detail.id, moveFileData);
   };
   const handleDeleteFolder = key => {
-    console.log(key);
+    let deleteFolderData = new FormData();
+    deleteFolderData.append('path', key);
+    deleteFolder(deleteFolderData);
   };
 
   const handleBrowse = key => {
@@ -81,8 +94,10 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
     moveFolder(moveFolderData);
   };
   const handleRenameFolder = (oldKey, newKey) => {
-    console.log(oldKey);
-    console.log(newKey);
+    let renameFolderData = new FormData();
+    renameFolderData.append('folderOld', oldKey);
+    renameFolderData.append('folderNew', newKey);
+    renameFolder(renameFolderData);
   };
   return (
     <React.Fragment>
@@ -105,7 +120,7 @@ function Media({ data, getImages, detail, deleteImages, addFiles, getDetailImage
           onMoveFolder={handleMoveFolder}
           onMoveFile={handleMoveFile}
           onRenameFolder={handleRenameFolder}
-          // onDeleteFolder={handleDeleteFolder}
+          onDeleteFolder={handleDeleteFolder}
           onSelectFile={handleBrowse}
           onDeleteFile={handleDeleteFile}
           onRenameFile={handleRenameFile}
@@ -131,7 +146,10 @@ const mapDispatchToProps = {
   getDetailImage: MediaActions.GetDetailImage,
   deleteImages: MediaActions.DeleteImages,
   moveFolder: MediaActions.MoveFolder,
-  moveFile: MediaActions.MoveFile
+  moveFile: MediaActions.MoveFile,
+  renameFolder: MediaActions.RenameFolder,
+  createFolder: MediaActions.CreatFolder,
+  deleteFolder: MediaActions.DeleteFolder
 };
 
 export default connect(

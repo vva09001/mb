@@ -73,7 +73,7 @@ function Edit({ detail, getFormId }) {
           style={{ backgroundColor: '#f5f5f5' }}
           type="textarea"
           disabled
-          value={formState.values.embeded === undefined ? '' : formState.values.embeded}
+          value={formState.values.embedded === undefined ? '' : formState.values.embedded}
           onChange={handleChange}
           rows="15"
         />

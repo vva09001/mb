@@ -12,7 +12,7 @@ const Images = (state = initialState, action) => {
       return {
         ...state,
         data: map(action.data, values => ({
-          key: `${values.path}${values.name}`,
+          key: values.type === 'file' ? `${values.path}${values.name}`: `${values.path}`,
           modified: values.createdAt,
           id: values.id,
           path: values.path,
