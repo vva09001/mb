@@ -541,17 +541,7 @@ function PagesCreate({
                           {deleteActive &&
                             map(value.blockValues, (items, indexItems) => {
                               if (value.newItem === 0) {
-                                return (
-                                  <FormGroup key={items.id}>
-                                    <Label>{items.title}</Label>
-                                    <Input
-                                      type="text"
-                                      name={items.key}
-                                      required
-                                      onChange={event => handleFomBlock(event, index)}
-                                    />
-                                  </FormGroup>
-                                );
+                                return <div key={indexItems}>{renderInput(items, index)}</div>;
                               } else {
                                 let values = JSON.parse(value.content);
                                 let key = Object.keys(values);
