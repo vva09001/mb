@@ -4,7 +4,7 @@ import { MediaActions } from '../../store/actions';
 import { connect } from 'react-redux';
 import FileBrowser from 'react-keyed-file-browser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
@@ -102,13 +102,13 @@ function Media({
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>
-      <div style={{ backgroundColor: 'white', padding: 20, height: '600px' }}>
+      <div style={{ backgroundColor: 'white', padding: 20, height: 'auto' }}>
         <FileBrowser
           files={formState}
           icons={{
             File: <FontAwesomeIcon icon={faEdit} />,
             Image: <FontAwesomeIcon icon={faImages} />,
-            PDF: <i className="file-pdf" aria-hidden="true" />,
+            PDF:  <FontAwesomeIcon icon={faFilePdf} />,
             Rename: <FontAwesomeIcon icon={faEdit} />,
             Folder: <FontAwesomeIcon icon={faFolderMinus} />,
             FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
