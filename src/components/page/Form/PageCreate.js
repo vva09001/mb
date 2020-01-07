@@ -4,8 +4,11 @@ import { Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import IconNoImage from 'assets/img/mb/no_image.png';
 import { map } from 'lodash';
 import { PageActions } from 'store/actions';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +26,8 @@ const PropsType = {
   onRemoveBlock: PropTypes.func,
   handleFomBlock: PropTypes.func,
   handleEidt: PropTypes.func,
-  onRemoveBlockValue: PropTypes.func
+  onRemoveBlockValue: PropTypes.func,
+  editorChange: PropTypes.func
 };
 
 function PagesCreate({
@@ -38,7 +42,8 @@ function PagesCreate({
   deleteActive,
   handleFomBlock,
   handleEidt,
-  onRemoveBlockValue
+  onRemoveBlockValue,
+  editorChange
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -51,6 +56,346 @@ function PagesCreate({
   const toggleOpened = (e, index) => {
     e.preventDefault();
     return setOpened(opened === index ? null : index);
+  };
+
+  const renderInput = (data, index) => {
+    switch (data.type_id) {
+      case 1:
+        return (
+          <FormGroup key={data.id}>
+            <Label>{data.title}</Label>
+            <Input type="text" name={data.key} required onChange={event => handleFomBlock(event, index)} />
+          </FormGroup>
+        );
+      case 2: //nutile post
+        return (
+          <FormGroup>
+            <Label for="template">{data.title}</Label>
+            <Input type="select" name={data.key} required onChange={event => handleFomBlock(event, index)}>
+              <option value={1}>{t('select')}</option>
+              <option value={2}>{t('page.default')}</option>
+              <option value={3}>{t('page.full')}</option>
+            </Input>
+          </FormGroup>
+        );
+      case 3: //singer post
+        return (
+          <FormGroup>
+            <Label for="template">{data.title}</Label>
+            <Input type="select" name={data.key} required onChange={event => handleFomBlock(event, index)}>
+              <option value={1}>{t('select')}</option>
+              <option value={2}>{t('page.default')}</option>
+              <option value={3}>{t('page.full')}</option>
+            </Input>
+          </FormGroup>
+        );
+      case 4:
+        return (
+          <FormGroup>
+            <Label>{data.title}</Label>
+            <CKEditor
+              editor={ClassicEditor}
+              onChange={(event, editor) => {
+                const editorData = editor.getData();
+                editorChange(editorData, data.key, index);
+              }}
+            />
+          </FormGroup>
+        );
+      case 11:
+        return (
+          <FormGroup>
+            <Label>{data.title}</Label>
+            <CKEditor
+              editor={ClassicEditor}
+              onChange={(event, editor) => {
+                const editorData = editor.getData();
+                editorChange(editorData, data.key, index);
+              }}
+            />
+          </FormGroup>
+        );
+      case 5: // image
+        return (
+          <FormGroup>
+            <Label for="template">{data.title}</Label>
+            <div class="form-img">
+              <div class="block_image">
+                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
+              </div>
+              <div class="input_image">
+                <div className="input_wapper">
+                  <div>
+                    <Label>Chú thích 1</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 2</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 3</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                </div>
+                <div className="input_wapper">
+                  <div>
+                    <Label>Gọi hành động văn bản</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Gọi hành động URL</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Video URL</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormGroup>
+        );
+      case 6: // image
+        return (
+          <FormGroup>
+            <Label for="template">{data.title}</Label>
+            <div class="form-img">
+              <div class="block_image">
+                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
+              </div>
+              <div class="input_image">
+                <div className="input_wapper">
+                  <div>
+                    <Label>Chú thích 1</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 2</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 3</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                </div>
+                <div className="input_wapper">
+                  <div>
+                    <Label>Gọi hành động văn bản</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Gọi hành động URL</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                  <div>
+                    <Label>Video URL</Label>
+                    <Input type="text" name={data.key} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormGroup>
+        );
+      case 13:
+        return (
+          <FormGroup>
+            <Label for="template">{data.title}</Label>
+            <Input type="textarea" name={data.key} rows="5" onChange={event => handleFomBlock(event, index)} />
+          </FormGroup>
+        );
+
+      default:
+        return (
+          <FormGroup key={data.id}>
+            <Label>{data.title}</Label>
+            <Input type="text" name={data.key} required onChange={event => handleFomBlock(event, index)} />
+          </FormGroup>
+        );
+    }
+  };
+
+  const renderInputEdit = (items, value, index) => {
+    console.log(items);
+    switch (items.type_id) {
+      case 1:
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <Input
+              type="text"
+              value={value}
+              name={items.key}
+              required
+              onChange={event => handleFomBlock(event, index)}
+            />
+          </FormGroup>
+        );
+      case 2: //nutile post
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <Input
+              type="select"
+              name={items.key}
+              value={value}
+              required
+              onChange={event => handleFomBlock(event, index)}
+            >
+              <option value={1}>{t('select')}</option>
+              <option value={2}>{t('page.default')}</option>
+              <option value={3}>{t('page.full')}</option>
+            </Input>
+          </FormGroup>
+        );
+      case 3: //singer post
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <Input
+              type="select"
+              name={items.key}
+              value={value}
+              required
+              onChange={event => handleFomBlock(event, index)}
+            >
+              <option value={1}>{t('select')}</option>
+              <option value={2}>{t('page.default')}</option>
+              <option value={3}>{t('page.full')}</option>
+            </Input>
+          </FormGroup>
+        );
+      case 4:
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <CKEditor
+              editor={ClassicEditor}
+              data={value}
+              onChange={(event, editor) => {
+                const editorData = editor.getData();
+                editorChange(editorData, items.key, index);
+              }}
+            />
+          </FormGroup>
+        );
+      case 11:
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <CKEditor
+              editor={ClassicEditor}
+              data={value}
+              onChange={(event, editor) => {
+                const editorData = editor.getData();
+                editorChange(editorData, items.key, index);
+              }}
+            />
+          </FormGroup>
+        );
+      case 5: // image
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <div class="form-img">
+              <div class="block_image">
+                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
+              </div>
+              <div class="input_image">
+                <div className="input_wapper">
+                  <div>
+                    <Label>Chú thích 1</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 2</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 3</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                </div>
+                <div className="input_wapper">
+                  <div>
+                    <Label>Gọi hành động văn bản</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Gọi hành động URL</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Video URL</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormGroup>
+        );
+      case 6: // image
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <div class="form-img">
+              <div class="block_image">
+                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
+              </div>
+              <div class="input_image">
+                <div className="input_wapper">
+                  <div>
+                    <Label>Chú thích 1</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 2</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Chú thích 3</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                </div>
+                <div className="input_wapper">
+                  <div>
+                    <Label>Gọi hành động văn bản</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Gọi hành động URL</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                  <div>
+                    <Label>Video URL</Label>
+                    <Input type="text" name={items.key} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormGroup>
+        );
+      case 13:
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <Input
+              type="textarea"
+              name={items.key}
+              value={value}
+              rows="5"
+              onChange={event => handleFomBlock(event, index)}
+            />
+          </FormGroup>
+        );
+      default:
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            <Input type="text" name={items.key} value={value} required onChange={event => handleEidt(event, index)} />
+          </FormGroup>
+        );
+    }
   };
 
   return (
@@ -189,20 +534,9 @@ function PagesCreate({
                               />
                             )}
                           </FormGroup>
-                          {/* {console.log(value)} */}
                           {!deleteActive &&
                             map(value.blockValues, (items, itemIndex) => {
-                              return (
-                                <FormGroup key={items.id}>
-                                  <Label>{items.title}</Label>
-                                  <Input
-                                    type="text"
-                                    name={items.key}
-                                    required
-                                    onChange={event => handleFomBlock(event, index)}
-                                  />
-                                </FormGroup>
-                              );
+                              return <div key={itemIndex}>{renderInput(items, index)}</div>;
                             })}
                           {deleteActive &&
                             map(value.blockValues, (items, indexItems) => {
@@ -227,16 +561,7 @@ function PagesCreate({
                                 });
                                 let tem = arr[indexItems];
                                 return (
-                                  <FormGroup key={items.id}>
-                                    <Label>{items.title}</Label>
-                                    <Input
-                                      type="text"
-                                      name={items.key}
-                                      value={stateEdit[index][tem]}
-                                      required
-                                      onChange={event => handleEidt(event, index)}
-                                    />
-                                  </FormGroup>
+                                  <div key={indexItems}>{renderInputEdit(items, stateEdit[index][tem], index)}</div>
                                 );
                               }
                             })}
