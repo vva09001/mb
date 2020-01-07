@@ -22,7 +22,7 @@ const getImagesService = () => {
 
 const addImagesService = data => {
   return request({
-    url: '/image/addImageWithFolder',
+    url: '/image/addListFileWithFolder',
     method: 'POST',
     data: data
   })

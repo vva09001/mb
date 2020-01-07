@@ -18,7 +18,6 @@ function* getImagesSaga() {
     try {
       const res = yield getImagesService();
       if (res.status === 200) {
-        console.log(res.data);
         yield put({ type: actions.GET_IMAGES_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);
@@ -36,6 +35,7 @@ function* addImagesSaga() {
       const res = yield addImagesService(data);
       if (res.status === 200) {
         Success('Thêm thành công');
+
         yield put({ type: actions.GET_IMAGES_REQUEST, data: res.data });
       } else {
         yield Error(res.message);

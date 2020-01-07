@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -53,9 +54,10 @@ function Media({
   };
   const onCreateFiles = (files, path) => {
     let formData = new FormData();
-    formData.append('file', files[0]);
+    map(files, value => {
+      formData.append('files', value);
+    });
     formData.append('folderName', path);
-    formData.append('size', files[0].size);
     addFiles(formData);
   };
 
