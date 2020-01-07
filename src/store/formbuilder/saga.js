@@ -43,7 +43,7 @@ function* getFormIdSaga() {
 function* createFormSaga() {
   yield takeLatest(actions.CREATE_FROM_REQUEST, function*(params) {
     const { data } = params;
-    //console.log(data);
+    console.log(data);
     try {
       const res = yield createFormbuilderService(data);
       console.log(res.data);

@@ -50,7 +50,16 @@ const Actions = {
     type: Actions.MOVE_FILE,
     id,
     data
+  }),
+
+  RENAME_FOLDER: "RENAME_FOLDER",
+
+  RenameFolder: data => ({
+    type: Actions.RENAME_FOLDER,
+    data
   })
 };
+
+
 
 export default Actions;

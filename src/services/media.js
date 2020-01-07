@@ -89,11 +89,26 @@ const moveFileService = (id, data) => {
     });
 };
 
+const renameFolderService = data => {
+  return request({
+    url: 'image/edit-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getImagesService,
   addImagesService,
   editImagesService,
   deleteImagesService,
   moveFolderService,
-  moveFileService
+  moveFileService,
+  renameFolderService
 };
