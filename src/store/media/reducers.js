@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  ImageSelete: ''
 };
 
 const Images = (state = initialState, action) => {
@@ -48,6 +49,11 @@ const Images = (state = initialState, action) => {
         ...state,
         detail: action.data
       };
+    case Actions.SELETE_IMAGE:     
+      return {
+        ...state,
+        ImageSelete: action.data
+      }
     default:
       return state;
   }

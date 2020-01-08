@@ -75,7 +75,7 @@ function* aprrNewsSaga() {
 function* editNewsSaga() {
   yield takeLatest(actions.EDIT_NEWS_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
-    try {
+    try {      
       const res = yield editNews(data);
       if (res.status === 200) {
         yield onSuccess();

@@ -14,7 +14,7 @@ const Actions = {
     data
   }),
 
-  EDIT_IMAGES_REQUEST: 'EDIT_NEWS_REQUEST',
+  EDIT_IMAGES_REQUEST: 'EDIT_IMAGES_REQUEST',
   EDIT_IMAGES_RESPONSE: 'EDIT_IMAGE_REPONSE',
 
   EditImages: data => ({
@@ -52,28 +52,33 @@ const Actions = {
     data
   }),
 
-  RENAME_FOLDER: "RENAME_FOLDER",
+  RENAME_FOLDER: 'RENAME_FOLDER',
 
   RenameFolder: data => ({
     type: Actions.RENAME_FOLDER,
     data
   }),
 
-  CREATE_FOLDER: "CREATE_FOLDER",
+  CREATE_FOLDER: 'CREATE_FOLDER',
 
   CreatFolder: data => ({
     type: Actions.CREATE_FOLDER,
     data
   }),
 
-  DELETE_FOLDER: "DELETE_FOLDER",
+  DELETE_FOLDER: 'DELETE_FOLDER',
 
   DeleteFolder: data => ({
     type: Actions.DELETE_FOLDER,
     data
+  }),
+
+  SELETE_IMAGE: 'SELETE_IMAGE',
+
+  SeleteImage: data => ({
+    type: Actions.SELETE_IMAGE,
+    data
   })
 };
-
-
 
 export default Actions;

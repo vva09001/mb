@@ -48,7 +48,7 @@ function* addImagesSaga() {
 
 function* editImagesSaga() {
   yield takeLatest(actions.EDIT_IMAGES_REQUEST, function*(params) {
-    const { data } = params;
+    const { data } = params;    
     try {
       const res = yield editImagesService(data);
       if (res.status === 200) {
