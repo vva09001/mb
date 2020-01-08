@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import IconNoImage from 'assets/img/mb/no_image.png';
 import { map } from 'lodash';
-import { PageActions } from 'store/actions';
+import { NewActions } from 'store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
@@ -19,6 +19,8 @@ const PropsType = {
   detail: PropTypes.object,
   blockData: PropTypes.array,
   stateEdit: PropTypes.array,
+  listNew: PropTypes.array,
+  listCategory: PropTypes.array,
   onSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   value: PropTypes.object,
@@ -27,11 +29,16 @@ const PropsType = {
   handleFomBlock: PropTypes.func,
   handleEidt: PropTypes.func,
   onRemoveBlockValue: PropTypes.func,
-  editorChange: PropTypes.func
+  editorChange: PropTypes.func,
+  getNewByCategory: PropTypes.func,
+  handlePost: PropTypes.func,
+  handlePostEdit: PropTypes.func
 };
 
 function PagesCreate({
   blockData,
+  listCategory,
+  listNew,
   onSubmit,
   handleChange,
   value,
@@ -43,7 +50,10 @@ function PagesCreate({
   handleFomBlock,
   handleEidt,
   onRemoveBlockValue,
-  editorChange
+  editorChange,
+  getNewByCategory,
+  handlePost,
+  handlePostEdit
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -53,9 +63,15 @@ function PagesCreate({
 
   const { t } = useTranslation();
   const [opened, setOpened] = useState(null);
+  const [categoryID, setID] = useState(null);
   const toggleOpened = (e, index) => {
     e.preventDefault();
     return setOpened(opened === index ? null : index);
+  };
+
+  const getNewsByCategoryID = id => {
+    setID(JSON.parse(id));
+    getNewByCategory(id);
   };
 
   const renderInput = (data, index) => {
@@ -80,14 +96,45 @@ function PagesCreate({
         );
       case 3: //singer post
         return (
-          <FormGroup>
-            <Label for="template">{data.title}</Label>
-            <Input type="select" name={data.key} required onChange={event => handleFomBlock(event, index)}>
-              <option value={1}>{t('select')}</option>
-              <option value={2}>{t('page.default')}</option>
-              <option value={3}>{t('page.full')}</option>
-            </Input>
-          </FormGroup>
+          <React.Fragment>
+            <FormGroup>
+              <Label for="template">{t('category')}</Label>
+              <Input type="select" name="category" required onChange={event => getNewsByCategoryID(event.target.value)}>
+                <option value={0}>chọn...</option>
+                {map(listCategory, category => (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+            {listNew.length > 0 && (
+              <FormGroup>
+                <Label for="template">{data.title}</Label>
+                <Input type="select" name={data.key} required onChange={event => handlePost(event.target.value, index)}>
+                  <option value={0}>chọn...</option>
+                  {map(listNew, news => (
+                    <option
+                      key={news.newsId}
+                      value={JSON.stringify({
+                        categoryID: categoryID,
+                        newsID: news.newsId,
+                        name: news.title,
+                        url: news.url,
+                        description: news.shortDescription,
+                        image:
+                          news.base_image === null
+                            ? `https://th2dev.mangoads.com.vn/themes/storefront/public/images/image.svg?v=5e12e47624638`
+                            : news.base_image
+                      })}
+                    >
+                      {news.title}
+                    </option>
+                  ))}
+                </Input>
+              </FormGroup>
+            )}
+          </React.Fragment>
         );
       case 4:
         return (
@@ -215,8 +262,7 @@ function PagesCreate({
     }
   };
 
-  const renderInputEdit = (items, value, index) => {
-    console.log(items);
+  const renderInputEdit = (items, value, newID, index) => {
     switch (items.type_id) {
       case 1:
         return (
@@ -250,20 +296,56 @@ function PagesCreate({
         );
       case 3: //singer post
         return (
-          <FormGroup>
-            <Label>{items.title}</Label>
-            <Input
-              type="select"
-              name={items.key}
-              value={value}
-              required
-              onChange={event => handleFomBlock(event, index)}
-            >
-              <option value={1}>{t('select')}</option>
-              <option value={2}>{t('page.default')}</option>
-              <option value={3}>{t('page.full')}</option>
-            </Input>
-          </FormGroup>
+          <React.Fragment>
+            <FormGroup>
+              <Label for="template">{t('category')}</Label>
+              <Input
+                type="select"
+                name="category"
+                required
+                value={value}
+                onChange={event => getNewsByCategoryID(event.target.value)}
+              >
+                <option value={0}>chọn...</option>
+                {map(listCategory, category => (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+            {listNew.length > 0 && (
+              <FormGroup>
+                <Label for="template">{items.title}</Label>
+                <Input
+                  type="select"
+                  name={items.key}
+                  required
+                  onChange={event => handlePostEdit(event.target.value, index)}
+                >
+                  <option value={0}>chọn...</option>
+                  {map(listNew, news => (
+                    <option
+                      key={news.newsId}
+                      value={JSON.stringify({
+                        categoryID: categoryID,
+                        newsID: news.newsId,
+                        name: news.title,
+                        url: news.url,
+                        description: news.shortDescription,
+                        image:
+                          news.base_image === null
+                            ? `https://th2dev.mangoads.com.vn/themes/storefront/public/images/image.svg?v=5e12e47624638`
+                            : news.base_image
+                      })}
+                    >
+                      {news.title}
+                    </option>
+                  ))}
+                </Input>
+              </FormGroup>
+            )}
+          </React.Fragment>
         );
       case 4:
         return (
@@ -397,7 +479,6 @@ function PagesCreate({
         );
     }
   };
-
   return (
     <React.Fragment>
       <Nav tabs>
@@ -550,8 +631,11 @@ function PagesCreate({
                                   arr = [...arr, content];
                                 });
                                 let tem = arr[indexItems];
+                                // console.log(stateEdit[index][`newsID`]);
                                 return (
-                                  <div key={indexItems}>{renderInputEdit(items, stateEdit[index][tem], index)}</div>
+                                  <div key={indexItems}>
+                                    {renderInputEdit(items, stateEdit[index][tem], stateEdit[index][`newsID`], index)}
+                                  </div>
                                 );
                               }
                             })}
@@ -628,11 +712,17 @@ function PagesCreate({
 
 PagesCreate.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return {
+    listNew: state.NewReducer.listNewByCategory
+  };
+};
+
 const mapDispatchToProps = {
-  pagesCreate: PageActions.AddPages
+  getNewByCategory: NewActions.getNewByCategory
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PagesCreate);

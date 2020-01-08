@@ -31,11 +31,12 @@ const Actions = {
     id
   }),
 
-  GET_DETAIL_TAG: 'GET_DETAIL_TAG',
+  GET_DETAIL_TAG_REQUEST: 'GET_DETAIL_TAG_REQUEST',
+  GET_DETAIL_TAG_RESPONSE: 'GET_DETAIL_TAG_RESPONSE',
 
-  getDetailTagAction: data => ({
-    type: Actions.GET_DETAIL_TAG,
-    data
+  getDetailTagAction: id => ({
+    type: Actions.GET_DETAIL_TAG_REQUEST,
+    id
   })
 };
 

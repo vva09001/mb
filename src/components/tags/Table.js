@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const PropsType = {
   data: PropTypes.array,
-  getID: PropTypes.func,
-  getDetail: PropTypes.func
+  getID: PropTypes.func
 };
 
-const TagTable = ({ data, getID, getDetail }) => {
+const TagTable = ({ data, getID }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -35,8 +35,10 @@ const TagTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.id}</td>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
+                <td>{values.id}</td>
+                <td>
+                  <Link to={`/pages/tags/edit/${values.id}`}>{values.name}</Link>
+                </td>
               </tr>
             );
           })}

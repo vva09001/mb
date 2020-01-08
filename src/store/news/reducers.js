@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  listNewByCategory: []
 };
 
 const News = (state = initialState, action) => {
@@ -44,6 +45,11 @@ const News = (state = initialState, action) => {
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_NEW_BY_CATEGORY_RESPONSE:
+      return {
+        ...state,
+        listNewByCategory: action.data
       };
     default:
       return state;

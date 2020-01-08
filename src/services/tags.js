@@ -40,6 +40,20 @@ const editTagService = (id, data) => {
       return error.response.data;
     });
 };
+
+const getTagByIDService = id => {
+  return request({
+    url: `/tag/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 const deleteTagService = id => {
   return request({
     url: `/tag/${id}`,
@@ -53,4 +67,4 @@ const deleteTagService = id => {
     });
 };
 
-export { getTagService, createTagService, editTagService, deleteTagService };
+export { getTagService, createTagService, editTagService, deleteTagService, getTagByIDService };
