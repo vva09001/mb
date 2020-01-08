@@ -1,16 +1,8 @@
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/api',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+import request from 'helpers/request';
 
 const getSettingService = () => {
   return request({
-    url: '/slider',
+    url: '/setting',
     method: 'GET'
   })
     .then(res => {
@@ -21,9 +13,9 @@ const getSettingService = () => {
     });
 };
 
-const editSettingService = (id, data) => {
+const editSettingService = (data) => {
   return request({
-    url: `/slider/${id}`,
+    url: `/setting/edit`,
     method: 'PUT',
     data: data
   })
@@ -35,4 +27,16 @@ const editSettingService = (id, data) => {
     });
 };
 
-export { getSettingService, editSettingService };
+const getEncryptionService = () => {
+  return request({
+    url: '/setting/encryptions',
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+export { getSettingService, editSettingService , getEncryptionService};
