@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId } from 'services/news';
+import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCategoryID } from 'services/news';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 
@@ -37,9 +37,7 @@ function* addNewsSaga() {
   yield takeLatest(actions.ADD_NEWS_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
     try {
-      console.log(data);
       const res = yield addNews(data);
-      console.log(res.data);
       if (res.status === 200) {
         yield onSuccess();
         yield put({ type: actions.ADD_NEWS_RESPONSE, data: res.data });
@@ -107,6 +105,22 @@ function* deleteNewsSaga() {
   });
 }
 
+function* getNewsByCategorySaga() {
+  yield takeLatest(actions.GET_NEW_BY_CATEGORY_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getNewByCategoryID(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_NEW_BY_CATEGORY_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getNewsSaga),
@@ -114,6 +128,7 @@ export default function* rootSaga() {
     fork(editNewsSaga),
     fork(deleteNewsSaga),
     fork(aprrNewsSaga),
-    fork(getNewsIdSaga)
+    fork(getNewsIdSaga),
+    fork(getNewsByCategorySaga)
   ]);
 }

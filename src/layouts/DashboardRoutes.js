@@ -63,7 +63,7 @@ const DashboardRoutes = () => (
     <Route path="/pages/block/edit" exact component={EditBlock} />
     <Route path="/pages/tags" exact component={Tags} />
     <Route path="/pages/tags/create" exact component={CreateTags} />
-    <Route path="/pages/tags/edit" exact component={EditTags} />
+    <Route path="/pages/tags/edit/:id" exact component={EditTags} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />

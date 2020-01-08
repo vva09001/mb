@@ -1,7 +1,7 @@
 import actions from './actions';
 import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getTagService, createTagService, editTagService, deleteTagService } from 'services/tags';
+import { getTagService, createTagService, editTagService, deleteTagService, getTagByIDService } from 'services/tags';
 import { Error, Success } from 'helpers/notify';
 
 function* getTagSaga() {
@@ -72,6 +72,22 @@ function* deleteTagSaga() {
   });
 }
 
+function* getTagByIDSaga() {
+  yield takeLatest(actions.GET_DETAIL_TAG_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getTagByIDService(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_DETAIL_TAG_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(getTagSaga), fork(createTagSaga), fork(editTagSaga), fork(deleteTagSaga)]);
+  yield all([fork(getTagSaga), fork(createTagSaga), fork(editTagSaga), fork(deleteTagSaga), fork(getTagByIDSaga)]);
 }

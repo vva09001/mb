@@ -35,7 +35,7 @@ const Tags = (state = initialState, action) => {
           return values.id !== action.data;
         })
       };
-    case Actions.GET_DETAIL_TAG:
+    case Actions.GET_DETAIL_TAG_RESPONSE:
       return {
         ...state,
         detail: action.data
