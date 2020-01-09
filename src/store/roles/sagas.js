@@ -6,7 +6,8 @@ import {
   deleteRolesService,
   acceptPrivilegeService,
   removePrivilegeService,
-  getPrivilegeRoleService
+  getPrivilegeRoleService,
+  getPrivilegesByGroupService
 } from '../../services/roles';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
@@ -28,14 +29,13 @@ function* getRolesSaga() {
 
 function* addRolesSaga() {
   yield takeLatest(actions.ADD_ROLES_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield addRolesService(data);
       if (res.status === 200) {
-        yield onSuccess();
+        yield Success('Thêm thành công');
         yield put({ type: actions.ADD_ROLES_RESPONSE, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -112,6 +112,20 @@ function* getPrivilegeRoleSaga() {
     }
   });
 }
+function* getPrivilegeRoleByGroupSaga() {
+  yield takeLatest(actions.GET_PRIVILEGE_ROLE_BY_GROUP_REQUEST, function*(params) {
+    try {
+      const res = yield getPrivilegesByGroupService();
+      if (res.status === 200) {
+        yield put({ type: actions.GET_PRIVILEGE_ROLE_BY_GROUP_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 
 export default function* rootSaga() {
   yield all([
@@ -120,6 +134,7 @@ export default function* rootSaga() {
     fork(editRolesSaga),
     fork(deleteRolesSaga),
     fork(setPermissionRoleSaga),
-    fork(getPrivilegeRoleSaga)
+    fork(getPrivilegeRoleSaga),
+    fork(getPrivilegeRoleByGroupSaga)
   ]);
 }

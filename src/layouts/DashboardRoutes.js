@@ -43,6 +43,7 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
+import DeleteFiles from 'container/media/deleteFiles'
 
 const DashboardRoutes = () => (
   <Switch>
@@ -106,6 +107,7 @@ const DashboardRoutes = () => (
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
     <Route path="/media" exact component={Media} />
+    <Route path="/media/deleteFiles" exact component={DeleteFiles} />
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

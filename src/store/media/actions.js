@@ -78,6 +78,13 @@ const Actions = {
   SeleteImage: data => ({
     type: Actions.SELETE_IMAGE,
     data
+  }),
+
+  DELETE_LIST_IMAGE: 'DELETE_LIST_IMAGE',
+
+  DeleteListImage: data => ({
+    type: Actions.DELETE_LIST_IMAGE,
+    data
   })
 };
 

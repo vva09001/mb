@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import { StoreFontActions, MediaActions } from '../../store/actions';
+import { StoreFontActions} from '../../store/actions';
 import classnames from 'classnames';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -28,17 +28,12 @@ function Storefont({
   editStoreFontSocialLink,
   dataSociallink,
   dataGeneral,
-  dataLogo,
-  detailImage,
-  upLoadImages
+  dataLogo
 }) {
   const [StoreFontName, setStoreFontName] = useState('general');
   dataChange = Object.assign(data, dataChange);
   useEffect(() => {
     getStoreFont(StoreFontName);
-    // dataGeneral = getStoreFont('general');
-    // dataLogo = getStoreFont('logo');
-    // dataSociallink = getStoreFont('socialLink');
   }, [getStoreFont, StoreFontName]);
   useEffect(() => {
     setFormState(formState => ({
@@ -166,15 +161,15 @@ function Storefont({
                   <Input
                     type="text"
                     name="footer_address"
-                    value={formState.values.footer_address === undefined ? '' : formState.values.footer_address}
+                    value={formState.values.footer_address === undefined ? "" : formState.values.footer_address}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>{t('storefont.footerbrief')}</Label>
+                  <Label>{t('storefont.footerbrief')}</Label>s
                   <CKEditor
                     editor={ClassicEditor}
-                    data={formState.values.footer_brief === undefined ? '' : formState.values.footer_brief}
+                    data={formState.values.footer_brief == null ? "" : formState.values.footer_brief}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
@@ -195,7 +190,7 @@ function Storefont({
                       <Input
                         type="text"
                         name="favicon"
-                        value={formState.values.favicon === undefined ? '' : formState.values.favicon}
+                        value={formState.values.favicon === undefined ? "" : formState.values.favicon}
                         onChange={handleChange}
                       />
                     </Col>
@@ -211,7 +206,7 @@ function Storefont({
                       <Input
                         type="text"
                         name="hearderLogo"
-                        value={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
+                        value={formState.values.hearderLogo === undefined ? "" : formState.values.hearderLogo}
                         onChange={handleChange}
                       />
                     </Col>
@@ -227,7 +222,7 @@ function Storefont({
                       <Input
                         type="text"
                         name="footerLogo"
-                        value={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
+                        value={formState.values.footerLogo === undefined ? "" : formState.values.footerLogo}
                         onChange={handleChange}
                       />
                     </Col>
@@ -243,7 +238,7 @@ function Storefont({
                       <Input
                         type="text"
                         name="footerBackground"
-                        value={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
+                        value={formState.values.footerBackground === undefined ? "" : formState.values.footerBackground}
                         onChange={handleChange}
                       />
                     </Col>
@@ -346,7 +341,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   getStoreFont: StoreFontActions.getStoreFontAction,
-  //deleteTags: TagActions.deleteTagAction,
   editStoreFontGeneral: StoreFontActions.editStoreFontGeneralAction,
   editStoreFontLogo: StoreFontActions.editStoreFontLogoAction,
   editStoreFontSocialLink: StoreFontActions.editStoreFontSocialLinkAction

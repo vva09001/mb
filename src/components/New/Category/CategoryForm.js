@@ -2,16 +2,18 @@ import React from 'react';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import ModalMedia from '../../Media/ModalMedia';
 
 const PropType = {
   deleteActive: PropTypes.bool,
   value: PropTypes.object,
   handleChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onSetState: PropTypes.func
 };
 
-const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete }) => {
+const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete, onSetState }) => {
   const { t } = useTranslation();
   return (
     <Form onSubmit={onSubmit} className="cetegoryFrom">
@@ -53,12 +55,9 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete })
         />
       </FormGroup>
       <FormGroup>
-        <Label>{t('category_page.form.coverImage')}</Label>
-        <Input type="file" name="coverImage" onChange={handleChange} />
-      </FormGroup>
-      <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
-        <Input type="file" name="base_image" onChange={handleChange} />
+        <img src={value.base_image === undefined ? '' : value.base_image} style={{ width: '100px' }} />
+        <ModalMedia setState={onSetState} />
       </FormGroup>
 
       <Button type="submit" color="primary">
