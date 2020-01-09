@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
-
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-
 const PropsType = {
+  getListPrvilegesByGroup: PropTypes.func,
+  listPrivilegeByGroup: PropTypes.array,
   addRole: PropTypes.func
 };
-
-function RolesCreate({ addRole }) {
-  const [formState, setFormState] = useState({
-    values: {},
-    touched: {}
+let dataPrivileges = [];
+function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }) {
+  useEffect(() => {
+    getListPrivilegesByGroup();
+  }, [getListPrivilegesByGroup]);
+  useEffect(() => {
+    dataPrivileges = listPrivilegeByGroup;
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        var check = {
+          checked: ''
+        };
+        docs = Object.assign(docs, check);
+      });
+    });
   });
-
+  const [formState, setFormState] = useState({
+    name: '',
+    privileges: []
+  });
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
@@ -28,28 +41,66 @@ function RolesCreate({ addRole }) {
 
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
+      name: event.target.value
     }));
   };
-
   const onSubmitRoles = event => {
     event.preventDefault();
-    addRole(formState.values);
-    console.log(formState.values)
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === true) {
+          formState.privileges.push(docs.privilegeId);
+        }
+      });
+    });
+    addRole(formState);
   };
-  const onSubmitPermission = event => {
-    event.preventDefault();
-    addRole(formState.values);
+
+  const allowBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (radios[i].type == 'radio') {
+        if (Number(radios[i].value) % 2 === 1) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = true;
+        }
+      });
+    });
+  };
+  const denyBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (radios[i].type == 'radio') {
+        if (Number(radios[i].value) % 2 === 0) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = false;
+        }
+      });
+    });
+  };
+  const allowAll = () => {
+    dataPrivileges.forEach(function(data) {
+      allowBlock(data.groupRole);
+    });
+  };
+  const denyAll = () => {
+    dataPrivileges.forEach(function(data) {
+      denyBlock(data.groupRole);
+    });
   };
   return (
     <React.Fragment>
@@ -79,183 +130,110 @@ function RolesCreate({ addRole }) {
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitRoles}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
                   <Input type="text" name="name" id="exampleName" onChange={handleChange} />
                 </FormGroup>
-                <Button color="primary" type="submit">
+                {/* <Button color="primary" type="submit" onClick={onSubmitRoles}>
                   {t('save')}
-                </Button>
+                </Button> */}
               </Form>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form
-                    className="p-3"
-                    style={{ background: '#fff', justifyContent: 'center' }}
-                    onSubmit={onSubmitPermission}
-                  >
-                    <h4>{t('Attribute')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline>
-                              <h5>{t('admin.banners')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                              <Button>{t('Inherit All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
+                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                    <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
+                      <h4>{t('Permissions')}</h4>
                     </FormGroup>
                     <FormGroup>
                       <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
+                        <Col />
+
+                        <Col>
+                          <ButtonGroup size="sm">
+                            <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
+                            <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
+                          </ButtonGroup>
                         </Col>
                       </Row>
                     </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline>
-                              <h5>{t('admin.banners')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                              <Button>{t('Inherit ALL')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" id="exampleCustomRadio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio2" name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio" id="exampleCustomRadio3" label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    <Button color="primary" type="submit">
+                    {dataPrivileges.map((values, index) => {
+                      return (
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                          <FormGroup>
+                            <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
+                              <Label>
+                                <h5>{values.groupRole}</h5>
+                              </Label>
+                            </Col>
+                          </FormGroup>
+                          <FormGroup>
+                            <Row>
+                              <Col xs="6">
+                                <div>
+                                  <Label for="exampleCheckbox" inline="true">
+                                    <h5>{t('ADMIN.' + values.groupRole)}</h5>
+                                  </Label>
+                                </div>
+                              </Col>
+                              <Col xs="6">
+                                <div>
+                                  <ButtonGroup size="sm">
+                                    <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
+                                    <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
+                                  </ButtonGroup>
+                                </div>
+                              </Col>
+                            </Row>
+                          </FormGroup>
+                          {values.privileges.map((value, index) => {
+                            return (
+                              <FormGroup key={index}>
+                                <Row style={{ paddingLeft: 16 }}>
+                                  <Col xs="6">
+                                    <Label for="exampleCheckbox">{t(value.name)}</Label>
+                                  </Col>
+                                  <Col xs="6">
+                                    <div>
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id}
+                                        value={value.privilegeId}
+                                        name={value.name}
+                                        label="Allow"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = true;
+                                        }}
+                                        // checked={}
+                                      />
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id + 1}
+                                        value={value.privilegeId + 1}
+                                        name={value.name}
+                                        label="Deny"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = false;
+                                        }}
+                                      />
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </FormGroup>
+                            );
+                          })}
+                        </Form>
+                      );
+                    })}
+                    <Button color="primary" type="submit" onClick={onSubmitRoles}>
                       {t('save')}
                     </Button>
-                  </Form>
+                  </div>
                 </Col>
               </Row>
             </TabPane>
@@ -268,11 +246,21 @@ function RolesCreate({ addRole }) {
 
 RolesCreate.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return {
+    detail: state.RoleReducer.detail,
+    listPrivilege: state.RoleReducer.listPrivilege,
+    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
+  };
+};
 const mapDispatchToProps = {
-  addRole: RoleActions.AddRoles
+  addRole: RoleActions.AddRoles,
+  getListPrivilege: RoleActions.getPrivilegeRole,
+  getListRole: RoleActions.getListRole,
+  getListPrivilegesByGroup: RoleActions.getPrivilegeRoleByGroup
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(RolesCreate);
