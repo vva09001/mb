@@ -1,31 +1,56 @@
-import React from 'react';
-import { Table } from 'reactstrap';
-function Formdata() {
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
+import FormDataTable from '../../../components/formbuilder/formdata/index';
+import PropTypes from 'prop-types';
+import { FormBuilderActions } from '../../../store/actions';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
+const PropsType = {
+  formDetail: PropTypes.object,
+  getFormId: PropTypes.func
+};
+let listform = null;
+function Formdata({ formDetail, getFormId }) {
+  let { id } = useParams();
+
+  // useEffect(async () => {
+  //   await getFormId(id);
+  // }, [getFormId, id]);
+  useEffect(() => {
+    getFormId(id);
+  }, [getFormId, id]);
+
+  if (formDetail.list) {
+    listform = JSON.parse(formDetail.list);
+  }
+
+  //eslint-disable-next-line no-unused-vars
+  const [formState, setFormState] = useState({
+    values: {},
+    touched: {}
+  });
+
   return (
-    <div className="formdata">
-      <h4>Form-data</h4>
-      <Table>
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Textarea</th>
-            <th>Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1234</td>
-            <td>sfsdfsd</td>
-            <td>1 Motnh</td>
-          </tr>
-          <tr>
-            <td>1234</td>
-            <td>sfsdfsd</td>
-            <td>1 Motnh</td>
-          </tr>
-        </tbody>
-      </Table>
-    </div>
+    <React.Fragment>
+      <FormDataTable data={listform} />
+    </React.Fragment>
   );
 }
-export default Formdata;
+
+Formdata.propTypes = PropsType;
+
+const mapStateToProps = state => {
+  return {
+    formDetail: state.FormBuilderReducer.detail
+  };
+};
+
+const mapDispatchToProps = {
+  getFormId: FormBuilderActions.getformbyIDAction
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Formdata);

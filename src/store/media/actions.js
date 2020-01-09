@@ -35,7 +35,45 @@ const Actions = {
   GetDetailImage: data => ({
     type: Actions.GET_DETAIL_IMAGE,
     data
+  }),
+
+  MOVE_FOLDER: 'MOVE_FOLDER',
+
+  MoveFolder: data => ({
+    type: Actions.MOVE_FOLDER,
+    data
+  }),
+
+  MOVE_FILE: 'MOVE_FILE',
+
+  MoveFile: (id, data) => ({
+    type: Actions.MOVE_FILE,
+    id,
+    data
+  }),
+
+  RENAME_FOLDER: "RENAME_FOLDER",
+
+  RenameFolder: data => ({
+    type: Actions.RENAME_FOLDER,
+    data
+  }),
+
+  CREATE_FOLDER: "CREATE_FOLDER",
+
+  CreatFolder: data => ({
+    type: Actions.CREATE_FOLDER,
+    data
+  }),
+
+  DELETE_FOLDER: "DELETE_FOLDER",
+
+  DeleteFolder: data => ({
+    type: Actions.DELETE_FOLDER,
+    data
   })
 };
+
+
 
 export default Actions;

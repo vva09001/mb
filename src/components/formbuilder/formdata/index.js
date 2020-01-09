@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, * as react from 'react';
 import { Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+// import { Link } from 'react-router-dom';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -13,39 +13,36 @@ const PropsType = {
   getDetail: PropTypes.func
 };
 
-const SliderTable = ({ data, getID, getDetail }) => {
+const FormDataTable = ({ data }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = react.useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
-      <Table striped>
-        <thead>
+      <Table striped style={{ backgroundColor: '#fff' }}>
+        <thead style={{ borderBottom: '1px solid #e6edf5' }}>
           <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>{t('name')}</th>
-            <th>{t('created')}</th>
+            {map(list, (values, index) => {
+              if (values.type === 'button') {
+                return;
+              } else {
+                return <td key={index}>{values.label}</td>;
+              }
+            })}
+            <td>Đã tạo mới</td>
           </tr>
         </thead>
         <tbody>
-          {map(list, values => {
-            return (
-              <tr key={values.id}>
-                <th>
-                  <input type="checkbox" onClick={() => getID(values.id)} />
-                </th>
-                <td>
-                  <Link to={`/slider/edit/${values.id}`}>{values.sliderTranslations.name}</Link>
-                </td>
-                <td>
-                  <Link to={`/slider/edit/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
-                </td>
-              </tr>
-            );
-          })}
+          <tr>
+            {map(list, (values, texts) => {
+              return <td key={texts} />;
+            })}
+            {map(list, values => {
+              // eslint-disable-next-line no-unused-expressions
+              <td>{moment(values.createdAt).fromNow()}</td>;
+            })}
+          </tr>
         </tbody>
       </Table>
       <div className="pagination__wapper">
@@ -53,6 +50,8 @@ const SliderTable = ({ data, getID, getDetail }) => {
           pageCount={Math.ceil(data && data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
+          previousLabel={t('previous')}
+          nextLabel={t('next')}
           nextLinkClassName={'page-link'}
           previousLinkClassName={'page-link'}
           pageClassName={'page-item'}
@@ -69,6 +68,6 @@ const SliderTable = ({ data, getID, getDetail }) => {
   );
 };
 
-SliderTable.propTypes = PropsType;
+FormDataTable.propTypes = PropsType;
 
-export default SliderTable;
+export default FormDataTable;

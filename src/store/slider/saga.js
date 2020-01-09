@@ -1,7 +1,6 @@
 import actions from './actions';
-import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getSliderService, createSliderService, editSliderService, deleteSliderService } from 'services/slider';
+import { getSliderService, createSliderService, editSliderService, deleteSliderService, getSliderId } from 'services/slider';
 import { Error, Success } from 'helpers/notify';
 
 function* getSliderSaga() {
@@ -19,16 +18,34 @@ function* getSliderSaga() {
   });
 }
 
+function* getSliderIdSaga() {
+  yield takeLatest(actions.GET_SLIDER_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getSliderId(id);
+      // console.log(res.data);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_SLIDER_BY_ID_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 function* createSliderSaga() {
   yield takeLatest(actions.CREATE_SLIDER_REQUEST, function*(params) {
-    const { data } = params;
+    const { data, onSuccess, onFail } = params;
     try {
       const res = yield createSliderService(data);
       if (res.status === 200) {
-        yield Success('Tạo thành công');
+        yield onSuccess();
         yield put({ type: actions.CREATE_SLIDER_RESPONSE, data: res.data });
-        yield history.push('/pages/tags');
+        // yield history.push('/pages/tags');
       } else {
+        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -39,14 +56,15 @@ function* createSliderSaga() {
 
 function* editSliderSaga() {
   yield takeLatest(actions.EDIT_SLIDER_REQUEST, function*(params) {
-    const { id, data } = params;
+    const { data, onSuccess, onFail } = params;
     try {
-      const res = yield editSliderService(id, data);
+      const res = yield editSliderService(data);
       if (res.status === 200) {
-        yield Success('Sửa thành công');
+        console.log(res.data);
+        yield onSuccess();
         yield put({ type: actions.EDIT_SLIDER_RESPONSE, data: res.data });
-        yield history.push('/pages/tags');
       } else {
+        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -62,7 +80,7 @@ function* deleteSliderSaga() {
       const res = yield deleteSliderService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_SLIDER_RESPONSE, data: res.data });
+        yield put({ type: actions.DELETE_SLIDER_RESPONSE, data: id });
       } else {
         yield Error(res.message);
       }
@@ -73,5 +91,5 @@ function* deleteSliderSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getSliderSaga), fork(createSliderSaga), fork(editSliderSaga), fork(deleteSliderSaga)]);
+  yield all([fork(getSliderSaga), fork(createSliderSaga), fork(editSliderSaga), fork(deleteSliderSaga), fork(getSliderIdSaga)]);
 }

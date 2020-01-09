@@ -143,6 +143,7 @@ function* updatePositionPagesSaga() {
   yield takeLatest(actions.UPDATE_POSITION_PAGE, function*(params) {
     const { idPage, idParent, positions } = params;
     try {
+      // console.log(idPage, idParent, positions);
       const res = yield updatePositionPagesService(idPage, idParent, positions);
 
       if (res.status === 200) {

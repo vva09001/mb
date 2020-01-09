@@ -74,7 +74,7 @@ const DashboardRoutes = () => (
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
     <Route path="/form-builder/edit/:id" exact component={EditFormBuilder} />
-    <Route path="/form-builder/:id/email" exact component={Resemail} />
+    <Route path="/form-builder/:id/rely" exact component={Resemail} />
     <Route path="/form-builder/:id/formdata" exact component={Formdata} />
     <Route path="/form-builder/:id/emmbed" exact component={Embeded} />
 
@@ -103,7 +103,7 @@ const DashboardRoutes = () => (
     {/* Slider */}
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
-    <Route path="/slider/edit" exact component={SliderEdit} />
+    <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
     <Route path="/media" exact component={Media} />
 

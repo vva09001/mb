@@ -13,7 +13,7 @@ const FormBuilder = (state = initialState, action) => {
         ...state,
         listForm: action.data
       };
-    case Actions.CREATE_FROM_REQUEST:
+    case Actions.CREATE_FROM_RESPONSE:
       return {
         ...state,
         listForm: [...state.listForm, action.data]

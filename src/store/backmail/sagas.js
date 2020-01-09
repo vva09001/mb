@@ -10,7 +10,7 @@ function* addfeedbackMailSaga() {
     try {
       const res = yield addfeedbackMail(data);
       if (res.status === 200) {
-        Success('Phản hồi thành công');
+        Success('Thông tin đã được lưu');
         yield put({ type: actions.ADD_FEEDBACKMAIL_RESPONSE, data: res.data });
         yield history.push('/form-builder/list');
       } else {

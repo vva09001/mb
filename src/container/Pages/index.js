@@ -81,8 +81,33 @@ function Page({
       }
     }));
   };
+  const editorChange = (data, key, index) => {
+    let newForm = map(formBlock, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    let content = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
   const handleFomBlock = (event, index) => {
     event.persist();
+    // console.log(event.name);
     let newFormAddMore = map(formBlock, (values, id) => {
       if (index !== id) {
         return values;
@@ -132,16 +157,13 @@ function Page({
       if (index !== id) {
         return values;
       } else {
-        // if (event.target.name !== 'title') {
         return {
           ...values,
           [event.target.name]:
             event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
         };
-        // }
       }
     });
-    // console.log(newValues);
     setContentData(newContent);
     setFormEdit(newValues);
   };
@@ -164,7 +186,8 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
-          title: contentData[i].title,
+          position: i,
+          title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
@@ -346,7 +369,7 @@ function Page({
   return (
     <React.Fragment>
       <h4> {t('page.page')}</h4>
-      <Row className="category__wapper" style={{ height: '100vh' }}>
+      <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
           <Button className="mb-2" onClick={addNode}>
             {t('page.addRoot')}
@@ -425,6 +448,7 @@ function Page({
                   onRemoveBlock={index => removeItem(index)}
                   onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
                   deleteActive={deleteActive}
+                  editorChange={(data, key, index) => editorChange(data, key, index)}
                   onDelete={() => setIsOpen(!isOpen)}
                 />
               </Col>

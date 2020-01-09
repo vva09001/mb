@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Proptypes from 'prop-types';
 import { FormBuilderActions } from '../../store/actions';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 window.jQuery = $;
 window.$ = $;
@@ -14,14 +15,28 @@ require('formBuilder');
 
 const Proptype = {
   formDetail: Proptypes.object,
-  editForm: Proptypes.func
+  editForm: Proptypes.func,
+  getFormId: Proptypes.func
 };
+let listform = null;
 
-function EditFormBuilder({ formDetail, editForm }) {
+function EditFormBuilder({ formDetail, editForm ,getFormId}) {
+  let { id } = useParams();
+  useEffect(() => {
+    getFormId(id);
+  }, [getFormId, id]);
+  
+  useEffect(()=>{
+    setFormState(formState => ({
+      ...formState,
+      values: formDetail
+    })
+  )},[formDetail])
+  
   const fb = createRef();
   const { t } = useTranslation();
   const [formState, setFormState] = useState({
-    values: formDetail,
+    values: {},
     touched: {}
   });
 
@@ -32,8 +47,11 @@ function EditFormBuilder({ formDetail, editForm }) {
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
+  if (formDetail.list) {
+    listform = JSON.parse(formDetail.list);
+  }
   useEffect(() => {
-    $(fb.current).formBuilder({ formData: JSON.parse(formDetail.list), onSave: (event, formData) => onSend(formData) });
+    $(fb.current).formBuilder({ formData: listform, onSave: (event, formData) => onSend(formData) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!fb.current, !options]);
 
@@ -104,13 +122,12 @@ EditFormBuilder.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     formDetail: state.FormBuilderReducer.detail,
-    getForm: state.FormBuilderReducer.detail
   };
 };
 
 const mapDispatchToProps = {
   editForm: FormBuilderActions.editFormAction,
-  getFormId: FormBuilderActions.GetNewsId
+  getFormId: FormBuilderActions.getformbyIDAction
 };
 
 export default connect(
