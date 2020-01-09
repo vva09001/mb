@@ -101,6 +101,7 @@ function Media({
     renameFolderData.append('folderNew', newKey);
     renameFolder(renameFolderData);
   };
+  window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>

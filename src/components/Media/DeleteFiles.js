@@ -72,7 +72,7 @@ const DeleteFileTable = ({ data, deleteImage }) => {
                   </td>
                   <td>{values.name}</td>
                   <td>{values.path}</td>
-                  <td>{moment(values.created_at).fromNow()}</td>
+                  <td>{moment(values.createdAt).fromNow()}</td>
                 </tr>
               );
             } else return;

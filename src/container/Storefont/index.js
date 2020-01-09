@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import { StoreFontActions} from '../../store/actions';
+import { StoreFontActions } from '../../store/actions';
 import classnames from 'classnames';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const PropsType = {
   data: PropTypes.object,
@@ -17,7 +18,8 @@ const PropsType = {
   getStoreFont: PropTypes.func,
   editStoreFontGeneral: PropTypes.func,
   editStoreFontLogo: PropTypes.func,
-  editStoreFontSocialLink: PropTypes.func
+  editStoreFontSocialLink: PropTypes.func,
+  imageSeletedata: PropTypes.object
 };
 let dataChange = {};
 function Storefont({
@@ -28,7 +30,8 @@ function Storefont({
   editStoreFontSocialLink,
   dataSociallink,
   dataGeneral,
-  dataLogo
+  dataLogo,
+  imageSeletedata
 }) {
   const [StoreFontName, setStoreFontName] = useState('general');
   dataChange = Object.assign(data, dataChange);
@@ -105,6 +108,43 @@ function Storefont({
     editStoreFontSocialLink(formState.values);
   };
 
+  const onSetStateFavicon = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        favicon: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateHearderLogo = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        hearderLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterLogo = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        footerLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterBackground = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        footerBackground: imageSeletedata.url
+      }
+    }));
+  };
+  console.log(formState.values)
   return (
     <React.Fragment>
       <h4>{t('storefont.title')}</h4>
@@ -161,7 +201,7 @@ function Storefont({
                   <Input
                     type="text"
                     name="footer_address"
-                    value={formState.values.footer_address === undefined ? "" : formState.values.footer_address}
+                    value={formState.values.footer_address === undefined ? '' : formState.values.footer_address}
                     onChange={handleChange}
                   />
                 </FormGroup>
@@ -169,7 +209,7 @@ function Storefont({
                   <Label>{t('storefont.footerbrief')}</Label>s
                   <CKEditor
                     editor={ClassicEditor}
-                    data={formState.values.footer_brief == null ? "" : formState.values.footer_brief}
+                    data={formState.values.footer_brief == null ? '' : formState.values.footer_brief}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
@@ -186,65 +226,41 @@ function Storefont({
                 <FormGroup>
                   <Label for="favicon">Favicon</Label>
                   <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="favicon"
-                        value={formState.values.favicon === undefined ? "" : formState.values.favicon}
-                        onChange={handleChange}
-                      />
-                    </Col>
-                    <Col>
-                      <Input type="file" name="favicon" onChange={handleChange} />
-                    </Col>
+                    <img
+                      src={formState.values.favicon === undefined ? '' : formState.values.favicon}
+                      style={{ width: '100px' }}
+                    />
+                    <ModalMedia setState={onSetStateFavicon} />
                   </Row>
                 </FormGroup>
                 <FormGroup>
                   <Label for="hearderLogo">Header Logo</Label>
                   <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="hearderLogo"
-                        value={formState.values.hearderLogo === undefined ? "" : formState.values.hearderLogo}
-                        onChange={handleChange}
-                      />
-                    </Col>
-                    <Col>
-                      <Input type="file" name="hearderLogo" />
-                    </Col>
+                    <img
+                      src={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
+                      style={{ width: '100px' }}
+                    />
+                    <ModalMedia setState={onSetStateHearderLogo} />
                   </Row>
                 </FormGroup>
                 <FormGroup>
                   <Label for="footerLogo">Footer Logo</Label>
                   <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="footerLogo"
-                        value={formState.values.footerLogo === undefined ? "" : formState.values.footerLogo}
-                        onChange={handleChange}
-                      />
-                    </Col>
-                    <Col>
-                      <Input type="file" name="footerLogo" />
-                    </Col>
+                    <img
+                      src={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
+                      style={{ width: '100px' }}
+                    />
+                    <ModalMedia setState={onSetStateFooterLogo} />
                   </Row>
                 </FormGroup>
                 <FormGroup>
                   <Label for="footerBackground">Footer Background</Label>
                   <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="footerBackground"
-                        value={formState.values.footerBackground === undefined ? "" : formState.values.footerBackground}
-                        onChange={handleChange}
-                      />
-                    </Col>
-                    <Col>
-                      <Input type="file" name="footerBackground" />
-                    </Col>
+                    <img
+                      src={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
+                      style={{ width: '100px' }}
+                    />
+                    <ModalMedia setState={onSetStateFooterBackground} />
                   </Row>
                 </FormGroup>
                 <Button color="primary" type="submit">
@@ -335,7 +351,8 @@ const mapStateToProps = state => {
     data: state.StoreFontReducer.dataStoreFont,
     dataGeneral: state.StoreFontReducer.dataStoreFontGeneral,
     dataLogo: state.StoreFontReducer.dataStoreFontLogo,
-    dataSociallink: state.StoreFontReducer.dataStoreFontSociallink
+    dataSociallink: state.StoreFontReducer.dataStoreFontSociallink,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 
