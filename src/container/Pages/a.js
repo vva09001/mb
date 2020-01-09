@@ -1,11 +1,37 @@
-[
-  { id: 1, codes: 'Input is a texbox cho nhập dữ liệu', names: 'Input' },
-  { id: 2, codes: 'Multi  post: Gioongs single post nhưng có thể add more post', names: 'Multi  post' },
-  { id: 3, codes: 'Single post: chọn category -> chọn 1 post  thuộc category', names: 'Single post' },
-  { id: 4, codes: 'Repeat: là editor nhưng có thể click repeat để add  more khối editor', names: 'Repeat' },
-  { id: 5, codes: 'Multiple image: tương tự single image nhưng có thể add more image', names: 'Multiple image' },
-  { id: 6, codes: 'Single Image: Cho nhập 1 image với ô  cho nhập title 1', names: 'Single Image' },
-  { id: 11, codes: 'Editor: Hiển thị khung editor  cho phép  nhập  nội dung', names: 'table hình ảnh' },
-  { id: 12, codes: 'Input is a texbox cho nhập dữ liệu', names: 'Button' },
-  { id: 13, codes: 'Textarea là khung cho nhập text  nhưng có thể nhập nhiều text hơn', names: 'Textarea' }
+let vanh = `
+<div class="post_wapper">
+  <div class="post_image">
+    <img src={image} alt="icon" />
+  </div>
+  <h4>{name}</h4>
+  <p>{description}</p>
+  <a href="news/{url}">Xem chi tiết</p>
+</div>`;
+
+let contentData = [
+  { id: 1, image: '', name: '123', description: '13312312', url: 'null', image: '123' },
+  { id: 2, image: '', name: 'vanh', description: 'vanh', url: 'vanh', image: 'vanh' }
 ];
+let html = '';
+
+for (let i = 0; i < contentData.length; i++) {
+  let key = Object.keys(contentData[i]);
+  console.log(contentData[i])
+  let regexp = '';
+  let replaceHTML = '';
+  key.forEach(items => {
+    regexp += items + '|';
+  });
+  let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+  replaceHTML = vanh.replace(regex, function(match) {
+    console.log(contentData[i])
+    return contentData[i][match];
+  });
+  let contentHtml = replaceHTML.replace(/[{}]/g, '');
+  html = html + contentHtml;
+}
+
+// console.log(html);
+
+// let content = a.replace(/[{}]/g, '');
+// console.log(content);
