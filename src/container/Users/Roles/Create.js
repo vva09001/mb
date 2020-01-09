@@ -61,7 +61,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
   const allowBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
-      if (radios[i].type == 'radio') {
+      if (radios[i].type === 'radio') {
         if (Number(radios[i].value) % 2 === 1) {
           radios[i].checked = true;
         }
@@ -78,7 +78,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
   const denyBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
-      if (radios[i].type == 'radio') {
+      if (radios[i].type === 'radio') {
         if (Number(radios[i].value) % 2 === 0) {
           radios[i].checked = true;
         }

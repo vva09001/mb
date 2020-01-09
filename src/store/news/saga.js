@@ -73,7 +73,7 @@ function* aprrNewsSaga() {
 function* editNewsSaga() {
   yield takeLatest(actions.EDIT_NEWS_REQUEST, function*(params) {
     const { data, onSuccess, onFail } = params;
-    try {      
+    try {
       const res = yield editNews(data);
       if (res.status === 200) {
         yield onSuccess();
@@ -111,7 +111,25 @@ function* getNewsByCategorySaga() {
     try {
       const res = yield getNewByCategoryID(id);
       if (res.status === 200) {
-        yield put({ type: actions.GET_NEW_BY_CATEGORY_RESPONSE, data: res.data });
+        // value: 'AL', label: 'Alabama'
+        let data = res.data.map(news => {
+          return {
+            ...news,
+            label: news.title,
+            value: JSON.stringify({
+              categoryID: id,
+              newsID: news.newsId,
+              name: news.title,
+              url: news.url,
+              description: news.shortDescription,
+              image:
+                news.base_image === null
+                  ? `https://th2dev.mangoads.com.vn/themes/storefront/public/images/image.svg?v=5e12e47624638`
+                  : news.base_image
+            })
+          };
+        });
+        yield put({ type: actions.GET_NEW_BY_CATEGORY_RESPONSE, data: data });
       } else {
         yield Error(res.message);
       }
