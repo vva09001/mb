@@ -15,7 +15,7 @@ const Images = (state = initialState, action) => {
           key: `${values.path}${values.name}`,
           modified: values.createdAt,
           id: values.id,
-          path: values.path                
+          path: values.path
         }))
       };
     case Actions.ADD_IMAGES_RESPONSE:
