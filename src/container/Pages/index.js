@@ -4,7 +4,7 @@ import PagesCreate from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
-import { PageActions, TagActions } from '../../store/actions';
+import { PageActions, TagActions, CategoryActions } from '../../store/actions';
 import { map, filter } from 'lodash';
 import PopupComfirm from 'components/common/PopupComfirm';
 import Proptypes from 'prop-types';
@@ -16,18 +16,21 @@ const Proptype = {
   getPage: Proptypes.func.isRequired,
   getTags: Proptypes.func.isRequired,
   homeID: Proptypes.number,
+  listCategory: Proptypes.array,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionPages: Proptypes.func,
   deletePageBlock: Proptypes.func,
-  getHomeID: Proptypes.func
+  getHomeID: Proptypes.func,
+  getCategory: Proptypes.func
 };
 
 function Page({
   data,
   homeID,
+  listCategory,
   listTags,
   getPage,
   getTags,
@@ -37,7 +40,8 @@ function Page({
   expanstion,
   updatePositionPages,
   deletePageBlock,
-  getHomeID
+  getHomeID,
+  getCategory
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -62,7 +66,8 @@ function Page({
     getPage();
     getTags();
     getHomeID();
-  }, [getPage, getTags, getHomeID]);
+    getCategory();
+  }, [getPage, getTags, getHomeID, getCategory]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -81,8 +86,33 @@ function Page({
       }
     }));
   };
+  const editorChange = (data, key, index) => {
+    let newForm = map(formBlock, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    let content = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
   const handleFomBlock = (event, index) => {
     event.persist();
+    // console.log(event.name);
     let newFormAddMore = map(formBlock, (values, id) => {
       if (index !== id) {
         return values;
@@ -142,6 +172,59 @@ function Page({
     setContentData(newContent);
     setFormEdit(newValues);
   };
+
+  const handlePost = (data, index) => {
+    let items = JSON.parse(data);
+    let newValues = map(formBlock, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items,
+          id: 0
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormBlock(newValues);
+  };
+
+  const handlePostEdit = (data, index) => {
+    let items = JSON.parse(data);
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items,
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
@@ -161,6 +244,7 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
+          position: i,
           title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
@@ -330,7 +414,6 @@ function Page({
       ...items,
       newItem: 0
     };
-    // console.log(formEdit);
     setListBlock([...listBlock, newItems]);
     setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
@@ -422,6 +505,10 @@ function Page({
                   onRemoveBlock={index => removeItem(index)}
                   onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
                   deleteActive={deleteActive}
+                  listCategory={listCategory}
+                  handlePost={handlePost}
+                  handlePostEdit={handlePostEdit}
+                  editorChange={(data, key, index) => editorChange(data, key, index)}
                   onDelete={() => setIsOpen(!isOpen)}
                 />
               </Col>
@@ -440,6 +527,7 @@ const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
     listTags: state.TagReducer.listTags,
+    listCategory: state.CategoryReducer.listCategory,
     homeID: state.PageReducer.homeID
   };
 };
@@ -453,7 +541,8 @@ const mapDispatchToProps = {
   expanstion: PageActions.expansionPageAction,
   updatePositionPages: PageActions.updatePositionPages,
   deletePageBlock: PageActions.detelePageBlockAction,
-  getHomeID: PageActions.getHomepageIDAction
+  getHomeID: PageActions.getHomepageIDAction,
+  getCategory: CategoryActions.getCategoryAction
 };
 
 export default connect(

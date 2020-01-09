@@ -11,11 +11,11 @@ window.$ = $;
 
 require('jquery-ui-sortable');
 require('formBuilder');
-
+require('formBuilder/dist/form-render.min.js');
 const Proptype = {
   created: Proptypes.func
 };
-
+let renderhtml = null;
 function FormBuilder({ created }) {
   const fb = createRef();
   const { t } = useTranslation();
@@ -25,12 +25,12 @@ function FormBuilder({ created }) {
     touched: {}
   });
 
-  const [formData, setFormData] = useState(null);
+  const [formDataBuilDer, setFormDataBuilDer] = useState(null);
 
   const [checkSubmit, setSubmit] = useState(true);
 
   const options = {
-    onSave: (event, formData) => onSend(formData)
+    onSave: (event, formDataBuilDer) => onSend(formDataBuilDer)
   };
 
   useEffect(() => {
@@ -54,16 +54,36 @@ function FormBuilder({ created }) {
     }));
   };
 
-  const onSend = formData => {
+  const onSend = formDataBuilDer => {
     setSubmit(false);
     // setFormData(JSON.stringify(formData));
-    setFormData(formData);
+    setFormDataBuilDer(formDataBuilDer);
   };
+
+  window.jQuery(function() {
+    var formdatabuilder = formDataBuilDer;
+    var formRenderOpts = {
+      dataType: 'json',
+      formData: formdatabuilder
+    };
+    var renderedForm = $('<div>');
+
+    renderedForm.formRender(formRenderOpts);
+
+    renderhtml = renderedForm.html();
+
+  });
 
   const onSubmit = event => {
     event.preventDefault();
-    // console.log({ ...formState.values, list: formData });
-    created({ ...formState.values, list: formData });
+    const body = {
+      name: formState.values.name,
+      status: formState.values.status,
+      list: formDataBuilDer,
+      embedded: renderhtml
+    };
+    //console.log(body);
+    created(body);
   };
   return (
     <React.Fragment>

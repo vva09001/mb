@@ -1,24 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { NewActions } from '../../store/actions';
+import { SliderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 import { Card, ListGroup, ListGroupItem } from 'reactstrap';
+import { useParams } from 'react-router-dom';
+
 const PropsType = {
-  sliderCreate: PropTypes.func
+  sliderEdit: PropTypes.func,
+  detail: PropTypes.object,
+  getSliderId: PropTypes.func
 };
 
-function SliderCreate({ sliderCreate }) {
-  const [formState] = useState({
-    values: {},
+function SliderCreate({ sliderEdit, detail, getSliderId }) {
+  let { id } = useParams();
+
+  useEffect(() => {
+    getSliderId(id);
+  }, [getSliderId, id]);
+
+   useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+     values: detail
+     }));
+  }, [detail]);
+
+  const [formState, setFormState] = useState({
+    values: {
+      sliderSlides: [
+      {
+        sliderSlideTranslations:[]
+      }]
+    },
+
     touched: {}
   });
 
+  const [fields, setFields] = useState([{}]);
   const [activeTab, setActiveTab] = useState('1');
   const [activeGroup, setActiveGroup] = useState('1');
 
@@ -29,26 +53,91 @@ function SliderCreate({ sliderCreate }) {
   };
 
   const onSuccess = () => {
-    Success('Tạo thành công');
-    history.goBack();
+    Success('Sửa thành công');
+    history.push('/slider');
   };
 
   const onFail = () => {
-    Error('Tạo thất bại');
+    Error('Sửa thất bại');
   };
 
-  const sliderCreates = event => {
-    event.preventDefault();
-    sliderCreate(formState.values, onSuccess, onFail);
-  };
-  /*{add slider}*/
-  const [fields, setFields] = useState([{ value: null }]);
+  const handleChanges = event => {
+    event.persist();
 
-  function handleChange(i, event) {
-    const values = [...fields];
-    values[i].value = event.target.value;
-    setFields(values);
-  }
+   if(event.target.id === 'caption'){
+      setFormState(formState => ({
+        ...formState,
+        values: {
+           ...formState.values,
+          sliderSlides: [{
+            ...formState.values.sliderSlides[0],
+            sliderSlideTranslations : {
+              ...formState.values.sliderSlides[0].sliderSlideTranslations,
+              [event.target.name] : event.target.value
+            }
+          }]
+        }
+      }))
+    }
+
+    if(event.target.name === 'callToActionUrl'){
+      setFormState(formState => ({
+        ...formState,
+        values: {
+         ...formState.values,
+          sliderSlides: [{
+            ...formState.values.sliderSlides[0],
+            [event.target.name] : event.target.value
+          }]
+        }
+      }))
+    }
+
+    if(event.target.name === 'position'){
+      setFormState(formState => ({
+        ...formState,
+        values: {
+         ...formState.values,
+          sliderSlides: [{
+            ...formState.values.sliderSlides[0],
+            [event.target.name] : event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          }]
+        }
+      }))
+    }
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+    if(event.target.name=== 'name'){
+      setFormState(formState => ({
+        ...formState,
+        values: {
+          ...formState.values,
+          sliderTranslations: {
+            [event.target.name] : event.target.value
+          }
+
+        }
+      }))
+    }
+
+  };
+
+  // function handleChange(i, event) {
+  //   const values = [...fields];
+  //   values[i].value = event.target.value;
+  //   setFields(values);
+  // }
 
   function handleAdd() {
     const values = [...fields];
@@ -61,6 +150,12 @@ function SliderCreate({ sliderCreate }) {
     values.splice(i, 1);
     setFields(values);
   }
+console.log(formState.values.sliderSlides);
+  const sliderEdits = event => {
+    event.preventDefault();
+    sliderEdit(formState.values, onSuccess, onFail);
+    console.log(sliderEdit(formState.values, onSuccess, onFail));
+  };
 
   return (
     <React.Fragment>
@@ -161,66 +256,101 @@ function SliderCreate({ sliderCreate }) {
 
                               <TabContent activeTab={activeTab}>
                                 <TabPane tabId="1">
-                                  <Form>
+                                  <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderEdits}>
                                     <Row form>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Label for="exampleEmail"> {t('slider.caption1')}</Label>
+                                          <Label> {t('slider.caption1')}</Label>
                                           <Input
                                             type="text"
                                             name="caption1"
-                                            onChange={e => handleChange(idx, e)}
-                                            value={field.value || ''}
+                                            // onChange={e => handleChange(idx, e)}
+                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption1 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption1}
+                                            onChange={handleChanges}
+                                            id="caption"
                                           />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Label for="examplePassword">{t('slider.caption2')}</Label>
-                                          <Input type="text" name="caption2" />
+                                          <Label>{t('slider.caption2')}</Label>
+                                          <Input
+                                            type="text"
+                                            name="caption2"
+                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption2 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption2}
+                                            onChange={handleChanges}
+                                            id="caption"
+                                          />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Label for="exampleEmail">{t('slider.caption3')}</Label>
-                                          <Input type="text" name="email" id="caption3" />
+                                          <Label>{t('slider.caption3')}</Label>
+                                          <Input
+                                            type="text"
+                                            name="caption3"
+                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption3 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption3}
+                                            onChange={handleChanges}
+                                            id="caption"
+                                          />
                                         </FormGroup>
                                       </Col>
                                     </Row>
                                     <Row form>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Label for="exampleEmail">{t('slider.actiontext')}</Label>
-                                          <Input type="text" name="calltoactiontext" />
+                                          <Label>{t('slider.actiontext')}</Label>
+                                          <Input
+                                            type="text"
+                                            name="callToActionText"
+                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.callToActionText === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.callToActionText}
+                                            onChange={handleChanges}
+                                            id="caption"
+                                          />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Label for="examplePassword">{t('slider.actionurl')}</Label>
-                                          <Input type="text" name="calltoactionurl" />
+                                          <Label>{t('slider.actionurl')}</Label>
+                                          <Input
+                                            type="text"
+                                            name="callToActionUrl"
+                                            value={formState.values.sliderSlides[0].callToActionUrl === undefined ? '' : formState.values.sliderSlides[0].callToActionUrl}
+                                            onChange={handleChanges}
+                                          />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup style={{ marginTop: '40px' }}>
-                                          <Input type="checkbox" name="email" id="exampleEmail" />{' '}
+                                          <Input
+                                            type="checkbox"
+                                            name="position"
+                                            checked={formState.values.sliderSlides[0].position === 1 ? true : false}
+                                            onChange={handleChanges}
+                                          />{' '}
                                           {t('slider.targetblank')}
                                         </FormGroup>
                                       </Col>
                                     </Row>
+                                    <Button type="button" onClick={() => handleAdd()}>
+                                      {t('slider.addslier')}
+                                    </Button>
+                                    <Button color="primary" style={{ marginLeft: '10px' }} type="submit">
+                                      {t('save')}
+                                    </Button>
                                   </Form>
                                 </TabPane>
                                 <TabPane tabId="2">
-                                  <Form>
+                                  <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderEdits}>
                                     <Row form>
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label for="exampleEmail">{t('slider.caption1')}</Label>
                                         </FormGroup>
                                       </Col>
-                                      <Col md={4}> </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="select" name="email" />
+                                          <Input type="select" name="" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -232,7 +362,7 @@ function SliderCreate({ sliderCreate }) {
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="number" name="email" />
+                                          <Input type="number" name="" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
@@ -244,10 +374,16 @@ function SliderCreate({ sliderCreate }) {
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup>
-                                          <Input type="select" name="email" />
+                                          <Input type="select" name="" />
                                         </FormGroup>
                                       </Col>
                                     </Row>
+                                    <Button type="button" onClick={() => handleAdd()}>
+                                      {t('slider.addslier')}
+                                    </Button>
+                                    <Button color="primary" style={{ marginLeft: '10px' }} type="submit">
+                                      {t('save')}
+                                    </Button>
                                   </Form>
                                 </TabPane>
                               </TabContent>
@@ -257,12 +393,7 @@ function SliderCreate({ sliderCreate }) {
                       </div>
                     );
                   })}
-                  <Button type="button" onClick={() => handleAdd()}>
-                    {t('slider.addslier')}
-                  </Button>
-                  <Button color="primary" style={{ marginLeft: '10px' }} type="submit">
-                    {t('save')}
-                  </Button>
+
                 </Row>
               </TabPane>
             )}
@@ -275,27 +406,52 @@ function SliderCreate({ sliderCreate }) {
                     </NavLink>
                   </NavItem>
                 </Nav>
-                <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderCreates}>
+                <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderEdits}>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.name')}
                     </Label>
-                    <Input type="text" name="meta_title" className="col-md-9" />
+                    <Input
+                      type="text"
+                      name="name"
+                      className="col-md-9"
+                      value = {formState.values.sliderTranslations.name}
+                      onChange={handleChanges}
+                    />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.autoplay')}</Label>
-                    <Input type="checkbox" name="check" style={{ width: '18px', height: '18px' }} />
+                    <Input
+                      type="checkbox"
+                      name="autoPlay"
+                      style={{ width: '18px', height: '18px' }}
+                      checked={formState.values.autoPlay === 1 ? true : false}
+                      onChange={handleChanges}
+                    />
                     <Label style={{ marginLeft: '5px' }}>{t('slider.activatedplay')}</Label>
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.speedplay')}</Label>
-                    <Input type="number" name="meta_keyword" className="col-md-9" placeholder="3000ms" />
+                    <Input
+                      type="number"
+                      name="autoPlaySpeed"
+                      className="col-md-9"
+                      placeholder="3000ms"
+                      value={formState.values.autoPlaySpeed}
+                      onChange={handleChanges}
+                    />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.arrows')}
                     </Label>
-                    <Input type="checkbox" name="meta_title" style={{ width: '18px', height: '18px' }} />{' '}
+                    <Input
+                      type="checkbox"
+                      name="arrows"
+                      style={{ width: '18px', height: '18px' }}
+                      checked={formState.values.arrows === 1 ? true : false}
+                      onChange={handleChanges}
+                    />
                     <Label style={{ marginLeft: '5px' }}>{t('slider.prev/next')}</Label>
                   </FormGroup>
                   <Button color="primary" type="submit">
@@ -314,11 +470,15 @@ function SliderCreate({ sliderCreate }) {
 
 SliderCreate.propTypes = PropsType;
 
+const mamapStateToProps = state => {
+  return { detail: state.SilderReducer.detail };
+};
 const mamapDispatchToProps = {
-  sliderCreate: NewActions.AddNews
+  sliderEdit: SliderActions.editSliderAction,
+  getSliderId: SliderActions.getSliderIdAction
 };
 
 export default connect(
-  null,
+  mamapStateToProps,
   mamapDispatchToProps
 )(SliderCreate);

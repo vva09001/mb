@@ -19,7 +19,6 @@ const PropsType = {
 function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
-  console.log(data)
   useEffect(() => {
     getNews();
   }, [getNews]);

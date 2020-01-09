@@ -1,12 +1,13 @@
-import axios from 'axios';
-
-const request = axios.create({
-  baseURL: 'https://bank1712.herokuapp.com/api',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-});
+// import axios from 'axios';
+//
+// const request = axios.create({
+//   baseURL: 'https://bank1712.herokuapp.com/api',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     Accept: 'application/json'
+//   }
+// });
+import request from 'helpers/request';
 
 const getSliderService = () => {
   return request({
@@ -21,6 +22,19 @@ const getSliderService = () => {
     });
 };
 
+const getSliderId = id => {
+  return request({
+    url: `/slider/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.respose.data;
+    })
+};
+
 const createSliderService = data => {
   return request({
     url: '/slider',
@@ -28,6 +42,7 @@ const createSliderService = data => {
     data: data
   })
     .then(res => {
+      // console.log(res);
       return res;
     })
     .catch(error => {
@@ -35,9 +50,9 @@ const createSliderService = data => {
     });
 };
 
-const editSliderService = (id, data) => {
+const editSliderService = data => {
   return request({
-    url: `/slider/${id}`,
+    url: `/slider/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -61,4 +76,4 @@ const deleteSliderService = id => {
     });
 };
 
-export { getSliderService, createSliderService, editSliderService, deleteSliderService };
+export { getSliderService, createSliderService, editSliderService, deleteSliderService, getSliderId };

@@ -43,11 +43,13 @@ function* getFormIdSaga() {
 function* createFormSaga() {
   yield takeLatest(actions.CREATE_FROM_REQUEST, function*(params) {
     const { data } = params;
+    console.log(data);
     try {
       const res = yield createFormbuilderService(data);
+     // console.log(res.data);
       if (res.status === 200) {
         yield Success('Tạo thành công');
-        yield put({ type: actions.CREATE_FORM_RESPONSE, data: res.data });
+        yield put({ type: actions.CREATE_FROM_RESPONSE, data: res.data });
         yield history.push('/form-builder/list');
       } else {
         yield Error(res.message);

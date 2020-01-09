@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import { StoreFontActions, MediaActions } from '../../store/actions';
+import { StoreFontActions} from '../../store/actions';
 import classnames from 'classnames';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -28,9 +28,7 @@ function Storefont({
   editStoreFontSocialLink,
   dataSociallink,
   dataGeneral,
-  dataLogo,
-  detailImage,
-  upLoadImages
+  dataLogo
 }) {
   const [StoreFontName, setStoreFontName] = useState('general');
   dataChange = Object.assign(data, dataChange);
@@ -168,7 +166,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>{t('storefont.footerbrief')}</Label>
+                  <Label>{t('storefont.footerbrief')}</Label>s
                   <CKEditor
                     editor={ClassicEditor}
                     data={formState.values.footer_brief == null ? "" : formState.values.footer_brief}

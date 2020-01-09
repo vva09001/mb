@@ -22,7 +22,7 @@ const getImagesService = () => {
 
 const addImagesService = data => {
   return request({
-    url: '/image/addImageWithFolder',
+    url: '/image/addListFileWithFolder',
     method: 'POST',
     data: data
   })
@@ -61,4 +61,99 @@ const deleteImagesService = id => {
     });
 };
 
-export { getImagesService, addImagesService, editImagesService, deleteImagesService };
+const moveFolderService = data => {
+  return request({
+    url: 'image/move-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const moveFileService = (id, data) => {
+  return request({
+    url: `image/${id}`,
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const renameFolderService = data => {
+  return request({
+    url: 'image/edit-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const createFolderService = data => {
+  return request({
+    url: 'image/add-folder',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const deleteFolderService = data => {
+  return request({
+    url: 'image/delete-folder',
+    method: 'DELETE',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const deleteListImageService = data => {
+  return request({
+    url: 'image/deleteIds',
+    method: 'DELETE',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export {
+  getImagesService,
+  addImagesService,
+  editImagesService,
+  deleteImagesService,
+  moveFolderService,
+  moveFileService,
+  renameFolderService,
+  createFolderService,
+  deleteFolderService,
+  deleteListImageService
+};

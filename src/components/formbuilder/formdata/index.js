@@ -1,47 +1,48 @@
-import React, { useState } from 'react';
+import React, * as react from 'react';
 import { Table } from 'reactstrap';
+import moment from 'moment';
 import ReactPaginate from 'react-paginate';
+// import { Link } from 'react-router-dom';
 import { slice, map } from 'lodash';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const PropsType = {
   data: PropTypes.array,
-  getID: PropTypes.func
+  getID: PropTypes.func,
+  getDetail: PropTypes.func
 };
 
-const TagTable = ({ data, getID }) => {
+const FormDataTable = ({ data }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = react.useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
-      <Table striped>
-        <thead>
+      <Table striped style={{ backgroundColor: '#fff' }}>
+        <thead style={{ borderBottom: '1px solid #e6edf5' }}>
           <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>{t('id')}</th>
-            <th>{t('name')}</th>
+            {map(list, (values, index) => {
+              if (values.type === 'button') {
+                return;
+              } else {
+                return <td key={index}>{values.label}</td>;
+              }
+            })}
+            <td>Đã tạo mới</td>
           </tr>
         </thead>
         <tbody>
-          {map(list, (values, index) => {
-            return (
-              <tr key={index}>
-                <th>
-                  <input type="checkbox" onClick={() => getID(values.id)} />
-                </th>
-                <td>{values.id}</td>
-                <td>
-                  <Link to={`/pages/tags/edit/${values.id}`}>{values.name}</Link>
-                </td>
-              </tr>
-            );
-          })}
+          <tr>
+            {map(list, (values, texts) => {
+              return <td key={texts} />;
+            })}
+            {map(list, values => {
+              // eslint-disable-next-line no-unused-expressions
+              <td>{moment(values.createdAt).fromNow()}</td>;
+            })}
+          </tr>
         </tbody>
       </Table>
       <div className="pagination__wapper">
@@ -67,6 +68,6 @@ const TagTable = ({ data, getID }) => {
   );
 };
 
-TagTable.propTypes = PropsType;
+FormDataTable.propTypes = PropsType;
 
-export default TagTable;
+export default FormDataTable;
