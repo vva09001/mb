@@ -46,7 +46,8 @@ function* editSettingSaga() {
       if (res.status === 200) {
         yield Success('Sửa thành công');
         yield put({ type: actions.GET_SETTING_REQUEST, data: res.data });
-        yield history.push('/setting');
+        // yield history.push('/setting');
+        window.location.reload();
       } else {
         yield Error(res.message);
       }

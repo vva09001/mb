@@ -58,9 +58,6 @@ function SettingHome(
     getDataEncryption();
   }, [getData, getDataCountry, getDataEncryption]);
   useEffect(() => {
-    if (!Array.isArray(country)){
-      country = [];
-    }
     setFormState(formState => ({
       ...formState,
       customerFontend: customerFontend,
@@ -318,7 +315,7 @@ function SettingHome(
                   </FormGroup>
                   <FormGroup>
                     <Label for="exampleFile">Máy chủ thư</Label>
-                    <Input type="text" name="ten"
+                    <Input type="text" name="mailPort"
                            value={formState.mailSettings.mailPort === undefined ? '' : formState.mailSettings.mailPort}
                            onChange={handleChangeMail}/>
                   </FormGroup>
