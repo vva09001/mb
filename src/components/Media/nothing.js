@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 function Notthing() {
-  const { t } = useTranslation();
-
   return (
     <React.Fragment>
       <div />

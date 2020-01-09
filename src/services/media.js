@@ -131,6 +131,20 @@ const deleteFolderService = data => {
     });
 };
 
+const deleteListImageService = data => {
+  return request({
+    url: 'image/deleteIds',
+    method: 'DELETE',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getImagesService,
   addImagesService,
@@ -140,5 +154,6 @@ export {
   moveFileService,
   renameFolderService,
   createFolderService,
-  deleteFolderService
+  deleteFolderService,
+  deleteListImageService
 };
