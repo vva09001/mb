@@ -29,7 +29,7 @@ export {
   RoleActions,
   SliderActions,
   SettingActions,
-  // MediaActions,
+  MediaActions,
   StoreFontActions,
   FeedbackActions
 };

@@ -12,9 +12,10 @@ const Images = (state = initialState, action) => {
       return {
         ...state,
         data: map(action.data, values => ({
-          key: values.path,
+          key: `${values.path}${values.name}`,
           modified: values.createdAt,
-          id: values.id          
+          id: values.id,
+          path: values.path                
         }))
       };
     case Actions.ADD_IMAGES_RESPONSE:
