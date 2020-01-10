@@ -19,10 +19,6 @@ const PropsType = {
 function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setMenusID] = useState(null);
-  const [formState, setFormState] = useState({
-    values: [],
-    touched: {}
-  });
   useEffect(() => {
     getMenus();
   }, [getMenus]);

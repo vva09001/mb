@@ -56,7 +56,8 @@ function Storefont({
     setFormState(formState => ({
       ...formState,
       values: {
-        ...formState.values
+        ...formState.values,
+        footer_brief: data 
       },
       touched: {
         ...formState.touched
@@ -169,7 +170,7 @@ function Storefont({
                   <Label>{t('storefont.footerbrief')}</Label>s
                   <CKEditor
                     editor={ClassicEditor}
-                    data={formState.values.footer_brief == null ? "" : formState.values.footer_brief}
+                    data={formState.values.footer_brief == null ? '' : formState.values.footer_brief}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
