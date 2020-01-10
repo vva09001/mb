@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
 import classnames from 'classnames';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -24,13 +24,16 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
     name: detail.name,
     privileges: detail.privileges
   });
+  const [activeTab, setActiveTab] = useState('1');
+
+  const { t } = useTranslation();
   useEffect(() => {
     getListPrvilegesByGroup();
   }, [getListPrvilegesByGroup]);
   useEffect(() => {
     getListPrivilege(detail.idRole);
     dataIdCurrent = detail.privileges;
-  }, [detail.idRole, getListPrivilege]);
+  }, [detail, getListPrivilege]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
     dataPrivileges.forEach(function(data) {
@@ -41,24 +44,40 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
         docs = Object.assign(docs, check);
       });
     });
-    // console.log(dataPrivileges);
-   
+    console.log(detail)
+    console.log(dataPrivileges)
   });
-   const handleChecked = id => {
-     dataPrivileges.forEach(function (data) {
-       data.privileges.forEach (function (docs) {
-        //  console.log(docs.privilegeId);
-         if (docs.privilegeId === id)
-         docs.checked = true;
-         else docs.checked = false;
-       })
-     })
-
+  const handleChecked = () => {
+    dataPrivileges.forEach(function(data) {
+      dataIdCurrent.forEach(function(docs) {
+        handleCheckedchildrenAllow(data.groupRole, docs);
+        handleCheckedchildrenDeny(data.groupRole);
+      });
+    });
   };
-  const [activeTab, setActiveTab] = useState('1');
-
-  const { t } = useTranslation();
-
+  const handleCheckedchildrenAllow = (groupRole, id) => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) === Number(id)) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    
+  };
+  const handleCheckedchildrenDeny = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (radios[i].checked == '') {
+          if (Number(radios[i].value) % 2 === 0) {
+            radios[i].checked = true;
+          }
+        } else break;
+      }
+    }
+  };
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -73,7 +92,7 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
   const allowBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
-      if (radios[i].type == 'radio') {
+      if (String(radios[i].type) === 'radio') {
         if (Number(radios[i].value) % 2 === 1) {
           radios[i].checked = true;
         }
@@ -90,7 +109,7 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
   const denyBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
-      if (radios[i].type == 'radio') {
+      if (String(radios[i].type) === 'radio') {
         if (Number(radios[i].value) % 2 === 0) {
           radios[i].checked = true;
         }
@@ -158,7 +177,7 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
               </Form>
             </TabPane>
             <TabPane tabId="2">
-            <Row>
+              <Row>
                 <Col lg={9} md={8}>
                   <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
@@ -166,8 +185,11 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
                     </FormGroup>
                     <FormGroup>
                       <Row>
-                        <Col />
-
+                        <Col>
+                          <Button onClick={() => handleChecked()}>
+                            {t('roleinit.getallroleof')} {detail.name}
+                          </Button>
+                        </Col>
                         <Col>
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
@@ -221,11 +243,9 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
                                         name={value.name}
                                         label="Allow"
                                         inline="true"
-                                        checked={value.checked}
                                         onClick={() => {
                                           value.checked = true;
                                         }}
-                                        // checked={}
                                       />
                                       <CustomInput
                                         type="radio"
@@ -234,7 +254,6 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
                                         name={value.name}
                                         label="Deny"
                                         inline="true"
-                                        checked={value.checked}
                                         onClick={() => {
                                           value.checked = false;
                                         }}

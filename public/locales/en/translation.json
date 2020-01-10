@@ -127,7 +127,17 @@
         "slider": "Slider"
     },
     "storefont": {
-        "sociallinks": "Social links"
+        "sociallinks": "Social links",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "user": {
         "fistname": "Fist Name",
@@ -155,5 +165,8 @@
         "subject": "Subject",
         "emailCc": "To",
         "content": "Content"
+    },
+    "roleinit": {
+        "getallroleof": "Get all role current of"
     }
 }

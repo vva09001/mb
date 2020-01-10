@@ -112,7 +112,6 @@ function Page({
   };
   const handleFomBlock = (event, index) => {
     event.persist();
-    // console.log(event.name);
     let newFormAddMore = map(formBlock, (values, id) => {
       if (index !== id) {
         return values;
@@ -143,7 +142,6 @@ function Page({
     setContentData(newContent);
     setFormBlock(newFormAddMore);
   };
-
   const handleEidt = (event, index) => {
     event.persist();
     let newValues = map(formEdit, (values, indexs) => {
@@ -162,11 +160,19 @@ function Page({
       if (index !== id) {
         return values;
       } else {
-        return {
-          ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-        };
+        if (values.length > 0) {
+          return {
+            content: values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        } else {
+          return {
+            ...values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        }
       }
     });
     setContentData(newContent);
@@ -208,7 +214,7 @@ function Page({
       } else {
         return {
           ...values,
-          ...items,
+          ...items
         };
       }
     });
@@ -225,11 +231,62 @@ function Page({
     setContentData(newContent);
     setFormEdit(newValues);
   };
+
+  const mutiPost = (data, index) => {
+    let newValues = map(formBlock, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormBlock(newValues);
+  };
+
+  const mutiPostEdit = (data, index) => {
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
+        let muitle_post_html = '';
         let key = Object.keys(contentData[i]);
         let regexp = '';
         let replaceHTML = '';
@@ -249,6 +306,80 @@ function Page({
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
+        if (contentData[i].content) {
+          for (let j = 0; j < contentData[i].content.length; j++) {
+            let key = Object.keys(contentData[i].content[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].content[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          // console.log(contentData[i].title);
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i].content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].length > 0) {
+          for (let j = 0; j < contentData[i].length; j++) {
+            let key = Object.keys(contentData[i][j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i][j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i]),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].mutilePost) {
+          for (let j = 0; j < contentData[i].mutilePost.length; j++) {
+            let key = Object.keys(contentData[i].mutilePost[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutilePost[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutilePost;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
       }
       const data = {
         ...formState.values,
@@ -265,8 +396,9 @@ function Page({
     } else {
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
-        let key = Object.keys(contentData[i]);
-
+        let muitle_post_html = '';
+        let key = null;
+        key = Object.keys(contentData[i]);
         let regexp = '';
         let replaceHTML = '';
         key.forEach(items => {
@@ -282,6 +414,28 @@ function Page({
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
+        if (contentData[i].mutilePost) {
+          for (let j = 0; j < contentData[i].mutilePost.length; j++) {
+            let key = Object.keys(contentData[i].mutilePost[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutilePost[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutilePost;
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
       }
       let data = {};
       if (actionChildrenSubmit) {
@@ -508,6 +662,8 @@ function Page({
                   listCategory={listCategory}
                   handlePost={handlePost}
                   handlePostEdit={handlePostEdit}
+                  mutiPost={mutiPost}
+                  mutiPostEdit={mutiPostEdit}
                   editorChange={(data, key, index) => editorChange(data, key, index)}
                   onDelete={() => setIsOpen(!isOpen)}
                 />
@@ -527,7 +683,7 @@ const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
     listTags: state.TagReducer.listTags,
-    listCategory: state.CategoryReducer.listCategory,
+    listCategory: state.CategoryReducer.data,
     homeID: state.PageReducer.homeID
   };
 };

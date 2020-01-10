@@ -55,8 +55,10 @@ const CategoryFormChilder = ({ deleteActive, value, handleChange, onSubmit, onDe
       </FormGroup>
       <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
+        <div>
         <img src={value.base_image === undefined ? '' : value.base_image} style={{ width: '100px' }} />
         <ModalMedia setState={onSetState} />
+        </div>        
       </FormGroup>
       <Button type="submit" color="primary">
         {t('save')}

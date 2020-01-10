@@ -36,7 +36,7 @@ function SelectMedia({ data, getImages, getDetailImage, selectImage, detail, clo
   const onSeleteImage = () => {
     closeModal();
   };
-
+  window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>

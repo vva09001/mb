@@ -148,7 +148,17 @@
         "logo": "Logo",
         "sociallinks": "Liên kết mạng xã hội",
         "footeraddress": "Footer Address",
-        "footerbrief": "Footer Brief"
+        "footerbrief": "Footer Brief",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "slider": {
         "createslider": "Tạo Slider",
@@ -181,5 +191,8 @@
         "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
+    },
+    "roleinit": {
+        "getallroleof": "Hiển thị quyền hiện tại của"
     }
 }

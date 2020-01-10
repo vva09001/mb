@@ -9,6 +9,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import IconNoImage from 'assets/img/mb/no_image.png';
+import Select from 'react-select';
 import { map } from 'lodash';
 import { NewActions } from 'store/actions';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +33,9 @@ const PropsType = {
   editorChange: PropTypes.func,
   getNewByCategory: PropTypes.func,
   handlePost: PropTypes.func,
-  handlePostEdit: PropTypes.func
+  handlePostEdit: PropTypes.func,
+  mutiPost: PropTypes.func,
+  mutiPostEdit: PropTypes.func
 };
 
 function PagesCreate({
@@ -53,7 +56,9 @@ function PagesCreate({
   editorChange,
   getNewByCategory,
   handlePost,
-  handlePostEdit
+  handlePostEdit,
+  mutiPost,
+  mutiPostEdit
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -74,6 +79,18 @@ function PagesCreate({
     getNewByCategory(id);
   };
 
+  const handleChangeSupportLocales = (event, index) => {
+    let data = [];
+    map(event, items => data.push(JSON.parse(items.value)));
+    mutiPost(data, index);
+  };
+
+  const handleMutilePostEdit = (event, index) => {
+    let data = [];
+    map(event, items => data.push(JSON.parse(items.value)));
+    mutiPostEdit(data, index);
+  };
+
   const renderInput = (data, index) => {
     switch (data.type_id) {
       case 1:
@@ -83,29 +100,50 @@ function PagesCreate({
             <Input type="text" name={data.key} required onChange={event => handleFomBlock(event, index)} />
           </FormGroup>
         );
-      case 2: //nutile post
+      case 8: //nutile post
         return (
-          <FormGroup>
-            <Label for="template">{data.title}</Label>
-            <Input type="select" name={data.key} required onChange={event => handleFomBlock(event, index)}>
-              <option value={1}>{t('select')}</option>
-              <option value={2}>{t('page.default')}</option>
-              <option value={3}>{t('page.full')}</option>
-            </Input>
-          </FormGroup>
+          <React.Fragment>
+            <FormGroup>
+              <Label>{t('category')}</Label>
+              <Input type="select" name="category" required onChange={event => getNewsByCategoryID(event.target.value)}>
+                <option value={0}>chọn...</option>
+                {map(listCategory, category => {
+                  return (
+                    <option value={category.id} key={category.id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </Input>
+            </FormGroup>
+            {listNew.length > 0 && (
+              <FormGroup>
+                <Label for="template">{data.title}</Label>
+                <Select
+                  name="supportLocales"
+                  closeMenuOnSelect={false}
+                  options={listNew}
+                  isMulti
+                  onChange={event => handleChangeSupportLocales(event, index)}
+                />
+              </FormGroup>
+            )}
+          </React.Fragment>
         );
       case 3: //singer post
         return (
           <React.Fragment>
             <FormGroup>
-              <Label for="template">{t('category')}</Label>
+              <Label>{t('category')}</Label>
               <Input type="select" name="category" required onChange={event => getNewsByCategoryID(event.target.value)}>
                 <option value={0}>chọn...</option>
-                {map(listCategory, category => (
-                  <option value={category.id} key={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+                {map(listCategory, category => {
+                  return (
+                    <option value={category.id} key={category.id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
               </Input>
             </FormGroup>
             {listNew.length > 0 && (
@@ -277,22 +315,41 @@ function PagesCreate({
             />
           </FormGroup>
         );
-      case 2: //nutile post
+      case 8: //nutile post
         return (
-          <FormGroup>
-            <Label>{items.title}</Label>
-            <Input
-              type="select"
-              name={items.key}
-              value={value}
-              required
-              onChange={event => handleFomBlock(event, index)}
-            >
-              <option value={1}>{t('select')}</option>
-              <option value={2}>{t('page.default')}</option>
-              <option value={3}>{t('page.full')}</option>
-            </Input>
-          </FormGroup>
+          <React.Fragment>
+            <FormGroup>
+              <Label>{t('category')}</Label>
+              <Input
+                type="select"
+                name="category"
+                required
+                value={value.categoryID}
+                onChange={event => getNewsByCategoryID(event.target.value)}
+              >
+                <option value={0}>chọn...</option>
+                {map(listCategory, category => {
+                  return (
+                    <option value={category.id} key={category.id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </Input>
+            </FormGroup>
+            {listNew.length > 0 && (
+              <FormGroup>
+                <Label>{items.title}</Label>
+                <Select
+                  name="supportLocales"
+                  closeMenuOnSelect={false}
+                  options={listNew}
+                  isMulti
+                  onChange={event => handleMutilePostEdit(event, index)}
+                />
+              </FormGroup>
+            )}
+          </React.Fragment>
         );
       case 3: //singer post
         return (
@@ -307,11 +364,13 @@ function PagesCreate({
                 onChange={event => getNewsByCategoryID(event.target.value)}
               >
                 <option value={0}>chọn...</option>
-                {map(listCategory, category => (
-                  <option value={category.id} key={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+                {map(listCategory, category => {
+                  return (
+                    <option value={category.id} key={category.id}>
+                      {category.name}
+                    </option>
+                  );
+                })}
               </Input>
             </FormGroup>
             {listNew.length > 0 && (
