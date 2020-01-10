@@ -8,6 +8,8 @@ import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } fro
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
+import { Button } from 'reactstrap';
+import history from 'helpers/history';
 
 const PropsType = {
   data: PropTypes.array,
@@ -99,33 +101,46 @@ function Media({
     renameFolderData.append('folderNew', newKey);
     renameFolder(renameFolderData);
   };
+  window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>
       <div style={{ backgroundColor: 'white', padding: 20, height: 'auto' }}>
-        <FileBrowser
-          files={formState}
-          icons={{
-            File: <FontAwesomeIcon icon={faEdit} />,
-            Image: <FontAwesomeIcon icon={faImages} />,
-            PDF:  <FontAwesomeIcon icon={faFilePdf} />,
-            Rename: <FontAwesomeIcon icon={faEdit} />,
-            Folder: <FontAwesomeIcon icon={faFolderMinus} />,
-            FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
-            Delete: <FontAwesomeIcon icon={faTimes} />,
-            Loading: <FontAwesomeIcon icon={faEdit} />
-          }}
-          onCreateFolder={handleCreateFolder}
-          onCreateFiles={onCreateFiles}
-          onMoveFolder={handleMoveFolder}
-          onMoveFile={handleMoveFile}
-          onRenameFolder={handleRenameFolder}
-          onDeleteFolder={handleDeleteFolder}
-          onSelectFile={handleBrowse}
-          onDeleteFile={handleDeleteFile}
-          onRenameFile={handleRenameFile}
-          detailRenderer={MediaDetail}
-        />
+        <div style={{ paddingBottom: 10 }}>
+          <Button
+            color={'danger'}
+            onClick={() => {
+              history.push('/media/deleteFiles');
+            }}
+          >
+            {t('DeleteFiles')}
+          </Button>
+        </div>
+        <div>
+          <FileBrowser
+            files={formState}
+            icons={{
+              File: <FontAwesomeIcon icon={faEdit} />,
+              Image: <FontAwesomeIcon icon={faImages} />,
+              PDF: <FontAwesomeIcon icon={faFilePdf} />,
+              Rename: <FontAwesomeIcon icon={faEdit} />,
+              Folder: <FontAwesomeIcon icon={faFolderMinus} />,
+              FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
+              Delete: <FontAwesomeIcon icon={faTimes} />,
+              Loading: <FontAwesomeIcon icon={faEdit} />
+            }}
+            onCreateFolder={handleCreateFolder}
+            onCreateFiles={onCreateFiles}
+            onMoveFolder={handleMoveFolder}
+            onMoveFile={handleMoveFile}
+            onRenameFolder={handleRenameFolder}
+            onDeleteFolder={handleDeleteFolder}
+            onSelectFile={handleBrowse}
+            onDeleteFile={handleDeleteFile}
+            onRenameFile={handleRenameFile}
+            detailRenderer={MediaDetail}
+          />
+        </div>
       </div>
     </React.Fragment>
   );

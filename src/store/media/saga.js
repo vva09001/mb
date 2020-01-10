@@ -8,7 +8,8 @@ import {
   moveFileService,
   renameFolderService,
   createFolderService,
-  deleteFolderService
+  deleteFolderService,
+  deleteListImageService
 } from '../../services/media';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -48,7 +49,7 @@ function* addImagesSaga() {
 
 function* editImagesSaga() {
   yield takeLatest(actions.EDIT_IMAGES_REQUEST, function*(params) {
-    const { data } = params;
+    const { data } = params;    
     try {
       const res = yield editImagesService(data);
       if (res.status === 200) {
@@ -164,6 +165,23 @@ function* deleteFolder() {
     }
   });
 }
+
+function* deleteListImage() {
+  yield takeLatest(actions.DELETE_LIST_IMAGE, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield deleteListImageService(data);
+      if (res.status === 200) {
+        yield Success('Xóa thành công');
+        yield put({ type: actions.GET_IMAGES_REQUEST, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 export default function* rootSaga() {
   yield all([
     fork(getImagesSaga),
@@ -174,6 +192,7 @@ export default function* rootSaga() {
     fork(moveFile),
     fork(renameFoldfer),
     fork(createFoldfer),
-    fork(deleteFolder)
+    fork(deleteFolder),
+    fork(deleteListImage)
   ]);
 }

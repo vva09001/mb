@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   listCategory: [],
-  listOption: []
+  listOption: [],
+  data: []
 };
 
 const Category = (state = initialState, action) => {
@@ -11,7 +12,8 @@ const Category = (state = initialState, action) => {
     case Actions.GET_CATEGORY_RESPONSE:
       return {
         ...state,
-        listCategory: action.data
+        listCategory: action.data,
+        data: action.listData
       };
     case Actions.ADD_CATEGORY_RESPONSE:
       return {

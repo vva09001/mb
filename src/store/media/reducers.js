@@ -3,7 +3,9 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  ImageSelete: '',
+  ListFiles: []
 };
 
 const Images = (state = initialState, action) => {
@@ -19,7 +21,8 @@ const Images = (state = initialState, action) => {
           size: values.size,
           name: values.name,
           url: values.url
-        }))
+        })),
+        ListFiles: action.data
       };
     case Actions.ADD_IMAGES_RESPONSE:
       return {
@@ -48,6 +51,11 @@ const Images = (state = initialState, action) => {
         ...state,
         detail: action.data
       };
+    case Actions.SELETE_IMAGE:     
+      return {
+        ...state,
+        ImageSelete: action.data
+      }
     default:
       return state;
   }

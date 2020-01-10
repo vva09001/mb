@@ -11,23 +11,24 @@ import { Error, Success } from 'helpers/notify';
 import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
-// import Iframe from 'react-iframe';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const PropsType = {
   listOptions: PropTypes.array,
   listForm: PropTypes.array,
   getCategory: PropTypes.func,
   newsCreate: PropTypes.func,
-  getForm: PropTypes.func
+  getForm: PropTypes.func,
+  imageSeletedata: PropTypes.object
 };
 
-function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm }) {
+function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
   });
-  const [activeTab, setActiveTab] = useState('1');
 
+  const [activeTab, setActiveTab] = useState('1');
   const { t } = useTranslation();
 
   const toggle = tab => {
@@ -38,6 +39,16 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
     getCategory();
     getForm();
   }, [getCategory, getForm]);
+
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        base_image: imageSeletedata.url
+      }
+    }));
+  };
 
   const handleChange = event => {
     event.persist();
@@ -72,7 +83,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
 
   const onSuccess = () => {
     Success('Tạo thành công');
-    history.goBack();
+    history.push('/news/list');
   };
 
   const onFail = () => {
@@ -85,9 +96,9 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
       ...formState.values,
       newsBlocks: []
     };
-    console.log(body);
     newsCreate(body, onSuccess, onFail);
   };
+
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -116,7 +127,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
@@ -142,16 +153,11 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  {/* <Iframe
-                    url="http://localhost:3000/media"
-                    width="800px"
-                    height="450px"
-                    id="myId"
-                    className="myClassname"
-                    display="initial"
-                    position="relative"
-                  /> */}
-                  <Input type="file" name="base_image" />
+                  <img
+                    src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                    style={{ width: '100px' }}
+                  />
+                  <ModalMedia setState={onSetState} />
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('sticky')}</Label>
@@ -171,13 +177,13 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                     ))}
                   </Input>
                 </FormGroup>
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" onClick={createdNews}>
                   {t('save')}
                 </Button>
               </Form>
             </TabPane>
             <TabPane tabId="2">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('seo')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('meta.title')}</Label>
@@ -195,7 +201,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm })
                   <Label>{t('URL')}</Label>
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
-                <Button color="primary" type="submit">
+                <Button color="primary" type="submit" onClick={createdNews}>
                   {t('save')}
                 </Button>
               </Form>
@@ -212,7 +218,8 @@ NewsCreate.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     listOptions: state.CategoryReducer.listOption,
-    listForm: state.FormBuilderReducer.listForm
+    listForm: state.FormBuilderReducer.listForm,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 

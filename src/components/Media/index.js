@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
+
 import PropTypes from 'prop-types';
 import Img from 'react-image';
 import { connect } from 'react-redux';
@@ -9,8 +9,6 @@ const PropsTypes = {
 };
 
 function MediaDetail({ detail }) {
-  const { t } = useTranslation();
-
   return (
     <React.Fragment>
       <div>

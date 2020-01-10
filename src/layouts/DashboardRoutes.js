@@ -44,6 +44,7 @@ import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
 import ToolMenu from 'container/InterestRate/index';
+import DeleteFiles from 'container/media/deleteFiles'
 
 const DashboardRoutes = () => (
   <Switch>
@@ -64,7 +65,7 @@ const DashboardRoutes = () => (
     <Route path="/pages/block/edit" exact component={EditBlock} />
     <Route path="/pages/tags" exact component={Tags} />
     <Route path="/pages/tags/create" exact component={CreateTags} />
-    <Route path="/pages/tags/edit" exact component={EditTags} />
+    <Route path="/pages/tags/edit/:id" exact component={EditTags} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
@@ -107,6 +108,7 @@ const DashboardRoutes = () => (
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
     <Route path="/media" exact component={Media} />
+    <Route path="/media/deleteFiles" exact component={DeleteFiles} />
 
     {/*toolMenu*/}
     <Route path="/interest-rate" exact component={ToolMenu}/>

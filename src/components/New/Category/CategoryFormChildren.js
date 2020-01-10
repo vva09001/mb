@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import ModalMedia from '../../Media/ModalMedia';
 
 const PropType = {
   deleteActive: PropTypes.bool,
@@ -11,7 +12,7 @@ const PropType = {
   onDelete: PropTypes.func
 };
 
-const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onDelete }) => {
+const CategoryFormChilder = ({ deleteActive, value, handleChange, onSubmit, onDelete, onSetState }) => {
   const { t } = useTranslation();
   return (
     <Form onSubmit={onSubmit} className="cetegoryFrom">
@@ -37,7 +38,6 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
               name="is_active"
               checked={value.is_active === 0 || value.is_active === undefined ? false : true}
               value={value.is_active === 0 ? false : value.is_active}
-              // checked={}
               onChange={handleChange}
             />
             <span>{t('category_page.form.activeCategory')}</span>
@@ -54,14 +54,12 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
         />
       </FormGroup>
       <FormGroup>
-        <Label>{t('category_page.form.coverImage')}</Label>
-        <Input type="file" name="coverImage" onChange={handleChange} />
-      </FormGroup>
-      <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
-        <Input type="file" name="base_image" onChange={handleChange} />
+        <div>
+        <img src={value.base_image === undefined ? '' : value.base_image} style={{ width: '100px' }} />
+        <ModalMedia setState={onSetState} />
+        </div>        
       </FormGroup>
-
       <Button type="submit" color="primary">
         {t('save')}
       </Button>
@@ -74,6 +72,6 @@ const CategoryFormChildren = ({ deleteActive, value, handleChange, onSubmit, onD
   );
 };
 
-CategoryFormChildren.propTypes = PropType;
+CategoryFormChilder.propTypes = PropType;
 
-export default CategoryFormChildren;
+export default CategoryFormChilder;

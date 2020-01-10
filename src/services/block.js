@@ -79,11 +79,25 @@ const getTypeService = () => {
     });
 };
 
+const getBlockByIDService = id => {
+  return request({
+    url: `/blocks/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getBlockService,
   createBlockService,
   editBlockService,
   deleteBlockService,
   deleteBlockValuesService,
-  getTypeService
+  getTypeService,
+  getBlockByIDService
 };
