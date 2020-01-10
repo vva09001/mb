@@ -57,8 +57,8 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete, o
       <FormGroup>
         <Label>{t('category_page.form.featuredImage')}</Label>
         <div>
-        <img src={value.base_image === undefined ? '' : value.base_image} style={{ width: '100px' }} />
-        <ModalMedia setState={onSetState} />
+          <img src={value.base_image === undefined ? '' : value.base_image} style={{ width: '100px' }} alt="logo" />
+          <ModalMedia setState={onSetState} />
         </div>
       </FormGroup>
       <Button type="submit" color="primary">
