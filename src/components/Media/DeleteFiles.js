@@ -68,7 +68,7 @@ const DeleteFileTable = ({ data, deleteImage }) => {
                     />
                   </th>
                   <td>
-                    <img src={values.url} style={{ width: '50px', height: '50px' }} alt ="Image " />
+                    <img src={values.url} style={{ width: '50px', height: '50px' }} alt="icon" />
                   </td>
                   <td>{values.name}</td>
                   <td>{values.path}</td>

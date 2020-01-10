@@ -26,22 +26,20 @@ const PropsType = {
   encryption: PropTypes.array,
   getDataEncryption: PropTypes.func,
   editSetting: PropTypes.func
-
 };
 
-function SettingHome(
-  {
-    getData,
-    detail,
-    customerFontend,
-    generals,
-    mailSettings,
-    getDataCountry,
-    country,
-    getDataEncryption,
-    encryption,
-    editSetting
-  }) {
+function SettingHome({
+  getData,
+  detail,
+  customerFontend,
+  generals,
+  mailSettings,
+  getDataCountry,
+  country,
+  getDataEncryption,
+  encryption,
+  editSetting
+}) {
   const [formState, setFormState] = useState({
     value: {},
     customerFontend: {},
@@ -66,7 +64,7 @@ function SettingHome(
       country: country,
       encryption: encryption
     }));
-  }, [detail, country, encryption]);
+  }, [detail, country, encryption, customerFontend, generals, mailSettings]);
 
   const [activeTab, setActiveTab] = useState('1');
 
@@ -123,15 +121,15 @@ function SettingHome(
 
   const handleChangeSupportLocales = event => {
     console.log('sp', event);
-    let idLocales = [];
+    const idLocales = [];
     map(event, values => {
       idLocales.push({
         id: values.value,
-        name:values.label
+        name: values.label
       });
       return {
         id: values.value,
-        name:values.label
+        name: values.label
       };
     });
     setFormState(formState => ({
@@ -148,15 +146,15 @@ function SettingHome(
   };
 
   const handleChangeSupportCountries = event => {
-    let idCountries = [];
+    const idCountries = [];
     map(event, values => {
       idCountries.push({
         id: values.value,
-        name:values.label
+        name: values.label
       });
       return {
         id: values.value,
-        name:values.label
+        name: values.label
       };
     });
     setFormState(formState => ({
@@ -175,14 +173,13 @@ function SettingHome(
   const onSubmit = event => {
     event.preventDefault();
     if (formState.generals) {
-
-      let supportLocalesId = [];
+      const supportLocalesId = [];
       map(formState.generals.supportLocales, values => {
         supportLocalesId.push(values.id);
         return values;
       });
 
-      let supportCountriesId = [];
+      const supportCountriesId = [];
 
       map(formState.generals.supportCountries, values => {
         supportCountriesId.push(values.id);
@@ -191,7 +188,6 @@ function SettingHome(
 
       formState.generals.supportLocales = supportLocalesId;
       formState.generals.supportCountries = supportCountriesId;
-
     }
     const data = {
       customerFontends: formState.customerFontend,
@@ -200,190 +196,229 @@ function SettingHome(
     };
     editSetting(data);
   };
-    return (
-      <React.Fragment>
-        <h4>{t('setting.setting')}</h4>
-        <Row className="category__wapper">
-          <Col lg={3} md={4}>
-            <Nav tabs style={{ display: 'block' }}>
-              <p className="mb-2">{t('setting.settingeneral')}</p>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: activeTab === '1' })}
-                  onClick={() => {
-                    toggle('1');
-                  }}
-                >
-                  {t('general')}
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: activeTab === '2' })}
-                  onClick={() => {
-                    toggle('2');
-                  }}
-                >
-                  {t('setting.mail')}
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: activeTab === '3' })}
-                  onClick={() => {
-                    toggle('3');
-                  }}
-                >
-                  {t('setting.css/js')}
-                </NavLink>
-              </NavItem>
-            </Nav>
-          </Col>
-          <Col lg={9} md={8}>
-            <Nav tabs>
-              <NavItem>
-                <NavLink>{t('general')}</NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={activeTab}>
-              <TabPane tabId="1">
-                <Form className="p-3" onSubmit={onSubmit}>
-                  <FormGroup>
-                    <Label>Các nước được hỗ trợ</Label>
-                    {
-                      formState.country.length ?
-                        <Select
-                          closeMenuOnSelect={false}
-                          components={animatedComponents}
-                          value={map(formState.generals.supportCountries,values=>{
-                            return {
-                              value: values.id,
-                              label: values.name
-                            };
-                          })}
-                          name="supportCountries"
-                          options={formState.country} isMulti onChange={handleChangeSupportCountries}/>
-                        :
-                        null
-                    }
-
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Địa điểm được hỗ trợ</Label>
+  return (
+    <React.Fragment>
+      <h4>{t('setting.setting')}</h4>
+      <Row className="category__wapper">
+        <Col lg={3} md={4}>
+          <Nav tabs style={{ display: 'block' }}>
+            <p className="mb-2">{t('setting.settingeneral')}</p>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '1' })}
+                onClick={() => {
+                  toggle('1');
+                }}
+              >
+                {t('general')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '2' })}
+                onClick={() => {
+                  toggle('2');
+                }}
+              >
+                {t('setting.mail')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '3' })}
+                onClick={() => {
+                  toggle('3');
+                }}
+              >
+                {t('setting.css/js')}
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Col>
+        <Col lg={9} md={8}>
+          <Nav tabs>
+            <NavItem>
+              <NavLink>{t('general')}</NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1">
+              <Form className="p-3" onSubmit={onSubmit}>
+                <FormGroup>
+                  <Label>Các nước được hỗ trợ</Label>
+                  {formState.country.length ? (
                     <Select
-                      name="supportLocales"
                       closeMenuOnSelect={false}
                       components={animatedComponents}
-                      value={map(formState.generals.supportLocales,values=>{
+                      value={map(formState.generals.supportCountries, values => {
                         return {
-                          value: !values.id ? '' : values.id,
-                          label: !values.name ? '' : values.name
+                          value: values.id,
+                          label: values.name
                         };
                       })}
-                      options={formState.country} isMulti onChange={handleChangeSupportLocales}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Địa điểm mặc định</Label>
-                    <Input type="select" name="defaulCountries"
-                           value={formState.generals.defaulCountries}
-                           onChange={handleChangeGenerals}>
-                      {map(formState.country, value => (
-                        <option value={value.value} key={value.value}>
-                          {value.label}
-                        </option>
-                      ))}
-                    </Input>
-                  </FormGroup>
-                  <Button color="primary" type="submit">
-                    {t('save')}
-                  </Button>
-                </Form>
-              </TabPane>
-              <TabPane tabId="2">
-                <Form className="p-3" onSubmit={onSubmit}>
-                  <FormGroup>
-                    <Label for="exampleName">Thư từ địa chỉ</Label>
-                    <Input type="text" name="mailFromAddress"
-                           value={formState.mailSettings.mailFromAddress === undefined ? '' : formState.mailSettings.mailFromAddress}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Thư từ tên</Label>
-                    <Input type="text" name="mailFromName"
-                           value={formState.mailSettings.mailFromName === undefined ? '' : formState.mailSettings.mailFromName}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Máy chủ thư</Label>
-                    <Input type="text" name="mailPort"
-                           value={formState.mailSettings.mailPort === undefined ? '' : formState.mailSettings.mailPort}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Cổng thư</Label>
-                    <Input type="text" name="mailHost"
-                           value={formState.mailSettings.mailHost === undefined ? '' : formState.mailSettings.mailHost}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Tên người dùng thư</Label>
-                    <Input type="text" name="mailUsername"
-                           value={formState.mailSettings.mailUsername === undefined ? '' : formState.mailSettings.mailUsername}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Mail Password</Label>
-                    <Input type="text" name="mailPassword"
-                           value={formState.mailSettings.mailPassword === undefined ? '' : formState.mailSettings.mailPassword}
-                           onChange={handleChangeMail}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Mã hóa thư</Label>
+                      name="supportCountries"
+                      options={formState.country}
+                      isMulti
+                      onChange={handleChangeSupportCountries}
+                    />
+                  ) : null}
+                </FormGroup>
+                <FormGroup>
+                  <Label>Địa điểm được hỗ trợ</Label>
+                  <Select
+                    name="supportLocales"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    value={map(formState.generals.supportLocales, values => {
+                      return {
+                        value: !values.id ? '' : values.id,
+                        label: !values.name ? '' : values.name
+                      };
+                    })}
+                    options={formState.country}
+                    isMulti
+                    onChange={handleChangeSupportLocales}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Địa điểm mặc định</Label>
+                  <Input
+                    type="select"
+                    name="defaulCountries"
+                    value={formState.generals.defaulCountries}
+                    onChange={handleChangeGenerals}
+                  >
+                    {map(formState.country, value => (
+                      <option value={value.value} key={value.value}>
+                        {value.label}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="2">
+              <Form className="p-3" onSubmit={onSubmit}>
+                <FormGroup>
+                  <Label for="exampleName">Thư từ địa chỉ</Label>
+                  <Input
+                    type="text"
+                    name="mailFromAddress"
+                    value={
+                      formState.mailSettings.mailFromAddress === undefined ? '' : formState.mailSettings.mailFromAddress
+                    }
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Thư từ tên</Label>
+                  <Input
+                    type="text"
+                    name="mailFromName"
+                    value={formState.mailSettings.mailFromName === undefined ? '' : formState.mailSettings.mailFromName}
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Máy chủ thư</Label>
+                  <Input
+                    type="text"
+                    name="mailPort"
+                    value={formState.mailSettings.mailPort === undefined ? '' : formState.mailSettings.mailPort}
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Cổng thư</Label>
+                  <Input
+                    type="text"
+                    name="mailHost"
+                    value={formState.mailSettings.mailHost === undefined ? '' : formState.mailSettings.mailHost}
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Tên người dùng thư</Label>
+                  <Input
+                    type="text"
+                    name="mailUsername"
+                    value={formState.mailSettings.mailUsername === undefined ? '' : formState.mailSettings.mailUsername}
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Mail Password</Label>
+                  <Input
+                    type="text"
+                    name="mailPassword"
+                    value={formState.mailSettings.mailPassword === undefined ? '' : formState.mailSettings.mailPassword}
+                    onChange={handleChangeMail}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Mã hóa thư</Label>
 
-                    <Input type="select"
-                           name="encryptions"
-                           value={
-                             !formState.mailSettings.encryptions
-                               ? '' : formState.mailSettings.encryptions
-                           } onChange={handleChangeMail}
-                    >
-                      {map(formState.encryption, value => (
-                        <option value={value.id} key={value.id}>
-                          {value.name}
-                        </option>
-                      ))}
-                    </Input>
-                  </FormGroup>
-                  <Button color="primary" type="submit">
-                    {t('save')}
-                  </Button>
-                </Form>
-              </TabPane>
-              <TabPane tabId="3">
-                <Form className="p-3" onSubmit={onSubmit}>
-                  <FormGroup>
-                    <Label for="exampleName">Header</Label>
-                    <Input type="textarea" rows="5" name="customerHeaderAssets"
-                           value={formState.customerFontend.customerHeaderAssets === undefined ? '' : formState.customerFontend.customerHeaderAssets}
-                           onChange={handleChangeCustomerFontend}/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="exampleFile">Footer</Label>
-                    <Input type="textarea" rows="5" name="customerFoodterAssets"
-                           value={formState.customerFontend.customerFoodterAssets === undefined ? '' : formState.customerFontend.customerFoodterAssets}
-                           onChange={handleChangeCustomerFontend}/>
-                  </FormGroup>
-                  <Button color="primary" type="submit">
-                    {t('save')}
-                  </Button>
-                </Form>
-              </TabPane>
-            </TabContent>
-          </Col>
-        </Row>
-      </React.Fragment>
-    );
-
+                  <Input
+                    type="select"
+                    name="encryptions"
+                    value={!formState.mailSettings.encryptions ? '' : formState.mailSettings.encryptions}
+                    onChange={handleChangeMail}
+                  >
+                    {map(formState.encryption, value => (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="3">
+              <Form className="p-3" onSubmit={onSubmit}>
+                <FormGroup>
+                  <Label for="exampleName">Header</Label>
+                  <Input
+                    type="textarea"
+                    rows="5"
+                    name="customerHeaderAssets"
+                    value={
+                      formState.customerFontend.customerHeaderAssets === undefined
+                        ? ''
+                        : formState.customerFontend.customerHeaderAssets
+                    }
+                    onChange={handleChangeCustomerFontend}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">Footer</Label>
+                  <Input
+                    type="textarea"
+                    rows="5"
+                    name="customerFoodterAssets"
+                    value={
+                      formState.customerFontend.customerFoodterAssets === undefined
+                        ? ''
+                        : formState.customerFontend.customerFoodterAssets
+                    }
+                    onChange={handleChangeCustomerFontend}
+                  />
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+          </TabContent>
+        </Col>
+      </Row>
+    </React.Fragment>
+  );
 }
 
 SettingHome.propTypes = PropsType;
@@ -397,7 +432,6 @@ const mapStateToProps = state => {
     country: state.CountryReducer.detail,
     encryption: state.SettingReducer.encryption
   };
-
 };
 
 const mapDispatchToProps = {

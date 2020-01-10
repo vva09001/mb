@@ -1,31 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import NavbarStandard from '../navbar/NavbarStandard';
-import Banner from './Banner';
-import Partners from './Partners';
-import Processes from './Processes';
-import Services from './Services';
-import Testimonial from './Testimonial';
-import Cta from './Cta';
-import FooterStandard from './FooterStandard';
 
 const Landing = ({ location }) => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.location.replace('https://mb-frontend.vva0901.now.sh/');
   }, [location.pathname]);
 
-  return (
-    <Fragment>
-      <NavbarStandard />
-      <Banner />
-      <Partners />
-      <Processes />
-      <Services />
-      <Testimonial />
-      <Cta />
-      <FooterStandard />
-    </Fragment>
-  );
+  return <Fragment />;
 };
 
 Landing.propTypes = { location: PropTypes.object.isRequired };

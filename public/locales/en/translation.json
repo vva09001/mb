@@ -83,7 +83,7 @@
         "default": "Default"
     },
     "formBuilder": {
-        
+
         "title": "Create Form",
         "formdata": "Form data",
         "embededform": "Embeded form",
@@ -124,10 +124,21 @@
         "role": "Role",
         "media": "Media",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "tool_menu": "Tool menu"
     },
     "storefont": {
-        "sociallinks": "Social links"
+        "sociallinks": "Social links",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "user": {
         "fistname": "Fist Name",
@@ -155,5 +166,17 @@
         "subject": "Subject",
         "emailCc": "To",
         "content": "Content"
+    },
+    "roleinit": {
+        "getallroleof": "Get all role current of"
+    },
+    "interest_rate": {
+        "interest_rate": "Interest rate",
+        "term": "Term",
+        "month": "Month",
+        "create": "Create",
+        "update": "Update",
+        "term_error": "Field cannot be empty",
+        "interest_rate_error": "Field cannot be empty"
     }
 }

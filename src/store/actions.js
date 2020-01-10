@@ -15,6 +15,7 @@ import MediaActions from './media/actions';
 import FeedbackActions from './backmail/actions';
 import StoreFontActions from './storefont/actions';
 import CountryActions from './country/actions';
+import InterestRateActions from './interestrate/actions';
 
 export {
   NewActions,
@@ -33,5 +34,6 @@ export {
   CountryActions,
   MediaActions,
   StoreFontActions,
-  FeedbackActions
+  FeedbackActions,
+  InterestRateActions
 };

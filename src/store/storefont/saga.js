@@ -1,5 +1,4 @@
 import actions from './actions';
-import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getStoreFont, editStoreFontGeneral, editStoreFontLogo, editStoreFontSocialLink } from 'services/storefont';
 import { Error, Success } from 'helpers/notify';
