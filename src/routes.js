@@ -85,6 +85,13 @@ export const mediaRouter = {
   icon: 'image'
 };
 
+export const networkRouter = {
+  name: 'menu.network',
+  to: '/network',
+  exact: true,
+  icon: 'code-branch'
+};
+
 export default [
   homeRoutes,
   newRoutes,
@@ -96,5 +103,6 @@ export default [
   storefontRoutes,
   mediaRouter,
   userRoutes,
-  settingRoutes
+  settingRoutes,
+  networkRouter
 ];

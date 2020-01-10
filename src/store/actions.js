@@ -14,6 +14,7 @@ import SettingActions from './setting/actions';
 import MediaActions from './media/actions';
 import FeedbackActions from './backmail/actions';
 import StoreFontActions from './storefont/actions';
+import NetworkActions from './network/actions';
 
 export {
   NewActions,
@@ -31,5 +32,6 @@ export {
   SettingActions,
   MediaActions,
   StoreFontActions,
-  FeedbackActions
+  FeedbackActions,
+  NetworkActions
 };

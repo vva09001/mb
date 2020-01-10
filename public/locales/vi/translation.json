@@ -39,6 +39,8 @@
     "select": "Chọn...",
     "feedback":"Phản hồi",
     "slug": "Đường dẫn",
+    "approveds":"Đã duyệt",
+    "pendings":"Chờ duyệt",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
@@ -123,7 +125,8 @@
         "role": "Vai Trò",
         "media": "Thư viện",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "network":"Quản lý mạng lưới"
     },
     "user": {
         "fistname": "Tên",
@@ -181,5 +184,22 @@
         "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
+    },
+    "network":{
+        "approved":"Phê Duyệt",
+        "danhsach":"Danh sách mạng lưới",
+        "networkdetails":"Thông tin chi tiết mạng lưới",
+        "address":"Địa chỉ",
+        "address_name":"Tên địa điểm",
+        "language":"Ngôn ngữ",
+        "latitude":"Vĩ độ",
+        "longitude":"Kinh độ",
+        "network_category":"Loại mạng lưới",
+        "province_city":"Tỉnh/Thành phố",
+        "about":"Giới thiệu",
+        "create":"Tạo mới",
+        "down":"Tải file",
+        "processingunit":"Đơn vị xử lý",
+        "lastupdateddate":"Ngày cuối cập nhập"
     }
 }

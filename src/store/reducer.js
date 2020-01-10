@@ -18,6 +18,8 @@ import SettingReducer from './setting/reducers';
 import MediaReducer from './media/reducers';
 import FeedbackReducer from './backmail/reducers';
 import StoreFontReducer from './storefont/reducer';
+import NetworkReducer from './network/reducers';
+
 
 const reducers = combineReducers({
   NewReducer,
@@ -35,7 +37,8 @@ const reducers = combineReducers({
   SettingReducer,
   StoreFontReducer,
   MediaReducer,
-  FeedbackReducer
+  FeedbackReducer,
+  NetworkReducer
 });
 
 const persistConfig = {

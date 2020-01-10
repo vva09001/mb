@@ -15,6 +15,7 @@ import SettingSaga from './setting/saga';
 import MediaSaga from './media/saga';
 import FeedbackSaga from './backmail/sagas';
 import StoreFontSaga from './storefont/saga';
+import NetworkSaga from './network/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -33,6 +34,7 @@ export default function* rootSaga() {
     SettingSaga(),
     StoreFontSaga(),
     MediaSaga(),
-    FeedbackSaga()
+    FeedbackSaga(),
+    NetworkSaga()
   ]);
 }

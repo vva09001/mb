@@ -43,6 +43,9 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
+import Network from '../container/Network';
+import NetworkCreate from '../container/Network/Create';
+import NetworkDetail from '../container/Network/Detail';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -104,6 +107,11 @@ const DashboardRoutes = () => (
     <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
+
+    {/* Network */}
+    <Route path="/network" exact component={Network} />
+    <Route path="/network/create" exact component={NetworkCreate} />
+    <Route path="/network/detail/:id" exact component={NetworkDetail} />
 
     <Route path="/media" exact component={Media} />
 

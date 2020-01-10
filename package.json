@@ -21,6 +21,7 @@
     "echarts": "^4.4.0",
     "echarts-for-react": "^2.0.15-beta.1",
     "formBuilder": "^3.2.5",
+    "google-maps-api-loader": "^1.1.1",
     "google-maps-react": "^2.0.2",
     "history": "^4.10.1",
     "i": "^0.3.6",
