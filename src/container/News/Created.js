@@ -156,6 +156,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <img
                     src={formState.values.base_image === undefined ? '' : formState.values.base_image}
                     style={{ width: '100px' }}
+                    alt="logo"
                   />
                   <ModalMedia setState={onSetState} />
                 </FormGroup>

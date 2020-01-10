@@ -123,7 +123,8 @@
         "role": "Vai Trò",
         "media": "Thư viện",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "tool_menu": "Thanh công cụ"
     },
     "user": {
         "fistname": "Tên",
@@ -194,5 +195,14 @@
     },
     "roleinit": {
         "getallroleof": "Hiển thị quyền hiện tại của"
+    },
+    "interest_rate": {
+        "interest_rate": "Lãi xuất",
+        "term": "Kì hạn",
+        "month": "Tháng",
+        "create": "Tạo",
+        "update": "Cập nhật",
+        "term_error": "Trường này không được để rỗng",
+        "interest_rate_error": "Trường này không được để rỗng"
     }
 }

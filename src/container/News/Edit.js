@@ -8,7 +8,6 @@ import { NewActions, CategoryActions, FormBuilderActions } from '../../store/act
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import { map } from 'lodash';
-import history from 'helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -26,7 +25,7 @@ const PropsType = {
 };
 
 function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, getNewsId, imageSeletedata }) {
-  let { id } = useParams();
+  const { id } = useParams();
   useEffect(() => {
     getNewsId(id);
     getCategory();
@@ -192,6 +191,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
               <img
                 src={formState.values.base_image === undefined ? '' : formState.values.base_image}
                 style={{ width: '100px' }}
+                alt="icon"
               />
               <ModalMedia setState={onSetState} />
             </FormGroup>

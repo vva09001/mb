@@ -17,7 +17,7 @@ function CreateTag({ editTag, getDetail, detail }) {
     values: {},
     touched: {}
   });
-  let { id } = useParams();
+  const { id } = useParams();
   const { t } = useTranslation();
   useEffect(() => {
     getDetail(id);
@@ -25,7 +25,7 @@ function CreateTag({ editTag, getDetail, detail }) {
       ...formState,
       values: detail
     }));
-  }, [getDetail]);
+  }, [getDetail, id, detail]);
 
   useEffect(() => {
     setFormState(formState => ({
