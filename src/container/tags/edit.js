@@ -1,22 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { TagActions } from '../../store/actions';
+import { useParams } from 'react-router-dom';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const Proptype = {
   detail: Proptypes.object,
-  editTag: Proptypes.func
+  editTag: Proptypes.func,
+  getDetail: Proptypes.func
 };
 
-function CreateTag({ editTag, detail }) {
+function CreateTag({ editTag, getDetail, detail }) {
   const [formState, setFormState] = useState({
-    values: detail,
+    values: {},
     touched: {}
   });
-
+  const { id } = useParams();
   const { t } = useTranslation();
+  useEffect(() => {
+    getDetail(id);
+    setFormState(formState => ({
+      ...formState,
+      values: detail
+    }));
+  }, [getDetail, id, detail]);
+
+  useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+      values: detail
+    }));
+  }, [detail]);
 
   const handleChange = event => {
     event.persist();
@@ -68,7 +84,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  editTag: TagActions.editTagAction
+  editTag: TagActions.editTagAction,
+  getDetail: TagActions.getDetailTagAction
 };
 
 export default connect(

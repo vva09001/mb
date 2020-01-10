@@ -4,9 +4,12 @@ import { MediaActions } from '../../store/actions';
 import { connect } from 'react-redux';
 import FileBrowser from 'react-keyed-file-browser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
+import { map } from 'lodash';
+import { Button, Col, Row } from 'reactstrap';
+import history from 'helpers/history';
 
 const PropsType = {
   data: PropTypes.array,
@@ -17,7 +20,11 @@ const PropsType = {
   getDetailImage: PropTypes.func,
   moveFolder: PropTypes.func,
   moveFile: PropTypes.func,
-  renameFolder: PropTypes.func
+  renameFolder: PropTypes.func,
+  createFolder: PropTypes.func,
+  deleteFolder: PropTypes.func,
+  getPathFolder: PropTypes.func,
+  PathFolder: PropTypes.string
 };
 
 function Media({
@@ -29,8 +36,13 @@ function Media({
   getDetailImage,
   moveFolder,
   moveFile,
-  renameFolder
+  renameFolder,
+  createFolder,
+  deleteFolder,
+  getPathFolder,
+  PathFolder
 }) {
+  const [isFolder, setIsFolder] = useState(true);
   const [formState, setFormState] = useState([]);
   const { t } = useTranslation();
 
@@ -42,21 +54,26 @@ function Media({
     setFormState(data);
   }, [data]);
 
-  const handleCreateFolder = key => {
-    setFormState(formState => {
-      formState = formState.concat([
-        {
-          key: key
-        }
-      ]);
-      return formState;
+  const handleChange = event => {
+    event.persist();
+    let formData = new FormData();
+    map(event.target.files, value => {
+      formData.append('files', value);
     });
+    formData.append('folderName', PathFolder);
+    addFiles(formData);
+  };
+  const handleCreateFolder = key => {
+    let createFolderData = new FormData();
+    createFolderData.append('path', key);
+    createFolder(createFolderData);
   };
   const onCreateFiles = (files, path) => {
     let formData = new FormData();
-    formData.append('file', files[0]);
+    map(files, value => {
+      formData.append('files', value);
+    });
     formData.append('folderName', path);
-    formData.append('size', files[0].size);
     addFiles(formData);
   };
 
@@ -75,7 +92,9 @@ function Media({
     moveFile(detail.id, moveFileData);
   };
   const handleDeleteFolder = key => {
-    console.log(key);
+    let deleteFolderData = new FormData();
+    deleteFolderData.append('path', key);
+    deleteFolder(deleteFolderData);
   };
 
   const handleBrowse = key => {
@@ -96,33 +115,68 @@ function Media({
     renameFolderData.append('folderNew', newKey);
     renameFolder(renameFolderData);
   };
+
+  const handleFolder = key => {
+    setIsFolder(false);
+    getPathFolder(key);
+  };
+  console.log(PathFolder);
+  window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>
-      <div style={{ backgroundColor: 'white', padding: 20, height: '600px' }}>
-        <FileBrowser
-          files={formState}
-          icons={{
-            File: <FontAwesomeIcon icon={faEdit} />,
-            Image: <FontAwesomeIcon icon={faImages} />,
-            PDF: <i className="file-pdf" aria-hidden="true" />,
-            Rename: <FontAwesomeIcon icon={faEdit} />,
-            Folder: <FontAwesomeIcon icon={faFolderMinus} />,
-            FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
-            Delete: <FontAwesomeIcon icon={faTimes} />,
-            Loading: <FontAwesomeIcon icon={faEdit} />
-          }}
-          onCreateFolder={handleCreateFolder}
-          onCreateFiles={onCreateFiles}
-          onMoveFolder={handleMoveFolder}
-          onMoveFile={handleMoveFile}
-          onRenameFolder={handleRenameFolder}
-          // onDeleteFolder={handleDeleteFolder}
-          onSelectFile={handleBrowse}
-          onDeleteFile={handleDeleteFile}
-          onRenameFile={handleRenameFile}
-          detailRenderer={MediaDetail}
-        />
+      <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
+      <div style={{ backgroundColor: 'white', padding: 20, height: 'auto' }}>
+        <Row>
+          <div style={{ paddingBottom: 10, paddingRight: 10 }}>
+            <Button
+              color={'primary'}
+              onClick={() => {
+                document.getElementById('file').click();
+              }}
+              disabled={isFolder}
+            >
+              {t('UploadFile')}
+            </Button>
+          </div>
+
+          <div style={{ paddingBottom: 10 }}>
+            <Button
+              color={'danger'}
+              onClick={() => {
+                history.push('/media/deleteFiles');
+              }}
+            >
+              {t('DeleteFiles')}
+            </Button>
+          </div>
+        </Row>
+        <div>
+          <FileBrowser
+            files={formState}
+            icons={{
+              File: <FontAwesomeIcon icon={faEdit} />,
+              Image: <FontAwesomeIcon icon={faImages} />,
+              PDF: <FontAwesomeIcon icon={faFilePdf} />,
+              Rename: <FontAwesomeIcon icon={faEdit} />,
+              Folder: <FontAwesomeIcon icon={faFolderMinus} />,
+              FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
+              Delete: <FontAwesomeIcon icon={faTimes} />,
+              Loading: <FontAwesomeIcon icon={faEdit} />
+            }}
+            onCreateFolder={handleCreateFolder}
+            onCreateFiles={onCreateFiles}
+            onMoveFolder={handleMoveFolder}
+            onMoveFile={handleMoveFile}
+            onRenameFolder={handleRenameFolder}
+            onDeleteFolder={handleDeleteFolder}
+            onSelectFile={handleBrowse}
+            onSelectFolder={handleFolder}
+            onDeleteFile={handleDeleteFile}
+            onRenameFile={handleRenameFile}
+            detailRenderer={MediaDetail}
+          />
+        </div>
       </div>
     </React.Fragment>
   );
@@ -133,7 +187,8 @@ Media.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     data: state.MediaReducer.data,
-    detail: state.MediaReducer.detail
+    detail: state.MediaReducer.detail,
+    PathFolder: state.MediaReducer.PathFolder
   };
 };
 
@@ -144,7 +199,10 @@ const mapDispatchToProps = {
   deleteImages: MediaActions.DeleteImages,
   moveFolder: MediaActions.MoveFolder,
   moveFile: MediaActions.MoveFile,
-  renameFolder: MediaActions.RenameFolder
+  renameFolder: MediaActions.RenameFolder,
+  createFolder: MediaActions.CreatFolder,
+  deleteFolder: MediaActions.DeleteFolder,
+  getPathFolder: MediaActions.GetPathFolder
 };
 
 export default connect(

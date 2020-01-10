@@ -3,7 +3,8 @@ import { Row, Col, Button } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CategoryForm from 'components/New/Category/CategoryForm';
 import CategoryFormChildren from 'components/New/Category/CategoryFormChildren';
-import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
+import { toggleExpandedForAll } from 'react-sortable-tree';
+import SortableTree from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +20,8 @@ const Proptype = {
   editCategory: Proptypes.func,
   deleteCategory: Proptypes.func,
   expanstion: Proptypes.func,
-  updatePosition: Proptypes.func
+  updatePosition: Proptypes.func,
+  imageSeletedata: Proptypes.object
 };
 
 function Category({
@@ -29,7 +31,8 @@ function Category({
   editCategory,
   deleteCategory,
   expanstion,
-  updatePosition
+  updatePosition,
+  imageSeletedata
 }) {
   const [activeTab, setActiveTab] = useState('1');
   const [deleteActive, setDeleteActive] = useState(false);
@@ -166,6 +169,15 @@ function Category({
     setIsOpen(!isOpen);
   };
 
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        base_image: imageSeletedata.url
+      }
+    }));
+  };
   return (
     <React.Fragment>
       <h4> {t('category')}</h4>
@@ -243,6 +255,7 @@ function Category({
                           setIdCategoty(id);
                           setIsOpen(!isOpen);
                         }}
+                        onSetState={onSetState}
                       />
                     )}
                     {formChildren && (
@@ -255,6 +268,7 @@ function Category({
                           setIdCategoty(id);
                           setIsOpen(!isOpen);
                         }}
+                        onSetState={onSetState}
                       />
                     )}
                   </Col>
@@ -273,7 +287,8 @@ Category.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    listCategory: state.CategoryReducer.listCategory
+    listCategory: state.CategoryReducer.listCategory,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 

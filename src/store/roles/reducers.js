@@ -4,7 +4,8 @@ import { filter, map } from 'lodash';
 const initialState = {
   data: [],
   detail: {},
-  listPrivilege: []
+  listPrivilege: [],
+  listPrivilegeByGroup: []
 };
 
 const Roles = (state = initialState, action) => {
@@ -45,6 +46,11 @@ const Roles = (state = initialState, action) => {
       return {
         ...state,
         listPrivilege: action.data
+      };
+    case Actions.GET_PRIVILEGE_ROLE_BY_GROUP_RESPONSE:
+      return {
+        ...state,
+        listPrivilegeByGroup: action.data
       };
     default:
       return state;

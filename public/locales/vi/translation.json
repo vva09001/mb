@@ -126,7 +126,8 @@
         "media": "Thư viện",
         "storeFont": "Store Font",
         "slider": "Slider",
-        "network":"Quản lý mạng lưới"
+        "network":"Quản lý mạng lưới",
+        "tool_menu": "Thanh công cụ"
     },
     "user": {
         "fistname": "Tên",
@@ -151,7 +152,17 @@
         "logo": "Logo",
         "sociallinks": "Liên kết mạng xã hội",
         "footeraddress": "Footer Address",
-        "footerbrief": "Footer Brief"
+        "footerbrief": "Footer Brief",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "slider": {
         "createslider": "Tạo Slider",
@@ -200,6 +211,18 @@
         "create":"Tạo mới",
         "down":"Tải file",
         "processingunit":"Đơn vị xử lý",
-        "lastupdateddate":"Ngày cuối cập nhập"
+        "lastupdateddate":"Ngày cuối cập nhập",
+    "roleinit": {
+        "getallroleof": "Hiển thị quyền hiện tại của"
+    }
+    },
+    "interest_rate": {
+        "interest_rate": "Lãi xuất",
+        "term": "Kì hạn",
+        "month": "Tháng",
+        "create": "Tạo",
+        "update": "Cập nhật",
+        "term_error": "Trường này không được để rỗng",
+        "interest_rate_error": "Trường này không được để rỗng"
     }
 }

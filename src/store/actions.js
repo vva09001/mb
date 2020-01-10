@@ -15,6 +15,8 @@ import MediaActions from './media/actions';
 import FeedbackActions from './backmail/actions';
 import StoreFontActions from './storefont/actions';
 import NetworkActions from './network/actions';
+import CountryActions from './country/actions';
+import InterestRateActions from './interestrate/actions';
 
 export {
   NewActions,
@@ -30,8 +32,10 @@ export {
   RoleActions,
   SliderActions,
   SettingActions,
+  CountryActions,
   MediaActions,
   StoreFontActions,
   FeedbackActions,
-  NetworkActions
+  NetworkActions,
+  InterestRateActions
 };

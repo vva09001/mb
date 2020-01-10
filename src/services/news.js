@@ -1,12 +1,4 @@
 import request from 'helpers/request';
-// import axios from 'axios';
-// const request = axios.create({
-//   baseURL: 'https://bank1712.herokuapp.com/vi/api/',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     Accept: 'application/json'
-//   }
-// });
 const getNews = () => {
   return request({
     url: '/news',
@@ -87,4 +79,17 @@ const deleteNews = id => {
     });
 };
 
-export { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId };
+const getNewByCategoryID = id => {
+  return request({
+    url: `/news/category/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCategoryID };

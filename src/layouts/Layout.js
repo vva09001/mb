@@ -7,6 +7,7 @@ import { PrivateRoute } from 'helpers/PrivateRoute';
 import ErrorLayout from './ErrorLayout';
 import history from 'helpers/history';
 import loadable from '@loadable/component';
+import SelectMedia from '../container/media/selectMedia';
 const AuthBasicLayout = loadable(() => import('./AuthBasicLayout'));
 const Landing = loadable(() => import('../components/landing/Landing'));
 
@@ -22,6 +23,7 @@ const Layout = () => {
         <Route path="/landing" exact component={Landing} />
         <Route path="/authentication/" component={AuthBasicLayout} />
         <Route path="/errors" component={ErrorLayout} />
+        <Route path="/selectMedia/" component={SelectMedia} />
         <PrivateRoute component={DashboardLayout} />
       </Switch>
       <ToastContainer transition={Fade} closeButton={<CloseButton />} position={toast.POSITION.BOTTOM_LEFT} />
