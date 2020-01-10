@@ -5,7 +5,8 @@ const initialState = {
   data: [],
   detail: {},
   ImageSelete: '',
-  ListFiles: []
+  ListFiles: [],
+  PathFolder: ''
 };
 
 const Images = (state = initialState, action) => {
@@ -14,7 +15,7 @@ const Images = (state = initialState, action) => {
       return {
         ...state,
         data: map(action.data, values => ({
-          key: values.type === 'file' ? `${values.path}${values.name}`: `${values.path}`,
+          key: values.type === 'file' ? `${values.path}${values.name}` : `${values.path}`,
           modified: values.createdAt,
           id: values.id,
           path: values.path,
@@ -51,11 +52,16 @@ const Images = (state = initialState, action) => {
         ...state,
         detail: action.data
       };
-    case Actions.SELETE_IMAGE:     
+    case Actions.SELETE_IMAGE:
       return {
         ...state,
         ImageSelete: action.data
-      }
+      };
+    case Actions.GET_PATH_FOLDER:
+      return {
+        ...state,
+        PathFolder: action.data.path
+      };
     default:
       return state;
   }
