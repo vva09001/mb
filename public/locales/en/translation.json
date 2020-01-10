@@ -83,7 +83,7 @@
         "default": "Default"
     },
     "formBuilder": {
-        
+
         "title": "Create Form",
         "formdata": "Form data",
         "embededform": "Embeded form",
@@ -155,5 +155,12 @@
         "subject": "Subject",
         "emailCc": "To",
         "content": "Content"
+    },
+    "interest_rate": {
+        "interest_rate": "Interest rate",
+        "term": "Term",
+        "month": "Month",
+        "create": "Create",
+        "update": "Update"
     }
 }

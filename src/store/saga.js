@@ -16,6 +16,7 @@ import MediaSaga from './media/saga';
 import FeedbackSaga from './backmail/sagas';
 import StoreFontSaga from './storefont/saga';
 import CountrySaga from './country/saga';
+import InterestSaga from './interestrate/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -35,6 +36,7 @@ export default function* rootSaga() {
     CountrySaga(),
     StoreFontSaga(),
     MediaSaga(),
-    FeedbackSaga()
+    FeedbackSaga(),
+    InterestSaga()
   ]);
 }

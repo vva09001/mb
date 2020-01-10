@@ -19,6 +19,7 @@ import MediaReducer from './media/reducers';
 import FeedbackReducer from './backmail/reducers';
 import StoreFontReducer from './storefont/reducer';
 import CountryReducer from './country/reducers';
+import InterestRateReducer from './interestrate/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -37,7 +38,8 @@ const reducers = combineReducers({
   CountryReducer,
   StoreFontReducer,
   MediaReducer,
-  FeedbackReducer
+  FeedbackReducer,
+  InterestRateReducer
 });
 
 const persistConfig = {

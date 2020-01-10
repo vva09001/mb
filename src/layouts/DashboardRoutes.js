@@ -43,6 +43,7 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
+import ToolMenu from 'container/InterestRate/index';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -106,6 +107,9 @@ const DashboardRoutes = () => (
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
     <Route path="/media" exact component={Media} />
+
+    {/*toolMenu*/}
+    <Route path="/interest-rate" exact component={ToolMenu}/>
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

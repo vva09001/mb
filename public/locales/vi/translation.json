@@ -123,7 +123,8 @@
         "role": "Vai Trò",
         "media": "Thư viện",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "tool_menu": "Thanh công cụ"
     },
     "user": {
         "fistname": "Tên",
@@ -181,5 +182,12 @@
         "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
+    },
+    "interest_rate": {
+        "interest_rate": "Lãi xuất",
+        "term": "Kì hạn",
+        "month": "Tháng",
+        "create": "Tạo",
+        "update": "Cập nhật"
     }
 }
