@@ -1,8 +1,8 @@
 import request from 'helpers/request';
 
-const getfeedbackMailsId = id => {
+const getInterestRateService = () => {
   return request({
-    url: `/feedback/${id}`,
+    url: '/interest_rate',
     method: 'GET'
   })
     .then(res => {
@@ -13,9 +13,9 @@ const getfeedbackMailsId = id => {
     });
 };
 
-const addfeedbackMail = data => {
+const createInterestRateService = (data) => {
   return request({
-    url: '/feedback',
+    url: '/interest_rate',
     method: 'POST',
     data: data
   })
@@ -27,9 +27,10 @@ const addfeedbackMail = data => {
     });
 };
 
-const editfeedbackMail = data => {
+const updateInterestRateService = (data) => {
+  console.log(data);
   return request({
-    url: `/feedback/${data.id}`,
+    url: `/interest_rate/${data.id}`,
     method: 'PUT',
     data: data
   })
@@ -41,4 +42,4 @@ const editfeedbackMail = data => {
     });
 };
 
-export {getfeedbackMailsId, addfeedbackMail, editfeedbackMail};
+export { getInterestRateService ,createInterestRateService ,updateInterestRateService};

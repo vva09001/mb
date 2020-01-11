@@ -1,0 +1,57 @@
+const Actions = {
+  GET_NETWORK_REQUEST: 'GET_NETWORK_REQUEST',
+  GET_NETWORK_RESPONSE: 'GET_NETWORK_RESPONSE',
+
+  getNetwork: () => ({
+    type: Actions.GET_NETWORK_REQUEST
+  }),
+
+  GET_BY_NETWORK_ID_REQUEST: 'GET_BY_NETWORK_ID_REQUEST',
+  GET_BY_NETWORK_ID_RESPONSE: 'GET_BY_NETWORK_ID_RESPONSE',
+
+  getByNetworkId: id => ({
+    type: Actions.GET_BY_NETWORK_ID_REQUEST,
+    id
+  }),
+
+  CREATE_NETWORK_REQUEST: 'CREATE_NETWORK_REQUEST',
+  CREATE_NETWORK_RESPONSE: 'CREATE_NETWORK_RESPONSE',
+
+  createNetwork: data => ({
+    type: Actions.CREATE_NETWORK_REQUEST,
+    data
+  }),
+
+  EDIT_NETWORK_REQUEST: 'EDIT_NETWORK_REQUEST',
+  EDIT_NETWORK_RESPONSE: 'EDIT_NETWORK_RESPONSE',
+
+  editNetwork:  data => ({
+    type: Actions.EDIT_NETWORK_REQUEST,
+    data
+  }),
+
+  DELETE_NETWORK_REQUEST: 'DELETE_NETWORK_REQUEST',
+  DELETE_NETWORK_RESPONSE: 'DELETE_NETWORK_RESPONSE',
+
+  deleteNetwork: id => ({
+    type: Actions.DELETE_NETWORK_REQUEST,
+    id
+  }),
+
+  GET_DETAIL_NETWORK: 'GET_DETAIL_NETWORK',
+
+  getDetailNetwork: data => ({
+    type: Actions.GET_DETAIL_NETWORK,
+    data
+  }),
+
+  APRR_NETWORK_REQUEST: 'APRR_NETWORK_REQUEST',
+  APRR_NETWORK_RESPONSE: 'APRR_NETWORK_RESPONSE',
+
+  AprrNetwork: data => ({
+    type: Actions.APRR_NETWORK_REQUEST,
+    data
+  })
+};
+
+export default Actions;

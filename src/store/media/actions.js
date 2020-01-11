@@ -85,6 +85,13 @@ const Actions = {
   DeleteListImage: data => ({
     type: Actions.DELETE_LIST_IMAGE,
     data
+  }),
+
+  GET_PATH_FOLDER: 'GET_PATH_FOLDER',
+
+  GetPathFolder: data => ({
+    type: Actions.GET_PATH_FOLDER,
+    data
   })
 };
 
