@@ -9,7 +9,6 @@ import history from 'helpers/history';
 import { useParams } from 'react-router-dom';
 import { map, slice } from 'lodash';
 import ReactPaginate from 'react-paginate';
-import { color } from 'echarts/src/export';
 
 const Proptype = {
   data: PropTypes.array,
@@ -25,8 +24,6 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
   }, [getInterestRate]);
 
   const { t } = useTranslation();
-  let { id } = useParams();
-
 
   const [formState, setFormState] = useState({
     data: [],
@@ -34,10 +31,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
     termError: null,
     interestRateError: null
   });
-  const [error, setError] = useState({
-    termError: null,
-    interestRateError: null
-  });
+
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
