@@ -124,7 +124,8 @@
         "role": "Role",
         "media": "Media",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "tool_menu": "Tool menu"
     },
     "storefont": {
         "sociallinks": "Social links"
@@ -161,6 +162,8 @@
         "term": "Term",
         "month": "Month",
         "create": "Create",
-        "update": "Update"
+        "update": "Update",
+        "term_error": "Field cannot be empty",
+        "interest_rate_error": "Field cannot be empty"
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Button, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
+import PropTypes, { bool } from 'prop-types';
 import { connect } from 'react-redux';
 import { InterestRateActions } from '../../store/actions';
 import { Error, Success } from 'helpers/notify';
@@ -9,6 +9,7 @@ import history from 'helpers/history';
 import { useParams } from 'react-router-dom';
 import { map, slice } from 'lodash';
 import ReactPaginate from 'react-paginate';
+import { color } from 'echarts/src/export';
 
 const Proptype = {
   data: PropTypes.array,
@@ -29,7 +30,13 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
 
   const [formState, setFormState] = useState({
     data: [],
-    dataCreate: {}
+    dataCreate: {},
+    termError: null,
+    interestRateError: null
+  });
+  const [error, setError] = useState({
+    termError: null,
+    interestRateError: null
   });
   useEffect(() => {
     setFormState(formState => ({
@@ -64,14 +71,37 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
     Error('Tạo thất bại');
   };
   const onSave = () => {
-    if (!formState.dataCreate.id) {
-      createInterestRate(formState.dataCreate, onSuccess, onFail);
-    } else {
-      updateInterestRate(formState.dataCreate, onSuccess, onFail)
-    }
-    history.push('/interest-rate');
-  };
+    setFormState(formState => ({
+      ...formState,
+      termError: null,
+      interestRateError: null
+    }));
 
+    let checkError = null;
+    if (formState.dataCreate.term === undefined || formState.dataCreate.term === '') {
+      checkError = true;
+      setFormState(formState => ({
+        ...formState,
+        termError: t('interest_rate.term_error')
+      }));
+    }
+
+    if (formState.dataCreate.interest_rate === undefined || formState.dataCreate.interest_rate === '') {
+      checkError = true;
+      setFormState(formState => ({
+        ...formState,
+        interestRateError: t('interest_rate.interest_rate_error')
+      }));
+    }
+    if (!checkError) {
+      if (!formState.dataCreate.id) {
+        createInterestRate(formState.dataCreate, onSuccess, onFail);
+      } else {
+        updateInterestRate(formState.dataCreate, onSuccess, onFail);
+      }
+      history.push('/interest-rate');
+    }
+  };
   const onClickUpdate = values => {
     setModal(!modal);
     setFormState(formState => ({
@@ -86,9 +116,17 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       dataCreate: []
     }));
   };
+
   const [modal, setModal] = useState(false);
 
-  const toggle = () => setModal(!modal);
+  const toggle = () => {
+    setFormState(formState => ({
+      ...formState,
+      termError: null,
+      interestRateError: null
+    }));
+    setModal(!modal)
+  };
 
   const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }}
                                    onClick={toggle}>&times;</button>;
@@ -160,18 +198,23 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
         </Row>
       </React.Fragment>
       <Modal isOpen={modal} toggle={toggle} external={externalCloseBtn}>
-        <ModalHeader>{!formState.dataCreate.id ? t('interest_rate.create') :t('interest_rate.update') }</ModalHeader>
+        <ModalHeader>{!formState.dataCreate.id ? t('interest_rate.create') : t('interest_rate.update')}</ModalHeader>
         <ModalBody>
           <FormGroup>
             <Label>{t('interest_rate.term')}</Label>
+            <p style={{ color: 'red' }}>{!formState.termError ? null : formState.termError}</p>
             <Input name="term" type="number" value={!formState.dataCreate.term ? '' : formState.dataCreate.term}
-                   onChange={handleChangeCreate} required/>
+                   onChange={handleChangeCreate} required="required"/>
+
           </FormGroup>
           <FormGroup>
             <Label>{t('interest_rate.interest_rate')}</Label>
+            <p style={{ color: 'red' }}>{!formState.interestRateError ? null : formState.interestRateError}</p>
             <Input name="interest_rate" type="number"
+                   min="0" max="10"
                    value={!formState.dataCreate.interest_rate ? '' : formState.dataCreate.interest_rate}
-                   onChange={handleChangeCreate} required/>
+                   onChange={handleChangeCreate} required="required"/>
+
           </FormGroup>
           <FormGroup>
             <Label>{t('description')}</Label>

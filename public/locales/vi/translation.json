@@ -188,6 +188,8 @@
         "term": "Kì hạn",
         "month": "Tháng",
         "create": "Tạo",
-        "update": "Cập nhật"
+        "update": "Cập nhật",
+        "term_error": "Trường này không được để rỗng",
+        "interest_rate_error": "Trường này không được để rỗng"
     }
 }
