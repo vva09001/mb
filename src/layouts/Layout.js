@@ -7,7 +7,7 @@ import { PrivateRoute } from 'helpers/PrivateRoute';
 import ErrorLayout from './ErrorLayout';
 import history from 'helpers/history';
 import loadable from '@loadable/component';
-import SelectMedia from '../container/media/selectMedia'
+import SelectMedia from '../container/media/selectMedia';
 const AuthBasicLayout = loadable(() => import('./AuthBasicLayout'));
 const Landing = loadable(() => import('../components/landing/Landing'));
 

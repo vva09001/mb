@@ -229,6 +229,7 @@ function Storefont({
                     <img
                       src={formState.values.favicon === undefined ? '' : formState.values.favicon}
                       style={{ width: '100px' }}
+                      alt="Favicon"
                     />
                     <ModalMedia setState={onSetStateFavicon} />
                   </Row>
@@ -239,6 +240,7 @@ function Storefont({
                     <img
                       src={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
                       style={{ width: '100px' }}
+                      alt="Header Logo"
                     />
                     <ModalMedia setState={onSetStateHearderLogo} />
                   </Row>
@@ -249,6 +251,7 @@ function Storefont({
                     <img
                       src={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
                       style={{ width: '100px' }}
+                      alt="Footer Logo"
                     />
                     <ModalMedia setState={onSetStateFooterLogo} />
                   </Row>
@@ -259,6 +262,7 @@ function Storefont({
                     <img
                       src={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
                       style={{ width: '100px' }}
+                      alt="Footer Background"
                     />
                     <ModalMedia setState={onSetStateFooterBackground} />
                   </Row>
