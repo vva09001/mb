@@ -181,5 +181,15 @@
         "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
+    },
+    "block": {
+        "image" : {
+            "title": "Tiêu đề",
+            "description": "Mô tả",
+            "learn_more": "Chú thích",
+            "text": "Văn bản",
+            "url": "URl",
+            "video_url": "Viedo URL"
+        }
     }
 }
