@@ -7,7 +7,7 @@ import { SliderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Card, ListGroup, ListGroupItem } from 'reactstrap';
-import { map } from 'lodash';
+// import { map } from 'lodash';
 import { Error, Success } from 'helpers/notify';
 import history from 'helpers/history';
 
@@ -15,19 +15,30 @@ const PropsType = {
   SliderCreate: PropTypes.func
 };
 
-function SliderCreate({ SliderCreate}) {
+function SliderCreate({ SliderCreate }) {
   const [formState, setFormState] = useState({
     values: {
       sliderSlides: [
-      {
-        sliderSlideTranslations:[]
-      }]
+        {
+          sliderSlideTranslations: []
+        }
+      ]
     },
 
     touched: {}
   });
 
-  const [fields, setFields] = useState([{}]);
+  const [fields, setFields] = useState([
+    {
+      // values: {
+      //   sliderSlides: [
+      //     {
+      //       sliderSlideTranslations: {}
+      //     }
+      //   ]
+      // }
+    }
+  ]);
   const [activeTab, setActiveTab] = useState('1');
   const [activeGroup, setActiveGroup] = useState('1');
 
@@ -49,48 +60,6 @@ function SliderCreate({ SliderCreate}) {
   const handleChanges = event => {
     event.persist();
 
-   if(event.target.id === 'caption'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-         ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            sliderSlideTranslations : {
-              ...formState.values.sliderSlides[0].sliderSlideTranslations,
-              [event.target.name] : event.target.value
-            }
-          }]
-        }
-      }))
-    }
-
-    if(event.target.name === 'callToActionUrl'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-         ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            [event.target.name] : event.target.value
-          }]
-        }
-      }))
-    }
-
-    if(event.target.name === 'position'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-         ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            [event.target.name] : event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-          }]
-        }
-      }))
-    }
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -103,51 +72,80 @@ function SliderCreate({ SliderCreate}) {
         [event.target.name]: true
       }
     }));
-    if(event.target.name=== 'name'){
+    if (event.target.name === 'name') {
       setFormState(formState => ({
         ...formState,
         values: {
           ...formState.values,
           sliderTranslations: {
-            [event.target.name] : event.target.value
+            [event.target.name]: event.target.value
           }
-
         }
-      }))
+      }));
     }
-
-  }
+  };
 
   function handleChange(i, event) {
-    let newFormAddMore = map(fields, (values, id) => {
-      if (i !== id) {
-        return values;
-      } else {
-        return {
-          ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+    event.persist();
+    console.log(i);
+
+    const sliderSlides = [...fields];
+    console.log(sliderSlides);
+    if (event.target.name === 'callToActionUrl') {
+      sliderSlides[i] = {
+        ...sliderSlides[i],
+        [event.target.name]: event.target.value
+      };
+    }
+    if (event.target.name === 'position') {
+      sliderSlides[i] = {
+        ...sliderSlides[i],
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      };
+    }
+    if (event.target.id === 'caption') {
+      if (sliderSlides[i]) {
+        sliderSlides[i].sliderSlideTranslations = {
+          ...sliderSlides[i].sliderSlideTranslations,
+          [event.target.name]: event.target.value
         };
       }
-    });
-    setFields(newFormAddMore);
+    }
+    console.log(sliderSlides);
+    console.log(fields);
+    setFields(sliderSlides);
   }
+  console.log(formState.values);
 
-  function handleAdd() {
-    const values = [...fields];
-    values.push({});
-    setFields(values);
-  }
+  const handleAdd = () => {
+    setFields([
+      ...fields,
+      {
+        sliderSlides: [
+          {
+            sliderSlideTranslations: {}
+          }
+        ]
+      }
+    ]);
+    // setFields(formState.values);
+  };
 
   function handleRemove(i) {
     const values = [...fields];
     values.splice(i, 1);
     setFields(values);
   }
-  
+
   const sliderCreates = event => {
     event.preventDefault();
-    SliderCreate(formState.values, onSuccess, onFail);
+    const body = {
+      ...formState.values,
+      sliderSlides: fields
+    };
+    console.log(body);
+    SliderCreate(body, onSuccess, onFail);
   };
 
   /*{add slider}*/
@@ -257,8 +255,8 @@ function SliderCreate({ SliderCreate}) {
                                           <Input
                                             type="text"
                                             name="caption1"
-                                            // onChange={e => handleChange(idx, e)}
-                                            onChange={handleChanges}
+                                            onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -269,8 +267,8 @@ function SliderCreate({ SliderCreate}) {
                                           <Input
                                             type="text"
                                             name="caption2"
-                                            // onChange={e => handleChange(idx, e)}
-                                            onChange={handleChanges}
+                                            onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -278,11 +276,11 @@ function SliderCreate({ SliderCreate}) {
                                       <Col md={4}>
                                         <FormGroup>
                                           <Label>{t('slider.caption3')}</Label>
-                                          <Input 
-                                            type="text" 
-                                            name="caption3" 
-                                            // onChange={e => handleChange(idx, e)}
-                                            onChange={handleChanges}
+                                          <Input
+                                            type="text"
+                                            name="caption3"
+                                            onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -295,8 +293,8 @@ function SliderCreate({ SliderCreate}) {
                                           <Input
                                             type="text"
                                             name="callToActionText"
-                                            onChange={handleChanges}
-                                            // onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
+                                            onChange={e => handleChange(idx, e)}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -307,18 +305,18 @@ function SliderCreate({ SliderCreate}) {
                                           <Input
                                             type="text"
                                             name="callToActionUrl"
-                                            // onChange={e => handleChange(idx, e)}
-                                            onChange={handleChanges}
+                                            onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
                                           />
                                         </FormGroup>
                                       </Col>
                                       <Col md={4}>
                                         <FormGroup style={{ marginTop: '40px' }}>
-                                          <Input 
-                                            type="checkbox" 
-                                            name="position" 
-                                            // onChange={e => handleChange(idx, e)} 
-                                            onChange={handleChanges}
+                                          <Input
+                                            type="checkbox"
+                                            name="position"
+                                            onChange={e => handleChange(idx, e)}
+                                            // onChange={handleChanges}
                                           />
                                           {t('slider.targetblank')}
                                         </FormGroup>
@@ -403,12 +401,7 @@ function SliderCreate({ SliderCreate}) {
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.name')}
                     </Label>
-                    <Input
-                      type="text"
-                      name="name"
-                      className="col-md-9"
-                      onChange={handleChanges}
-                    />
+                    <Input type="text" name="name" className="col-md-9" onChange={handleChanges} />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.autoplay')}</Label>
@@ -459,7 +452,7 @@ function SliderCreate({ SliderCreate}) {
 SliderCreate.propTypes = PropsType;
 
 const mamapDispatchToProps = {
-  SliderCreate: SliderActions.createSliderAction,
+  SliderCreate: SliderActions.createSliderAction
 };
 
 export default connect(

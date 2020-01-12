@@ -17,26 +17,34 @@ const PropsType = {
   getSliderId: PropTypes.func
 };
 
-function SliderCreate({ sliderEdit, detail, getSliderId }) {
+function SliderEdit({ sliderEdit, detail, getSliderId }) {
   let { id } = useParams();
 
   useEffect(() => {
     getSliderId(id);
   }, [getSliderId, id]);
 
-   useEffect(() => {
+  useEffect(() => {
     setFormState(formState => ({
       ...formState,
-     values: detail
-     }));
+      values: detail
+    }));
   }, [detail]);
+
+  // useEffect(() => {
+  //   setFields(fields => ({
+  //     ...fields,
+  //     values: detail
+  //   }));
+  // }, [detail]);
 
   const [formState, setFormState] = useState({
     values: {
       sliderSlides: [
-      {
-        sliderSlideTranslations:[]
-      }]
+        {
+          sliderSlideTranslations: []
+        }
+      ]
     },
 
     touched: {}
@@ -64,48 +72,6 @@ function SliderCreate({ sliderEdit, detail, getSliderId }) {
   const handleChanges = event => {
     event.persist();
 
-   if(event.target.id === 'caption'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-           ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            sliderSlideTranslations : {
-              ...formState.values.sliderSlides[0].sliderSlideTranslations,
-              [event.target.name] : event.target.value
-            }
-          }]
-        }
-      }))
-    }
-
-    if(event.target.name === 'callToActionUrl'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-         ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            [event.target.name] : event.target.value
-          }]
-        }
-      }))
-    }
-
-    if(event.target.name === 'position'){
-      setFormState(formState => ({
-        ...formState,
-        values: {
-         ...formState.values,
-          sliderSlides: [{
-            ...formState.values.sliderSlides[0],
-            [event.target.name] : event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-          }]
-        }
-      }))
-    }
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -118,19 +84,17 @@ function SliderCreate({ sliderEdit, detail, getSliderId }) {
         [event.target.name]: true
       }
     }));
-    if(event.target.name=== 'name'){
+    if (event.target.name === 'name') {
       setFormState(formState => ({
         ...formState,
         values: {
           ...formState.values,
           sliderTranslations: {
-            [event.target.name] : event.target.value
+            [event.target.name]: event.target.value
           }
-
         }
-      }))
+      }));
     }
-
   };
 
   // function handleChange(i, event) {
@@ -139,10 +103,54 @@ function SliderCreate({ sliderEdit, detail, getSliderId }) {
   //   setFields(values);
   // }
 
+  var sliderSlides = [];
+
+  function handleChange(i, event) {
+    event.persist();
+
+    sliderSlides = [...fields];
+    if (event.target.name === 'callToActionUrl') {
+      sliderSlides[i] = {
+        ...sliderSlides[i],
+        id: formState.values.sliderSlides[i].id,
+        [event.target.name]: event.target.value
+      };
+    }
+    if (event.target.name === 'position') {
+      sliderSlides[i] = {
+        ...sliderSlides[i],
+        id: formState.values.sliderSlides[i].id,
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      };
+    }
+    if (event.target.id === 'caption') {
+      if (sliderSlides[i]) {
+        sliderSlides[i].sliderSlideTranslations = {
+          ...sliderSlides[i].sliderSlideTranslations,
+          id: formState.values.sliderSlides[i].id,
+          [event.target.name]: event.target.value
+        };
+      }
+    }
+    console.log(sliderSlides);
+    setFields(sliderSlides);
+  }
+
   function handleAdd() {
-    const values = [...fields];
-    values.push({ value: null });
-    setFields(values);
+    // const values = [...fields];
+    // values.push({ value: null });
+    // setFields(values);
+    setFields([
+      ...fields,
+      {
+        sliderSlides: [
+          {
+            sliderSlideTranslations: {}
+          }
+        ]
+      }
+    ]);
   }
 
   function handleRemove(i) {
@@ -150,9 +158,18 @@ function SliderCreate({ sliderEdit, detail, getSliderId }) {
     values.splice(i, 1);
     setFields(values);
   }
-console.log(formState.values.sliderSlides);
+
   const sliderEdits = event => {
     event.preventDefault();
+
+    formState.values.sliderSlides = fields;
+    // const body = {
+    //   ...formState.values,
+    //   sliderSlides: fields
+    // };
+    // console.log(body);
+    console.log('formState' + formState.values);
+    console.log(fields);
     sliderEdit(formState.values, onSuccess, onFail);
     console.log(sliderEdit(formState.values, onSuccess, onFail));
   };
@@ -264,9 +281,13 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="text"
                                             name="caption1"
-                                            // onChange={e => handleChange(idx, e)}
-                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption1 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption1}
-                                            onChange={handleChanges}
+                                            onChange={e => handleChange(idx, e)}
+                                            value={
+                                              formState.values.sliderSlides[idx].sliderSlideTranslations.caption1 ===
+                                              undefined
+                                                ? ''
+                                                : formState.values.sliderSlides[idx].sliderSlideTranslations.caption1
+                                            }
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -277,8 +298,13 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="text"
                                             name="caption2"
-                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption2 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption2}
-                                            onChange={handleChanges}
+                                            value={
+                                              formState.values.sliderSlides[idx].sliderSlideTranslations.caption2 ===
+                                              undefined
+                                                ? ''
+                                                : formState.values.sliderSlides[idx].sliderSlideTranslations.caption2
+                                            }
+                                            onChange={e => handleChange(idx, e)}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -289,8 +315,13 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="text"
                                             name="caption3"
-                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.caption3 === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.caption3}
-                                            onChange={handleChanges}
+                                            value={
+                                              formState.values.sliderSlides[idx].sliderSlideTranslations.caption3 ===
+                                              undefined
+                                                ? ''
+                                                : formState.values.sliderSlides[idx].sliderSlideTranslations.caption3
+                                            }
+                                            onChange={e => handleChange(idx, e)}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -303,8 +334,14 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="text"
                                             name="callToActionText"
-                                            value={formState.values.sliderSlides[0].sliderSlideTranslations.callToActionText === undefined ? '' : formState.values.sliderSlides[0].sliderSlideTranslations.callToActionText}
-                                            onChange={handleChanges}
+                                            value={
+                                              formState.values.sliderSlides[idx].sliderSlideTranslations
+                                                .callToActionText === undefined
+                                                ? ''
+                                                : formState.values.sliderSlides[idx].sliderSlideTranslations
+                                                    .callToActionText
+                                            }
+                                            onChange={e => handleChange(idx, e)}
                                             id="caption"
                                           />
                                         </FormGroup>
@@ -315,8 +352,12 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="text"
                                             name="callToActionUrl"
-                                            value={formState.values.sliderSlides[0].callToActionUrl === undefined ? '' : formState.values.sliderSlides[0].callToActionUrl}
-                                            onChange={handleChanges}
+                                            value={
+                                              formState.values.sliderSlides[idx].callToActionUrl === undefined
+                                                ? ''
+                                                : formState.values.sliderSlides[idx].callToActionUrl
+                                            }
+                                            onChange={e => handleChange(idx, e)}
                                           />
                                         </FormGroup>
                                       </Col>
@@ -325,8 +366,8 @@ console.log(formState.values.sliderSlides);
                                           <Input
                                             type="checkbox"
                                             name="position"
-                                            checked={formState.values.sliderSlides[0].position === 1 ? true : false}
-                                            onChange={handleChanges}
+                                            checked={formState.values.sliderSlides[idx].position === 1 ? true : false}
+                                            onChange={e => handleChange(idx, e)}
                                           />{' '}
                                           {t('slider.targetblank')}
                                         </FormGroup>
@@ -393,7 +434,6 @@ console.log(formState.values.sliderSlides);
                       </div>
                     );
                   })}
-
                 </Row>
               </TabPane>
             )}
@@ -415,7 +455,7 @@ console.log(formState.values.sliderSlides);
                       type="text"
                       name="name"
                       className="col-md-9"
-                      value = {formState.values.sliderTranslations.name}
+                      value={formState.values.sliderTranslations.name}
                       onChange={handleChanges}
                     />
                   </FormGroup>
@@ -468,7 +508,7 @@ console.log(formState.values.sliderSlides);
   );
 }
 
-SliderCreate.propTypes = PropsType;
+SliderEdit.propTypes = PropsType;
 
 const mamapStateToProps = state => {
   return { detail: state.SilderReducer.detail };
@@ -481,4 +521,4 @@ const mamapDispatchToProps = {
 export default connect(
   mamapStateToProps,
   mamapDispatchToProps
-)(SliderCreate);
+)(SliderEdit);

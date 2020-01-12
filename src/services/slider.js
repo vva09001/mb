@@ -42,7 +42,6 @@ const createSliderService = data => {
     data: data
   })
     .then(res => {
-      // console.log(res);
       return res;
     })
     .catch(error => {
@@ -57,6 +56,7 @@ const editSliderService = data => {
     data: data
   })
     .then(res => {
+      console.log(res);
       return res;
     })
     .catch(error => {
