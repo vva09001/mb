@@ -25,13 +25,13 @@ function ModalMedia({ setState }) {
   return (
     <React.Fragment>
       <div>
-        <Button onClick={openModal}>{t('SeleteImage')}</Button>
+        <Button size="sm" color="success" onClick={openModal}>{t('SeleteImage')}</Button>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Example Modal">
           <div>
             <SeleteMedia />
           </div>
           <div>
-            <Button color="success" onClick={closeModal}>{t('SlectImage')}</Button>
+            <Button size="sm" color="success" onClick={closeModal}>{t('SeleteImage')}</Button>
           </div>
         </Modal>
       </div>

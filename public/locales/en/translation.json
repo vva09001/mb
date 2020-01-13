@@ -41,6 +41,7 @@
     "approveds":"Approved",
     "pendings":"Pending",
     "questionConfirm": "Are you sure you want to delete ?",
+    "SeleteImage": "Selete Image",
     "customer": {
         "personal": "Personal customers",
         "enterprise": "Enterprise customers",

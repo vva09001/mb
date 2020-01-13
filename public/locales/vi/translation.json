@@ -42,6 +42,7 @@
     "approveds": "Đã duyệt",
     "pendings": "Chờ duyệt",
     "id": "ID",
+    "SeleteImage": "Chọn ảnh",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
