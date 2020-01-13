@@ -25,6 +25,16 @@ const Actions = {
     onFail
   }),
 
+  DELETE_INTEREST_RATE_REQUEST: 'DELETE_INTEREST_RATE_REQUEST',
+  DELETE_INTEREST_RATE_RESPONSE: 'DELETE_INTEREST_RATE_RESPONSE',
+
+  deleteInterestRateAction: (data, onSuccess, onFail) => ({
+    type: Actions.DELETE_INTEREST_RATE_REQUEST,
+    data:data,
+    onSuccess,
+    onFail
+  }),
+
 };
   
 export default Actions;
