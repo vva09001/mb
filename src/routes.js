@@ -96,7 +96,7 @@ export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
-  icon: 'sliders-h',
+  icon: 'ellipsis-h',
   children: [{ to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true }]
 };
 

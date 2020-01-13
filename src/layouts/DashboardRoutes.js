@@ -47,7 +47,10 @@ import Network from '../container/Network';
 import NetworkCreate from '../container/Network/Create';
 import NetworkDetail from '../container/Network/Detail';
 import ToolMenu from 'container/InterestRate/index';
-import DeleteFiles from 'container/media/deleteFiles'
+import DeleteFiles from 'container/media/deleteFiles';
+import ListGroup from 'container/group';
+import CreateGroup from 'container/group/create';
+import EditGroup from 'container/group/edit';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -119,8 +122,11 @@ const DashboardRoutes = () => (
     <Route path="/media/deleteFiles" exact component={DeleteFiles} />
 
     {/*toolMenu*/}
-    <Route path="/interest-rate" exact component={ToolMenu}/>
-
+    <Route path="/interest-rate" exact component={ToolMenu} />
+    {/* Group */}
+    <Route path="/group" exact component={ListGroup} />
+    <Route path="/group/create" exact component={CreateGroup} />
+    <Route path="/group/edit/:id" exact component={EditGroup} />
     {/*Redirect*/}
     <Redirect to="/errors/404" />
   </Switch>

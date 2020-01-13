@@ -4,7 +4,7 @@ import PagesCreate from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
-import { PageActions, TagActions, CategoryActions } from '../../store/actions';
+import { PageActions, TagActions, CategoryActions, GroupActions } from '../../store/actions';
 import { map, filter } from 'lodash';
 import PopupComfirm from 'components/common/PopupComfirm';
 import Proptypes from 'prop-types';
@@ -13,10 +13,11 @@ import { connect } from 'react-redux';
 const Proptype = {
   data: Proptypes.array.isRequired,
   listTags: Proptypes.array.isRequired,
-  getPage: Proptypes.func.isRequired,
-  getTags: Proptypes.func.isRequired,
+  listGroup: Proptypes.array.isRequired,
   homeID: Proptypes.number,
   listCategory: Proptypes.array,
+  getPage: Proptypes.func.isRequired,
+  getTags: Proptypes.func.isRequired,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
@@ -24,7 +25,8 @@ const Proptype = {
   updatePositionPages: Proptypes.func,
   deletePageBlock: Proptypes.func,
   getHomeID: Proptypes.func,
-  getCategory: Proptypes.func
+  getCategory: Proptypes.func,
+  getGroup: Proptypes.func
 };
 
 function Page({
@@ -32,6 +34,7 @@ function Page({
   homeID,
   listCategory,
   listTags,
+  listGroup,
   getPage,
   getTags,
   addPage,
@@ -41,7 +44,8 @@ function Page({
   updatePositionPages,
   deletePageBlock,
   getHomeID,
-  getCategory
+  getCategory,
+  getGroup
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -67,7 +71,8 @@ function Page({
     getTags();
     getHomeID();
     getCategory();
-  }, [getPage, getTags, getHomeID, getCategory]);
+    getGroup();
+  }, [getPage, getTags, getHomeID, getCategory, getGroup]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -315,25 +320,51 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        let key = Object.keys(contentData[i]);
-        let regexp = '';
-        let replaceHTML = '';
-        key.forEach(items => {
-          regexp += items + '|';
-        });
-        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
-        replaceHTML = html.replace(regex, function(match) {
-          return contentData[i][match];
-        });
-        let contentHtml = replaceHTML.replace(/[{}]/g, '');
-        formEdit[i] = {
-          ...formEdit[i],
-          ...formBlock[i],
-          position: i,
-          title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
-          content: JSON.stringify(contentData[i]),
-          contentHtml: contentHtml
-        };
+        if (contentData[i]) {
+          let key = Object.keys(contentData[i]);
+          let regexp = '';
+          let replaceHTML = '';
+          key.forEach(items => {
+            regexp += items + '|';
+          });
+          let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+          replaceHTML = html.replace(regex, function(match) {
+            return contentData[i][match];
+          });
+          let contentHtml = replaceHTML.replace(/[{}]/g, '');
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i]),
+            contentHtml: contentHtml
+          };
+        }
+        if (contentData[i].mutileImge) {
+          for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            let key = Object.keys(contentData[i].mutileImge[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileImge[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(content),
+            contentHtml: `<div class="mutileImage_container">${muitle_post_html}</div>`
+          };
+        }
         if (contentData[i].content) {
           for (let j = 0; j < contentData[i].content.length; j++) {
             let key = Object.keys(contentData[i].content[j]);
@@ -349,7 +380,6 @@ function Page({
             let contentHtml = replaceHTML.replace(/[{}]/g, '');
             muitle_post_html = muitle_post_html + contentHtml;
           }
-          // console.log(contentData[i].title);
           formEdit[i] = {
             ...formEdit[i],
             ...formBlock[i],
@@ -712,6 +742,7 @@ function Page({
                 onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
                 deleteActive={deleteActive}
                 listCategory={listCategory}
+                listGroup={listGroup}
                 handlePost={handlePost}
                 handlePostEdit={handlePostEdit}
                 mutiPost={mutiPost}
@@ -736,7 +767,8 @@ const mapStateToProps = state => {
     data: state.PageReducer.data,
     listTags: state.TagReducer.listTags,
     listCategory: state.CategoryReducer.data,
-    homeID: state.PageReducer.homeID
+    homeID: state.PageReducer.homeID,
+    listGroup: state.GroupReducer.listGroupByUser
   };
 };
 
@@ -750,7 +782,8 @@ const mapDispatchToProps = {
   updatePositionPages: PageActions.updatePositionPages,
   deletePageBlock: PageActions.detelePageBlockAction,
   getHomeID: PageActions.getHomepageIDAction,
-  getCategory: CategoryActions.getCategoryAction
+  getCategory: CategoryActions.getCategoryAction,
+  getGroup: GroupActions.getGroupByUserAction
 };
 
 export default connect(

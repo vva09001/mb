@@ -82,7 +82,8 @@
         "active": "Activate page",
         "sidebar": "Activate sidebar",
         "full": "Full",
-        "default": "Default"
+        "default": "Default",
+        "group": "News group"
     },
     "formBuilder": {
 

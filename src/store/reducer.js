@@ -21,6 +21,7 @@ import StoreFontReducer from './storefont/reducer';
 import NetworkReducer from './network/reducers';
 import CountryReducer from './country/reducers';
 import InterestRateReducer from './interestrate/reducers';
+import GroupReducer from './group/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -41,7 +42,8 @@ const reducers = combineReducers({
   MediaReducer,
   FeedbackReducer,
   NetworkReducer,
-  InterestRateReducer
+  InterestRateReducer,
+  GroupReducer
 });
 
 const persistConfig = {

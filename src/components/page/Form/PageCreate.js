@@ -24,6 +24,7 @@ const PropsType = {
   listNew: PropTypes.array,
   listCategory: PropTypes.array,
   imageSeletedata: PropTypes.object,
+  listGroup: PropTypes.array,
   onSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   value: PropTypes.object,
@@ -45,6 +46,7 @@ function PagesCreate({
   blockData,
   listCategory,
   listNew,
+  listGroup,
   onSubmit,
   handleChange,
   value,
@@ -98,7 +100,7 @@ function PagesCreate({
       } else {
         return {
           ...value,
-          url: imageSeletedata.url
+          image: imageSeletedata.url
         };
       }
     });
@@ -116,7 +118,6 @@ function PagesCreate({
         };
       }
     });
-    console.log(newData);
     setFormImg(newData);
     handleImge(newData, index);
   };
@@ -236,7 +237,7 @@ function PagesCreate({
         );
 
       case 9: // mutile image
-      // console.log(index);
+        // console.log(index);
         return (
           <FormGroup>
             <Label for="template">{data.title}</Label>
@@ -253,7 +254,7 @@ function PagesCreate({
                       <div className="block_image mb-2">
                         <img
                           alt="items"
-                          src={items.url === '' ? IconNoImage : items.url}
+                          src={items.image === '' ? IconNoImage : items.image}
                           style={{ maxWidth: '100%' }}
                         />
                       </div>
@@ -721,6 +722,23 @@ function PagesCreate({
                 <option value={1}>{t('select')}</option>
                 <option value={2}>{t('page.default')}</option>
                 <option value={3}>{t('page.full')}</option>
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="teams">{t('page.group')}</Label>
+              <Input
+                type="select"
+                name="teams"
+                required
+                value={value.teams === undefined ? 1 : value.teams}
+                onChange={handleChange}
+              >
+                <option value={1}>{t('select')}</option>
+                {map(listGroup, (value, index) => (
+                  <option key={index} value={value.idTeam}>
+                    {value.name}
+                  </option>
+                ))}
               </Input>
             </FormGroup>
             <div className="mb-3">
