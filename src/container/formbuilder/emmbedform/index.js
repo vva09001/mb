@@ -5,6 +5,10 @@ import { FormBuilderActions } from '../../../store/actions';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import $ from 'jquery';
+
+window.jQuery = $;
+window.$ = $;
 
 const PropsType = {
   detail: PropTypes.object,
@@ -64,12 +68,12 @@ function Edit({ detail, getFormId }) {
   return (
     <div>
       <h3>{t('formBuilder.embededform')}</h3>
-      <FormGroup>
+       <FormGroup>
         <Input
           style={{ backgroundColor: '#f5f5f5' }}
           type="textarea"
           disabled
-          value={formState.values.embeded === undefined ? '' : formState.values.embeded}
+          value={formState.values.embedded === undefined ? '' : formState.values.embedded}
           onChange={handleChange}
           rows="15"
         />

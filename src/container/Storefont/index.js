@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
-import { StoreFontActions, MediaActions } from '../../store/actions';
+import { StoreFontActions } from '../../store/actions';
 import classnames from 'classnames';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const PropsType = {
   data: PropTypes.object,
@@ -17,7 +18,8 @@ const PropsType = {
   getStoreFont: PropTypes.func,
   editStoreFontGeneral: PropTypes.func,
   editStoreFontLogo: PropTypes.func,
-  editStoreFontSocialLink: PropTypes.func
+  editStoreFontSocialLink: PropTypes.func,
+  imageSeletedata: PropTypes.object
 };
 let dataChange = {};
 function Storefont({
@@ -29,16 +31,18 @@ function Storefont({
   dataSociallink,
   dataGeneral,
   dataLogo,
-  detailImage,
-  upLoadImages
+  imageSeletedata
 }) {
   const [StoreFontName, setStoreFontName] = useState('general');
+  const [formState, setFormState] = useState({
+    values: {},
+    touched: {}
+  });
+  const [activeTab, setActiveTab] = useState('1');
+  const { t } = useTranslation();
   dataChange = Object.assign(data, dataChange);
   useEffect(() => {
     getStoreFont(StoreFontName);
-    // dataGeneral = getStoreFont('general');
-    // dataLogo = getStoreFont('logo');
-    // dataSociallink = getStoreFont('socialLink');
   }, [getStoreFont, StoreFontName]);
   useEffect(() => {
     setFormState(formState => ({
@@ -46,13 +50,7 @@ function Storefont({
       values: activeTab === '1' ? dataGeneral : activeTab === '2' ? dataLogo : dataSociallink
     }));
   }, [dataGeneral, dataLogo, dataSociallink]);
-  const [formState, setFormState] = useState({
-    values: {},
-    touched: {}
-  });
-
-  const [activeTab, setActiveTab] = useState('1');
-  const { t } = useTranslation();
+ 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
     tab === '1' ? setStoreFontName('general') : tab === '2' ? setStoreFontName('logo') : setStoreFontName('socialLink');
@@ -60,15 +58,16 @@ function Storefont({
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
+      footer_brief: '',
       values: {
-        ...formState.values
+        ...formState.values,
+        footer_brief: data
       },
       touched: {
         ...formState.touched
       }
     }));
   };
-
   const handleChange = event => {
     event.persist();
     setFormState(formState => ({
@@ -110,6 +109,42 @@ function Storefont({
     editStoreFontSocialLink(formState.values);
   };
 
+  const onSetStateFavicon = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        favicon: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateHearderLogo = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        hearderLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterLogo = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        footerLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterBackground = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        footerBackground: imageSeletedata.url
+      }
+    }));
+  };
   return (
     <React.Fragment>
       <h4>{t('storefont.title')}</h4>
@@ -166,12 +201,12 @@ function Storefont({
                   <Input
                     type="text"
                     name="footer_address"
-                    value={formState.values.footer_address === undefined ? '' : formState.values.footer_address}
+                    value={formState.values === undefined ? '' : formState.values.footer_address}
                     onChange={handleChange}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>{t('storefont.footerbrief')}</Label>
+                  <Label>{t('storefont.footerbrief')}</Label>s
                   <CKEditor
                     editor={ClassicEditor}
                     data={formState.values.footer_brief === undefined ? '' : formState.values.footer_brief}
@@ -189,66 +224,58 @@ function Storefont({
             <TabPane tabId="2">
               <Form className="p-3" onSubmit={editStoreFontsLogo}>
                 <FormGroup>
-                  <Label for="favicon">Favicon</Label>
-                  <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="favicon"
-                        value={formState.values.favicon === undefined ? '' : formState.values.favicon}
-                        onChange={handleChange}
-                      />
+                  <Label for="favicon">{t('storefont.Favicon')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFavicon} />
                     </Col>
                     <Col>
-                      <Input type="file" name="favicon" onChange={handleChange} />
+                      <img
+                        src={formState.values.favicon === undefined ? '' : formState.values.favicon}
+                        style={{ width: '100px' }}
+                      />
                     </Col>
                   </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="hearderLogo">Header Logo</Label>
-                  <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="hearderLogo"
-                        value={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
-                        onChange={handleChange}
-                      />
+                  <Label for="hearderLogo">{t('storefont.HeaderLogo')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateHearderLogo} />
                     </Col>
                     <Col>
-                      <Input type="file" name="hearderLogo" />
+                      <img
+                        src={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
+                        style={{ width: '100px' }}
+                      />
                     </Col>
                   </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="footerLogo">Footer Logo</Label>
-                  <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="footerLogo"
-                        value={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
-                        onChange={handleChange}
-                      />
+                  <Label for="footerLogo">{t('storefont.FooterLogo')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFooterLogo} />
                     </Col>
                     <Col>
-                      <Input type="file" name="footerLogo" />
+                      <img
+                        src={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
+                        style={{ width: '100px' }}
+                      />
                     </Col>
                   </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="footerBackground">Footer Background</Label>
-                  <Row>
-                    <Col>
-                      <Input
-                        type="text"
-                        name="footerBackground"
-                        value={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
-                        onChange={handleChange}
-                      />
+                  <Label for="footerBackground">{t('storefont.FooterBackground')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFooterBackground} />
                     </Col>
                     <Col>
-                      <Input type="file" name="footerBackground" />
+                      <img
+                        src={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
+                        style={{ width: '100px' }}
+                      />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -260,7 +287,7 @@ function Storefont({
             <TabPane tabId="3">
               <Form className="p-3" onSubmit={editStoreFontsSocialLink}>
                 <FormGroup>
-                  <Label for="facebook">Facebook</Label>
+                  <Label for="facebook">{t('storefont.Facebook')}</Label>
                   <Input
                     type="text"
                     name="facebook"
@@ -269,7 +296,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="twitter">Twitter</Label>
+                  <Label for="twitter">{t('storefont.Twitter')}</Label>
                   <Input
                     type="text"
                     name="twitter"
@@ -278,7 +305,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="instagram">Instagram</Label>
+                  <Label for="instagram">{t('storefont.Instagram')}</Label>
                   <Input
                     type="text"
                     name="instagram"
@@ -287,7 +314,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="linkedin">Linkedin</Label>
+                  <Label for="linkedin">{t('storefont.Linkedin')}</Label>
                   <Input
                     type="text"
                     name="linkedin"
@@ -296,7 +323,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="pinterest">Pinterest</Label>
+                  <Label for="pinterest">{t('storefont.Pinterest')}</Label>
                   <Input
                     type="text"
                     name="pinterest"
@@ -305,7 +332,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="googleplus">Google Plus</Label>
+                  <Label for="googleplus">{t('storefont.GooglePlus')}</Label>
                   <Input
                     type="text"
                     name="googleplus"
@@ -314,7 +341,7 @@ function Storefont({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="youtube">Youtube</Label>
+                  <Label for="youtube">{t('storefont.Youtube')}</Label>
                   <Input
                     type="text"
                     name="youtube"
@@ -340,13 +367,13 @@ const mapStateToProps = state => {
     data: state.StoreFontReducer.dataStoreFont,
     dataGeneral: state.StoreFontReducer.dataStoreFontGeneral,
     dataLogo: state.StoreFontReducer.dataStoreFontLogo,
-    dataSociallink: state.StoreFontReducer.dataStoreFontSociallink
+    dataSociallink: state.StoreFontReducer.dataStoreFontSociallink,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 
 const mapDispatchToProps = {
   getStoreFont: StoreFontActions.getStoreFontAction,
-  //deleteTags: TagActions.deleteTagAction,
   editStoreFontGeneral: StoreFontActions.editStoreFontGeneralAction,
   editStoreFontLogo: StoreFontActions.editStoreFontLogoAction,
   editStoreFontSocialLink: StoreFontActions.editStoreFontSocialLinkAction

@@ -50,7 +50,7 @@ const FormTable = ({ data, getID, getDetail }) => {
                 <td>
                   <Link to={values.id + '/formdata'}>{t('formBuilder.formdata')}</Link>|
                   <Link to={values.id + '/emmbed'}>{t('formBuilder.embededform')}</Link>|
-                  <Link to={values.id + '/email'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
+                  <Link to={values.id + '/rely'}>{t('formBuilder.responsemail')}</Link>|Shortcut @mgform{values.id}
                 </td>
                 <td onClick={() => getDetail(values)}>
                   <Link to={`/form-builder/edit/${values.id}`}>{moment(values.createdAt).fromNow()}</Link>

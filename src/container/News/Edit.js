@@ -8,10 +8,10 @@ import { NewActions, CategoryActions, FormBuilderActions } from '../../store/act
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import { map } from 'lodash';
-import history from 'helpers/history';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const PropsType = {
   listForm: PropTypes.array,
@@ -20,11 +20,12 @@ const PropsType = {
   editNew: PropTypes.func,
   getCategory: PropTypes.func,
   getForm: PropTypes.func,
-  getNewsId: PropTypes.func
+  getNewsId: PropTypes.func,
+  imageSeletedata: PropTypes.object
 };
 
-function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, getNewsId }) {
-  let { id } = useParams();
+function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, getNewsId, imageSeletedata }) {
+  const { id } = useParams();
   useEffect(() => {
     getNewsId(id);
     getCategory();
@@ -50,6 +51,15 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        base_image: imageSeletedata.url
+      }
+    }));
+  };
   const handleChange = event => {
     event.persist();
 
@@ -82,7 +92,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
 
   const onSuccess = () => {
     Success('Sửa thành công');
-    history.push('/news/list');
   };
 
   const onFail = () => {
@@ -108,9 +117,9 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       ...formState.values,
       newsBlocks: []
     };
-    console.log(body)
     editNew(body, onSuccess, onFail);
   };
+
   return (
     <React.Fragment>
       <Nav tabs>
@@ -137,7 +146,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={editNews}>
+          <Form className="p-3" style={{ background: '#fff' }}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
@@ -179,12 +188,16 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
               />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="base_Images" />
+              <img
+                src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                style={{ width: '100px' }}
+                alt="icon"
+              />
+              <ModalMedia setState={onSetState} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="category" value={formState.values.category} onChange={handleChange}>
+              <Input type="select" name="category" value={formState.values.category}>
                 <option>{t('select')}</option>
                 {map(listOptions, value => (
                   <option value={value.id} key={value.id}>
@@ -211,20 +224,20 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>
-            <Button color="primary" type="submit">
+            <Button color="primary" onClick={editNews}>
               {t('edit')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={editNews}>
+          <Form className="p-3" style={{ background: '#fff' }}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
               <Input
                 type="text"
                 name="meta_title"
-                value={formState.values.meta_title === undefined ? '' : formState.values.meta_title}
+                value={formState.values.meta_title === null ? '' : formState.values.meta_title}
                 onChange={handleChange}
               />
             </FormGroup>
@@ -256,8 +269,8 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 onChange={handleChange}
               />
             </FormGroup>
-            <Button color="primary" type="submit">
-              {t('save')}
+            <Button color="primary" onClick={editNews}>
+              {t('edit')}
             </Button>
           </Form>
         </TabPane>
@@ -272,7 +285,8 @@ const mapStateToProps = state => {
   return {
     detail: state.NewReducer.detail,
     listOptions: state.CategoryReducer.listOption,
-    listForm: state.FormBuilderReducer.listForm
+    listForm: state.FormBuilderReducer.listForm,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 

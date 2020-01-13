@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import { Redirect} from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -18,7 +19,10 @@ const PropsType = {
 function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setMenusID] = useState(null);
-
+  // const [formState, setFormState] = useState({
+  //   values: [],
+  //   touched: {}
+  // });
   useEffect(() => {
     getMenus();
   }, [getMenus]);
@@ -37,7 +41,11 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
       setIsOpen(!isOpen);
     }
   };
-
+  const showDetail = () => {
+    return (
+      <Redirect to="/test" />
+    )
+  };
   const onGetDetail = detail => {
     getDetailMenus(detail);
     history.push('/menu/edit');
@@ -56,6 +64,7 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
           <Button color="danger" className="mr-2" onClick={openComfirm}>
             {t('delete')}
           </Button>
+          <Button color="success" className="mr-2" onClick={showDetail} />
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
           <MenuTable data={data} getID={id => setMenusID(id)} getDetail={onGetDetail} />

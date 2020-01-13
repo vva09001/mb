@@ -4,7 +4,7 @@ import PagesCreate from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
-import { PageActions, TagActions } from '../../store/actions';
+import { PageActions, TagActions, CategoryActions } from '../../store/actions';
 import { map, filter } from 'lodash';
 import PopupComfirm from 'components/common/PopupComfirm';
 import Proptypes from 'prop-types';
@@ -16,18 +16,21 @@ const Proptype = {
   getPage: Proptypes.func.isRequired,
   getTags: Proptypes.func.isRequired,
   homeID: Proptypes.number,
+  listCategory: Proptypes.array,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
   expanstion: Proptypes.func,
   updatePositionPages: Proptypes.func,
   deletePageBlock: Proptypes.func,
-  getHomeID: Proptypes.func
+  getHomeID: Proptypes.func,
+  getCategory: Proptypes.func
 };
 
 function Page({
   data,
   homeID,
+  listCategory,
   listTags,
   getPage,
   getTags,
@@ -37,7 +40,8 @@ function Page({
   expanstion,
   updatePositionPages,
   deletePageBlock,
-  getHomeID
+  getHomeID,
+  getCategory
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -62,7 +66,8 @@ function Page({
     getPage();
     getTags();
     getHomeID();
-  }, [getPage, getTags, getHomeID]);
+    getCategory();
+  }, [getPage, getTags, getHomeID, getCategory]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -80,6 +85,30 @@ function Page({
         [event.target.name]: true
       }
     }));
+  };
+  const editorChange = (data, key, index) => {
+    let newForm = map(formBlock, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    let content = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          [key]: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
   };
   const handleFomBlock = (event, index) => {
     event.persist();
@@ -113,7 +142,6 @@ function Page({
     setContentData(newContent);
     setFormBlock(newFormAddMore);
   };
-
   const handleEidt = (event, index) => {
     event.persist();
     let newValues = map(formEdit, (values, indexs) => {
@@ -132,21 +160,161 @@ function Page({
       if (index !== id) {
         return values;
       } else {
+        if (values.length > 0) {
+          return {
+            content: values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        } else {
+          return {
+            ...values,
+            [event.target.name]:
+              event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          };
+        }
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
+
+  const handlePost = (data, index) => {
+    let items = JSON.parse(data);
+    let newValues = map(formBlock, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
         return {
           ...values,
-          [event.target.name]:
-            event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+          ...items,
+          id: 0
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormBlock(newValues);
+  };
+
+  const handlePostEdit = (data, index) => {
+    let items = JSON.parse(data);
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          ...items
         };
       }
     });
     setContentData(newContent);
     setFormEdit(newValues);
   };
+
+  const mutiPost = (data, index) => {
+    let newValues = map(formBlock, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormBlock(newValues);
+  };
+
+  const mutiPostEdit = (data, index) => {
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutilePost: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
+
+  const handleImge = (data, index) => {
+    let newForm = map(formBlock, (value, id) => {
+      if (index !== id) {
+        return data;
+      } else {
+        return {
+          ...value,
+          id: 0,
+          position: id,
+          id_block: value.block_id,
+          mutileImge: data
+        };
+      }
+    });
+    let content = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
+        let muitle_post_html = '';
         let key = Object.keys(contentData[i]);
         let regexp = '';
         let replaceHTML = '';
@@ -161,10 +329,85 @@ function Page({
         formEdit[i] = {
           ...formEdit[i],
           ...formBlock[i],
+          position: i,
           title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
+        if (contentData[i].content) {
+          for (let j = 0; j < contentData[i].content.length; j++) {
+            let key = Object.keys(contentData[i].content[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].content[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          // console.log(contentData[i].title);
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i].content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].length > 0) {
+          for (let j = 0; j < contentData[i].length; j++) {
+            let key = Object.keys(contentData[i][j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i][j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i]),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].mutilePost) {
+          for (let j = 0; j < contentData[i].mutilePost.length; j++) {
+            let key = Object.keys(contentData[i].mutilePost[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutilePost[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutilePost;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
       }
       const data = {
         ...formState.values,
@@ -181,8 +424,9 @@ function Page({
     } else {
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
-        let key = Object.keys(contentData[i]);
-
+        let muitle_post_html = '';
+        let key = null;
+        key = Object.keys(contentData[i]);
         let regexp = '';
         let replaceHTML = '';
         key.forEach(items => {
@@ -198,6 +442,50 @@ function Page({
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
+        if (contentData[i].mutileImge) {
+          for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            let key = Object.keys(contentData[i].mutileImge[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileImge[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].mutilePost) {
+          for (let j = 0; j < contentData[i].mutilePost.length; j++) {
+            let key = Object.keys(contentData[i].mutilePost[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutilePost[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutilePost;
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
       }
       let data = {};
       if (actionChildrenSubmit) {
@@ -213,7 +501,7 @@ function Page({
           pageBlocks: [...formBlock]
         };
       }
-
+      console.log(data);
       addPage(data);
       setFormState({
         values: {},
@@ -330,7 +618,6 @@ function Page({
       ...items,
       newItem: 0
     };
-    // console.log(formEdit);
     setListBlock([...listBlock, newItems]);
     setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
@@ -345,7 +632,7 @@ function Page({
       <h4> {t('page.page')}</h4>
       <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
-          <Button className="mb-2" onClick={addNode}>
+          <Button className="mb-2 mr-2" onClick={addNode}>
             {t('page.addRoot')}
           </Button>
           <Button
@@ -380,7 +667,7 @@ function Page({
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '45%' }}>
+          <div style={{ height: '50%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
@@ -390,6 +677,8 @@ function Page({
               onMoveNode={treeData => onMove(treeData)}
               theme={FileExplorerTheme}
             />
+          </div>
+          <div className="listBlock">
             {map(listTags, (values, index) => (
               <React.Fragment key={index}>
                 <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
@@ -407,26 +696,31 @@ function Page({
           </div>
         </Col>
         <Col lg={9} md={8}>
-          <div>
-            <Row>
-              <Col sm="12">
-                <PagesCreate
-                  handleChange={handleChange}
-                  onSubmit={onSubmit}
-                  value={formState.values}
-                  stateEdit={formEdit}
-                  detail={PageDetail}
-                  blockData={listBlock}
-                  handleEidt={(event, index) => handleEidt(event, index)}
-                  handleFomBlock={(event, index) => handleFomBlock(event, index)}
-                  onRemoveBlock={index => removeItem(index)}
-                  onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
-                  deleteActive={deleteActive}
-                  onDelete={() => setIsOpen(!isOpen)}
-                />
-              </Col>
-            </Row>
-          </div>
+          <Row>
+            <Col sm="12">
+              <PagesCreate
+                handleChange={handleChange}
+                onSubmit={onSubmit}
+                value={formState.values}
+                stateEdit={formEdit}
+                detail={PageDetail}
+                blockData={listBlock}
+                handleEidt={(event, index) => handleEidt(event, index)}
+                handleFomBlock={(event, index) => handleFomBlock(event, index)}
+                onRemoveBlock={index => removeItem(index)}
+                onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
+                deleteActive={deleteActive}
+                listCategory={listCategory}
+                handlePost={handlePost}
+                handlePostEdit={handlePostEdit}
+                mutiPost={mutiPost}
+                mutiPostEdit={mutiPostEdit}
+                handleImge={handleImge}
+                editorChange={(data, key, index) => editorChange(data, key, index)}
+                onDelete={() => setIsOpen(!isOpen)}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -440,6 +734,7 @@ const mapStateToProps = state => {
   return {
     data: state.PageReducer.data,
     listTags: state.TagReducer.listTags,
+    listCategory: state.CategoryReducer.data,
     homeID: state.PageReducer.homeID
   };
 };
@@ -453,7 +748,8 @@ const mapDispatchToProps = {
   expanstion: PageActions.expansionPageAction,
   updatePositionPages: PageActions.updatePositionPages,
   deletePageBlock: PageActions.detelePageBlockAction,
-  getHomeID: PageActions.getHomepageIDAction
+  getHomeID: PageActions.getHomepageIDAction,
+  getCategory: CategoryActions.getCategoryAction
 };
 
 export default connect(

@@ -23,11 +23,11 @@ function MailEdit({ detail, editMail, getMailsId }) {
     getMailsId(id);
   }, [getMailsId, id]);
 
-   useEffect(() => {
+  useEffect(() => {
     setFormState(formState => ({
       ...formState,
-     values: detail
-     }));
+      values: detail
+    }));
   }, [detail]);
 
   const [formState, setFormState] = useState({

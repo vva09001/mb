@@ -52,7 +52,16 @@ const Actions = {
   getPrivilegeRole: id => ({
     type: Actions.GET_PRIVILEGE_ROLE_REQUEST,
     id
+  }),
+  GET_PRIVILEGE_ROLE_BY_GROUP_REQUEST: 'GET_PRIVILEGE_ROLE_BY_GROUP_REQUEST',
+  GET_PRIVILEGE_ROLE_BY_GROUP_RESPONSE: 'GET_PRIVILEGE_ROLE_BY_GROUP_RESPONSE',
+
+  getPrivilegeRoleByGroup: () => ({
+    type: Actions.GET_PRIVILEGE_ROLE_BY_GROUP_REQUEST,
+    
   })
+
 };
+
 
 export default Actions;

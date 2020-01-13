@@ -58,8 +58,8 @@ function MailsCreate({ MailsCreate }) {
   };
   const createdMails = event => {
     event.preventDefault();
-    console.log(formState.values);
-    //MailsCreate(formState.values);
+    //console.log(formState.values);
+    MailsCreate(formState.values);
   };
   return (
     <React.Fragment>
@@ -81,19 +81,19 @@ function MailsCreate({ MailsCreate }) {
             <h4>{t('create')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" required name="name" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="name" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input type="text" required name="code" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="code" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
-              <Input type="text" required name="subject" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="subject" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.emailCc')}</Label>
-              <Input type="text" required name="emailCc" id="exampleName" onChange={handleChange} />
+              <Input type="text" required name="emailCc" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label>{t('mail.content')}</Label>

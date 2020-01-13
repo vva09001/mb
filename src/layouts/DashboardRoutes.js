@@ -43,6 +43,11 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
+import Network from '../container/Network';
+import NetworkCreate from '../container/Network/Create';
+import NetworkDetail from '../container/Network/Detail';
+import ToolMenu from 'container/InterestRate/index';
+import DeleteFiles from 'container/media/deleteFiles'
 
 const DashboardRoutes = () => (
   <Switch>
@@ -63,7 +68,7 @@ const DashboardRoutes = () => (
     <Route path="/pages/block/edit" exact component={EditBlock} />
     <Route path="/pages/tags" exact component={Tags} />
     <Route path="/pages/tags/create" exact component={CreateTags} />
-    <Route path="/pages/tags/edit" exact component={EditTags} />
+    <Route path="/pages/tags/edit/:id" exact component={EditTags} />
 
     {/*Email*/}
     <Route path="/emails/list" exact component={ListMail} />
@@ -74,7 +79,7 @@ const DashboardRoutes = () => (
     <Route path="/form-builder/list" exact component={ListFormBuilder} />
     <Route path="/form-builder/create" exact component={CreatedFormBuilder} />
     <Route path="/form-builder/edit/:id" exact component={EditFormBuilder} />
-    <Route path="/form-builder/:id/email" exact component={Resemail} />
+    <Route path="/form-builder/:id/rely" exact component={Resemail} />
     <Route path="/form-builder/:id/formdata" exact component={Formdata} />
     <Route path="/form-builder/:id/emmbed" exact component={Embeded} />
 
@@ -105,7 +110,16 @@ const DashboardRoutes = () => (
     <Route path="/slider/create" exact component={SliderCreate} />
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
+    {/* Network */}
+    <Route path="/network" exact component={Network} />
+    <Route path="/network/create" exact component={NetworkCreate} />
+    <Route path="/network/detail/:id" exact component={NetworkDetail} />
+
     <Route path="/media" exact component={Media} />
+    <Route path="/media/deleteFiles" exact component={DeleteFiles} />
+
+    {/*toolMenu*/}
+    <Route path="/interest-rate" exact component={ToolMenu}/>
 
     {/*Redirect*/}
     <Redirect to="/errors/404" />

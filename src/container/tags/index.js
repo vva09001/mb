@@ -37,10 +37,6 @@ function Tags({ data, getTags, deleteTags, getDetail }) {
     }
   };
 
-  const onGetDetail = detail => {
-    getDetail(detail);
-    history.push('/pages/tags/edit');
-  };
   return (
     <React.Fragment>
       <div>
@@ -56,7 +52,7 @@ function Tags({ data, getTags, deleteTags, getDetail }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <TagTable data={data} getID={id => setTagsID(id)} getDetail={onGetDetail} />
+          <TagTable data={data} getID={id => setTagsID(id)} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

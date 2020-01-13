@@ -80,6 +80,18 @@ const removePrivilegeService = (id, data) => {
       return error.response.data;
     });
 };
+const getPrivilegesByGroupService = () => {
+  return request({
+    url: '/privileges',
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
 const getPrivilegeRoleService = id => {
   return request({
     url: `/privileges/role/${id}`,
@@ -100,5 +112,6 @@ export {
   deleteRolesService,
   acceptPrivilegeService,
   removePrivilegeService,
+  getPrivilegesByGroupService,
   getPrivilegeRoleService
 };

@@ -57,6 +57,14 @@ const Actions = {
     data,
     onSuccess,
     onFail
+  }),
+
+  GET_NEW_BY_CATEGORY_REQUEST: 'GET_NEW_BY_CATEGORY_REQUEST',
+  GET_NEW_BY_CATEGORY_RESPONSE: 'GET_NEW_BY_CATEGORY_RESPONSE',
+
+  getNewByCategory: id => ({
+    type: Actions.GET_NEW_BY_CATEGORY_REQUEST,
+    id
   })
 };
 

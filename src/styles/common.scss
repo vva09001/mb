@@ -85,7 +85,40 @@ label {
   text-transform: capitalize;
 }
 
-.ck-editor__editable  p{
+.ck-editor__editable p {
   min-height: 100px;
 }
 
+.form-img {
+  display: flex;
+  align-items: center;
+  .block_image {
+    width: 110px;
+    cursor: pointer;
+    border: 1px solid #d2d6de;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .input_wapper {
+    display: flex;
+    justify-content: space-between;
+    div {
+      margin: 0 1rem;
+    }
+  }
+}
+
+.btnBlock-remove {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.listBlock {
+  .list-group-item {
+    cursor: pointer;
+  }
+}

@@ -38,6 +38,8 @@
     "select": "Select...",
     "feedback":"FeedBack",
     "slug": "slug",
+    "approveds":"Approved",
+    "pendings":"Pending",
     "questionConfirm": "Are you sure you want to delete ?",
     "customer": {
         "personal": "Personal customers",
@@ -83,7 +85,7 @@
         "default": "Default"
     },
     "formBuilder": {
-        
+
         "title": "Create Form",
         "formdata": "Form data",
         "embededform": "Embeded form",
@@ -124,10 +126,22 @@
         "role": "Role",
         "media": "Media",
         "storeFont": "Store Font",
-        "slider": "Slider"
+        "slider": "Slider",
+        "network":"Network Management",
+        "tool_menu": "Tool menu"
     },
     "storefont": {
-        "sociallinks": "Social links"
+        "sociallinks": "Social links",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "user": {
         "fistname": "Fist Name",
@@ -155,5 +169,34 @@
         "subject": "Subject",
         "emailCc": "To",
         "content": "Content"
+    },
+    "network":{
+        "approved":"Approved",
+        "danhsach":"List of networks",
+        "networkdetails":"Network details",
+        "address":"Address",
+        "address_name":"Address name",
+        "language":"Language",
+        "latitude":"Latitude",
+        "longitude":"Longitude",
+        "network_category":"Network category",
+        "province_city":"Province city",
+        "about":"About",
+        "create":"Create new",
+        "down":"Download the file",
+        "processingunit":"Processing unit",
+        "lastupdateddate":"Last updated date",
+    "roleinit": {
+        "getallroleof": "Get all role current of"
+    }
+    },
+    "interest_rate": {
+        "interest_rate": "Interest rate",
+        "term": "Term",
+        "month": "Month",
+        "create": "Create",
+        "update": "Update",
+        "term_error": "Field cannot be empty",
+        "interest_rate_error": "Field cannot be empty"
     }
 }
