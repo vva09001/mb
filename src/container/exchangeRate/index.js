@@ -23,6 +23,11 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getCate
     }, [getExChangeRates]);
   const { t } = useTranslation();
 
+  const onGetDetai = (detail) => {
+    getExChangeRatesDetail(detail);
+    history.push('exchangeRate/edit')
+  }
+
   //   const openComfirm = () => {
   //     if (newsID !== null) {
   //       setIsOpen(!isOpen);
@@ -36,9 +41,7 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getCate
   //     }
   //   };
 
-  //   const onGetDetail = detail => {
-  //     getDetail(detail);
-  //   };
+ 
 
   return (
     <React.Fragment>
@@ -55,7 +58,7 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getCate
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <ExChangeRateTable data={data} />
+          <ExChangeRateTable data={data} getDetail={onGetDetai} />
         </Row>
       </div>
       {/* <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} /> */}
@@ -72,7 +75,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getExChangeRates: ExChangeRateActions.GetExchangeRate,
   deleteExChangeRates: ExChangeRateActions.DeleteExchangeRate,
-  // getExChangeRatesDetail: ExChangeRateActions.getDetail
+  getExChangeRatesDetail: ExChangeRateActions.GetDetailExChangeRate
 };
 
 export default connect(

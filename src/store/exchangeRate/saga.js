@@ -43,9 +43,9 @@ function* createExchangeRateSaga() {
 
 function* editExchangeRateSaga() {
   yield takeLatest(Actions.EDIT_EXCHANGE_RATE_REQUEST, function*(params) {
-    const { data } = params;
+    const { id ,data } = params;
     try {
-      const res = yield editExchangeRateService(data);
+      const res = yield editExchangeRateService(id,data);
       if (res.status === 200) {
         Success('Sửa thành công');
         yield put({ type: Actions.EDIT_EXCHANGE_RATE_RESPONSE, data: res.data });

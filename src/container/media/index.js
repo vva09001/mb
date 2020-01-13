@@ -139,7 +139,6 @@ function Media({
               {t('UploadFile')}
             </Button>
           </div>
-
           <div style={{ paddingBottom: 10 }}>
             <Button
               color={'danger'}

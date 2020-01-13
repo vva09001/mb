@@ -10,10 +10,11 @@ import { CustomInput } from 'reactstrap';
 import useBulkSelect from '../../hooks/useBulkSelect';
 
 const PropsType = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  getDetail: PropTypes.func
 };
 
-const ExchangeRateTable = ({ data }) => {
+const ExchangeRateTable = ({ data, getDetail }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -35,7 +36,7 @@ const ExchangeRateTable = ({ data }) => {
   return (
     <React.Fragment>
       <Table size="sm">
-        <thead className="bg-primary text-white">
+        <thead >
           <tr>
             <th>
               <CustomInput
@@ -62,15 +63,14 @@ const ExchangeRateTable = ({ data }) => {
                     onChange={() => toggleSelectedItem(values.id)}
                   />
                 </th>
-                <td>
+                <td  onClick={() => getDetail(values)}>
                   <Moment format="DD/MM/YYYY">{values.date_update}</Moment>
                 </td>
-                <td>{moment(values.date_update).fromNow()}</td>
+                <td  onClick={() => getDetail(values)}>{moment(values.date_update).fromNow()}</td>
                 <td />
               </tr>
             );
           })}
-          v
         </tbody>
       </Table>
       <div className="pagination__wapper">

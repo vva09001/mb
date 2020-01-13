@@ -27,9 +27,9 @@ const createExchangeRateService = data => {
     });
 };
 
-const editExchangeRateService = data => {
+const editExchangeRateService = (id,data) => {
   return request({
-    url: `/exchange_rate/${data.id}`,
+    url: `/exchange_rate/${id}`,
     method: 'PUT',
     data: data
   })
