@@ -416,7 +416,7 @@ function PagesCreate({
               value={value}
               name={items.key}
               required
-              onChange={event => handleFomBlock(event, index)}
+              onChange={event => handleEidt(event, index)}
             />
           </FormGroup>
         );
@@ -796,10 +796,10 @@ function PagesCreate({
                 type="select"
                 name="teams"
                 required
-                value={value.teams === undefined ? 1 : value.teams}
+                value={value.teams === undefined ? 0 : value.teams}
                 onChange={handleChange}
               >
-                <option value={1}>{t('select')}</option>
+                <option value={0}>{t('select')}</option>
                 {map(listGroup, (value, index) => (
                   <option key={index} value={value.idTeam}>
                     {value.name}
@@ -820,7 +820,15 @@ function PagesCreate({
                           </Button>
                         )}
                         {deleteActive && (
-                          <Button onClick={() => onRemoveBlockValue(detail.id, detail.pageBlocks[index].id)}>
+                          <Button
+                            onClick={() =>
+                              onRemoveBlockValue(
+                                detail.id,
+                                detail.pageBlocks[index] === undefined ? null : detail.pageBlocks[index].id,
+                                index
+                              )
+                            }
+                          >
                             <FontAwesomeIcon icon={faTrash} />
                           </Button>
                         )}

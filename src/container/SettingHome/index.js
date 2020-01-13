@@ -120,7 +120,6 @@ function SettingHome({
   };
 
   const handleChangeSupportLocales = event => {
-    console.log('sp', event);
     const idLocales = [];
     map(event, values => {
       idLocales.push({

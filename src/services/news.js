@@ -81,8 +81,7 @@ const deleteNews = id => {
 
 const getNewByCategoryID = id => {
   return request({
-    // url: `/news/category_is_active/${id}`,
-    url: `/news/isActive`,
+    url: `/news/category_is_active/${id}`,
     method: 'GET'
   })
     .then(res => {

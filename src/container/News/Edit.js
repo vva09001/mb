@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { map } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -89,6 +91,22 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
         }
       }));
     }
+  };
+
+  const handleChangeSelect = event => {
+    let arr = [];
+    map(event, items => arr.push({ id: items.value, name: items.label }));
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        categorys: arr
+      },
+      touched: {
+        ...formState.touched,
+        categorys: true
+      }
+    }));
   };
 
   const onSuccess = () => {
@@ -201,17 +219,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
               />
               <ModalMedia setState={onSetState} />
             </FormGroup>
-            <FormGroup>
-              <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="category" value={formState.values.category}>
-                <option>{t('select')}</option>
-                {map(listOptions, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.name}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
             <div className="check__box">
               <Label>{t('sticky')}</Label>
               <div>
@@ -230,6 +237,28 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 <span>{t('category_page.form.activeCategory')}</span>
               </div>
             </div>
+            <FormGroup>
+              <Label for="exampleSelect">{t('category')}</Label>
+              <Select
+                name="categorys"
+                closeMenuOnSelect={false}
+                components={makeAnimated}
+                value={map(formState.values.categories, items => {
+                  return {
+                    value: items.id,
+                    label: items.name
+                  };
+                })}
+                options={map(listOptions, values => {
+                  return {
+                    value: values.id,
+                    label: values.name
+                  };
+                })}
+                isMulti
+                onChange={handleChangeSelect}
+              />
+            </FormGroup>
             <Button color="primary" onClick={editNews}>
               {t('edit')}
             </Button>

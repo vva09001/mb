@@ -618,9 +618,10 @@ function Page({
       let block = values.blocks;
       let blockValue = block.blockValues;
       let type = null;
-      if (blockValue[index] !== undefined) {
-        type = blockValue[index].type_id;
+      if (blockValue[0] !== undefined) {
+        type = blockValue[0].type_id;
       }
+      // console.log(type);
       if (type === 9) {
         mutileImage.push(...JSON.parse(values.content));
       }
@@ -691,8 +692,17 @@ function Page({
     setContentData([...contentData, {}]);
   };
 
-  const deletePageBlockItems = (id, pageid) => {
-    deletePageBlock(id, pageid);
+  const deletePageBlockItems = (id, pageid, indexItems) => {
+    if (pageid !== null) {
+      deletePageBlock(id, pageid);
+      const newValues = filter(listBlock, (items, index) => index !== indexItems);
+      setListBlock(newValues);
+      setFormBlock(newValues);
+    } else {
+      const newValues = filter(listBlock, (items, index) => index !== indexItems);
+      setListBlock(newValues);
+      setFormBlock(newValues);
+    }
   };
 
   return (
@@ -776,7 +786,7 @@ function Page({
                 handleEidt={(event, index) => handleEidt(event, index)}
                 handleFomBlock={(event, index) => handleFomBlock(event, index)}
                 onRemoveBlock={index => removeItem(index)}
-                onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
+                onRemoveBlockValue={(id, pageid, indexItems) => deletePageBlockItems(id, pageid, indexItems)}
                 deleteActive={deleteActive}
                 listCategory={listCategory}
                 listGroup={listGroup}

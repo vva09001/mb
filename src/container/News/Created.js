@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import { NewActions, CategoryActions, FormBuilderActions, MediaActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
@@ -54,7 +56,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -85,6 +86,22 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       touched: {
         ...formState.touched,
         description: true
+      }
+    }));
+  };
+
+  const handleChangeSelect = event => {
+    let arr = [];
+    map(event, items => arr.push({ id: items.value, name: items.label }));
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        categorys: arr
+      },
+      touched: {
+        ...formState.touched,
+        categorys: true
       }
     }));
   };
@@ -182,14 +199,19 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </div>
                 <FormGroup>
                   <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="category" onChange={handleChange}>
-                    <option>Chọn...</option>
-                    {map(listOptions, value => (
-                      <option value={value.id} key={value.id}>
-                        {value.name}
-                      </option>
-                    ))}
-                  </Input>
+                  <Select
+                    name="categorys"
+                    closeMenuOnSelect={false}
+                    components={makeAnimated}
+                    options={map(listOptions, values => {
+                      return {
+                        value: values.id,
+                        label: values.name
+                      };
+                    })}
+                    isMulti
+                    onChange={handleChangeSelect}
+                  />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
                   {t('save')}
