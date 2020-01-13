@@ -1,7 +1,8 @@
 import request from 'helpers/request';
-const getNews = () => {
+
+const getGroupService = () => {
   return request({
-    url: '/news',
+    url: '/teams',
     method: 'GET'
   })
     .then(res => {
@@ -12,9 +13,9 @@ const getNews = () => {
     });
 };
 
-const getNewsId = id => {
+const getGroupByIdService = id => {
   return request({
-    url: `/news/${id}`,
+    url: `/teams/${id}`,
     method: 'GET'
   })
     .then(res => {
@@ -24,9 +25,23 @@ const getNewsId = id => {
       return error.response.data;
     });
 };
-const addNews = data => {
+
+const getGroupByUser = () => {
   return request({
-    url: `/news`,
+    url: `/teams/user`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const createGroupService = data => {
+  return request({
+    url: '/teams',
     method: 'POST',
     data: data
   })
@@ -38,9 +53,9 @@ const addNews = data => {
     });
 };
 
-const editNews = data => {
+const editGroupService = (id, data) => {
   return request({
-    url: `/news/${data.newsId}`,
+    url: `/teams/${id}`,
     method: 'PUT',
     data: data
   })
@@ -51,24 +66,9 @@ const editNews = data => {
       return error.response.data;
     });
 };
-
-const aprrNews = data => {
+const deleteGroupService = id => {
   return request({
-    url: `/news/accept/${data.newsId}`,
-    method: 'PUT',
-    data: data
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(error => {
-      return error.response.data;
-    });
-};
-
-const deleteNews = id => {
-  return request({
-    url: `/news/${id}`,
+    url: `/teams/${id}`,
     method: 'DELETE'
   })
     .then(res => {
@@ -79,18 +79,11 @@ const deleteNews = id => {
     });
 };
 
-const getNewByCategoryID = id => {
-  return request({
-    // url: `/news/category_is_active/${id}`,
-    url: `/news/isActive`,
-    method: 'GET'
-  })
-    .then(res => {
-      return res;
-    })
-    .catch(error => {
-      return error.response.data;
-    });
+export {
+  getGroupService,
+  getGroupByIdService,
+  getGroupByUser,
+  createGroupService,
+  editGroupService,
+  deleteGroupService
 };
-
-export { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCategoryID };

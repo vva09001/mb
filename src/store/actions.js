@@ -18,6 +18,7 @@ import NetworkActions from './network/actions';
 import CountryActions from './country/actions';
 import InterestRateActions from './interestrate/actions';
 import ExChangeRateActions from './exchangeRate/actions';
+import GroupActions from './group/actions';
 
 export {
   NewActions,
@@ -39,5 +40,6 @@ export {
   FeedbackActions,
   NetworkActions,
   InterestRateActions,
-  ExChangeRateActions
+  ExChangeRateActions,
+  GroupActions
 };

@@ -1,6 +1,12 @@
 import actions from './actions';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getSliderService, createSliderService, editSliderService, deleteSliderService, getSliderId } from 'services/slider';
+import {
+  getSliderService,
+  createSliderService,
+  editSliderService,
+  deleteSliderService,
+  getSliderId
+} from 'services/slider';
 import { Error, Success } from 'helpers/notify';
 
 function* getSliderSaga() {
@@ -91,5 +97,11 @@ function* deleteSliderSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(getSliderSaga), fork(createSliderSaga), fork(editSliderSaga), fork(deleteSliderSaga), fork(getSliderIdSaga)]);
+  yield all([
+    fork(getSliderSaga),
+    fork(createSliderSaga),
+    fork(editSliderSaga),
+    fork(deleteSliderSaga),
+    fork(getSliderIdSaga)
+  ]);
 }

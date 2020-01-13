@@ -19,6 +19,7 @@ import NetworkSaga from './network/saga';
 import CountrySaga from './country/saga';
 import InterestSaga from './interestrate/saga';
 import ExChangeSaga from './exchangeRate/saga';
+import GroupSaga from './group/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -41,6 +42,7 @@ export default function* rootSaga() {
     FeedbackSaga(),
     NetworkSaga(),
     InterestSaga(),
-    ExChangeSaga()
+    ExChangeSaga(),
+    GroupSaga()
   ]);
 }
