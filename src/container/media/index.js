@@ -8,7 +8,7 @@ import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } fro
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
-import { Button, Col, Row } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 import history from 'helpers/history';
 
 const PropsType = {

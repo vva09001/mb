@@ -92,12 +92,15 @@ export const networkRouter = {
   icon: 'code-branch'
 };
 
-export const toolMenu  = {
+export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
   icon: 'sliders-h',
-  children: [{ to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true }]
+  children: [
+    { to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true },
+    { to: '/exchangeRate', name: 'interest_rate.interest_rate', exact: true }
+  ]
 };
 export default [
   homeRoutes,

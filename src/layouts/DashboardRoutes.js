@@ -47,7 +47,9 @@ import Network from '../container/Network';
 import NetworkCreate from '../container/Network/Create';
 import NetworkDetail from '../container/Network/Detail';
 import ToolMenu from 'container/InterestRate/index';
-import DeleteFiles from 'container/media/deleteFiles'
+import DeleteFiles from 'container/media/deleteFiles';
+import ListExchangeRate from 'container/exchangeRate'
+import ExChangeRateCreate from 'container/exchangeRate/create'
 
 const DashboardRoutes = () => (
   <Switch>
@@ -120,7 +122,9 @@ const DashboardRoutes = () => (
 
     {/*toolMenu*/}
     <Route path="/interest-rate" exact component={ToolMenu}/>
-
+    <Route path="/exchangeRate" exact component={ListExchangeRate}/>
+    <Route path="/exchangeRate/create" exact component={ExChangeRateCreate}/>
+    
     {/*Redirect*/}
     <Redirect to="/errors/404" />
   </Switch>
