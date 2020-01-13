@@ -97,7 +97,10 @@ export const toolMenu = {
   to: '/',
   exact: true,
   icon: 'ellipsis-h',
-  children: [{ to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true }]
+  children: [
+    { to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true },
+    { to: '/exchangeRate', name: 'interest_rate.exchange_rate', exact: true }
+  ]
 };
 
 export const groupRouter = {

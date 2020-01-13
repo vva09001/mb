@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
@@ -14,6 +15,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ModalMedia from '../../components/Media/ModalMedia';
+import UploadAdapter from '../../services/uploadImage';
 
 const PropsType = {
   listForm: PropTypes.array,
@@ -137,7 +139,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
     };
     editNew(body, onSuccess, onFail);
   };
-
   return (
     <React.Fragment>
       <Nav tabs>
@@ -193,6 +194,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   ckEditorChange(event, data);
+                }}
+                onInit={editor => {
+                  editor.ui.view.editable.element.style.height = 'auto';
+                  editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                    return new UploadAdapter(loader);
+                  };
                 }}
               />
             </FormGroup>

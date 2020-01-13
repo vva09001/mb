@@ -5,7 +5,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions, MediaActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import Select from 'react-select';
@@ -14,6 +14,7 @@ import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 import ModalMedia from '../../components/Media/ModalMedia';
+import UploadAdapter from '../../services/uploadImage';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -21,10 +22,11 @@ const PropsType = {
   getCategory: PropTypes.func,
   newsCreate: PropTypes.func,
   getForm: PropTypes.func,
-  imageSeletedata: PropTypes.object
+  imageSeletedata: PropTypes.object,
+  addFiles: PropTypes.func
 };
 
-function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata }) {
+function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata, addFiles }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -68,6 +70,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     }));
   };
 
+  const upload = loader => {
+    let formData = new FormData();
+    formData.append('files', loader.file);
+    formData.append('folderName', 'News/');
+    addFiles(formData);
+  };
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
@@ -115,7 +123,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     };
     newsCreate(body, onSuccess, onFail);
   };
-
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -161,6 +168,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
+                    }}
+                    onInit={editor => {
+                      editor.ui.view.editable.element.style.height = 'auto';
+                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                        return new UploadAdapter(loader);
+                      };
                     }}
                   />
                 </FormGroup>
@@ -249,7 +262,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   newsCreate: NewActions.AddNews,
   getCategory: CategoryActions.getCategoryAction,
-  getForm: FormBuilderActions.getFormAction
+  getForm: FormBuilderActions.getFormAction,
+  addFiles: MediaActions.AddImages
 };
 
 export default connect(

@@ -17,6 +17,7 @@ import StoreFontActions from './storefont/actions';
 import NetworkActions from './network/actions';
 import CountryActions from './country/actions';
 import InterestRateActions from './interestrate/actions';
+import ExChangeRateActions from './exchangeRate/actions';
 import GroupActions from './group/actions';
 
 export {
@@ -39,5 +40,6 @@ export {
   FeedbackActions,
   NetworkActions,
   InterestRateActions,
+  ExChangeRateActions,
   GroupActions
 };
