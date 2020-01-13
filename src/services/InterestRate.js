@@ -42,4 +42,18 @@ const updateInterestRateService = (data) => {
     });
 };
 
-export { getInterestRateService ,createInterestRateService ,updateInterestRateService};
+const deleteInterestRateService = (data) => {
+  return request({
+    url: `/interest_rate`,
+    method: 'DELETE',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export { getInterestRateService ,createInterestRateService ,updateInterestRateService ,deleteInterestRateService};

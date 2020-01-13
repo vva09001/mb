@@ -1,8 +1,7 @@
 import Actions from './actions';
-import { map } from 'lodash';
 
 const initialState = {
-  data:[],
+  data: [],
   modal: false
 };
 
@@ -22,7 +21,7 @@ const InterestRate = (state = initialState, action) => {
       return {
         ...state,
         modal: action.data
-      }
+      };
     default:
       return state;
   }

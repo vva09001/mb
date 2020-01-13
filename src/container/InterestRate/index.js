@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Button, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap';
+import {
+  Row,
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Table,
+  CustomInput
+} from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes, { bool } from 'prop-types';
 import { connect } from 'react-redux';
 import { InterestRateActions } from '../../store/actions';
 import { Error, Success } from 'helpers/notify';
 import history from 'helpers/history';
-import { useParams } from 'react-router-dom';
 import { map, slice } from 'lodash';
 import ReactPaginate from 'react-paginate';
+import useBulkSelect from '../../hooks/useBulkSelect';
 
 const Proptype = {
   data: PropTypes.array,
-  modals: PropTypes.bool,
   getInterestRate: PropTypes.func,
   createInterestRate: PropTypes.func,
-  updateInterestRate: PropTypes.func
+  updateInterestRate: PropTypes.func,
+  deleteInterestRate: PropTypes.func
 };
 
-function InterestRate({ getInterestRate, data, createInterestRate, modals, updateInterestRate }) {
+function InterestRate({ getInterestRate, data, createInterestRate, updateInterestRate, deleteInterestRate }) {
   useEffect(() => {
     getInterestRate();
   }, [getInterestRate]);
@@ -37,9 +49,6 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       ...formState,
       data: data
     }));
-    if (modals) {
-      setModal(!modal);
-    }
   }, [data]);
 
   const handleChangeCreate = (event) => {
@@ -57,13 +66,16 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       }
     }));
   };
+
   const onSuccess = () => {
     Success('Tạo thành công');
     history.goBack();
   };
+
   const onFail = () => {
     Error('Tạo thất bại');
   };
+
   const onSave = () => {
     setFormState(formState => ({
       ...formState,
@@ -87,15 +99,18 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
         interestRateError: t('interest_rate.interest_rate_error')
       }));
     }
+
     if (!checkError) {
       if (!formState.dataCreate.id) {
         createInterestRate(formState.dataCreate, onSuccess, onFail);
       } else {
         updateInterestRate(formState.dataCreate, onSuccess, onFail);
       }
+      setModal(!modal);
       history.push('/interest-rate');
     }
   };
+
   const onClickUpdate = values => {
     setModal(!modal);
     setFormState(formState => ({
@@ -103,6 +118,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       dataCreate: values
     }));
   };
+
   const onClickCreate = values => {
     setModal(!modal);
     setFormState(formState => ({
@@ -119,7 +135,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       termError: null,
       interestRateError: null
     }));
-    setModal(!modal)
+    setModal(!modal);
   };
 
   const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }}
@@ -127,7 +143,25 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
 
   const [page, setPage] = useState(0);
 
+  const fileIds = map(data, values => {
+    return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(fileIds);
+  const clickDeleteInterestRate = (selectedItems) => {
+
+    deleteInterestRate(selectedItems, onSuccess, onFail);
+
+  };
   const list = slice(data, page * 10, page * 10 + 10);
+
   return (
     <React.Fragment>
       <Row>
@@ -135,6 +169,8 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
       </Row>
       <Row className="mb-2">
         <Button color="primary" className="mr-2" onClick={() => onClickCreate()}>{t('create')}</Button>
+        <Button onClick={() => clickDeleteInterestRate(selectedItems)}>{t('delete')}</Button>
+
       </Row>
       <React.Fragment>
         <Row className="p-3 backgroud__white">
@@ -142,7 +178,13 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
             <thead>
             <tr>
               <th>
-                <input type="checkbox"/>
+                <CustomInput
+                  id="checkbox-bulk"
+                  type="checkbox"
+                  checked={isAllSelected}
+                  onChange={() => toggleIsAllSelected()}
+                  innerRef={input => input && (input.indeterminate = isIndeterminate)}
+                />
               </th>
               <th>{t('interest_rate.term')}</th>
               <th>{t('interest_rate.interest_rate')}</th>
@@ -154,7 +196,12 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
               return (
                 <tr key={values.id}>
                   <th>
-                    <input type="checkbox"/>
+                    <CustomInput
+                      id={'checkbox-' + values.id}
+                      type="checkbox"
+                      checked={isSelectedItem(values.id)}
+                      onChange={() => toggleSelectedItem(values.id)}
+                    />
                   </th>
                   <th>
                     <span onClick={() => onClickUpdate(values)}>{values.term} {t('month')}</span>
@@ -191,7 +238,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, modals, updat
           </div>
         </Row>
       </React.Fragment>
-      <Modal isOpen={modal} toggle={toggle} external={externalCloseBtn}>
+      <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader>{!formState.dataCreate.id ? t('interest_rate.create') : t('interest_rate.update')}</ModalHeader>
         <ModalBody>
           <FormGroup>
@@ -240,7 +287,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getInterestRate: InterestRateActions.getInterestRateAction,
   createInterestRate: InterestRateActions.createInterestRateAction,
-  updateInterestRate: InterestRateActions.updateInterestRateAction
+  updateInterestRate: InterestRateActions.updateInterestRateAction,
+  deleteInterestRate: InterestRateActions.deleteInterestRateAction
 };
 
 export default connect(
