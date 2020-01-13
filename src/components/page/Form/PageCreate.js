@@ -820,7 +820,15 @@ function PagesCreate({
                           </Button>
                         )}
                         {deleteActive && (
-                          <Button onClick={() => onRemoveBlockValue(detail.id, detail.pageBlocks[index].id)}>
+                          <Button
+                            onClick={() =>
+                              onRemoveBlockValue(
+                                detail.id,
+                                detail.pageBlocks[index] === undefined ? null : detail.pageBlocks[index].id,
+                                index
+                              )
+                            }
+                          >
                             <FontAwesomeIcon icon={faTrash} />
                           </Button>
                         )}

@@ -8,7 +8,7 @@ import SortableTree from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { CategoryActions } from '../../../store/actions';
+import { CategoryActions, GroupActions } from '../../../store/actions';
 import PopupComfirm from 'components/common/PopupComfirm';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -21,18 +21,21 @@ const Proptype = {
   deleteCategory: Proptypes.func,
   expanstion: Proptypes.func,
   updatePosition: Proptypes.func,
-  imageSeletedata: Proptypes.object
+  imageSeletedata: Proptypes.object,
+  getGroup: Proptypes.func
 };
 
 function Category({
   listCategory,
+  listGroup,
   getCategory,
   addCategory,
   editCategory,
   deleteCategory,
   expanstion,
   updatePosition,
-  imageSeletedata
+  imageSeletedata,
+  getGroup
 }) {
   const [activeTab, setActiveTab] = useState('1');
   const [deleteActive, setDeleteActive] = useState(false);
@@ -52,7 +55,8 @@ function Category({
 
   useEffect(() => {
     getCategory();
-  }, [getCategory]);
+    getGroup();
+  }, [getCategory, getGroup]);
 
   const { t } = useTranslation();
 
@@ -251,6 +255,7 @@ function Category({
                         onSubmit={onSubmit}
                         value={formState.values}
                         deleteActive={deleteActive}
+                        listGroup={listGroup}
                         onDelete={id => {
                           setIdCategoty(id);
                           setIsOpen(!isOpen);
@@ -264,6 +269,7 @@ function Category({
                         value={formState.values}
                         deleteActive={deleteActive}
                         onSubmit={onSubmitChildren}
+                        listGroup={listGroup}
                         onDelete={id => {
                           setIdCategoty(id);
                           setIsOpen(!isOpen);
@@ -288,7 +294,8 @@ Category.propTypes = Proptype;
 const mapStateToProps = state => {
   return {
     listCategory: state.CategoryReducer.listCategory,
-    imageSeletedata: state.MediaReducer.detail
+    imageSeletedata: state.MediaReducer.detail,
+    listGroup: state.GroupReducer.listGroupByUser
   };
 };
 
@@ -298,7 +305,8 @@ const mapDispatchToProps = {
   editCategory: CategoryActions.editCategoryAction,
   deleteCategory: CategoryActions.deleteCategoryAction,
   expanstion: CategoryActions.expansionAction,
-  updatePosition: CategoryActions.updatePositionAction
+  updatePosition: CategoryActions.updatePositionAction,
+  getGroup: GroupActions.getGroupByUserAction
 };
 
 export default connect(
