@@ -615,7 +615,15 @@ function Page({
     let mutileImage = [];
     map(node.pageBlocks, (values, index) => {
       newContent.push(JSON.parse(values.content));
-      mutileImage = JSON.parse(values.content);
+      let block = values.blocks;
+      let blockValue = block.blockValues;
+      let type = null;
+      if (blockValue[index] !== undefined) {
+        type = blockValue[index].type_id;
+      }
+      if (type === 9) {
+        mutileImage.push(...JSON.parse(values.content));
+      }
       listBlock.push({ ...values.blocks, content: values.content, title: values.title });
       let content = JSON.parse(values.content);
       stateEdit = [
