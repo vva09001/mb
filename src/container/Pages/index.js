@@ -618,9 +618,10 @@ function Page({
       let block = values.blocks;
       let blockValue = block.blockValues;
       let type = null;
-      if (blockValue[index] !== undefined) {
-        type = blockValue[index].type_id;
+      if (blockValue[0] !== undefined) {
+        type = blockValue[0].type_id;
       }
+      // console.log(type);
       if (type === 9) {
         mutileImage.push(...JSON.parse(values.content));
       }

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
@@ -96,7 +95,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
 
   const handleChangeSelect = event => {
     let arr = [];
-    map(event, items => arr.push(items.value));
+    map(event, items => arr.push({ id: items.value, name: items.label }));
     setFormState(formState => ({
       ...formState,
       values: {
@@ -244,7 +243,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 name="categorys"
                 closeMenuOnSelect={false}
                 components={makeAnimated}
-                // value={{ value: formState.values.category, label: '123' }}
+                value={map(formState.values.categories, items => {
+                  return {
+                    value: items.id,
+                    label: items.name
+                  };
+                })}
                 options={map(listOptions, values => {
                   return {
                     value: values.id,

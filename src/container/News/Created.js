@@ -92,7 +92,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const handleChangeSelect = event => {
     let arr = [];
-    map(event, items => arr.push(items.value));
+    map(event, items => arr.push({ id: items.value, name: items.label }));
     setFormState(formState => ({
       ...formState,
       values: {
