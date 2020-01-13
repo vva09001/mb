@@ -14,30 +14,26 @@ class UploadAdapter {
   }
 
   upload() {
-      return this.loader.file
-      .then(file => {
-        const data = new FormData();
-        data.append('folderName', 'News/');
-        data.append('files', file);
-        
-        return request({
-          url: '/image/addListFileWithFolder',
-          method: 'POST',
-          data: data
-        })
-          .then(res => {
-            console.log(res.data[0]);
-            var resData = res.data[0];
-            resData.default = resData.url;
-            console.log(resData.default)
-            return resData;
-          })
-          .catch(error => {
-            console.log(error);
-            return Promise.reject(error);
-          });
+    return this.loader.file.then(file => {
+      const data = new FormData();
+      data.append('folderName', 'News/');
+      data.append('files', file);
+
+      return request({
+        url: '/image/addListFileWithFolder',
+        method: 'POST',
+        data: data
       })
-    
+        .then(res => {
+          var resData = res.data[0];
+          resData.default = resData.url;
+
+          return resData;
+        })
+        .catch(error => {
+          return Promise.reject(error);
+        });
+    });
   }
 
   abort() {
