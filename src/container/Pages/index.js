@@ -65,6 +65,7 @@ function Page({
   const [contentData, setContentData] = useState([]);
   const [formEdit, setFormEdit] = useState([]);
   const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
+  const [mutileImage, setMutileImage] = useState([]);
 
   useEffect(() => {
     getPage();
@@ -313,6 +314,31 @@ function Page({
     });
     setContentData(content);
     setFormBlock(newForm);
+  };
+
+  const handleEditImge = (data, index) => {
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
   };
   const onSubmit = event => {
     event.preventDefault();
@@ -586,8 +612,10 @@ function Page({
     let stateEdit = [];
     let newContent = [];
     let listBlock = [];
+    let mutileImage = [];
     map(node.pageBlocks, (values, index) => {
       newContent.push(JSON.parse(values.content));
+      mutileImage = JSON.parse(values.content);
       listBlock.push({ ...values.blocks, content: values.content, title: values.title });
       let content = JSON.parse(values.content);
       stateEdit = [
@@ -595,6 +623,7 @@ function Page({
         { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
       ];
     });
+    setMutileImage(mutileImage);
     setFormBlock(stateEdit);
     setContentData([...newContent, {}]);
     setFormEdit([...stateEdit]);
@@ -747,7 +776,9 @@ function Page({
                 handlePostEdit={handlePostEdit}
                 mutiPost={mutiPost}
                 mutiPostEdit={mutiPostEdit}
+                mutileImage={mutileImage}
                 handleImge={handleImge}
+                handleEditImge={handleEditImge}
                 editorChange={(data, key, index) => editorChange(data, key, index)}
                 onDelete={() => setIsOpen(!isOpen)}
               />

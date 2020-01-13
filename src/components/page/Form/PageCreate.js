@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Collapse, ListGroup, ListGroupItem } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
@@ -25,6 +25,7 @@ const PropsType = {
   listCategory: PropTypes.array,
   imageSeletedata: PropTypes.object,
   listGroup: PropTypes.array,
+  mutileImage: PropTypes.array,
   onSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   value: PropTypes.object,
@@ -39,7 +40,8 @@ const PropsType = {
   handlePostEdit: PropTypes.func,
   mutiPost: PropTypes.func,
   mutiPostEdit: PropTypes.func,
-  handleImge: PropTypes.func
+  handleImge: PropTypes.func,
+  handleEditImge: PropTypes.func
 };
 
 function PagesCreate({
@@ -51,6 +53,7 @@ function PagesCreate({
   handleChange,
   value,
   detail,
+  mutileImage,
   imageSeletedata,
   stateEdit,
   onDelete,
@@ -65,7 +68,8 @@ function PagesCreate({
   handlePostEdit,
   mutiPost,
   mutiPostEdit,
-  handleImge
+  handleImge,
+  handleEditImge
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -79,6 +83,10 @@ function PagesCreate({
   const [formImg, setFormImg] = useState([
     { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }
   ]);
+
+  useEffect(() => {
+    setFormImg(mutileImage);
+  }, [setFormImg, mutileImage]);
 
   const toggleOpened = (e, index) => {
     e.preventDefault();
@@ -107,7 +115,7 @@ function PagesCreate({
     setFormImg(newData);
   };
 
-  const handleChangeImge = (event, itemIndex, index) => {
+  const handleChangeImge = (event, itemIndex, index, acitve) => {
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -119,7 +127,11 @@ function PagesCreate({
       }
     });
     setFormImg(newData);
-    handleImge(newData, index);
+    if (acitve) {
+      handleEditImge(newData, index);
+    } else {
+      handleImge(newData, index);
+    }
   };
 
   const getNewsByCategoryID = id => {
@@ -527,44 +539,98 @@ function PagesCreate({
             />
           </FormGroup>
         );
-      case 5: // image
+      case 9: // mutile image
+        // setFormImg(form);
         return (
           <FormGroup>
-            <Label>{items.title}</Label>
-            <div className="form-img">
-              <div className="block_image">
-                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
-              </div>
-              <div className="input_image">
-                <div className="input_wapper">
-                  <div>
-                    <Label>Chú thích 1</Label>
-                    <Input type="text" name={items.key} />
+            <Label for="template">{items.title}</Label>
+            {map(formImg, (value, itemIndex) => {
+              return (
+                <div key={itemIndex}>
+                  <div className="mt-3 btnBlock-remove">
+                    <Button onClick={() => removeItem(itemIndex)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
                   </div>
-                  <div>
-                    <Label>Chú thích 2</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Chú thích 3</Label>
-                    <Input type="text" name={items.key} />
+                  <div className="form-img">
+                    <div>
+                      <div className="block_image mb-2">
+                        <img
+                          alt="items"
+                          src={value.image === '' ? IconNoImage : value.image}
+                          style={{ maxWidth: '100%' }}
+                        />
+                      </div>
+                      <ModalMedia setState={() => onSetState(itemIndex)} />
+                    </div>
+                    <div className="input_image">
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.title')}</Label>
+                          <Input
+                            type="text"
+                            name="title"
+                            value={value.title}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.description')}</Label>
+                          <Input
+                            type="text"
+                            name="description"
+                            value={value.description}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.learn_more')}</Label>
+                          <Input
+                            type="text"
+                            name="learnMore"
+                            value={value.learnMore}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                      </div>
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.text')}</Label>
+                          <Input
+                            type="text"
+                            name="text"
+                            value={value.text}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.url')}</Label>
+                          <Input
+                            type="text"
+                            name="url"
+                            value={value.url}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.video_url')}</Label>
+                          <Input
+                            type="text"
+                            name="video_url"
+                            value={value.video_url}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="input_wapper">
-                  <div>
-                    <Label>Gọi hành động văn bản</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Gọi hành động URL</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Video URL</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                </div>
-              </div>
+              );
+            })}
+            <div>
+              <Button className="mt-3" onClick={addMoreFormImge}>
+                {t('addBlock')}
+              </Button>
             </div>
           </FormGroup>
         );
@@ -800,7 +866,7 @@ function PagesCreate({
                                   arr = [...arr, content];
                                 });
                                 let tem = arr[indexItems];
-                                // console.log(stateEdit[index][`newsID`]);
+
                                 return (
                                   <div key={indexItems}>
                                     {renderInputEdit(items, stateEdit[index][tem], stateEdit[index][`newsID`], index)}
