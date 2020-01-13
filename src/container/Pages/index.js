@@ -281,6 +281,34 @@ function Page({
     setContentData(newContent);
     setFormEdit(newValues);
   };
+
+  const handleImge = (data, index) => {
+    let newForm = map(formBlock, (value, id) => {
+      if (index !== id) {
+        return data;
+      } else {
+        return {
+          ...value,
+          id: 0,
+          position: id,
+          id_block: value.block_id,
+          mutileImge: data
+        };
+      }
+    });
+    let content = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
@@ -414,6 +442,28 @@ function Page({
           content: JSON.stringify(contentData[i]),
           contentHtml: contentHtml
         };
+        if (contentData[i].mutileImge) {
+          for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            let key = Object.keys(contentData[i].mutileImge[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileImge[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
         if (contentData[i].mutilePost) {
           for (let j = 0; j < contentData[i].mutilePost.length; j++) {
             let key = Object.keys(contentData[i].mutilePost[j]);
@@ -451,7 +501,7 @@ function Page({
           pageBlocks: [...formBlock]
         };
       }
-
+      console.log(data);
       addPage(data);
       setFormState({
         values: {},
@@ -582,7 +632,7 @@ function Page({
       <h4> {t('page.page')}</h4>
       <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
-          <Button className="mb-2" onClick={addNode}>
+          <Button className="mb-2 mr-2" onClick={addNode}>
             {t('page.addRoot')}
           </Button>
           <Button
@@ -617,7 +667,7 @@ function Page({
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '45%' }}>
+          <div style={{ height: '50%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
@@ -627,6 +677,8 @@ function Page({
               onMoveNode={treeData => onMove(treeData)}
               theme={FileExplorerTheme}
             />
+          </div>
+          <div className="listBlock">
             {map(listTags, (values, index) => (
               <React.Fragment key={index}>
                 <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
@@ -644,32 +696,31 @@ function Page({
           </div>
         </Col>
         <Col lg={9} md={8}>
-          <div>
-            <Row>
-              <Col sm="12">
-                <PagesCreate
-                  handleChange={handleChange}
-                  onSubmit={onSubmit}
-                  value={formState.values}
-                  stateEdit={formEdit}
-                  detail={PageDetail}
-                  blockData={listBlock}
-                  handleEidt={(event, index) => handleEidt(event, index)}
-                  handleFomBlock={(event, index) => handleFomBlock(event, index)}
-                  onRemoveBlock={index => removeItem(index)}
-                  onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
-                  deleteActive={deleteActive}
-                  listCategory={listCategory}
-                  handlePost={handlePost}
-                  handlePostEdit={handlePostEdit}
-                  mutiPost={mutiPost}
-                  mutiPostEdit={mutiPostEdit}
-                  editorChange={(data, key, index) => editorChange(data, key, index)}
-                  onDelete={() => setIsOpen(!isOpen)}
-                />
-              </Col>
-            </Row>
-          </div>
+          <Row>
+            <Col sm="12">
+              <PagesCreate
+                handleChange={handleChange}
+                onSubmit={onSubmit}
+                value={formState.values}
+                stateEdit={formEdit}
+                detail={PageDetail}
+                blockData={listBlock}
+                handleEidt={(event, index) => handleEidt(event, index)}
+                handleFomBlock={(event, index) => handleFomBlock(event, index)}
+                onRemoveBlock={index => removeItem(index)}
+                onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
+                deleteActive={deleteActive}
+                listCategory={listCategory}
+                handlePost={handlePost}
+                handlePostEdit={handlePostEdit}
+                mutiPost={mutiPost}
+                mutiPostEdit={mutiPostEdit}
+                handleImge={handleImge}
+                editorChange={(data, key, index) => editorChange(data, key, index)}
+                onDelete={() => setIsOpen(!isOpen)}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

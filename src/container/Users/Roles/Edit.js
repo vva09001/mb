@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
-
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
@@ -14,69 +13,129 @@ const PropsType = {
   detail: PropTypes.object,
   getpermission: PropTypes.func,
   listPrivilege: PropTypes.array,
-  getListPrivilege: PropTypes.func
+  getListPrivilege: PropTypes.func,
+  getListPrvilegesByGroup: PropTypes.func,
+  listPrivilegeByGroup: PropTypes.array
 };
-
-function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPrivilege }) {
+let dataPrivileges = [];
+let dataIdCurrent = [];
+function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup, listPrivilegeByGroup }) {
   const [formState, setFormState] = useState({
-    values: detail,
-    touched: {}
+    name: detail.name,
+    privileges: detail.privileges
   });
-
-  // const [activeTab, setActiveTab] = useState('1');
-
-  // const []
-
-  useEffect(() => {
-    getListPrivilege(formState.values.idRole);
-  }, [formState.values.idRole, getListPrivilege]);
-
-  useEffect(() => {
-    console.log(listPrivilege);
-  });
-
-  const [dataallow, setallowdata] = useState([]);
-  const [datadeny, setdatadeny] = useState([]);
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
-
+  useEffect(() => {
+    getListPrvilegesByGroup();
+  }, [getListPrvilegesByGroup]);
+  useEffect(() => {
+    getListPrivilege(detail.idRole);
+    dataIdCurrent = detail.privileges;
+  }, [detail, getListPrivilege]);
+  useEffect(() => {
+    dataPrivileges = listPrivilegeByGroup;
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        var check = {
+          checked: ''
+        };
+        docs = Object.assign(docs, check);
+      });
+    });
+    console.log(detail)
+    console.log(dataPrivileges)
+  });
+  const handleChecked = () => {
+    dataPrivileges.forEach(function(data) {
+      dataIdCurrent.forEach(function(docs) {
+        handleCheckedchildrenAllow(data.groupRole, docs);
+        handleCheckedchildrenDeny(data.groupRole);
+      });
+    });
+  };
+  const handleCheckedchildrenAllow = (groupRole, id) => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) === Number(id)) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    
+  };
+  const handleCheckedchildrenDeny = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (radios[i].checked == '') {
+          if (Number(radios[i].value) % 2 === 0) {
+            radios[i].checked = true;
+          }
+        } else break;
+      }
+    }
+  };
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
-      values: {
-        ...formState.values,
-        id: event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
+      name: event.target.value
     }));
   };
 
-  const allow = event => {
-    event.persist();
-    setallowdata([...dataallow, parseInt(event.target.value)]);
+  const allowBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) % 2 === 1) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = true;
+        }
+      });
+    });
   };
-
-  const deny = event => {
-    event.persist();
-    setdatadeny([...datadeny, parseInt(event.target.value)]);
+  const denyBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) % 2 === 0) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = false;
+        }
+      });
+    });
+  };
+  const allowAll = () => {
+    dataPrivileges.forEach(function(data) {
+      allowBlock(data.groupRole);
+    });
+  };
+  const denyAll = () => {
+    dataPrivileges.forEach(function(data) {
+      denyBlock(data.groupRole);
+    });
   };
   const onSubmitRoles = event => {
     event.preventDefault();
     editRole(formState.values);
-  };
-  const onSubmitPermission = event => {
-    event.preventDefault();
-    getpermission(formState.values.idRole, dataallow, datadeny);
   };
   return (
     <React.Fragment>
@@ -106,608 +165,112 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitRoles}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.fistname')}</Label>
-                  <Input
-                    type="text"
-                    name="name"
-                    value={formState.values.name === undefined ? '' : formState.values.name}
-                    onChange={handleChange}
-                  />
+                  <Label for="exampleName">{t('name')}</Label>
+                  <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
-                <Button color="primary" type="submit">
+                {/* <Button color="primary" type="submit" onClick={onSubmitRoles}>
                   {t('save')}
-                </Button>
+                </Button> */}
               </Form>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form
-                    className="p-3"
-                    style={{ background: '#fff', justifyContent: 'center' }}
-                    onSubmit={onSubmitPermission}
-                  >
-                    <h4>{t('category')}</h4>
-                    <FormGroup>
-                      <div>
-                        <Label for="exampleCheckbox" inline="true">
-                          <h5>{t('admincategory')}</h5>
-                        </Label>
-                      </div>
-
-                      <div>
-                        <ButtonGroup size="sm">
-                          <Button>{t('Allow All')}</Button>
-                          <Button>{t('Deny All')}</Button>
-                        </ButtonGroup>
-                      </div>
+                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                    <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
+                      <h4>{t('Permissions')}</h4>
                     </FormGroup>
-                    <hr />
                     <FormGroup>
                       <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('admincategory')}</h5>
-                            </Label>
-                          </div>
+                        <Col>
+                          <Button onClick={() => handleChecked()}>
+                            {t('roleinit.getallroleof')} {detail.name}
+                          </Button>
                         </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
+                        <Col>
+                          <ButtonGroup size="sm">
+                            <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
+                            <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
+                          </ButtonGroup>
                         </Col>
                       </Row>
                     </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'CATEGORY')
-                        return (
+                    {dataPrivileges.map((values, index) => {
+                      return (
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                          <FormGroup>
+                            <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
+                              <Label>
+                                <h5>{values.groupRole}</h5>
+                              </Label>
+                            </Col>
+                          </FormGroup>
                           <FormGroup>
                             <Row>
                               <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
+                                <div>
+                                  <Label for="exampleCheckbox" inline="true">
+                                    <h5>{t('ADMIN.' + values.groupRole)}</h5>
+                                  </Label>
+                                </div>
                               </Col>
                               <Col xs="6">
                                 <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
+                                  <ButtonGroup size="sm">
+                                    <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
+                                    <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
+                                  </ButtonGroup>
                                 </div>
                               </Col>
                             </Row>
                           </FormGroup>
-                        );
+                          {values.privileges.map((value, index) => {
+                            return (
+                              <FormGroup key={index}>
+                                <Row style={{ paddingLeft: 16 }}>
+                                  <Col xs="6">
+                                    <Label for="exampleCheckbox">{t(value.name)}</Label>
+                                  </Col>
+                                  <Col xs="6">
+                                    <div>
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id}
+                                        value={value.privilegeId}
+                                        name={value.name}
+                                        label="Allow"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = true;
+                                        }}
+                                      />
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id + 1}
+                                        value={value.privilegeId + 1}
+                                        name={value.name}
+                                        label="Deny"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = false;
+                                        }}
+                                      />
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </FormGroup>
+                            );
+                          })}
+                        </Form>
+                      );
                     })}
-                    <h4>{t('page')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminpage')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'PAGE')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('Slider')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminSlider')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'SLIDER')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('Menu')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminMenu')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'MENU')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('MenuItem')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminMenuItem')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'MENUITEM')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('MainTemplate')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminMainTemplate')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'MAILTEMPLATE')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('News')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminNews')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'NEWS')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('Networks')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminNetworks')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'NETWORKS')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('InterestRate')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminInterestRate')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'INTEREST_RATE')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <h4>{t('ExchangeRate')}</h4>
-                    <hr />
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <div>
-                            <Label for="exampleCheckbox" inline="true">
-                              <h5>{t('adminExchangeRate')}</h5>
-                            </Label>
-                          </div>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <ButtonGroup size="sm">
-                              <Button>{t('Allow All')}</Button>
-                              <Button>{t('Deny All')}</Button>
-                            </ButtonGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
-                    {listPrivilege.map((values, index) => {
-                      if (values.groupRole === 'EXCHANGE_RATE')
-                        return (
-                          <FormGroup>
-                            <Row>
-                              <Col xs="6">
-                                <Label for="exampleCheckbox">{t(values.name)}</Label>
-                              </Col>
-                              <Col xs="6">
-                                <div>
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id}
-                                    value={values.privilegeId}
-                                    name={values.name}
-                                    label="Allow"
-                                    inline="true"
-                                    onChange={allow}
-                                    // checked={}
-                                  />
-                                  <CustomInput
-                                    type="radio"
-                                    id={values.id + 1}
-                                    value={values.privilegeId + 1}
-                                    name={values.name}
-                                    label="Deny"
-                                    inline="true"
-                                    onChange={deny}
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                          </FormGroup>
-                        );
-                    })}
-                    <Button color="primary" type="submit">
+                    <Button color="primary" type="submit" onClick={onSubmitRoles}>
                       {t('save')}
                     </Button>
-                  </Form>
+                  </div>
                 </Col>
               </Row>
             </TabPane>
@@ -721,13 +284,18 @@ function RolesEdit({ editRole, detail, getpermission, listPrivilege, getListPriv
 RolesEdit.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { detail: state.RoleReducer.detail, listPrivilege: state.RoleReducer.listPrivilege };
+  return {
+    detail: state.RoleReducer.detail,
+    listPrivilege: state.RoleReducer.listPrivilege,
+    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
+  };
 };
 const mapDispatchToProps = {
   editRole: RoleActions.EditRoles,
   getpermission: RoleActions.setPermission,
   getListPrivilege: RoleActions.getPrivilegeRole,
-  getListRole: RoleActions.getListRole
+  getListRole: RoleActions.getListRole,
+  getListPrvilegesByGroup: RoleActions.getPrivilegeRoleByGroup
 };
 
 export default connect(

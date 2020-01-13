@@ -14,6 +14,7 @@ import SettingActions from './setting/actions';
 import MediaActions from './media/actions';
 import FeedbackActions from './backmail/actions';
 import StoreFontActions from './storefont/actions';
+import NetworkActions from './network/actions';
 import CountryActions from './country/actions';
 import InterestRateActions from './interestrate/actions';
 
@@ -35,5 +36,6 @@ export {
   MediaActions,
   StoreFontActions,
   FeedbackActions,
+  NetworkActions,
   InterestRateActions
 };

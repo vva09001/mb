@@ -37,8 +37,10 @@
     "questionConfirm": "Bạn có chắc chắn muốn xóa ?",
     "sidebar": "Thanh bên",
     "select": "Chọn...",
-    "feedback":"Phản hồi",
+    "feedback": "Phản hồi",
     "slug": "Đường dẫn",
+    "approveds": "Đã duyệt",
+    "pendings": "Chờ duyệt",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
@@ -124,6 +126,7 @@
         "media": "Thư viện",
         "storeFont": "Store Font",
         "slider": "Slider",
+        "network": "Quản lý mạng lưới",
         "tool_menu": "Thanh công cụ"
     },
     "user": {
@@ -149,7 +152,17 @@
         "logo": "Logo",
         "sociallinks": "Liên kết mạng xã hội",
         "footeraddress": "Footer Address",
-        "footerbrief": "Footer Brief"
+        "footerbrief": "Footer Brief",
+        "Favicon": "Favicon",
+        "HeaderLogo": "Header Logo",
+        "FooterLogo": "Footer Logo",
+        "FooterBackground": "Footer Background",
+        "Facebook": "Facebook",
+        "Instagram": "Instagram",
+        "Linkedin": "Linkedin",
+        "Pinterest": "Pinterest",
+        "GooglePlus": "Google Plus",
+        "Youtube": "Youtube"
     },
     "slider": {
         "createslider": "Tạo Slider",
@@ -182,6 +195,36 @@
         "subject": "Subject",
         "emailCc": "Gửi đến",
         "content": "Nội dung"
+    },
+    "block": {
+        "image": {
+            "title": "Tiêu đề",
+            "description": "Mô tả",
+            "learn_more": "Chú thích",
+            "text": "Văn bản",
+            "url": "URl",
+            "video_url": "Viedo URL"
+        }
+    },
+    "network": {
+        "approved": "Phê Duyệt",
+        "danhsach": "Danh sách mạng lưới",
+        "networkdetails": "Thông tin chi tiết mạng lưới",
+        "address": "Địa chỉ",
+        "address_name": "Tên địa điểm",
+        "language": "Ngôn ngữ",
+        "latitude": "Vĩ độ",
+        "longitude": "Kinh độ",
+        "network_category": "Loại mạng lưới",
+        "province_city": "Tỉnh/Thành phố",
+        "about": "Giới thiệu",
+        "create": "Tạo mới",
+        "down": "Tải file",
+        "processingunit": "Đơn vị xử lý",
+        "lastupdateddate": "Ngày cuối cập nhập",
+        "roleinit": {
+            "getallroleof": "Hiển thị quyền hiện tại của"
+        }
     },
     "interest_rate": {
         "interest_rate": "Lãi xuất",

@@ -68,7 +68,7 @@ function Edit({ detail, getFormId }) {
   return (
     <div>
       <h3>{t('formBuilder.embededform')}</h3>
-      <FormGroup>
+       <FormGroup>
         <Input
           style={{ backgroundColor: '#f5f5f5' }}
           type="textarea"
