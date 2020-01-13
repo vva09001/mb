@@ -92,12 +92,19 @@ export const networkRouter = {
   icon: 'code-branch'
 };
 
-export const toolMenu  = {
+export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
   icon: 'sliders-h',
   children: [{ to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true }]
+};
+
+export const groupRouter = {
+  name: 'menu.group',
+  to: '/group',
+  exact: true,
+  icon: 'code-branch'
 };
 export default [
   homeRoutes,
@@ -110,7 +117,8 @@ export default [
   sliderfontRoutes,
   storefontRoutes,
   mediaRouter,
+  groupRouter,
+  networkRouter,
   userRoutes,
-  settingRoutes,
-  networkRouter
+  settingRoutes
 ];

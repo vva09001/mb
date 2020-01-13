@@ -283,21 +283,21 @@ function Page({
   };
 
   const handleImge = (data, index) => {
-    let newForm = map(formBlock, (value, id) => {
-      if (index !== id) {
-        return data;
+    let newForm = map(formBlock, (value, indexItems) => {
+      if (index !== indexItems) {
+        return value;
       } else {
         return {
           ...value,
           id: 0,
-          position: id,
+          position: index,
           id_block: value.block_id,
           mutileImge: data
         };
       }
     });
-    let content = map(contentData, (values, id) => {
-      if (index !== id) {
+    let content = map(contentData, (values, indexItems) => {
+      if (index !== indexItems) {
         return values;
       } else {
         return {
@@ -425,23 +425,25 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        let key = null;
-        key = Object.keys(contentData[i]);
-        let regexp = '';
-        let replaceHTML = '';
-        key.forEach(items => {
-          regexp += items + '|';
-        });
-        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
-        replaceHTML = html.replace(regex, function(match) {
-          return contentData[i][match];
-        });
-        let contentHtml = replaceHTML.replace(/[{}]/g, '');
-        formBlock[i] = {
-          ...formBlock[i],
-          content: JSON.stringify(contentData[i]),
-          contentHtml: contentHtml
-        };
+        if (contentData[i]) {
+          let key = Object.keys(contentData[i]);
+          let regexp = '';
+          let replaceHTML = '';
+          key.forEach(items => {
+            regexp += items + '|';
+          });
+          let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+          replaceHTML = html.replace(regex, function(match) {
+            return contentData[i][match];
+          });
+          let contentHtml = replaceHTML.replace(/[{}]/g, '');
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(contentData[i]),
+            contentHtml: contentHtml
+          };
+        }
+
         if (contentData[i].mutileImge) {
           for (let j = 0; j < contentData[i].mutileImge.length; j++) {
             let key = Object.keys(contentData[i].mutileImge[j]);
@@ -461,7 +463,7 @@ function Page({
           formBlock[i] = {
             ...formBlock[i],
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div class="mutileImage_container">${muitle_post_html}</div>`
           };
         }
         if (contentData[i].mutilePost) {
@@ -501,7 +503,6 @@ function Page({
           pageBlocks: [...formBlock]
         };
       }
-      console.log(data);
       addPage(data);
       setFormState({
         values: {},

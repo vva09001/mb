@@ -116,9 +116,9 @@ function PagesCreate({
         };
       }
     });
-    // console.log(newData);
+    console.log(newData);
     setFormImg(newData);
-    handleImge(formImg, index);
+    handleImge(newData, index);
   };
 
   const getNewsByCategoryID = id => {
@@ -236,6 +236,7 @@ function PagesCreate({
         );
 
       case 9: // mutile image
+      // console.log(index);
         return (
           <FormGroup>
             <Label for="template">{data.title}</Label>

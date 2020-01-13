@@ -127,7 +127,8 @@
         "storeFont": "Store Font",
         "slider": "Slider",
         "network": "Quản lý mạng lưới",
-        "tool_menu": "Thanh công cụ"
+        "tool_menu": "Thanh công cụ",
+        "group": "Nhóm"
     },
     "user": {
         "fistname": "Tên",

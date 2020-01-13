@@ -128,7 +128,8 @@
         "storeFont": "Store Font",
         "slider": "Slider",
         "network":"Network Management",
-        "tool_menu": "Tool menu"
+        "tool_menu": "Tool menu",
+        "group": "Group"
     },
     "storefont": {
         "sociallinks": "Social links",
