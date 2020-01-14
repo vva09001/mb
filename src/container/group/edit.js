@@ -24,7 +24,7 @@ function EditGroup({ detail, getDetail, editGroup }) {
 
   useEffect(() => {
     getDetail(id);
-  }, [getDetail]);
+  }, [getDetail, id]);
 
   useEffect(() => {
     setFormState(formState => ({

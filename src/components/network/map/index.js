@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useGoogleMap, useMap } from '../map/hooks.js';
 import { useParams } from 'react-router-dom';
@@ -16,17 +16,17 @@ const Gmap = ({ detail, getNetworkId }) => {
     getNetworkId(id);
   }, [getNetworkId, id]);
 
-  let lattide = detail.latitude;
-  let lngtide = detail.longitude;
- 
+  // let lattide = detail.latitude;
+  // let lngtide = detail.longitude;
+
   var initialConfig = {
     zoom: 14,
-    center:  { lat: 16.051119 , lng: 108.205710 }  // lat: 16.051119, lng: 108.205710
+    center: { lat: 16.051119, lng: 108.20571 } // lat: 16.051119, lng: 108.205710
   };
 
   const googleMap = useGoogleMap(API_KEY);
   const mapContainerRef = useRef(null);
-  useMap({ googleMap, mapContainerRef, initialConfig});
+  useMap({ googleMap, mapContainerRef, initialConfig });
   return (
     <div
       style={{

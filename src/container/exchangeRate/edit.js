@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Button, Label, Col } from 'reactstrap';
+import React, { useState } from 'react';
+import { Row, Button, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
-import { map, filter } from 'lodash';
+import { map } from 'lodash';
 import moment from 'moment';
 
 const PropsType = {
@@ -41,7 +41,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
     const body = {
       exchangeRateDetail: formState,
       date_update: detail.date_update
-    };    
+    };
     editExChangeRate(detail.id, body);
   };
 

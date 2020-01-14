@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import ExChangeRateTable from '../../components/exchangeRate/table';
-import { Row, Button, Label, Col } from 'reactstrap';
+import React, { useState } from 'react';
+// import ExChangeRateTable from '../../components/exchangeRate/table';
+import { Row, Button, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import PopupComfirm from '../../components/common/PopupComfirm';
-import history from 'helpers/history';
+// import PopupComfirm from '../../components/common/PopupComfirm';
+// import history from 'helpers/history';
 import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
-import { map, filter } from 'lodash';
-import Moment from 'react-moment';
+import { map } from 'lodash';
 import moment from 'moment';
 
 const PropsType = {

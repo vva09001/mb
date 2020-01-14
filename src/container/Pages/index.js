@@ -555,6 +555,7 @@ function Page({
       } else {
         data = {
           ...formState.values,
+          is_active: formState.values.is_active === null ? 0 : formState.values.is_active,
           parent_id: homeID,
           pageBlocks: [...formBlock]
         };

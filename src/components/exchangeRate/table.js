@@ -25,7 +25,7 @@ const ExchangeRateTable = ({ data, getDetail }) => {
   });
 
   const {
-    selectedItems,
+    // selectedItems,
     isSelectedItem,
     isAllSelected,
     toggleSelectedItem,
