@@ -41,6 +41,8 @@
     "slug": "Đường dẫn",
     "approveds": "Đã duyệt",
     "pendings": "Chờ duyệt",
+    "id": "ID",
+    "SeleteImage": "Chọn ảnh",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
@@ -82,7 +84,8 @@
         "active": "Kích hoạt trang",
         "sidebar": "Kích hoạt thanh bên",
         "full": "Đầy đủ",
-        "default": "Mặc định"
+        "default": "Mặc định",
+        "group": "Nhóm tin"
     },
     "formBuilder": {
         "title": "Tạo Form",
@@ -127,7 +130,8 @@
         "storeFont": "Store Font",
         "slider": "Slider",
         "network": "Quản lý mạng lưới",
-        "tool_menu": "Thanh công cụ"
+        "tool_menu": "Thanh công cụ",
+        "group": "Nhóm"
     },
     "user": {
         "fistname": "Tên",
@@ -233,6 +237,20 @@
         "create": "Tạo",
         "update": "Cập nhật",
         "term_error": "Trường này không được để rỗng",
-        "interest_rate_error": "Trường này không được để rỗng"
+        "interest_rate_error": "Trường này không được để rỗng",
+        "exchange_rate": "Tỷ Giá"
+    },
+    "group": {
+        "title": "Nhóm",
+        "idTeam": "ID Team"
+    },
+    "ExChangeRate": {
+        "ExchangeRate": "Danh sách tỷ giá",
+        "AddNewCurrency" : "Thêm ngoại tệ mới",
+        "currency": "Ngoại tệ",
+        "buy_cash": "Mua vào (Tiền Mặt)",
+        "buy_transfer": "Mua vào (Chuyển khoản)",
+        "sell" : "Bán ra",
+        "change_USD": "Chuyển đổi USD"
     }
 }

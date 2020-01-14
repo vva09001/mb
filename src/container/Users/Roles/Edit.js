@@ -70,7 +70,7 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
-        if (radios[i].checked == '') {
+        if (radios[i].checked === '') {
           if (Number(radios[i].value) % 2 === 0) {
             radios[i].checked = true;
           }

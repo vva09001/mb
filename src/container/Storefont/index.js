@@ -49,7 +49,7 @@ function Storefont({
       ...formState,
       values: activeTab === '1' ? dataGeneral : activeTab === '2' ? dataLogo : dataSociallink
     }));
-  }, [dataGeneral, dataLogo, dataSociallink]);
+  }, [dataGeneral, dataLogo, dataSociallink, activeTab]);
  
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -233,6 +233,7 @@ function Storefont({
                       <img
                         src={formState.values.favicon === undefined ? '' : formState.values.favicon}
                         style={{ width: '100px' }}
+                        alt="Favicon"
                       />
                     </Col>
                   </Row>
@@ -247,6 +248,7 @@ function Storefont({
                       <img
                         src={formState.values.hearderLogo === undefined ? '' : formState.values.hearderLogo}
                         style={{ width: '100px' }}
+                        alt="hearderLogo"
                       />
                     </Col>
                   </Row>
@@ -261,6 +263,7 @@ function Storefont({
                       <img
                         src={formState.values.footerLogo === undefined ? '' : formState.values.footerLogo}
                         style={{ width: '100px' }}
+                        alt="FooterLogo"
                       />
                     </Col>
                   </Row>
@@ -275,6 +278,7 @@ function Storefont({
                       <img
                         src={formState.values.footerBackground === undefined ? '' : formState.values.footerBackground}
                         style={{ width: '100px' }}
+                        alt="FooterBackground"
                       />
                     </Col>
                   </Row>

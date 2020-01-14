@@ -1,4 +1,4 @@
-import React, { useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useGoogleMap, useMap } from '../map/hooks.js';
 import { useParams } from 'react-router-dom';
@@ -22,6 +22,7 @@ const Gmap = ({ detail, getNetworkId }) => {
   var initialConfig = {
     zoom: 14,
     center: { lat: !detail.latitude ? 0 :  Number(detail.latitude), lng: !detail.longitude ? 0 : Number(detail.longitude) }
+
   };
   let map = useMap({ googleMap, mapContainerRef, initialConfig });
   if (detail.latitude && detail.latitude) {
@@ -42,7 +43,6 @@ const Gmap = ({ detail, getNetworkId }) => {
       InfoWindow.open(map, marker);
     });
   }
-
   return (
     <div
       style={{

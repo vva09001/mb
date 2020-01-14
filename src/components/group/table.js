@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
-  getDetail: PropTypes.func
+  getID: PropTypes.func
 };
 
-const AprrTable = ({ data, getDetail, getID }) => {
+const GroupTable = ({ data, getID }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -22,46 +21,28 @@ const AprrTable = ({ data, getDetail, getID }) => {
       <Table striped>
         <thead>
           <tr>
-          <th>
+            <th>
               <input type="checkbox" />
             </th>
+            <th>{t('group.idTeam')}</th>
             <th>{t('name')}</th>
-            <th>{t('active')}</th>
-            <th>{t('created')}</th>
-            <th>{t('status')}</th>
           </tr>
         </thead>
         <tbody>
           {map(list, values => {
-            if (values.is_active === 0) {
-              return (
-                <tr key={values.newsId}>
-                   <th>
-                  <input type="checkbox" onClick={() => getID(values.newsId)} />
-                </th> 
+            return (
+              <tr key={values.id}>
+                <th>
+                  <input type="checkbox" onClick={() => getID(values.idTeam)} />
+                </th>
                 <td>
-                  <Link to={`/news/approving/${values.newsId}`}>
-                  {values.title}
-                  </Link>
+                  <Link to={`/group/edit/${values.id}`}>{values.idTeam}</Link>
                 </td>
                 <td>
-                  <Link to={`/news/approving/${values.newsId}`}>
-                  <span className={values.is_active !== 0 ? 'green' : 'dot'} />
-                  </Link>
+                  <Link to={`/group/edit/${values.id}`}>{values.name}</Link>
                 </td>
-                <td>
-                  <Link to={`/news/approving/${values.newsId}`}>{moment(values.created_at).fromNow()}</Link>
-                </td>
-                <td>
-                  <Link to={`/news/approving/${values.newsId}`}>
-                  {values.is_active === 1 ? `${t('approved.approved')}` : `${t('approved.notapproved')}`}
-                  </Link>
-                </td>
-                </tr>
-              );
-            } else {
-              return;
-            }
+              </tr>
+            );
           })}
         </tbody>
       </Table>
@@ -88,6 +69,6 @@ const AprrTable = ({ data, getDetail, getID }) => {
   );
 };
 
-AprrTable.propTypes = PropsType;
+GroupTable.propTypes = PropsType;
 
-export default AprrTable;
+export default GroupTable;

@@ -41,6 +41,7 @@
     "approveds":"Approved",
     "pendings":"Pending",
     "questionConfirm": "Are you sure you want to delete ?",
+    "SeleteImage": "Selete Image",
     "customer": {
         "personal": "Personal customers",
         "enterprise": "Enterprise customers",
@@ -82,7 +83,8 @@
         "active": "Activate page",
         "sidebar": "Activate sidebar",
         "full": "Full",
-        "default": "Default"
+        "default": "Default",
+        "group": "News group"
     },
     "formBuilder": {
 
@@ -128,7 +130,8 @@
         "storeFont": "Store Font",
         "slider": "Slider",
         "network":"Network Management",
-        "tool_menu": "Tool menu"
+        "tool_menu": "Tool menu",
+        "group": "Group"
     },
     "storefont": {
         "sociallinks": "Social links",

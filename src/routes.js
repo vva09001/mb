@@ -102,8 +102,18 @@ export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
-  icon: 'sliders-h',
-  children: [{ to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true }]
+  icon: 'ellipsis-h',
+  children: [
+    { to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true },
+    { to: '/exchangeRate', name: 'interest_rate.exchange_rate', exact: true }
+  ]
+};
+
+export const groupRouter = {
+  name: 'menu.group',
+  to: '/group',
+  exact: true,
+  icon: 'code-branch'
 };
 export default [
   homeRoutes,
@@ -116,6 +126,7 @@ export default [
   sliderfontRoutes,
   storefontRoutes,
   mediaRouter,
+  groupRouter,
   userRoutes,
   settingRoutes
 ];

@@ -73,11 +73,11 @@ function NetworkDetail({ detail, aprrNetwork, getNetworkId, getDetail,editNetwor
 
   };
 
-  const EditNetwork = event => {
-    event.preventDefault();
-    editNetwork(formState.values);
+  // const EditNetwork = event => {
+  //   event.preventDefault();
+  //   editNetwork(formState.values);
 
-  };
+  // };
   
   return (
     <React.Fragment>

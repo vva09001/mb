@@ -51,8 +51,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     }));
   }, [data]);
 
-  const handleChangeCreate = (event) => {
-
+  const handleChangeCreate = event => {
     event.persist();
     setFormState(formState => ({
       ...formState,
@@ -152,10 +151,8 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     toggleIsAllSelected,
     isIndeterminate
   } = useBulkSelect(fileIds);
-  const clickDeleteInterestRate = (selectedItems) => {
-
+  const clickDeleteInterestRate = selectedItems => {
     deleteInterestRate(selectedItems, onSuccess, onFail);
-
   };
   const list = slice(data, page * 10, page * 10 + 10);
 
@@ -165,53 +162,59 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
         <h4>{t('interest_rate.interest_rate')}</h4>
       </Row>
       <Row className="mb-2">
-        <Button color="primary" className="mr-2" onClick={() => onClickCreate()}>{t('create')}</Button>
+        <Button color="primary" className="mr-2" onClick={() => onClickCreate()}>
+          {t('create')}
+        </Button>
         <Button onClick={() => clickDeleteInterestRate(selectedItems)}>{t('delete')}</Button>
-
       </Row>
       <React.Fragment>
         <Row className="p-3 backgroud__white">
           <Table striped>
             <thead>
-            <tr>
-              <th>
-                <CustomInput
-                  id="checkbox-bulk"
-                  type="checkbox"
-                  checked={isAllSelected}
-                  onChange={() => toggleIsAllSelected()}
-                  innerRef={input => input && (input.indeterminate = isIndeterminate)}
-                />
-              </th>
-              <th>{t('interest_rate.term')}</th>
-              <th>{t('interest_rate.interest_rate')}</th>
-              <th>{t('description')}</th>
-            </tr>
+              <tr>
+                <th>
+                  <CustomInput
+                    id="checkbox-bulk"
+                    type="checkbox"
+                    checked={isAllSelected}
+                    onChange={() => toggleIsAllSelected()}
+                    innerRef={input => input && (input.indeterminate = isIndeterminate)}
+                  />
+                </th>
+                <th>{t('interest_rate.term')}</th>
+                <th>{t('interest_rate.interest_rate')}</th>
+                <th>{t('description')}</th>
+              </tr>
             </thead>
             <tbody>
-            {map(list, values => {
-              return (
-                <tr key={values.id}>
-                  <th>
-                    <CustomInput
-                      id={'checkbox-' + values.id}
-                      type="checkbox"
-                      checked={isSelectedItem(values.id)}
-                      onChange={() => toggleSelectedItem(values.id)}
-                    />
-                  </th>
-                  <th>
-                    <span onClick={() => onClickUpdate(values)}>{values.term} {t('month')}</span>
-                  </th>
-                  <th>
-                    <span onClick={() => onClickUpdate(values)}>{values.interest_rate}{t('%')}</span>
-                  </th>
-                  <th>
-                    <span onClick={() => onClickUpdate(values)}>{values.description}</span>
-                  </th>
-                </tr>
-              );
-            })}
+              {map(list, values => {
+                return (
+                  <tr key={values.id}>
+                    <th>
+                      <CustomInput
+                        id={'checkbox-' + values.id}
+                        type="checkbox"
+                        checked={isSelectedItem(values.id)}
+                        onChange={() => toggleSelectedItem(values.id)}
+                      />
+                    </th>
+                    <th>
+                      <span onClick={() => onClickUpdate(values)}>
+                        {values.term} {t('month')}
+                      </span>
+                    </th>
+                    <th>
+                      <span onClick={() => onClickUpdate(values)}>
+                        {values.interest_rate}
+                        {t('%')}
+                      </span>
+                    </th>
+                    <th>
+                      <span onClick={() => onClickUpdate(values)}>{values.description}</span>
+                    </th>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
           <div className="pagination__wapper">
@@ -241,33 +244,48 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
           <FormGroup>
             <Label>{t('interest_rate.term')}</Label>
             <p style={{ color: 'red' }}>{!formState.termError ? null : formState.termError}</p>
-            <Input name="term" type="number" value={!formState.dataCreate.term ? '' : formState.dataCreate.term}
-                   onChange={handleChangeCreate} required="required"/>
-
+            <Input
+              name="term"
+              type="number"
+              value={!formState.dataCreate.term ? '' : formState.dataCreate.term}
+              onChange={handleChangeCreate}
+              required="required"
+            />
           </FormGroup>
           <FormGroup>
             <Label>{t('interest_rate.interest_rate')}</Label>
             <p style={{ color: 'red' }}>{!formState.interestRateError ? null : formState.interestRateError}</p>
-            <Input name="interest_rate" type="number"
-                   min="0" max="10"
-                   value={!formState.dataCreate.interest_rate ? '' : formState.dataCreate.interest_rate}
-                   onChange={handleChangeCreate} required="required"/>
-
+            <Input
+              name="interest_rate"
+              type="number"
+              min="0"
+              max="10"
+              value={!formState.dataCreate.interest_rate ? '' : formState.dataCreate.interest_rate}
+              onChange={handleChangeCreate}
+              required="required"
+            />
           </FormGroup>
           <FormGroup>
             <Label>{t('description')}</Label>
-            <Input name="description" type='textarea'
-                   value={!formState.dataCreate.description ? '' : formState.dataCreate.description}
-                   onChange={handleChangeCreate} rows="5"/>
+            <Input
+              name="description"
+              type="textarea"
+              value={!formState.dataCreate.description ? '' : formState.dataCreate.description}
+              onChange={handleChangeCreate}
+              rows="5"
+            />
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={onSave}>{t('save')}</Button>{' '}
-          <Button color="secondary" onClick={toggle}>{t('cancel')}</Button>
+          <Button color="primary" onClick={onSave}>
+            {t('save')}
+          </Button>{' '}
+          <Button color="secondary" onClick={toggle}>
+            {t('cancel')}
+          </Button>
         </ModalFooter>
       </Modal>
-      <div className="pagination__wapper">
-      </div>
+      <div className="pagination__wapper" />
     </React.Fragment>
   );
 }

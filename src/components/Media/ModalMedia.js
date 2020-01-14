@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+
 const PropsType = {
   setState: PropTypes.func
 };
@@ -24,9 +25,14 @@ function ModalMedia({ setState }) {
   return (
     <React.Fragment>
       <div>
-        <Button onClick={openModal}>{t('SeleteImage')}</Button>
+        <Button size="sm" color="primary" onClick={openModal}>{t('SeleteImage')}</Button>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Example Modal">
-          <SeleteMedia closeModal={closeModal} />
+          <div>
+            <SeleteMedia />
+          </div>
+          <div>
+            <Button size="sm" color="primary" onClick={closeModal}>{t('SeleteImage')}</Button>
+          </div>
         </Modal>
       </div>
     </React.Fragment>

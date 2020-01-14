@@ -28,7 +28,8 @@ const NetworkTable = ({ data,deleteNetwork }) => {
     isIndeterminate
   } = useBulkSelect(fileIds);
   const clickDeleteNetwork = () => {
-    if (selectedItems >0){
+    if (selectedItems.length >0){
+      console.log(selectedItems.length);
       deleteNetwork(selectedItems);
     }
   };
