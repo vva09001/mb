@@ -81,7 +81,7 @@ function PagesCreate({
   const [opened, setOpened] = useState(null);
   const [categoryID, setID] = useState(null);
   const [formImg, setFormImg] = useState([
-    { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }
+    { title: '', description: '', image: '', learnMore: '', text: '', url: '', video_url: '' }
   ]);
 
   useEffect(() => {
@@ -96,12 +96,17 @@ function PagesCreate({
   const addMoreFormImge = () => {
     setFormImg([...formImg, { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }]);
   };
-  const removeItem = indexItems => {
+  const removeItem = (indexItems, index, acitve) => {
     const newValues = filter(formImg, (items, index) => index !== indexItems);
     setFormImg(newValues);
+    if (acitve) {
+      handleEditImge(newValues, index);
+    } else {
+      handleImge(newValues, index);
+    }
   };
 
-  const onSetState = itemIndex => {
+  const onSetState = (itemIndex, index) => {
     let newData = map(formImg, (value, index) => {
       if (itemIndex !== index) {
         return value;
@@ -113,9 +118,11 @@ function PagesCreate({
       }
     });
     setFormImg(newData);
+    handleEditImge(newData, index);
   };
 
   const handleChangeImge = (event, itemIndex, index, acitve) => {
+
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -249,7 +256,6 @@ function PagesCreate({
         );
 
       case 9: // mutile image
-        // console.log(index);
         return (
           <FormGroup>
             <Label for="template">{data.title}</Label>
@@ -257,7 +263,7 @@ function PagesCreate({
               return (
                 <div key={itemIndex}>
                   <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex)}>
+                    <Button onClick={() => removeItem(itemIndex, index, false)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Button>
                   </div>
@@ -411,13 +417,7 @@ function PagesCreate({
         return (
           <FormGroup>
             <Label>{items.title}</Label>
-            <Input
-              type="text"
-              value={value}
-              name={items.key}
-              required
-              onChange={event => handleEidt(event, index)}
-            />
+            <Input type="text" value={value} name={items.key} required onChange={event => handleEidt(event, index)} />
           </FormGroup>
         );
       case 8: //nutile post
@@ -540,7 +540,6 @@ function PagesCreate({
           </FormGroup>
         );
       case 9: // mutile image
-        // setFormImg(form);
         return (
           <FormGroup>
             <Label for="template">{items.title}</Label>
@@ -548,7 +547,7 @@ function PagesCreate({
               return (
                 <div key={itemIndex}>
                   <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex)}>
+                    <Button onClick={() => removeItem(itemIndex, index, true)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Button>
                   </div>
@@ -561,7 +560,7 @@ function PagesCreate({
                           style={{ maxWidth: '100%' }}
                         />
                       </div>
-                      <ModalMedia setState={() => onSetState(itemIndex)} />
+                      <ModalMedia setState={() => onSetState(itemIndex, index)} />
                     </div>
                     <div className="input_image">
                       <div className="input_wapper">
@@ -697,6 +696,7 @@ function PagesCreate({
         );
     }
   };
+
   return (
     <React.Fragment>
       <Nav tabs>
@@ -748,20 +748,20 @@ function PagesCreate({
                 <span>{t('page.active')}</span>
               </div>
             </div>
-            <div className="check__box">
+            {/* <div className="check__box">
               <Label>{t('page.active')}</Label>
               <div>
                 <Input
                   type="checkbox"
                   name="is_active"
-                  required
+                  // required
                   checked={value.is_active === 0 || value.is_active === undefined ? false : true}
                   value={value.is_active === 0 ? false : value.is_active}
                   onChange={handleChange}
                 />
                 <span>{t('page.active')}</span>
               </div>
-            </div>
+            </div> */}
             <div className="check__box">
               <Label>{t('sidebar')}</Label>
               <div>

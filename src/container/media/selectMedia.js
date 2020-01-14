@@ -15,8 +15,7 @@ const PropsType = {
   getImages: PropTypes.func,
   detail: PropTypes.object,
   getDetailImage: PropTypes.func,
-  selectImage: PropTypes.func,
-
+  selectImage: PropTypes.func, 
   addFiles: PropTypes.func,
   getPathFolder: PropTypes.func,
   createFolder: PropTypes.func,
@@ -27,8 +26,7 @@ const PropsType = {
 function SelectMedia({
   data,
   getImages,
-  getDetailImage,
-
+  getDetailImage, 
   addFiles,
   getPathFolder,
   createFolder,
@@ -82,38 +80,43 @@ function SelectMedia({
   window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
-      <h4>{t('Media')}</h4>
-      <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
-      <div style={{ backgroundColor: 'white', padding: 20, maxHeight: '600px', maxWidth: '600px' }}>
-        <div style={{ paddingBottom: 10, paddingRight: 10 }}>
-          <Button
-            color={'primary'}
-            onClick={() => {
-              document.getElementById('file').click();
-            }}
-            disabled={isFolder}
-          >
-            {t('UploadFile')}
-          </Button>
+      <div style={{ backgroundColor: 'white', padding: 20, maxHeight: '600px', width: '500px' }}>
+        <h4>{t('Media')}</h4>
+        <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
+        <div>
+          <div style={{ paddingBottom: 10, paddingRight: 10 }}>
+            <Button
+              color={'primary'}
+              onClick={() => {
+                document.getElementById('file').click();
+              }}
+              disabled={isFolder}
+            >
+              {t('UploadFile')}
+            </Button>
+          </div>
+          <div >
+            <FileBrowser
+            style={{maxHeight:100}}
+              files={formState}
+              icons={{
+                File: <FontAwesomeIcon icon={faEdit} />,
+                Image: <FontAwesomeIcon icon={faImages} />,
+                PDF: <FontAwesomeIcon icon={faFilePdf} />,
+                Rename: <FontAwesomeIcon icon={faEdit} />,
+                Folder: <FontAwesomeIcon icon={faFolderMinus} />,
+                FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
+                Delete: <FontAwesomeIcon icon={faTimes} />,
+                Loading: <FontAwesomeIcon icon={faEdit} />
+              }}
+              onSelectFile={handleBrowse}
+              detailRenderer={Notthing}
+              onCreateFolder={handleCreateFolder}
+              onSelectFolder={handleFolder}
+              onRenameFolder={handleRenameFolder}
+            />
+          </div>          
         </div>
-        <FileBrowser
-          files={formState}
-          icons={{
-            File: <FontAwesomeIcon icon={faEdit} />,
-            Image: <FontAwesomeIcon icon={faImages} />,
-            PDF: <FontAwesomeIcon icon={faFilePdf} />,
-            Rename: <FontAwesomeIcon icon={faEdit} />,
-            Folder: <FontAwesomeIcon icon={faFolderMinus} />,
-            FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
-            Delete: <FontAwesomeIcon icon={faTimes} />,
-            Loading: <FontAwesomeIcon icon={faEdit} />
-          }}
-          onSelectFile={handleBrowse}
-          detailRenderer={Notthing}
-          onCreateFolder={handleCreateFolder}
-          onSelectFolder={handleFolder}
-          onRenameFolder={handleRenameFolder}
-        />
       </div>
     </React.Fragment>
   );

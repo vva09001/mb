@@ -33,9 +33,9 @@ const Actions = {
   DELETE_NETWORK_REQUEST: 'DELETE_NETWORK_REQUEST',
   DELETE_NETWORK_RESPONSE: 'DELETE_NETWORK_RESPONSE',
 
-  deleteNetwork: id => ({
+  deleteNetwork: data => ({
     type: Actions.DELETE_NETWORK_REQUEST,
-    id
+    data
   }),
 
   GET_DETAIL_NETWORK: 'GET_DETAIL_NETWORK',
@@ -51,7 +51,15 @@ const Actions = {
   AprrNetwork: data => ({
     type: Actions.APRR_NETWORK_REQUEST,
     data
-  })
+  }),
+
+  SEARCH_NETWORK_REQUEST: 'SEARCH_NETWORK_REQUEST',
+  SEARCH_NETWORK_RESPONSE: 'SEARCH_NETWORK_RESPONSE',
+
+  searchNetwork:  (data)  => ({
+    type: Actions.SEARCH_NETWORK_REQUEST,
+    data:data
+  }),
 };
 
 export default Actions;

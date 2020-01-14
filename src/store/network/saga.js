@@ -1,15 +1,23 @@
 import actions from './actions';
 import history from 'helpers/history';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import { getNetwork, getNetworkId, createNetwork, editNetwork, deleteNetwork, aprrNetwork } from 'services/network';
+import {
+  getNetwork,
+  getNetworkId,
+  createNetwork,
+  editNetwork,
+  deleteNetwork,
+  aprrNetwork,
+  searchNetwork
+} from 'services/network';
 import { Error, Success } from 'helpers/notify';
 
 function* getNetworkSaga() {
-  yield takeLatest(actions.GET_NETWORK_REQUEST, function*(params) {
+  yield takeLatest(actions.GET_NETWORK_REQUEST, function* (params) {
     try {
       const res = yield getNetwork();
       if (res.status === 200) {
-        yield put({ type: actions.GET_NETWORK_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_NETWORK_RESPONSE, data:{ data: res.data ,search : res.data} });
       } else {
         yield Error(res.message);
       }
@@ -20,7 +28,7 @@ function* getNetworkSaga() {
 }
 
 function* getNetworkIdSaga() {
-  yield takeLatest(actions.GET_BY_NETWORK_ID_REQUEST, function*(params) {
+  yield takeLatest(actions.GET_BY_NETWORK_ID_REQUEST, function* (params) {
     const { id } = params;
     try {
       const res = yield getNetworkId(id);
@@ -36,7 +44,7 @@ function* getNetworkIdSaga() {
 }
 
 function* createNetworkSaga() {
-  yield takeLatest(actions.CREATE_NETWORK_REQUEST, function*(params) {
+  yield takeLatest(actions.CREATE_NETWORK_REQUEST, function* (params) {
     const { data } = params;
     try {
       const res = yield createNetwork(data);
@@ -54,14 +62,13 @@ function* createNetworkSaga() {
 }
 
 function* aprrNetworkSaga() {
-  yield takeLatest(actions.APRR_NETWORK_REQUEST, function*(params) {
+  yield takeLatest(actions.APRR_NETWORK_REQUEST, function* (params) {
     const { data } = params;
     try {
       const res = yield aprrNetwork(data);
-      console.log(res.data);
       if (res.status === 200) {
-        Success('Phê duyệt thành công');
-        yield put({ type: actions.APRR_NETWORK_RESPONSE, data: res.data });
+        Success('');
+        yield put({ type: actions.GET_NETWORK_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -72,13 +79,12 @@ function* aprrNetworkSaga() {
 }
 
 function* editNetworkSaga() {
-  yield takeLatest(actions.APRR_NETWORK_REQUEST, function*(params) {
+  yield takeLatest(actions.APRR_NETWORK_REQUEST, function* (params) {
     const { data } = params;
     try {
       const res = yield editNetwork(data);
-      console.log(res.data);
       if (res.status === 200) {
-        yield put({ type: actions.EDIT_NETWORK_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_NETWORK_RESPONSE, data: res.data });
         yield history.push('/network');
       } else {
         yield Error(res.message);
@@ -90,14 +96,15 @@ function* editNetworkSaga() {
 }
 
 function* deleteNetworkSaga() {
-  yield takeLatest(actions.DELETE_NETWORK_REQUEST, function*(params) {
-    const { id } = params;
+  yield takeLatest(actions.DELETE_NETWORK_REQUEST, function* (params) {
+    const { data } = params;
     try {
-      const res = yield deleteNetwork(id);
+      yield deleteNetwork(data);
+      const res = yield getNetwork();
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_NETWORK_RESPONSE, data: id });
-      } else {
+        yield put({ type: actions.GET_NETWORK_RESPONSE, data:{ data: res.data ,search : res.data} });
+      }else {
         yield Error(res.message);
       }
     } catch (error) {
@@ -106,6 +113,28 @@ function* deleteNetworkSaga() {
   });
 }
 
+function* searchNetworkSaga() {
+    yield takeLatest(actions.SEARCH_NETWORK_REQUEST, function* (params) {
+      const { data } = params;
+      try {
+        const res = yield searchNetwork(data);
+        const dataNetWork = yield getNetwork();
+        if (res.status === 200 && dataNetWork.status === 200) {
+          yield put({ type: actions.GET_NETWORK_RESPONSE, data:{ data: res.data, search :dataNetWork.data } });
+        }
+        if (res.status === 404) {
+          yield Success('Không tìm thấy giữ liệu');
+          yield put({ type: actions.GET_NETWORK_RESPONSE, data:{ data: null, search :dataNetWork.data } });
+        }
+        if(res.status !== 200 && res.status !== 404) {
+          yield Error(res.message);
+        }
+      } catch (error) {
+        yield Error('Không thể kết nối đến server');
+      }
+    });
+  }
+
 export default function* rootSaga() {
   yield all([
     fork(getNetworkSaga),
@@ -113,6 +142,7 @@ export default function* rootSaga() {
     fork(editNetworkSaga),
     fork(deleteNetworkSaga),
     fork(aprrNetworkSaga),
-    fork(getNetworkIdSaga)
+    fork(getNetworkIdSaga),
+    fork(searchNetworkSaga),
   ]);
 }

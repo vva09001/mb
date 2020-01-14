@@ -49,7 +49,7 @@ function Storefont({
       ...formState,
       values: activeTab === '1' ? dataGeneral : activeTab === '2' ? dataLogo : dataSociallink
     }));
-  }, [dataGeneral, dataLogo, dataSociallink]);
+  }, [dataGeneral, dataLogo, dataSociallink, activeTab]);
  
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);

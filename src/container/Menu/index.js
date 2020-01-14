@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
-import { Redirect} from 'react-router-dom';
+// import { Redirect} from 'react-router-dom';
 
 const PropsType = {
   data: PropTypes.array,
@@ -41,11 +41,11 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
       setIsOpen(!isOpen);
     }
   };
-  const showDetail = () => {
-    return (
-      <Redirect to="/test" />
-    )
-  };
+  // const showDetail = () => {
+  //   return (
+  //     <Redirect to="/test" />
+  //   )
+  // };
   const onGetDetail = detail => {
     getDetailMenus(detail);
     history.push('/menu/edit');

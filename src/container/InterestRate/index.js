@@ -137,12 +137,6 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     setModal(!modal);
   };
 
-  // const externalCloseBtn = (
-  //   <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={toggle}>
-  //     &times;
-  //   </button>
-  // );
-
   const [page, setPage] = useState(0);
 
   const fileIds = map(data, values => {

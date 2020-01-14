@@ -70,12 +70,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     }));
   };
 
-  const upload = loader => {
-    let formData = new FormData();
-    formData.append('files', loader.file);
-    formData.append('folderName', 'News/');
-    addFiles(formData);
-  };
+  // const upload = loader => {
+  //   let formData = new FormData();
+  //   formData.append('files', loader.file);
+  //   formData.append('folderName', 'News/');
+  //   addFiles(formData);
+  // };
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,

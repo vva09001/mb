@@ -364,7 +364,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(contentData[i]),
-            contentHtml: contentHtml
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> ${contentHtml}</div`
           };
         }
         if (contentData[i].mutileImge) {
@@ -388,7 +390,9 @@ function Page({
             ...formBlock[i],
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(content),
-            contentHtml: `<div class="mutileImage_container">${muitle_post_html}</div>`
+            contentHtml: `<div class="post_container"><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2>${muitle_post_html}</div>`
           };
         }
         if (contentData[i].content) {
@@ -412,7 +416,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(contentData[i].content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
         if (contentData[i].length > 0) {
@@ -436,7 +442,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(contentData[i]),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
         if (contentData[i].mutilePost) {
@@ -461,7 +469,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
       }
@@ -519,7 +529,7 @@ function Page({
           formBlock[i] = {
             ...formBlock[i],
             content: JSON.stringify(content),
-            contentHtml: `<div class="mutileImage_container">${muitle_post_html}</div>`
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
           };
         }
         if (contentData[i].mutilePost) {
@@ -555,6 +565,7 @@ function Page({
       } else {
         data = {
           ...formState.values,
+          is_active: formState.values.is_active === null ? 0 : formState.values.is_active,
           parent_id: homeID,
           pageBlocks: [...formBlock]
         };
@@ -614,19 +625,20 @@ function Page({
     let listBlock = [];
     let mutileImage = [];
     map(node.pageBlocks, (values, index) => {
-      newContent.push(JSON.parse(values.content));
+      let content = JSON.parse(values.content);
+      newContent.push(content);
       let block = values.blocks;
       let blockValue = block.blockValues;
       let type = null;
       if (blockValue[0] !== undefined) {
         type = blockValue[0].type_id;
       }
-      // console.log(type);
+      console.log([{ ...content }]);
       if (type === 9) {
-        mutileImage.push(...JSON.parse(values.content));
+        mutileImage.push(content);
       }
       listBlock.push({ ...values.blocks, content: values.content, title: values.title });
-      let content = JSON.parse(values.content);
+
       stateEdit = [
         ...stateEdit,
         { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
