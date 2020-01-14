@@ -65,7 +65,7 @@ const ExchangeRateTable = ({
                 <td onClick={() => getDetail(values)}>
                   <Moment format="DD/MM/YYYY">{values.date_update}</Moment>
                 </td>
-                <td onClick={() => getDetail(values)}>{moment(values.date_update).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
                 <td />
               </tr>
             );

@@ -63,8 +63,7 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
           </Button>
           <Button color="danger" className="mr-2" onClick={openComfirm}>
             {t('delete')}
-          </Button>
-          <Button color="success" className="mr-2" onClick={showDetail} />
+          </Button>          
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
           <MenuTable data={data} getID={id => setMenusID(id)} getDetail={onGetDetail} />

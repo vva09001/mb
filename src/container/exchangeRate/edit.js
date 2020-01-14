@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
+//import {OutTable, ExcelRenderer} from 'react-excel-renderer';
+
 
 const PropsType = {
   detaicurrency: PropTypes.array,
@@ -44,7 +46,6 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
     };
     editExChangeRate(detail.id, body);
   };
-  
   return (
     <React.Fragment>
       <div style={{ backgroundColor: 'white', height: 'auto' }}>
