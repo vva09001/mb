@@ -100,11 +100,13 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       ...formState,
       values: {
         ...formState.values,
-        categories: arr
+        categories: arr,
+        categorys: arr
       },
       touched: {
         ...formState.touched,
-        categories: true
+        categories: true,
+        categorys: true
       }
     }));
   };
