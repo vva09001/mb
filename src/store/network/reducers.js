@@ -1,9 +1,13 @@
 import Actions from './actions';
 import { filter, map } from 'lodash';
+import { Input } from 'reactstrap';
+import React from 'react';
 
 const initialState = {
-  data: [],
-  detail: {}
+  data: {},
+  detail: {},
+  dataSearch: [],
+  category: {}
 };
 
 const Networks = (state = initialState, action) => {
@@ -12,7 +16,7 @@ const Networks = (state = initialState, action) => {
       return {
         ...state,
         data: action.data,
-        detail:{}
+        detail: {},
       };
     case Actions.CREATE_NETWORK_RESPONSE:
       return {
@@ -41,11 +45,16 @@ const Networks = (state = initialState, action) => {
         ...state,
         detail: action.data
       };
+    case Actions.SEARCH_NETWORK_RESPONSE:
+      return {
+        ...state,
+        dataSearch: action.data
+      };
     case Actions.GET_BY_NETWORK_ID_RESPONSE:
-    return {
-      ...state,
-      detail: action.data
-    };
+      return {
+        ...state,
+        detail: action.data
+      };
     default:
       return state;
   }
