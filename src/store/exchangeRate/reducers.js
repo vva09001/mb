@@ -1,9 +1,10 @@
 import Actions from './actions';
-import { filter, map } from 'lodash';
+import { number } from 'prop-types';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail:{},
+  detailcurrency:[]
 };
 
 const ExchangeRate = (state = initialState, action) => {
@@ -21,6 +22,12 @@ const ExchangeRate = (state = initialState, action) => {
     case Actions.EDIT_EXCHANGE_RATE_RESPONSE:
       return {
         ...state,
+        detail: action.data
+      };
+    case Actions.GET_DETAIL_EXCHANGE_RATE:
+      return {
+        ...state,
+        detailcurrency: action.data.exchangeRateDetail,
         detail: action.data
       };
     default:

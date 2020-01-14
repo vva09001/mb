@@ -1,35 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import ExChangeRateTable from '../../components/exchangeRate/table';
 import { Row, Button, Label, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import PopupComfirm from '../../components/common/PopupComfirm';
-import history from 'helpers/history';
 import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
 import { map, filter } from 'lodash';
-import Moment from 'react-moment';
 import moment from 'moment';
 
 const PropsType = {
-  data: PropTypes.array,
-  getExChangeRates: PropTypes.func,
-  deleteExChangeRates: PropTypes.func,
-  getExChangeRatesDetail: PropTypes.func,
-  creatExchangeRate: PropTypes.func
+  detaicurrency: PropTypes.array,
+  detail: PropTypes.object,
+  editExChangeRate: PropTypes.func
 };
 
-function ExChangeRateCreate({creatExchangeRate}) {
-  const [formState, setFormState] = useState([
-    {
-      currency: '',
-      buy_cash: '',
-      buy_transfer: '',
-      sell: '',
-      change_USD: ''
-    }
-  ]);
+function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
+  const [formState, setFormState] = useState(detaicurrency);
+
   const { t } = useTranslation();
 
   const addNewCurrency = () => {
@@ -48,17 +35,16 @@ function ExChangeRateCreate({creatExchangeRate}) {
       }
     });
     setFormState(newValues);
-    console.log(formState);
   };
-  
-  const onSubmit = () =>{
+
+  const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
-      date_update: date
-    };
-    console.log(body)
-    creatExchangeRate(body)
-  }
+      date_update: detail.date_update
+    };    
+    editExChangeRate(detail.id, body);
+  };
+
   const date = new Date();
   return (
     <React.Fragment>
@@ -72,7 +58,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
             </div>
           </Col>
           <Col>
-            <div style={{ padding: 10, paddingLeft:30 }}>
+            <div style={{ padding: 10, paddingLeft: 30 }}>
               <Input
                 type="text"
                 name="buy_transfer"
@@ -105,6 +91,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.currency}
                     />
                   </th>
                   <td>
@@ -114,6 +101,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.buy_cash}
                     />
                   </td>
                   <td>
@@ -123,6 +111,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.buy_transfer}
                     />
                   </td>
                   <td>
@@ -132,6 +121,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.sell}
                     />
                   </td>
                   <td>
@@ -141,6 +131,7 @@ function ExChangeRateCreate({creatExchangeRate}) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.change_USD}
                     />
                   </td>
                 </tr>
@@ -158,20 +149,21 @@ function ExChangeRateCreate({creatExchangeRate}) {
   );
 }
 
-ExChangeRateCreate.propTypes = PropsType;
+ExChangeRateEdit.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.ExChangeRateReducer.data };
+  return {
+    data: state.ExChangeRateReducer.data,
+    detaicurrency: state.ExChangeRateReducer.detailcurrency,
+    detail: state.ExChangeRateReducer.detail
+  };
 };
 
 const mapDispatchToProps = {
-  getExChangeRates: ExChangeRateActions.GetExchangeRate,
-  deleteExChangeRates: ExChangeRateActions.DeleteExchangeRate,
-  // getExChangeRatesDetail: ExChangeRateActions.getDetail
-  creatExchangeRate: ExChangeRateActions.CreateExchangeRate
+  editExChangeRate: ExChangeRateActions.EditExchangeRate
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ExChangeRateCreate);
+)(ExChangeRateEdit);
