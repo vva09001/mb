@@ -43,8 +43,9 @@ const editExchangeRateService = (id,data) => {
 
 const deleteExchangeRateService = id => {
   return request({
-    url: `/exchange_rate/${id}`,
-    method: 'DELETE'
+    url: '/exchange_rate',
+    method: 'DELETE',
+    data: id
   })
     .then(res => {
       return res;

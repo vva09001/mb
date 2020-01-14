@@ -7,36 +7,35 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { CustomInput } from 'reactstrap';
-import useBulkSelect from '../../hooks/useBulkSelect';
 
 const PropsType = {
   data: PropTypes.array,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  isSelectedItem: PropTypes.func,
+  isAllSelected: PropTypes.bool,
+  toggleSelectedItem: PropTypes.func,
+  toggleIsAllSelected: PropTypes.func,
+  isIndeterminate: PropTypes.bool
 };
 
-const ExchangeRateTable = ({ data, getDetail }) => {
+const ExchangeRateTable = ({
+  data,
+  getDetail,
+  isSelectedItem,
+  isAllSelected,
+  toggleSelectedItem,
+  toggleIsAllSelected,
+  isIndeterminate
+}) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
-
-  const exChangeRateIds = map(data, values => {
-    return values.id;
-  });
-
-  const {
-    selectedItems,
-    isSelectedItem,
-    isAllSelected,
-    toggleSelectedItem,
-    toggleIsAllSelected,
-    isIndeterminate
-  } = useBulkSelect(exChangeRateIds);
-
+ 
   return (
     <React.Fragment>
       <Table size="sm">
-        <thead >
+        <thead>
           <tr>
             <th>
               <CustomInput
@@ -63,10 +62,10 @@ const ExchangeRateTable = ({ data, getDetail }) => {
                     onChange={() => toggleSelectedItem(values.id)}
                   />
                 </th>
-                <td  onClick={() => getDetail(values)}>
+                <td onClick={() => getDetail(values)}>
                   <Moment format="DD/MM/YYYY">{values.date_update}</Moment>
                 </td>
-                <td  onClick={() => getDetail(values)}>{moment(values.date_update).fromNow()}</td>
+                <td onClick={() => getDetail(values)}>{moment(values.date_update).fromNow()}</td>
                 <td />
               </tr>
             );

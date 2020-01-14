@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ExChangeRateTable from '../../components/exchangeRate/table';
-import { Row, Button, Label, Col } from 'reactstrap';
+import React, { useState } from 'react';
+import { Row, Button, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
-import PopupComfirm from '../../components/common/PopupComfirm';
-import history from 'helpers/history';
 import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
-import { map, filter } from 'lodash';
-import Moment from 'react-moment';
+import { map } from 'lodash';
 import moment from 'moment';
 
 const PropsType = {
@@ -20,7 +16,7 @@ const PropsType = {
   creatExchangeRate: PropTypes.func
 };
 
-function ExChangeRateCreate({creatExchangeRate}) {
+function ExChangeRateCreate({ creatExchangeRate }) {
   const [formState, setFormState] = useState([
     {
       currency: '',
@@ -50,15 +46,15 @@ function ExChangeRateCreate({creatExchangeRate}) {
     setFormState(newValues);
     console.log(formState);
   };
-  
-  const onSubmit = () =>{
+
+  const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
       date_update: date
     };
-    console.log(body)
-    creatExchangeRate(body)
-  }
+    console.log(body);
+    creatExchangeRate(body);
+  };
   const date = new Date();
   return (
     <React.Fragment>
@@ -67,12 +63,12 @@ function ExChangeRateCreate({creatExchangeRate}) {
           <Col xs="5">
             <div style={{ padding: 10 }}>
               <Button color={'primary'} onClick={addNewCurrency}>
-                {t('AddNewCurrency')}
+                {t('ExChangeRate.AddNewCurrency')}
               </Button>
             </div>
           </Col>
           <Col>
-            <div style={{ padding: 10, paddingLeft:30 }}>
+            <div style={{ padding: 10, paddingLeft: 30 }}>
               <Input
                 type="text"
                 name="buy_transfer"
@@ -86,11 +82,11 @@ function ExChangeRateCreate({creatExchangeRate}) {
         <Table bordered>
           <thead className="bg-primary text-white">
             <tr>
-              <th>{t('currency')}</th>
-              <th>{t('buy_cash')}</th>
-              <th>{t('buy_transfer')}</th>
-              <th>{t('sell')}</th>
-              <th>{t('change_USD')}</th>
+              <th>{t('ExChangeRate.currency')}</th>
+              <th>{t('ExChangeRate.buy_cash')}</th>
+              <th>{t('ExChangeRate.buy_transfer')}</th>
+              <th>{t('ExChangeRate.sell')}</th>
+              <th>{t('ExChangeRate.change_USD')}</th>
             </tr>
           </thead>
           <tbody>

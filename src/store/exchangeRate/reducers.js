@@ -1,5 +1,4 @@
 import Actions from './actions';
-import { number } from 'prop-types';
 
 const initialState = {
   data: [],

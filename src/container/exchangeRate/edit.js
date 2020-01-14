@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Button, Label, Col } from 'reactstrap';
+import React, { useState } from 'react';
+import { Row, Button, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
-import { map, filter } from 'lodash';
+import { map } from 'lodash';
 import moment from 'moment';
 
 const PropsType = {
@@ -41,11 +41,10 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
     const body = {
       exchangeRateDetail: formState,
       date_update: detail.date_update
-    };    
+    };
     editExChangeRate(detail.id, body);
   };
-
-  const date = new Date();
+  
   return (
     <React.Fragment>
       <div style={{ backgroundColor: 'white', height: 'auto' }}>
@@ -53,7 +52,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           <Col xs="5">
             <div style={{ padding: 10 }}>
               <Button color={'primary'} onClick={addNewCurrency}>
-                {t('AddNewCurrency')}
+                {t('ExChangeRate.AddNewCurrency')}
               </Button>
             </div>
           </Col>
@@ -63,7 +62,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
                 type="text"
                 name="buy_transfer"
                 disabled
-                value={moment(date).format('DD/MM/YYYY')}
+                value={moment(detail.date_update).format('DD/MM/YYYY')}
                 style={{ width: 120 }}
               />
             </div>
@@ -72,11 +71,11 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
         <Table bordered>
           <thead className="bg-primary text-white">
             <tr>
-              <th>{t('currency')}</th>
-              <th>{t('buy_cash')}</th>
-              <th>{t('buy_transfer')}</th>
-              <th>{t('sell')}</th>
-              <th>{t('change_USD')}</th>
+              <th>{t('ExChangeRate.currency')}</th>
+              <th>{t('ExChangeRate.buy_cash')}</th>
+              <th>{t('ExChangeRate.buy_transfer')}</th>
+              <th>{t('ExChangeRate.sell')}</th>
+              <th>{t('ExChangeRate.change_USD')}</th>
             </tr>
           </thead>
           <tbody>
