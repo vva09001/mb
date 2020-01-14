@@ -7,8 +7,7 @@ import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
-//import {OutTable, ExcelRenderer} from 'react-excel-renderer';
-
+import XLSX from 'xlsx';
 
 const PropsType = {
   detaicurrency: PropTypes.array,
@@ -39,6 +38,24 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
     setFormState(newValues);
   };
 
+  const handleChangeFile = e => {
+    let reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = function(e) {
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA: true });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws);
+      setFormState(data);
+    };
+    if (rABS) {
+      reader.readAsBinaryString(e.target.files[0]);
+    } else {
+      reader.readAsArrayBuffer(e.target.files[0]);
+    }
+  };
+
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
@@ -66,6 +83,18 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
                 value={moment(detail.date_update).format('DD/MM/YYYY')}
                 style={{ width: 120 }}
               />
+            </div>
+          </Col>
+          <Col>
+            <div style={{ padding: 10 }}>
+              <Button
+                color={'success'}
+                onClick={() => {
+                  document.getElementById('exel').click();
+                }}
+              >
+                {t('import Exel')}
+              </Button>
             </div>
           </Col>
         </Row>
@@ -143,6 +172,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           <Button color={'success'} onClick={onSubmit}>
             {t('save')}
           </Button>
+          <input type="file" onChange={handleChangeFile} style={{ padding: '10px', display: 'none' }} id="exel" />
         </div>
       </div>
     </React.Fragment>

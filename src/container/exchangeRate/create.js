@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
+import XLSX from 'xlsx';
 
 const PropsType = {
   data: PropTypes.array,
@@ -47,12 +48,29 @@ function ExChangeRateCreate({ creatExchangeRate }) {
     console.log(formState);
   };
 
+  const handleChangeFile = e => {
+    let reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = function(e) {
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA: true });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws);
+      setFormState(data);
+    };
+    if (rABS) {
+      reader.readAsBinaryString(e.target.files[0]);
+    } else {
+      reader.readAsArrayBuffer(e.target.files[0]);
+    }
+  };
+
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
       date_update: date
     };
-    console.log(body);
     creatExchangeRate(body);
   };
   const date = new Date();
@@ -78,6 +96,18 @@ function ExChangeRateCreate({ creatExchangeRate }) {
               />
             </div>
           </Col>
+          <Col>
+            <div style={{ padding: 10 }}>
+              <Button
+                color={'success'}
+                onClick={() => {
+                  document.getElementById('exel').click();
+                }}
+              >
+                {t('import Exel')}
+              </Button>
+            </div>
+          </Col>
         </Row>
         <Table bordered>
           <thead className="bg-primary text-white">
@@ -101,6 +131,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.currency}
                     />
                   </th>
                   <td>
@@ -110,6 +141,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.buy_cash}
                     />
                   </td>
                   <td>
@@ -119,6 +151,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.buy_transfer}
                     />
                   </td>
                   <td>
@@ -128,6 +161,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.sell}
                     />
                   </td>
                   <td>
@@ -137,6 +171,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
                       onChange={event => {
                         handleChange(event, index);
                       }}
+                      value={values.change_USD}
                     />
                   </td>
                 </tr>
@@ -148,6 +183,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           <Button color={'success'} onClick={onSubmit}>
             {t('save')}
           </Button>
+          <input type="file" onChange={handleChangeFile} style={{ padding: '10px', display: 'none' }} id="exel" />
         </div>
       </div>
     </React.Fragment>

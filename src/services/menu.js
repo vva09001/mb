@@ -110,7 +110,7 @@ const deleteMenuItems = data => {
 
 const updatePositionMenuItemsService = (idMenuItem, idParent, positions) => {
   return request({
-    url: `/menuItems/update_position/${idParent}/${idMenuItem}?position=${positions}`,
+    url: `/menu/1/menuItem/update_position/${idParent}/${idMenuItem}?position=${positions}`,
     method: 'PUT'
   })
     .then(res => {
