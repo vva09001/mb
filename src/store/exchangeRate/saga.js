@@ -66,7 +66,7 @@ function* deleteExchangeRateSaga() {
       if (res.status === 200) {
         Success('Xóa thành công');
         history.push('/exchangeRate');
-        yield put({ type: Actions.EDIT_EXCHANGE_RATE_REQUEST, data: res.data });
+        yield put({ type: Actions.GET_EXCHANGE_RATE_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
       }

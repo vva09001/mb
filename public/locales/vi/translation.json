@@ -243,5 +243,14 @@
     "group": {
         "title": "Nhóm",
         "idTeam": "ID Team"
+    },
+    "ExChangeRate": {
+        "ExchangeRate": "Danh sách tỷ giá",
+        "AddNewCurrency" : "Thêm ngoại tệ mới",
+        "currency": "Ngoại tệ",
+        "buy_cash": "Mua vào (Tiền Mặt)",
+        "buy_transfer": "Mua vào (Chuyển khoản)",
+        "sell" : "Bán ra",
+        "change_USD": "Chuyển đổi USD"
     }
 }
