@@ -100,11 +100,11 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       ...formState,
       values: {
         ...formState.values,
-        categorys: arr
+        categories: arr,
       },
       touched: {
         ...formState.touched,
-        categorys: true
+        categories: true
       }
     }));
   };
@@ -226,12 +226,6 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                   type="checkbox"
                   name="is_sticky"
                   checked={formState.values.is_sticky === 0 ? false : true}
-                  onChange={handleChange}
-                />
-                <Input
-                  type="checkbox"
-                  name="is_active"
-                  checked={formState.values.is_active === 0 ? false : true}
                   onChange={handleChange}
                 />
                 <span>{t('category_page.form.activeCategory')}</span>

@@ -97,11 +97,11 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       ...formState,
       values: {
         ...formState.values,
-        categorys: arr
+        categories: arr
       },
       touched: {
         ...formState.touched,
-        categorys: true
+        categories: true
       }
     }));
   };
