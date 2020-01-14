@@ -68,7 +68,20 @@ export const storefontRoutes = {
   name: 'menu.storeFont',
   to: '/storefont',
   exact: true,
-  icon: 'pencil-alt'
+  icon: 'pencil-alt',
+  children: [
+    {
+      to: '/storefont',
+      name: 'menu.storeFont',
+      exact: true,
+      icon: 'pencil-alt'
+    }, {
+      name: 'menu.network',
+      to: '/network',
+      exact: true,
+      icon: 'code-branch'
+    }
+  ]
 };
 
 export const sliderfontRoutes = {
@@ -85,14 +98,7 @@ export const mediaRouter = {
   icon: 'image'
 };
 
-export const networkRouter = {
-  name: 'menu.network',
-  to: '/network',
-  exact: true,
-  icon: 'code-branch'
-};
-
-export const toolMenu  = {
+export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
@@ -111,6 +117,5 @@ export default [
   storefontRoutes,
   mediaRouter,
   userRoutes,
-  settingRoutes,
-  networkRouter
+  settingRoutes
 ];

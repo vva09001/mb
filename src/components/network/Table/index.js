@@ -1,31 +1,61 @@
 import React, { useState } from 'react';
-import { Table } from 'reactstrap';
+import { Button, CustomInput, Table } from 'reactstrap';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import useBulkSelect from '../../../hooks/useBulkSelect';
 
 const PropsType = {
   data: PropTypes.array,
-  getDetail: PropTypes.func
+  deleteNetwork: PropTypes.func
 };
  
-const NetworkTable = ({ data, getDetail }) => {
+const NetworkTable = ({ data,deleteNetwork }) => {
 
+  const fileIds = map(data, values => {
+      return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(fileIds);
+  const clickDeleteNetwork = () => {
+    if (selectedItems >0){
+      deleteNetwork(selectedItems);
+    }
+  };
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
+      <Button
+      color={'danger'}
+      onClick={clickDeleteNetwork}
+    >
+      {t('delete')}
+    </Button>
       <Table striped>
         <thead>
           <tr>
+            <th> <CustomInput
+              id="checkbox-bulk"
+              type="checkbox"
+              checked={isAllSelected}
+              onChange={() => toggleIsAllSelected()}
+              innerRef={input => input && (input.indeterminate = isIndeterminate)}
+            /></th>
             <th>{t('network.address_name')}</th>
             <th>{t('status')}</th>
-            <th>{t('network.processingunit')}</th>
             <th>{t('network.lastupdateddate')}</th>
           </tr>
         </thead>
@@ -33,9 +63,14 @@ const NetworkTable = ({ data, getDetail }) => {
           {map(list, values => {
             return (
               <tr key={values.id}>
+                <td> <CustomInput
+                  id={'checkbox-' + values.id}
+                  type="checkbox"
+                  checked={isSelectedItem(values.id)}
+                  onChange={() => toggleSelectedItem(values.id)}
+                /></td>
                 <td><Link to={`/network/detail/${values.id}`}>{values.address_name}</Link></td>
                 <td><Link to={`/network/detail/${values.id}`}>{values.status === 0 ? t('pendings') : t('approveds') }</Link></td>
-                <td><Link to={`/network/detail/${values.id}`}>PTT(mạng lưới) - Cấp 2</Link></td>
                 <td><Link to={`/network/detail/${values.id}`}>{moment(values.updated_at).fromNow()}</Link></td>
               </tr>
             );

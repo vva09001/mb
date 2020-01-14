@@ -1,9 +1,10 @@
-import React, {useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { useGoogleMap, useMap } from '../map/hooks.js';
 import { useParams } from 'react-router-dom';
 import { NetworkActions } from '../../../store/actions';
 import { connect } from 'react-redux';
+
 const API_KEY = '';
 
 const PropsType = {
@@ -16,17 +17,32 @@ const Gmap = ({ detail, getNetworkId }) => {
     getNetworkId(id);
   }, [getNetworkId, id]);
 
-  let lattide = detail.latitude;
-  let lngtide = detail.longitude;
- 
-  var initialConfig = {
-    zoom: 14,
-    center:  { lat: 16.051119 , lng: 108.205710 }  // lat: 16.051119, lng: 108.205710
-  };
-
   const googleMap = useGoogleMap(API_KEY);
   const mapContainerRef = useRef(null);
-  useMap({ googleMap, mapContainerRef, initialConfig});
+  var initialConfig = {
+    zoom: 14,
+    center: { lat: !detail.latitude ? 0 :  Number(detail.latitude), lng: !detail.longitude ? 0 : Number(detail.longitude) }
+  };
+  let map = useMap({ googleMap, mapContainerRef, initialConfig });
+  if (detail.latitude && detail.latitude) {
+    map.setCenter({ lat: Number(detail.latitude), lng: Number(detail.longitude) });
+    const marker = new googleMap.maps.Marker({
+      position: initialConfig.center,
+      map: map
+    });
+    const InfoWindow = new googleMap.maps.InfoWindow({
+      content: '<div id="content" style="size: 10px;text-align: right;">\n' +
+        '                    <button id="onBtn" class="btn btn-sm">\n' +
+        '                     <p>' + detail.address_name + '</p>\n' +
+        '                     <p>'+ detail.address +'</p>\n' +
+        '                    </button>\n' +
+        '                  </div>'
+    });
+    marker.addListener('click', () => {
+      InfoWindow.open(map, marker);
+    });
+  }
+
   return (
     <div
       style={{
@@ -34,8 +50,7 @@ const Gmap = ({ detail, getNetworkId }) => {
         width: '100%'
       }}
       ref={mapContainerRef}
-    />
-  );
+    />);
 };
 
 Gmap.propTypes = PropsType;

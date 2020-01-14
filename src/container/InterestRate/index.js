@@ -13,7 +13,7 @@ import {
   CustomInput
 } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
-import PropTypes, { bool } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { InterestRateActions } from '../../store/actions';
 import { Error, Success } from 'helpers/notify';
@@ -137,9 +137,6 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     }));
     setModal(!modal);
   };
-
-  const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }}
-                                   onClick={toggle}>&times;</button>;
 
   const [page, setPage] = useState(0);
 

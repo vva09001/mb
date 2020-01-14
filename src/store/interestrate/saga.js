@@ -66,7 +66,6 @@ function* deleteInterestRateSaga() {
   yield takeLatest(actions.DELETE_INTEREST_RATE_REQUEST, function* (params) {
     const { data } = params;
     try {
-      console.log(data);
       const res = yield deleteInterestRateService(data);
       if (res.status === 200) {
         yield Success('Xóa thành công');

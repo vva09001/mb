@@ -66,10 +66,11 @@ const editNetwork =  data => {
       return error.response.data;
     });
 };
-const deleteNetwork = id => {
+const deleteNetwork = data => {
   return request({
-    url: `/network/${id}`,
-    method: 'DELETE'
+    url: `/network`,
+    method: 'DELETE',
+    data: data
   })
     .then(res => {
       return res;
@@ -79,4 +80,42 @@ const deleteNetwork = id => {
     });
 };
 
-export { getNetwork, getNetworkId, createNetwork, editNetwork, deleteNetwork, aprrNetwork };
+const searchNetwork = data => {
+  return request({
+    url: `/network/search?${buildQuery(data)}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+export const buildQuery = (params) => {
+  if (typeof params === 'undefined' || typeof params !== 'object') {
+    params = {};
+    return params;
+  }
+
+  let query = '';
+  let index = 0;
+
+  for (const i in params) {
+    index++;
+    const param = i;
+    const value = params[i];
+    if (index === 1) {
+      query += param + '=' + value;
+    } else {
+
+      query += '&' + param + '=' + value;
+    }
+
+  }
+  return query;
+};
+
+
+export { getNetwork, getNetworkId, createNetwork, editNetwork, deleteNetwork, aprrNetwork, searchNetwork };

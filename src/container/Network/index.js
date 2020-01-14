@@ -11,21 +11,29 @@ import { map } from 'lodash';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  data: PropTypes.array,
+  data: PropTypes.object,
   getNetwork: PropTypes.func,
   deleteNetwork: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  getDataSearch: PropTypes.func,
+  dataSearch: PropTypes.array
 };
 
-function Network({ data, getNetwork, deleteNetwork, getDetail }) {
+function Network({ data, getNetwork, deleteNetwork, getDetail, getDataSearch }) {
   const [isOpen, setIsOpen] = useState(false);
   const [networkID, setNetworkID] = useState(null);
 
   useEffect(() => {
     getNetwork();
   }, [getNetwork]);
-
+  let list = data.data;
   const { t } = useTranslation();
+
+  const Category= map(data.search, values => {
+    return values.network_category;
+  });
+
+  const uniqueSet = Array.from(new Set(Category));
 
   const onDelete = () => {
     if (networkID !== null) {
@@ -33,9 +41,47 @@ function Network({ data, getNetwork, deleteNetwork, getDetail }) {
       setIsOpen(!isOpen);
     }
   };
+
   const onGetDetail = detail => {
     getDetail(detail);
     history.push('/network/detail');
+  };
+  const [formState, setFormState] = useState({
+    dataSearch: {},
+  });
+
+  const search = (event) => {
+    event.persist();
+    setFormState(formState => ({
+      ...formState,
+      dataSearch: {
+        ...formState.dataSearch,
+        [event.target.name]: event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+
+  const submitSearch =() => {
+    let dataDetailSearch = {};
+    let checkCategory = true;
+    let checkStatus = true;
+    if (formState.dataSearch.category === undefined || formState.dataSearch.category === '') {
+      checkCategory = null;
+    }
+    if (formState.dataSearch.status === undefined || formState.dataSearch.status === '') {
+      checkStatus = null;
+    }
+    if (checkCategory){
+      dataDetailSearch.category = formState.dataSearch.category
+    }
+    if (checkStatus){
+      dataDetailSearch.status = formState.dataSearch.status
+    }
+    getDataSearch(dataDetailSearch);
   };
 
   return (
@@ -45,25 +91,25 @@ function Network({ data, getNetwork, deleteNetwork, getDetail }) {
           <Button color="primary" className="mr-2" onClick={() => history.push('/network/create')}>
             {t('network.create')}
           </Button>
-          {/* <Button color="danger" className="mr-2" onClick={openComfirm}>
+          <Button color="danger" className="mr-2">
             {t('network.down')}
-          </Button> */}
+          </Button>
         </Row>
         <Row>
           <h6>{t('network.danhsach')}</h6>
         </Row>
       </div>
-      <Row style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }}>
+      <Row style={{ background: '#fff' }}>
         <Col lg={2} md={3} />
         <Col lg={6} md={5}>
           <Form className="p-3">
             <FormGroup>
               <Label for="exampleSelect">{t('network.network_category')}</Label>
-              <Input type="select" name="network_category">
-                <option>{t('select')}</option>
-                {map(data, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.network_category}
+              <Input type="select" name="category" onChange={search}>
+                <option value="">{t('select')}</option>
+                {map(uniqueSet, (value,key) => (
+                  <option value={value} key={key}>
+                    {value}
                   </option>
                 ))}
               </Input>
@@ -71,41 +117,20 @@ function Network({ data, getNetwork, deleteNetwork, getDetail }) {
 
             <FormGroup>
               <Label for="exampleSelect">{t('status')}</Label>
-              <Input type="select" name="status">
-                <option>{t('select')}</option>
-                <option>{t('approveds')}</option>
-                <option>{t('pendings')}</option>
+              <Input type="select" name="status" onChange={search}>
+                <option value="">{t('select')}</option>
+                <option value="1">{t('approveds')}</option>
+                <option value="0">{t('pendings')}</option>
               </Input>
             </FormGroup>
-
-            <FormGroup>
-              <Label for="exampleSelect">{t('network.processingunit')}</Label>
-              <Input type="select" name="processingunit">
-                <option>{t('select')}</option>
-                <option>PTT(mạng lưới) - Cấp 2</option>
-                <option>PTT(mạng lưới) - Cấp 3</option>
-              </Input>
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="exampleSelect">{t('network.language')}</Label>
-              <Input type="select" name="language">
-                <option>{t('select')}</option>
-                {map(data, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.language}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
-            <Button color="primary" type="submit">
+            <Button color="primary" onClick={submitSearch}>
               {t('search')}
             </Button>
           </Form>
         </Col>
         <Col lg={4} md={4} />
 
-        <NetworkTable data={data} getID={id => setNetworkID(id)} getDetail={onGetDetail} />
+        <NetworkTable data={list} getID={id => setNetworkID(id)}  deleteNetwork={deleteNetwork}  />
 
         <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
       </Row>
@@ -116,13 +141,17 @@ function Network({ data, getNetwork, deleteNetwork, getDetail }) {
 Network.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NetworkReducer.data };
+  return {
+    data: state.NetworkReducer.data ,
+    dataSearch: state.NetworkReducer.dataSearch ,
+  };
 };
 
 const mapDispatchToProps = {
   getNetwork: NetworkActions.getNetwork,
   deleteNetwork: NetworkActions.deleteNetwork,
-  getDetail: NetworkActions.getDetailNetwork
+  getDetail: NetworkActions.getDetailNetwork,
+  getDataSearch: NetworkActions.searchNetwork,
 };
 
 export default connect(
