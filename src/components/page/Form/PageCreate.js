@@ -96,9 +96,14 @@ function PagesCreate({
   const addMoreFormImge = () => {
     setFormImg([...formImg, { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }]);
   };
-  const removeItem = indexItems => {
+  const removeItem = (indexItems, index, acitve) => {
     const newValues = filter(formImg, (items, index) => index !== indexItems);
     setFormImg(newValues);
+    if (acitve) {
+      handleEditImge(newValues, index);
+    } else {
+      handleImge(newValues, index);
+    }
   };
 
   const onSetState = (itemIndex, index) => {
@@ -117,6 +122,7 @@ function PagesCreate({
   };
 
   const handleChangeImge = (event, itemIndex, index, acitve) => {
+
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -250,7 +256,6 @@ function PagesCreate({
         );
 
       case 9: // mutile image
-        // console.log(index);
         return (
           <FormGroup>
             <Label for="template">{data.title}</Label>
@@ -258,7 +263,7 @@ function PagesCreate({
               return (
                 <div key={itemIndex}>
                   <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex)}>
+                    <Button onClick={() => removeItem(itemIndex, index, false)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Button>
                   </div>
@@ -542,7 +547,7 @@ function PagesCreate({
               return (
                 <div key={itemIndex}>
                   <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex)}>
+                    <Button onClick={() => removeItem(itemIndex, index, true)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Button>
                   </div>
@@ -691,6 +696,7 @@ function PagesCreate({
         );
     }
   };
+
   return (
     <React.Fragment>
       <Nav tabs>

@@ -4,8 +4,6 @@ import SeleteMedia from '../../container/media/selectMedia';
 import Modal from 'react-modal';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-
-
 const PropsType = {
   setState: PropTypes.func
 };
@@ -25,13 +23,17 @@ function ModalMedia({ setState }) {
   return (
     <React.Fragment>
       <div>
-        <Button size="sm" color="primary" onClick={openModal}>{t('SeleteImage')}</Button>
+        <Button size="sm" color="primary" onClick={openModal}>
+          {t('SeleteImage')}
+        </Button>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles} contentLabel="Example Modal">
           <div>
             <SeleteMedia />
           </div>
           <div>
-            <Button size="sm" color="primary" onClick={closeModal}>{t('SeleteImage')}</Button>
+            <Button size="sm" color="primary" onClick={closeModal}>
+              {t('SeleteImage')}
+            </Button>
           </div>
         </Modal>
       </div>
@@ -50,7 +52,8 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    position: 'fixed'
   }
 };
 export default ModalMedia;
