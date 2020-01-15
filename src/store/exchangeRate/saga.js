@@ -32,11 +32,12 @@ function* createExchangeRateSaga() {
       if (res.status === 200) {
         Success('Tạo mới thành công');
         yield put({ type: Actions.CREATE_EXCHANGE_RATE_RESPONSE, data: res.data });
-      }
-      if (res.status === 400) {
-        Error('Đã tạo tỷ giá ngày hôm nay');
       } else {
-        yield Error(res.message);
+        if (res.status === 400) {
+          Error('Đã tạo tỷ giá ngày hôm nay');
+        } else {
+          yield Error(res.message);
+        }
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
