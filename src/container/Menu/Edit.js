@@ -107,7 +107,7 @@ function EditMenus({
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
-          positions = i;
+          positions = i+1;
           break;
         }
       }
