@@ -21,6 +21,7 @@ import history from 'helpers/history';
 import { map, slice } from 'lodash';
 import ReactPaginate from 'react-paginate';
 import useBulkSelect from '../../hooks/useBulkSelect';
+import PopupComfirm from 'components/common/PopupComfirm';
 
 const Proptype = {
   data: PropTypes.array,
@@ -151,10 +152,21 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     toggleIsAllSelected,
     isIndeterminate
   } = useBulkSelect(fileIds);
-  const clickDeleteInterestRate = selectedItems => {
-    deleteInterestRate(selectedItems, onSuccess, onFail);
+  const clickDeleteInterestRate = () => {
+    if (selectedItems.length >0) {
+      deleteInterestRate(selectedItems, onSuccess, onFail);
+      setIsOpen(!isOpen);
+    }
   };
   const list = slice(data, page * 10, page * 10 + 10);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openComfirm = () => {
+    if (selectedItems.length >0) {
+      setIsOpen(!isOpen);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -165,7 +177,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
         <Button color="primary" className="mr-2" onClick={() => onClickCreate()}>
           {t('create')}
         </Button>
-        <Button onClick={() => clickDeleteInterestRate(selectedItems)}>{t('delete')}</Button>
+        <Button onClick={openComfirm}>{t('delete')}</Button>
       </Row>
       <React.Fragment>
         <Row className="p-3 backgroud__white">
@@ -286,6 +298,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
         </ModalFooter>
       </Modal>
       <div className="pagination__wapper" />
+      <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={clickDeleteInterestRate} />
     </React.Fragment>
   );
 }
