@@ -4,6 +4,7 @@ import { filter, map } from 'lodash';
 const initialState = {
   data: [],
   detail: {},
+  dataTeam: [],
   listPrivilege: [],
   listPrivilegeByGroup: []
 };
@@ -14,6 +15,11 @@ const Roles = (state = initialState, action) => {
       return {
         ...state,
         data: action.data
+      };
+    case Actions.GET_TEAM_RESPONSE:
+      return {
+        ...state,
+        dataTeam: action.data
       };
     case Actions.ADD_ROLES_RESPONSE:
       return {
