@@ -1,6 +1,7 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import {
   getRolesService,
+  getAllTeamService,
   addRolesService,
   editRolesService,
   deleteRolesService,
@@ -26,10 +27,25 @@ function* getRolesSaga() {
     }
   });
 }
+function* getAllTeamSaga() {
+  yield takeLatest(actions.GET_TEAM_REQUEST, function*(params) {
+    try {
+      const res = yield getAllTeamService();
+      if (res.status === 200) {
+        yield put({ type: actions.GET_TEAM_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 
 function* addRolesSaga() {
   yield takeLatest(actions.ADD_ROLES_REQUEST, function*(params) {
     const { data } = params;
+    console.log(data)
     try {
       const res = yield addRolesService(data);
       if (res.status === 200) {
@@ -46,14 +62,13 @@ function* addRolesSaga() {
 
 function* editRolesSaga() {
   yield takeLatest(actions.EDIT_ROLES_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield editRolesService(data);
       if (res.status === 200) {
-        yield onSuccess();
+        yield Success('Cập nhật thành công');
         yield put({ type: actions.EDIT_ROLES_RESPONSE, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -130,6 +145,7 @@ function* getPrivilegeRoleByGroupSaga() {
 export default function* rootSaga() {
   yield all([
     fork(getRolesSaga),
+    fork(getAllTeamSaga),
     fork(addRolesSaga),
     fork(editRolesSaga),
     fork(deleteRolesSaga),

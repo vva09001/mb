@@ -5,6 +5,12 @@ const Actions = {
   GetRoles: () => ({
     type: Actions.GET_ROLES_REQUEST
   }),
+  GET_TEAM_REQUEST: 'GET_TEAM_REQUEST',
+  GET_TEAM_RESPONSE: 'GET_TEAM_RESPONSE',
+
+  getAllTeam: () => ({
+    type: Actions.GET_TEAM_REQUEST
+  }),
 
   ADD_ROLES_REQUEST: 'ADD_ROLES_REQUEST',
   ADD_ROLES_RESPONSE: 'ADD_ROLES_RESPONSE',

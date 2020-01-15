@@ -6,16 +6,30 @@ import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+import map from 'lodash';
+
 const PropsType = {
   getListPrvilegesByGroup: PropTypes.func,
   listPrivilegeByGroup: PropTypes.array,
-  addRole: PropTypes.func
+  addRole: PropTypes.func,
+  getAllTeam: PropTypes.func,
+  dataTeam: PropTypes.array
 };
 let dataPrivileges = [];
-function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }) {
+let dataTeamToAdd = [];
+function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, getAllTeam, dataTeam }) {
+  const [formState, setFormState] = useState({
+    name: '',
+    privileges: [],
+    teams: []
+  });
+  const [selectOption, setSelectoption] = useState([]);
+  const optionTeam = [];
   useEffect(() => {
     getListPrivilegesByGroup();
-  }, [getListPrivilegesByGroup]);
+    getAllTeam();
+  }, [getListPrivilegesByGroup, getAllTeam]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
     dataPrivileges.forEach(function(data) {
@@ -27,9 +41,18 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
       });
     });
   });
-  const [formState, setFormState] = useState({
-    name: '',
-    privileges: []
+
+  useEffect(() => {
+    console.log(dataTeam);
+    dataTeam.forEach(function(data) {
+      var tmpTeam = {
+        value: data.name,
+        label: data.name,
+        id: data.id,
+        idTeam: data.idTeam
+      };
+      optionTeam.push(tmpTeam);
+    });
   });
   const [activeTab, setActiveTab] = useState('1');
 
@@ -46,6 +69,15 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
       name: event.target.value
     }));
   };
+
+  const handleChangeTeam = selectOption => {
+    setSelectoption(selectOption => ({
+      ...selectOption,
+      selectOption: selectOption
+    }));
+    dataTeamToAdd = selectOption;
+    // console.log(dataTeamToAdd)
+  };
   const onSubmitRoles = event => {
     event.preventDefault();
     dataPrivileges.forEach(function(data) {
@@ -55,6 +87,13 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
         }
       });
     });
+    event.preventDefault();
+    console.log(dataTeamToAdd);
+    dataTeamToAdd.forEach(function(data) {
+      console.log(data);
+      formState.teams.push(data.idTeam);
+    });
+    console.log(formState);
     addRole(formState);
   };
 
@@ -145,6 +184,14 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup }
               <Row>
                 <Col lg={9} md={8}>
                   <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                    <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
+                      <h4>{t('Team')}</h4>
+                    </FormGroup>
+                    <FormGroup>
+                      {optionTeam.length >= 0 && (
+                        <Select name="teams" options={optionTeam} isMulti onChange={handleChangeTeam} />
+                      )}
+                    </FormGroup>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -248,6 +295,7 @@ RolesCreate.propTypes = PropsType;
 
 const mapStateToProps = state => {
   return {
+    dataTeam: state.RoleReducer.dataTeam,
     detail: state.RoleReducer.detail,
     listPrivilege: state.RoleReducer.listPrivilege,
     listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
@@ -255,6 +303,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = {
   addRole: RoleActions.AddRoles,
+  getAllTeam: RoleActions.getAllTeam,
   getListPrivilege: RoleActions.getPrivilegeRole,
   getListRole: RoleActions.getListRole,
   getListPrivilegesByGroup: RoleActions.getPrivilegeRoleByGroup

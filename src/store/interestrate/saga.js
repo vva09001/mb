@@ -2,7 +2,6 @@ import actions from './actions';
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getInterestRateService, createInterestRateService, updateInterestRateService } from 'services/InterestRate';
 import { Error } from 'helpers/notify';
-import history from 'helpers/history';
 
 function* getInterestRateSaga() {
   yield takeLatest(actions.GET_INTEREST_RATE_REQUEST, function* (params) {
