@@ -122,3 +122,12 @@ label {
     cursor: pointer;
   }
 }
+.folder {
+  .name {
+    a {
+      svg {
+        margin-right: 15px;
+      }
+    }
+  }
+}

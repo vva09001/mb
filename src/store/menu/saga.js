@@ -83,7 +83,7 @@ function* deleteMenusSaga() {
 function* getMenuItemsSaga() {
   yield takeLatest(actions.GET_MENUITEMS_REQUEST, function*(params) {
     const { id } = params;
-    try {
+    try {      
       const res = yield getMenuItems(id);
       let data = [];
       if (res.status === 200) {
@@ -166,10 +166,9 @@ function* updatePositionMenuItemsSaga() {
     const { idMenuItem, idParent, positions } = params;
     try {
       const res = yield updatePositionMenuItemsService(idMenuItem, idParent, positions);
-
       if (res.status === 200) {
-        Success(' Sửa thành công');
-        yield put({ type: actions.GET_MENUITEMS_REQUEST, data: res.data });
+        Success(' Sửa thành công');       
+        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data[0].menuId });
       } else {
         yield Error(res.message);
       }
