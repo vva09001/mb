@@ -1,6 +1,6 @@
 import axios from 'axios';
 const request = axios.create({
-  baseURL: 'http://45.77.172.38:8088/api/',
+  baseURL: 'https://bank1712.herokuapp.com/api/',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
