@@ -28,7 +28,6 @@ function SelectMedia({
   data,
   getImages,
   getDetailImage,
-
   addFiles,
   getPathFolder,
   createFolder,
@@ -84,7 +83,7 @@ function SelectMedia({
     <React.Fragment>
       <h4>{t('Media')}</h4>
       <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
-      <div style={{ backgroundColor: 'white', padding: 20, maxHeight: '600px', maxWidth: '600px' }}>
+      <div style={{ backgroundColor: 'white', padding: 20, maxHeight: '500px', overflow: 'auto' }}>
         <div style={{ paddingBottom: 10, paddingRight: 10 }}>
           <Button
             color={'primary'}
