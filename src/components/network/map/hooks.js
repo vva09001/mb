@@ -1,5 +1,5 @@
-import  { useState, useEffect } from "react";
-import GoogleMapsApiLoader from "google-maps-api-loader";
+import { useState, useEffect } from 'react';
+import GoogleMapsApiLoader from 'google-maps-api-loader';
 
 const useGoogleMap = apiKey => {
   const [googleMap, setGoogleMap] = useState(null);
@@ -15,14 +15,11 @@ const useMap = ({ googleMap, mapContainerRef, initialConfig }) => {
   const [map, setMap] = useState(null);
   useEffect(
     () => {
-      if (initialConfig.center!== null){
+      if (initialConfig.center !== null) {
         if (!googleMap || !mapContainerRef.current) {
           return;
         }
-        const map = new googleMap.maps.Map(
-          mapContainerRef.current,
-          initialConfig
-        );
+        const map = new googleMap.maps.Map(mapContainerRef.current, initialConfig);
 
         const marker = new googleMap.maps.Marker({
           position: initialConfig.center,
@@ -35,12 +32,13 @@ const useMap = ({ googleMap, mapContainerRef, initialConfig }) => {
                     </button>
                   </div>`
         });
-        marker.addListener("click", () => {
+        marker.addListener('click', () => {
           InfoWindow.open(map, marker);
         });
         setMap(map);
       }
     },
+    // eslint-disable-next-line
     [googleMap, mapContainerRef]
   );
   return map;
