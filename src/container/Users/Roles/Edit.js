@@ -7,6 +7,7 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import map from 'lodash';
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
@@ -41,7 +42,7 @@ function RolesEdit({
   let dataIdSelect = [];
   let optionTeam = [];
   const [SelectedOption, setSelectedOption] = useState({
-    Select: [],
+    Select: []
   });
   const [activeTab, setActiveTab] = useState('1');
 
@@ -87,13 +88,15 @@ function RolesEdit({
     });
   };
   useEffect(()=> {
-    SelectedOption.Select = Object.assign(SelectedOption.Select, dataIdSelect)
-  })
+    if (dataIdSelect !== null)
+    SelectedOption.Select = dataIdSelect;
+  }, [SelectedOption.Select])
   const handleChangeTeam = (event) => {
-      setSelectedOption(SelectedOption => ({
-        ...SelectedOption,
-       Select : event
-     }))
+    setSelectedOption(SelectedOption => ({
+      ...SelectedOption,
+      Select: event
+    }));
+    dataTeamToEdit = event;
   };
   const handleChecked = () => {
     dataPrivileges.forEach(function(data) {
@@ -189,6 +192,7 @@ function RolesEdit({
     }));
   };
   const onSubmitRoles = event => {
+
     event.preventDefault();
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
@@ -198,10 +202,16 @@ function RolesEdit({
       });
     });
     event.preventDefault();
-    SelectedOption.Select.forEach(function(data) {
+    formState.teams.splice(0, formState.teams.length)
+    dataTeamToEdit.forEach(function(data) {
       formState.teams.push(data.value);
       })
-    editRole(formState);
+      if (formState.teams.length === 0)
+      formState.teams = detail.teams
+      if (formState.privileges.length <= 1)
+      formState.privileges = detail.privileges;
+      
+      editRole(formState)
   };
 
   return (
@@ -238,9 +248,6 @@ function RolesEdit({
                   <Label for="exampleName">{t('name')}</Label>
                   <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
-                {/* <Button color="primary" type="submit" onClick={onSubmitRoles}>
-                  {t('save')}
-                </Button> */}
               </Form>
             </TabPane>
             <TabPane tabId="2">
