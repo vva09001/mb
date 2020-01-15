@@ -183,11 +183,14 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <img
-                    src={formState.values.base_image === undefined ? '' : formState.values.base_image}
-                    style={{ width: '100px' }}
-                    alt="logo"
-                  />
+                  <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                    <img
+                      src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                      style={{ maxWidth: '100px' }}
+                      alt="logo"
+                    />
+                  </div>
+
                   <ModalMedia setState={onSetState} />
                 </FormGroup>
                 <div className="check__box">

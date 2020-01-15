@@ -633,7 +633,6 @@ function Page({
       if (blockValue[0] !== undefined) {
         type = blockValue[0].type_id;
       }
-      console.log([{ ...content }]);
       if (type === 9) {
         mutileImage.push(content);
       }
