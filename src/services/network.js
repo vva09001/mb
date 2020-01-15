@@ -53,7 +53,7 @@ const aprrNetwork = data => {
     });
 };
 
-const editNetwork =  data => {
+const editNetwork = data => {
   return request({
     url: `/network/${data.id}`,
     method: 'PUT',
@@ -93,7 +93,7 @@ const searchNetwork = data => {
     });
 };
 
-export const buildQuery = (params) => {
+export const buildQuery = params => {
   if (typeof params === 'undefined' || typeof params !== 'object') {
     params = {};
     return params;
@@ -109,13 +109,10 @@ export const buildQuery = (params) => {
     if (index === 1) {
       query += param + '=' + value;
     } else {
-
       query += '&' + param + '=' + value;
     }
-
   }
   return query;
 };
-
 
 export { getNetwork, getNetworkId, createNetwork, editNetwork, deleteNetwork, aprrNetwork, searchNetwork };

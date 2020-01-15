@@ -1,56 +1,56 @@
 import request from 'helpers/request';
 
-const  getStoreFont= name => {
-    return request({
-      url: `/common/${name}`,
-      method: 'GET'
+const getStoreFont = name => {
+  return request({
+    url: `/common/${name}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
     })
-      .then(res => {
-        return res;
-      })
-      .catch(error => {
-        return error.response.data;
-      });
-  };
+    .catch(error => {
+      return error.response.data;
+    });
+};
 
 const editStoreFontGeneral = data => {
-    return request({
-      url: '/common/edit/general',
-      method: 'PUT',
-      data: data
+  return request({
+    url: '/common/edit/general',
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
     })
-      .then(res => {
-        return res;
-      })
-      .catch(error => {
-        return error.response.data;
-      });
-  };
-  const editStoreFontLogo = data => {
-    return request({
-      url: '/common/edit/logo',
-      method: 'PUT',
-      data: data
+    .catch(error => {
+      return error.response.data;
+    });
+};
+const editStoreFontLogo = data => {
+  return request({
+    url: '/common/edit/logo',
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
     })
-      .then(res => {
-        return res;
-      })
-      .catch(error => {
-        return error.response.data;
-      });
-  };
-  const editStoreFontSocialLink = data => {
-    return request({
-      url: '/common/edit/sociallink',
-      method: 'PUT',
-      data: data
+    .catch(error => {
+      return error.response.data;
+    });
+};
+const editStoreFontSocialLink = data => {
+  return request({
+    url: '/common/edit/sociallink',
+    method: 'PUT',
+    data: data
+  })
+    .then(res => {
+      return res;
     })
-      .then(res => {
-        return res;
-      })
-      .catch(error => {
-        return error.response.data;
-      });
-  };
+    .catch(error => {
+      return error.response.data;
+    });
+};
 
-export {getStoreFont, editStoreFontGeneral, editStoreFontLogo, editStoreFontSocialLink};
+export { getStoreFont, editStoreFontGeneral, editStoreFontLogo, editStoreFontSocialLink };

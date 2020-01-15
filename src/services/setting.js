@@ -13,7 +13,7 @@ const getSettingService = () => {
     });
 };
 
-const editSettingService = (data) => {
+const editSettingService = data => {
   return request({
     url: `/setting/edit`,
     method: 'PUT',
@@ -39,4 +39,4 @@ const getEncryptionService = () => {
       return error.response.data;
     });
 };
-export { getSettingService, editSettingService , getEncryptionService};
+export { getSettingService, editSettingService, getEncryptionService };
