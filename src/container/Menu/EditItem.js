@@ -172,11 +172,14 @@ function EditMenusItem({
               <Label for="exampleSelect">{t('parentMenu')}</Label>
               <Input type="select" name="parentId" value={formState.values.parentId} onChange={handleChange}>
                 <option>Chọn...</option>
-                {map(dataAllItem, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.name}
-                  </option>
-                ))}
+                {map(dataAllItem, value => {
+                  if (value.id !== detailItem.id){
+                    return (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    );}
+                })}
               </Input>
             </FormGroup>
             <FormGroup>

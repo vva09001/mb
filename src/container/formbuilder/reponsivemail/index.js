@@ -13,19 +13,31 @@ import { connect } from 'react-redux';
 
 const PropsType = {
   formDetail: PropTypes.object,
+  detailrely: PropTypes.object,
   ReponmailCreate: PropTypes.func,
-  getFormId: PropTypes.func
+  getFormId: PropTypes.func,
+  getRelyMail: PropTypes.func
 };
 let listform = null;
-function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
+function ReponmailCreate({ ReponmailCreate, formDetail, getFormId, detailrely, getRelyMail }) {
   let { id } = useParams();
   useEffect(() => {
     getFormId(id);
-  }, [getFormId, id]);
+    getRelyMail(id);
+  }, [getFormId, id, getRelyMail]);
 
   if (formDetail.list) {
     listform = JSON.parse(formDetail.list);
   }
+  // console.log(listform);
+  
+  useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+      values: detailrely
+    }));
+  }, [detailrely]);
+  console.log(detailrely);
 
   const [formState, setFormState] = useState({
     values: {},
@@ -105,7 +117,12 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
             </Col>
             <Col sm="10">
               <FormGroup style={{ display: 'flex' }}>
-                <Input name="feedBackTo" required onChange={handleChange} />
+                <Input
+                  name="feedBackTo"
+                  value={formState.values.feedBackTo === undefined ? '' : formState.values.feedBackTo}
+                  required
+                  onChange={handleChange}
+                />
               </FormGroup>
             </Col>
           </Row>
@@ -124,6 +141,7 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
                   style={{ width: '100%' }}
                   required
                   editor={ClassicEditor}
+                  data={formState.values.messageBody}
                   onChange={(event, editor) => {
                     const data = editor.getData();
                     ckEditorChange(event, data);
@@ -168,7 +186,12 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId }) {
                 <thead>
                   <tr>
                     <td>
-                      <Input name="status" onChange={handleChange} type="checkbox" />
+                      <Input
+                        name="status"
+                        checked={formState.values.status === 0 ? false : true}
+                        onChange={handleChange}
+                        type="checkbox"
+                      />
                       <span>Enable the Form</span>
                     </td>
                   </tr>
@@ -189,13 +212,15 @@ ReponmailCreate.propTypes = PropsType;
 
 const mapStateToProps = state => {
   return {
-    formDetail: state.FormBuilderReducer.detail
+    formDetail: state.FormBuilderReducer.detail,
+    detailrely: state.FeedbackReducer.detail
   };
 };
 
 const mapDispatchToProps = {
   ReponmailCreate: FeedbackActions.AddFeedbackMail,
-  getFormId: FormBuilderActions.getformbyIDAction
+  getFormId: FormBuilderActions.getformbyIDAction,
+  getRelyMail: FeedbackActions.GetFeedbackMailsId
 };
 
 export default connect(

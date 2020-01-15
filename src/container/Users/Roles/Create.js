@@ -7,7 +7,6 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import map from 'lodash';
 
 const PropsType = {
   getListPrvilegesByGroup: PropTypes.func,
@@ -43,7 +42,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
   });
 
   useEffect(() => {
-    console.log(dataTeam);
     dataTeam.forEach(function(data) {
       var tmpTeam = {
         value: data.name,
@@ -76,7 +74,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
       selectOption: selectOption
     }));
     dataTeamToAdd = selectOption;
-    // console.log(dataTeamToAdd)
   };
   const onSubmitRoles = event => {
     event.preventDefault();
@@ -88,12 +85,9 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
       });
     });
     event.preventDefault();
-    console.log(dataTeamToAdd);
     dataTeamToAdd.forEach(function(data) {
-      console.log(data);
       formState.teams.push(data.idTeam);
     });
-    console.log(formState);
     addRole(formState);
   };
 

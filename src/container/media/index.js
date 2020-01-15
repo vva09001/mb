@@ -8,7 +8,7 @@ import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } fro
 import MediaDetail from '../../components/Media';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
-import { Button } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 import history from 'helpers/history';
 
 const PropsType = {
@@ -22,7 +22,9 @@ const PropsType = {
   moveFile: PropTypes.func,
   renameFolder: PropTypes.func,
   createFolder: PropTypes.func,
-  deleteFolder: PropTypes.func
+  deleteFolder: PropTypes.func,
+  getPathFolder: PropTypes.func,
+  PathFolder: PropTypes.string
 };
 
 function Media({
@@ -36,8 +38,11 @@ function Media({
   moveFile,
   renameFolder,
   createFolder,
-  deleteFolder
+  deleteFolder,
+  getPathFolder,
+  PathFolder
 }) {
+  const [isFolder, setIsFolder] = useState(true);
   const [formState, setFormState] = useState([]);
   const { t } = useTranslation();
 
@@ -49,6 +54,15 @@ function Media({
     setFormState(data);
   }, [data]);
 
+  const handleChange = event => {
+    event.persist();
+    let formData = new FormData();
+    map(event.target.files, value => {
+      formData.append('files', value);
+    });
+    formData.append('folderName', PathFolder);
+    addFiles(formData);
+  };
   const handleCreateFolder = key => {
     let createFolderData = new FormData();
     createFolderData.append('path', key);
@@ -101,21 +115,41 @@ function Media({
     renameFolderData.append('folderNew', newKey);
     renameFolder(renameFolderData);
   };
+
+  const handleFolder = key => {
+    setIsFolder(false);
+    getPathFolder(key);
+  };
+  console.log(PathFolder);
   window.__isReactDndBackendSetUp = false;
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>
+      <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
       <div style={{ backgroundColor: 'white', padding: 20, height: 'auto' }}>
-        <div style={{ paddingBottom: 10 }}>
-          <Button
-            color={'danger'}
-            onClick={() => {
-              history.push('/media/deleteFiles');
-            }}
-          >
-            {t('DeleteFiles')}
-          </Button>
-        </div>
+        <Row>
+          <div style={{ paddingBottom: 10, paddingRight: 10 }}>
+            <Button
+              color={'primary'}
+              onClick={() => {
+                document.getElementById('file').click();
+              }}
+              disabled={isFolder}
+            >
+              {t('UploadFile')}
+            </Button>
+          </div>
+          <div style={{ paddingBottom: 10 }}>
+            <Button
+              color={'danger'}
+              onClick={() => {
+                history.push('/media/deleteFiles');
+              }}
+            >
+              {t('DeleteFiles')}
+            </Button>
+          </div>
+        </Row>
         <div>
           <FileBrowser
             files={formState}
@@ -136,6 +170,7 @@ function Media({
             onRenameFolder={handleRenameFolder}
             onDeleteFolder={handleDeleteFolder}
             onSelectFile={handleBrowse}
+            onSelectFolder={handleFolder}
             onDeleteFile={handleDeleteFile}
             onRenameFile={handleRenameFile}
             detailRenderer={MediaDetail}
@@ -151,7 +186,8 @@ Media.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     data: state.MediaReducer.data,
-    detail: state.MediaReducer.detail
+    detail: state.MediaReducer.detail,
+    PathFolder: state.MediaReducer.PathFolder
   };
 };
 
@@ -164,7 +200,8 @@ const mapDispatchToProps = {
   moveFile: MediaActions.MoveFile,
   renameFolder: MediaActions.RenameFolder,
   createFolder: MediaActions.CreatFolder,
-  deleteFolder: MediaActions.DeleteFolder
+  deleteFolder: MediaActions.DeleteFolder,
+  getPathFolder: MediaActions.GetPathFolder
 };
 
 export default connect(

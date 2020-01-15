@@ -49,14 +49,13 @@ function* addMenusSaga() {
 
 function* editMenusSaga() {
   yield takeLatest(actions.EDIT_MENUS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield editMenus(data);
       if (res.status === 200) {
-        yield onSuccess();
+        yield Success('Sửa thành công');
         yield put({ type: actions.EDIT_MENUS_RESPONSE, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
@@ -84,8 +83,7 @@ function* deleteMenusSaga() {
 function* getMenuItemsSaga() {
   yield takeLatest(actions.GET_MENUITEMS_REQUEST, function*(params) {
     const { id } = params;
-    try {
-      console.log(id);
+    try {      
       const res = yield getMenuItems(id);
       let data = [];
       if (res.status === 200) {
@@ -168,10 +166,9 @@ function* updatePositionMenuItemsSaga() {
     const { idMenuItem, idParent, positions } = params;
     try {
       const res = yield updatePositionMenuItemsService(idMenuItem, idParent, positions);
-
       if (res.status === 200) {
-        Success(' Sửa thành công');
-        yield put({ type: actions.GET_MENUITEMS_REQUEST, data: res.data });
+        Success(' Sửa thành công');       
+        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data[0].menuId });
       } else {
         yield Error(res.message);
       }

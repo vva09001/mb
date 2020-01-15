@@ -46,7 +46,7 @@ const AprrTable = ({ data, getDetail, getID }) => {
                 </td>
                 <td>
                   <Link to={`/news/approving/${values.newsId}`}>
-                  <span className={values.is_active === 0 ? 'green' : 'dot'} />
+                  <span className={values.is_active !== 0 ? 'green' : 'dot'} />
                   </Link>
                 </td>
                 <td>

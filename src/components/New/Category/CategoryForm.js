@@ -1,11 +1,13 @@
 import React from 'react';
 import { Form, FormGroup, Input, Label, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
+import { map } from 'lodash';
 import PropTypes from 'prop-types';
 import ModalMedia from '../../Media/ModalMedia';
 
 const PropType = {
   deleteActive: PropTypes.bool,
+  listGroup: PropTypes.array,
   value: PropTypes.object,
   handleChange: PropTypes.func,
   onSubmit: PropTypes.func,
@@ -13,7 +15,7 @@ const PropType = {
   onSetState: PropTypes.func
 };
 
-const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete, onSetState }) => {
+const CategoryForm = ({ listGroup, deleteActive, value, handleChange, onSubmit, onDelete, onSetState }) => {
   const { t } = useTranslation();
   return (
     <Form onSubmit={onSubmit} className="cetegoryFrom">
@@ -44,6 +46,23 @@ const CategoryForm = ({ deleteActive, value, handleChange, onSubmit, onDelete, o
             <span>{t('category_page.form.activeCategory')}</span>
           </div>
         </div>
+      </FormGroup>
+      <FormGroup>
+        <Label for="teams">{t('page.group')}</Label>
+        <Input
+          type="select"
+          name="team"
+          required
+          value={value.team === undefined ? 0 : value.team}
+          onChange={handleChange}
+        >
+          <option value={0}>{t('select')}</option>
+          {map(listGroup, (value, index) => (
+            <option key={index} value={value.idTeam}>
+              {value.name}
+            </option>
+          ))}
+        </Input>
       </FormGroup>
       <FormGroup>
         <Label>{t('description')}</Label>

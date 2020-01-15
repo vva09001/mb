@@ -5,13 +5,16 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions, MediaActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import { map } from 'lodash';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 import ModalMedia from '../../components/Media/ModalMedia';
+import UploadAdapter from '../../services/uploadImage';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -19,10 +22,11 @@ const PropsType = {
   getCategory: PropTypes.func,
   newsCreate: PropTypes.func,
   getForm: PropTypes.func,
-  imageSeletedata: PropTypes.object
+  imageSeletedata: PropTypes.object,
+  addFiles: PropTypes.func
 };
 
-function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata }) {
+function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata, addFiles }) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -52,7 +56,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -67,6 +70,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     }));
   };
 
+  // const upload = loader => {
+  //   let formData = new FormData();
+  //   formData.append('files', loader.file);
+  //   formData.append('folderName', 'News/');
+  //   addFiles(formData);
+  // };
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
@@ -77,6 +86,22 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       touched: {
         ...formState.touched,
         description: true
+      }
+    }));
+  };
+
+  const handleChangeSelect = event => {
+    let arr = [];
+    map(event, items => arr.push({ id: items.value, name: items.label }));
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        categories: arr
+      },
+      touched: {
+        ...formState.touched,
+        categories: true
       }
     }));
   };
@@ -98,7 +123,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     };
     newsCreate(body, onSuccess, onFail);
   };
-
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -145,6 +169,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                       const data = editor.getData();
                       ckEditorChange(event, data);
                     }}
+                    onInit={editor => {
+                      editor.ui.view.editable.element.style.height = 'auto';
+                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                        return new UploadAdapter(loader);
+                      };
+                    }}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -153,11 +183,14 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <img
-                    src={formState.values.base_image === undefined ? '' : formState.values.base_image}
-                    style={{ width: '100px' }}
-                    alt="logo"
-                  />
+                  <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                    <img
+                      src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                      style={{ maxWidth: '100px' }}
+                      alt="logo"
+                    />
+                  </div>
+
                   <ModalMedia setState={onSetState} />
                 </FormGroup>
                 <div className="check__box">
@@ -169,14 +202,19 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </div>
                 <FormGroup>
                   <Label for="exampleSelect">{t('category')}</Label>
-                  <Input type="select" name="category" onChange={handleChange}>
-                    <option>Chọn...</option>
-                    {map(listOptions, value => (
-                      <option value={value.id} key={value.id}>
-                        {value.name}
-                      </option>
-                    ))}
-                  </Input>
+                  <Select
+                    name="categorys"
+                    closeMenuOnSelect={false}
+                    components={makeAnimated}
+                    options={map(listOptions, values => {
+                      return {
+                        value: values.id,
+                        label: values.name
+                      };
+                    })}
+                    isMulti
+                    onChange={handleChangeSelect}
+                  />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
                   {t('save')}
@@ -227,7 +265,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   newsCreate: NewActions.AddNews,
   getCategory: CategoryActions.getCategoryAction,
-  getForm: FormBuilderActions.getFormAction
+  getForm: FormBuilderActions.getFormAction,
+  addFiles: MediaActions.AddImages
 };
 
 export default connect(

@@ -18,8 +18,11 @@ import SettingReducer from './setting/reducers';
 import MediaReducer from './media/reducers';
 import FeedbackReducer from './backmail/reducers';
 import StoreFontReducer from './storefont/reducer';
+import NetworkReducer from './network/reducers';
 import CountryReducer from './country/reducers';
 import InterestRateReducer from './interestrate/reducers';
+import ExChangeRateReducer from './exchangeRate/reducers';
+import GroupReducer from './group/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -39,7 +42,10 @@ const reducers = combineReducers({
   StoreFontReducer,
   MediaReducer,
   FeedbackReducer,
-  InterestRateReducer
+  NetworkReducer,
+  InterestRateReducer,
+  ExChangeRateReducer,
+  GroupReducer
 });
 
 const persistConfig = {

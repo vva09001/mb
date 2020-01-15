@@ -4,7 +4,7 @@ import PagesCreate from '../../components/page/Form/PageCreate';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
 import { useTranslation } from 'react-i18next';
-import { PageActions, TagActions, CategoryActions } from '../../store/actions';
+import { PageActions, TagActions, CategoryActions, GroupActions } from '../../store/actions';
 import { map, filter } from 'lodash';
 import PopupComfirm from 'components/common/PopupComfirm';
 import Proptypes from 'prop-types';
@@ -13,10 +13,11 @@ import { connect } from 'react-redux';
 const Proptype = {
   data: Proptypes.array.isRequired,
   listTags: Proptypes.array.isRequired,
-  getPage: Proptypes.func.isRequired,
-  getTags: Proptypes.func.isRequired,
+  listGroup: Proptypes.array.isRequired,
   homeID: Proptypes.number,
   listCategory: Proptypes.array,
+  getPage: Proptypes.func.isRequired,
+  getTags: Proptypes.func.isRequired,
   addPage: Proptypes.func,
   editPage: Proptypes.func,
   deletePage: Proptypes.func,
@@ -24,7 +25,8 @@ const Proptype = {
   updatePositionPages: Proptypes.func,
   deletePageBlock: Proptypes.func,
   getHomeID: Proptypes.func,
-  getCategory: Proptypes.func
+  getCategory: Proptypes.func,
+  getGroup: Proptypes.func
 };
 
 function Page({
@@ -32,6 +34,7 @@ function Page({
   homeID,
   listCategory,
   listTags,
+  listGroup,
   getPage,
   getTags,
   addPage,
@@ -41,7 +44,8 @@ function Page({
   updatePositionPages,
   deletePageBlock,
   getHomeID,
-  getCategory
+  getCategory,
+  getGroup
 }) {
   const [deleteActive, setDeleteActive] = useState(false);
   const [PageDetail, setPageDetai] = useState({});
@@ -61,13 +65,15 @@ function Page({
   const [contentData, setContentData] = useState([]);
   const [formEdit, setFormEdit] = useState([]);
   const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
+  const [mutileImage, setMutileImage] = useState([]);
 
   useEffect(() => {
     getPage();
     getTags();
     getHomeID();
     getCategory();
-  }, [getPage, getTags, getHomeID, getCategory]);
+    getGroup();
+  }, [getPage, getTags, getHomeID, getCategory, getGroup]);
 
   const { t } = useTranslation();
   const handleChange = event => {
@@ -281,31 +287,114 @@ function Page({
     setContentData(newContent);
     setFormEdit(newValues);
   };
+
+  const handleImge = (data, index) => {
+    let newForm = map(formBlock, (value, indexItems) => {
+      if (index !== indexItems) {
+        return value;
+      } else {
+        return {
+          ...value,
+          id: 0,
+          position: index,
+          id_block: value.block_id,
+          mutileImge: data
+        };
+      }
+    });
+    let content = map(contentData, (values, indexItems) => {
+      if (index !== indexItems) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
+
+  const handleEditImge = (data, index) => {
+    let newValues = map(formEdit, (values, indexs) => {
+      if (index !== indexs) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    let newContent = map(contentData, (values, id) => {
+      if (index !== id) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileImge: data
+        };
+      }
+    });
+    setContentData(newContent);
+    setFormEdit(newValues);
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (deleteActive) {
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        let key = Object.keys(contentData[i]);
-        let regexp = '';
-        let replaceHTML = '';
-        key.forEach(items => {
-          regexp += items + '|';
-        });
-        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
-        replaceHTML = html.replace(regex, function(match) {
-          return contentData[i][match];
-        });
-        let contentHtml = replaceHTML.replace(/[{}]/g, '');
-        formEdit[i] = {
-          ...formEdit[i],
-          ...formBlock[i],
-          position: i,
-          title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
-          content: JSON.stringify(contentData[i]),
-          contentHtml: contentHtml
-        };
+        if (contentData[i]) {
+          let key = Object.keys(contentData[i]);
+          let regexp = '';
+          let replaceHTML = '';
+          key.forEach(items => {
+            regexp += items + '|';
+          });
+          let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+          replaceHTML = html.replace(regex, function(match) {
+            return contentData[i][match];
+          });
+          let contentHtml = replaceHTML.replace(/[{}]/g, '');
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            position: i,
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(contentData[i]),
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> ${contentHtml}</div`
+          };
+        }
+        if (contentData[i].mutileImge) {
+          for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            let key = Object.keys(contentData[i].mutileImge[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileImge[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container"><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2>${muitle_post_html}</div>`
+          };
+        }
         if (contentData[i].content) {
           for (let j = 0; j < contentData[i].content.length; j++) {
             let key = Object.keys(contentData[i].content[j]);
@@ -321,14 +410,15 @@ function Page({
             let contentHtml = replaceHTML.replace(/[{}]/g, '');
             muitle_post_html = muitle_post_html + contentHtml;
           }
-          // console.log(contentData[i].title);
           formEdit[i] = {
             ...formEdit[i],
             ...formBlock[i],
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(contentData[i].content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
         if (contentData[i].length > 0) {
@@ -352,7 +442,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(contentData[i]),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
         if (contentData[i].mutilePost) {
@@ -377,7 +469,9 @@ function Page({
             position: i,
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div><h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
       }
@@ -397,23 +491,47 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        let key = null;
-        key = Object.keys(contentData[i]);
-        let regexp = '';
-        let replaceHTML = '';
-        key.forEach(items => {
-          regexp += items + '|';
-        });
-        let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
-        replaceHTML = html.replace(regex, function(match) {
-          return contentData[i][match];
-        });
-        let contentHtml = replaceHTML.replace(/[{}]/g, '');
-        formBlock[i] = {
-          ...formBlock[i],
-          content: JSON.stringify(contentData[i]),
-          contentHtml: contentHtml
-        };
+        if (contentData[i]) {
+          let key = Object.keys(contentData[i]);
+          let regexp = '';
+          let replaceHTML = '';
+          key.forEach(items => {
+            regexp += items + '|';
+          });
+          let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+          replaceHTML = html.replace(regex, function(match) {
+            return contentData[i][match];
+          });
+          let contentHtml = replaceHTML.replace(/[{}]/g, '');
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(contentData[i]),
+            contentHtml: contentHtml
+          };
+        }
+
+        if (contentData[i].mutileImge) {
+          for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            let key = Object.keys(contentData[i].mutileImge[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileImge[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formBlock[i] = {
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+          };
+        }
         if (contentData[i].mutilePost) {
           for (let j = 0; j < contentData[i].mutilePost.length; j++) {
             let key = Object.keys(contentData[i].mutilePost[j]);
@@ -447,11 +565,11 @@ function Page({
       } else {
         data = {
           ...formState.values,
+          is_active: formState.values.is_active === null ? 0 : formState.values.is_active,
           parent_id: homeID,
           pageBlocks: [...formBlock]
         };
       }
-
       addPage(data);
       setFormState({
         values: {},
@@ -505,15 +623,27 @@ function Page({
     let stateEdit = [];
     let newContent = [];
     let listBlock = [];
+    let mutileImage = [];
     map(node.pageBlocks, (values, index) => {
-      newContent.push(JSON.parse(values.content));
-      listBlock.push({ ...values.blocks, content: values.content, title: values.title });
       let content = JSON.parse(values.content);
+      newContent.push(content);
+      let block = values.blocks;
+      let blockValue = block.blockValues;
+      let type = null;
+      if (blockValue[0] !== undefined) {
+        type = blockValue[0].type_id;
+      }
+      if (type === 9) {
+        mutileImage.push(content);
+      }
+      listBlock.push({ ...values.blocks, content: values.content, title: values.title });
+
       stateEdit = [
         ...stateEdit,
         { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
       ];
     });
+    setMutileImage(mutileImage);
     setFormBlock(stateEdit);
     setContentData([...newContent, {}]);
     setFormEdit([...stateEdit]);
@@ -573,8 +703,17 @@ function Page({
     setContentData([...contentData, {}]);
   };
 
-  const deletePageBlockItems = (id, pageid) => {
-    deletePageBlock(id, pageid);
+  const deletePageBlockItems = (id, pageid, indexItems) => {
+    if (pageid !== null) {
+      deletePageBlock(id, pageid);
+      const newValues = filter(listBlock, (items, index) => index !== indexItems);
+      setListBlock(newValues);
+      setFormBlock(newValues);
+    } else {
+      const newValues = filter(listBlock, (items, index) => index !== indexItems);
+      setListBlock(newValues);
+      setFormBlock(newValues);
+    }
   };
 
   return (
@@ -582,7 +721,7 @@ function Page({
       <h4> {t('page.page')}</h4>
       <Row className="category__wapper" style={{ height: '100%' }}>
         <Col lg={3} md={4}>
-          <Button className="mb-2" onClick={addNode}>
+          <Button className="mb-2 mr-2" onClick={addNode}>
             {t('page.addRoot')}
           </Button>
           <Button
@@ -617,7 +756,7 @@ function Page({
               {t('category_page.showAll')}
             </span>
           </div>
-          <div style={{ height: '45%' }}>
+          <div style={{ height: '50%' }}>
             <SortableTree
               treeData={data}
               onChange={treeData => changeTree(treeData)}
@@ -627,6 +766,8 @@ function Page({
               onMoveNode={treeData => onMove(treeData)}
               theme={FileExplorerTheme}
             />
+          </div>
+          <div className="listBlock">
             {map(listTags, (values, index) => (
               <React.Fragment key={index}>
                 <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
@@ -644,32 +785,34 @@ function Page({
           </div>
         </Col>
         <Col lg={9} md={8}>
-          <div>
-            <Row>
-              <Col sm="12">
-                <PagesCreate
-                  handleChange={handleChange}
-                  onSubmit={onSubmit}
-                  value={formState.values}
-                  stateEdit={formEdit}
-                  detail={PageDetail}
-                  blockData={listBlock}
-                  handleEidt={(event, index) => handleEidt(event, index)}
-                  handleFomBlock={(event, index) => handleFomBlock(event, index)}
-                  onRemoveBlock={index => removeItem(index)}
-                  onRemoveBlockValue={(id, pageid) => deletePageBlockItems(id, pageid)}
-                  deleteActive={deleteActive}
-                  listCategory={listCategory}
-                  handlePost={handlePost}
-                  handlePostEdit={handlePostEdit}
-                  mutiPost={mutiPost}
-                  mutiPostEdit={mutiPostEdit}
-                  editorChange={(data, key, index) => editorChange(data, key, index)}
-                  onDelete={() => setIsOpen(!isOpen)}
-                />
-              </Col>
-            </Row>
-          </div>
+          <Row>
+            <Col sm="12">
+              <PagesCreate
+                handleChange={handleChange}
+                onSubmit={onSubmit}
+                value={formState.values}
+                stateEdit={formEdit}
+                detail={PageDetail}
+                blockData={listBlock}
+                handleEidt={(event, index) => handleEidt(event, index)}
+                handleFomBlock={(event, index) => handleFomBlock(event, index)}
+                onRemoveBlock={index => removeItem(index)}
+                onRemoveBlockValue={(id, pageid, indexItems) => deletePageBlockItems(id, pageid, indexItems)}
+                deleteActive={deleteActive}
+                listCategory={listCategory}
+                listGroup={listGroup}
+                handlePost={handlePost}
+                handlePostEdit={handlePostEdit}
+                mutiPost={mutiPost}
+                mutiPostEdit={mutiPostEdit}
+                mutileImage={mutileImage}
+                handleImge={handleImge}
+                handleEditImge={handleEditImge}
+                editorChange={(data, key, index) => editorChange(data, key, index)}
+                onDelete={() => setIsOpen(!isOpen)}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -684,7 +827,8 @@ const mapStateToProps = state => {
     data: state.PageReducer.data,
     listTags: state.TagReducer.listTags,
     listCategory: state.CategoryReducer.data,
-    homeID: state.PageReducer.homeID
+    homeID: state.PageReducer.homeID,
+    listGroup: state.GroupReducer.listGroupByUser
   };
 };
 
@@ -698,7 +842,8 @@ const mapDispatchToProps = {
   updatePositionPages: PageActions.updatePositionPages,
   deletePageBlock: PageActions.detelePageBlockAction,
   getHomeID: PageActions.getHomepageIDAction,
-  getCategory: CategoryActions.getCategoryAction
+  getCategory: CategoryActions.getCategoryAction,
+  getGroup: GroupActions.getGroupByUserAction
 };
 
 export default connect(

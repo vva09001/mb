@@ -43,8 +43,17 @@ import ListRoles from 'container/Users/Roles';
 import RolesCreate from 'container/Users/Roles/Create';
 import RolesEdit from 'container/Users/Roles/Edit';
 import Media from 'container/media';
+import Network from '../container/Network';
+import NetworkCreate from '../container/Network/Create';
+import NetworkDetail from '../container/Network/Detail';
 import ToolMenu from 'container/InterestRate/index';
-import DeleteFiles from 'container/media/deleteFiles'
+import DeleteFiles from 'container/media/deleteFiles';
+import ListExchangeRate from 'container/exchangeRate';
+import ExChangeRateCreate from 'container/exchangeRate/create';
+import ListGroup from 'container/group';
+import CreateGroup from 'container/group/create';
+import EditGroup from 'container/group/edit';
+import ExChangeRateEdit from 'container/exchangeRate/edit';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -107,12 +116,24 @@ const DashboardRoutes = () => (
     <Route path="/slider/create" exact component={SliderCreate} />
     <Route path="/slider/edit/:id" exact component={SliderEdit} />
 
+    {/* Network */}
+    <Route path="/network" exact component={Network} />
+    <Route path="/network/create" exact component={NetworkCreate} />
+    <Route path="/network/detail/:id" exact component={NetworkDetail} />
+
     <Route path="/media" exact component={Media} />
     <Route path="/media/deleteFiles" exact component={DeleteFiles} />
 
     {/*toolMenu*/}
-    <Route path="/interest-rate" exact component={ToolMenu}/>
+    <Route path="/interest-rate" exact component={ToolMenu} />
+    <Route path="/exchangeRate" exact component={ListExchangeRate} />
+    <Route path="/exchangeRate/create" exact component={ExChangeRateCreate} />
+    <Route path="/exchangeRate/edit" exact component={ExChangeRateEdit} />
 
+    {/* Group */}
+    <Route path="/group" exact component={ListGroup} />
+    <Route path="/group/create" exact component={CreateGroup} />
+    <Route path="/group/edit/:id" exact component={EditGroup} />
     {/*Redirect*/}
     <Redirect to="/errors/404" />
   </Switch>

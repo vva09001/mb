@@ -7,7 +7,6 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import map from 'lodash';
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
@@ -66,11 +65,8 @@ function RolesEdit({
         docs = Object.assign(docs, check);
       });
     });
-    console.log(detail);
-    console.log(dataPrivileges);
   });
   useEffect(() => {
-    console.log(dataTeam);
     dataTeam.forEach(function(data) {
       var tmpTeam = {
         value: data.idTeam,
@@ -89,21 +85,15 @@ function RolesEdit({
       dataIdSelect.push(docs);
     }
     });
-    
-    console.log(dataIdSelect);
   };
   useEffect(()=> {
     SelectedOption.Select = Object.assign(SelectedOption.Select, dataIdSelect)
-    console.log(SelectedOption.Select)
   })
   const handleChangeTeam = (event) => {
-    
-    console.log(event)
       setSelectedOption(SelectedOption => ({
         ...SelectedOption,
        Select : event
      }))
-    console.log(dataTeamToEdit)
   };
   const handleChecked = () => {
     dataPrivileges.forEach(function(data) {
@@ -163,7 +153,6 @@ function RolesEdit({
         }
       });
     });
-    console.log(dataPrivileges);
   };
   const denyBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
@@ -205,21 +194,13 @@ function RolesEdit({
       data.privileges.forEach(function(docs) {
         if (docs.checked === true) {
           formState.privileges.push(docs.privilegeId);
-          console.log(docs.privilegeId);
         }
       });
     });
     event.preventDefault();
-    console.log(dataTeamToEdit);
     SelectedOption.Select.forEach(function(data) {
       formState.teams.push(data.value);
       })
-      
-          // 
-          // 
-      // console.log(data);
-    
-    console.log(formState);
     editRole(formState);
   };
 

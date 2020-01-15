@@ -37,8 +37,12 @@
     "questionConfirm": "Bạn có chắc chắn muốn xóa ?",
     "sidebar": "Thanh bên",
     "select": "Chọn...",
-    "feedback":"Phản hồi",
+    "feedback": "Phản hồi",
     "slug": "Đường dẫn",
+    "approveds": "Đã duyệt",
+    "pendings": "Chờ duyệt",
+    "id": "ID",
+    "SeleteImage": "Chọn ảnh",
     "customer": {
         "personal": "Khách hàng cá nhân",
         "enterprise": "Khách hàng doanh nghiệp",
@@ -80,7 +84,8 @@
         "active": "Kích hoạt trang",
         "sidebar": "Kích hoạt thanh bên",
         "full": "Đầy đủ",
-        "default": "Mặc định"
+        "default": "Mặc định",
+        "group": "Nhóm tin"
     },
     "formBuilder": {
         "title": "Tạo Form",
@@ -124,7 +129,9 @@
         "media": "Thư viện",
         "storeFont": "Store Font",
         "slider": "Slider",
-        "tool_menu": "Thanh công cụ"
+        "network": "Quản lý mạng lưới",
+        "tool_menu": "Thanh công cụ",
+        "group": "Nhóm"
     },
     "user": {
         "fistname": "Tên",
@@ -193,8 +200,35 @@
         "emailCc": "Gửi đến",
         "content": "Nội dung"
     },
-    "roleinit": {
-        "getallroleof": "Hiển thị quyền hiện tại của"
+    "block": {
+        "image": {
+            "title": "Tiêu đề",
+            "description": "Mô tả",
+            "learn_more": "Chú thích",
+            "text": "Văn bản",
+            "url": "URl",
+            "video_url": "Viedo URL"
+        }
+    },
+    "network": {
+        "approved": "Phê Duyệt",
+        "danhsach": "Danh sách mạng lưới",
+        "networkdetails": "Thông tin chi tiết mạng lưới",
+        "address": "Địa chỉ",
+        "address_name": "Tên địa điểm",
+        "language": "Ngôn ngữ",
+        "latitude": "Vĩ độ",
+        "longitude": "Kinh độ",
+        "network_category": "Loại mạng lưới",
+        "province_city": "Tỉnh/Thành phố",
+        "about": "Giới thiệu",
+        "create": "Tạo mới",
+        "down": "Tải file",
+        "processingunit": "Đơn vị xử lý",
+        "lastupdateddate": "Ngày cuối cập nhập",
+        "roleinit": {
+            "getallroleof": "Hiển thị quyền hiện tại của"
+        }
     },
     "interest_rate": {
         "interest_rate": "Lãi xuất",
@@ -203,6 +237,20 @@
         "create": "Tạo",
         "update": "Cập nhật",
         "term_error": "Trường này không được để rỗng",
-        "interest_rate_error": "Trường này không được để rỗng"
+        "interest_rate_error": "Trường này không được để rỗng",
+        "exchange_rate": "Tỷ Giá"
+    },
+    "group": {
+        "title": "Nhóm",
+        "idTeam": "ID Team"
+    },
+    "ExChangeRate": {
+        "ExchangeRate": "Danh sách tỷ giá",
+        "AddNewCurrency" : "Thêm ngoại tệ mới",
+        "currency": "Ngoại tệ",
+        "buy_cash": "Mua vào (Tiền Mặt)",
+        "buy_transfer": "Mua vào (Chuyển khoản)",
+        "sell" : "Bán ra",
+        "change_USD": "Chuyển đổi USD"
     }
 }

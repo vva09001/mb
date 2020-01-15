@@ -38,7 +38,10 @@
     "select": "Select...",
     "feedback":"FeedBack",
     "slug": "slug",
+    "approveds":"Approved",
+    "pendings":"Pending",
     "questionConfirm": "Are you sure you want to delete ?",
+    "SeleteImage": "Selete Image",
     "customer": {
         "personal": "Personal customers",
         "enterprise": "Enterprise customers",
@@ -80,7 +83,8 @@
         "active": "Activate page",
         "sidebar": "Activate sidebar",
         "full": "Full",
-        "default": "Default"
+        "default": "Default",
+        "group": "News group"
     },
     "formBuilder": {
 
@@ -125,7 +129,9 @@
         "media": "Media",
         "storeFont": "Store Font",
         "slider": "Slider",
-        "tool_menu": "Tool menu"
+        "network":"Network Management",
+        "tool_menu": "Tool menu",
+        "group": "Group"
     },
     "storefont": {
         "sociallinks": "Social links",
@@ -167,8 +173,25 @@
         "emailCc": "To",
         "content": "Content"
     },
+    "network":{
+        "approved":"Approved",
+        "danhsach":"List of networks",
+        "networkdetails":"Network details",
+        "address":"Address",
+        "address_name":"Address name",
+        "language":"Language",
+        "latitude":"Latitude",
+        "longitude":"Longitude",
+        "network_category":"Network category",
+        "province_city":"Province city",
+        "about":"About",
+        "create":"Create new",
+        "down":"Download the file",
+        "processingunit":"Processing unit",
+        "lastupdateddate":"Last updated date",
     "roleinit": {
         "getallroleof": "Get all role current of"
+    }
     },
     "interest_rate": {
         "interest_rate": "Interest rate",

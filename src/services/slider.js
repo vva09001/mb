@@ -1,12 +1,3 @@
-// import axios from 'axios';
-//
-// const request = axios.create({
-//   baseURL: 'https://bank1712.herokuapp.com/api',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     Accept: 'application/json'
-//   }
-// });
 import request from 'helpers/request';
 
 const getSliderService = () => {
@@ -32,7 +23,7 @@ const getSliderId = id => {
     })
     .catch(error => {
       return error.respose.data;
-    })
+    });
 };
 
 const createSliderService = data => {
@@ -42,7 +33,6 @@ const createSliderService = data => {
     data: data
   })
     .then(res => {
-      // console.log(res);
       return res;
     })
     .catch(error => {
@@ -57,6 +47,7 @@ const editSliderService = data => {
     data: data
   })
     .then(res => {
+      console.log(res);
       return res;
     })
     .catch(error => {
