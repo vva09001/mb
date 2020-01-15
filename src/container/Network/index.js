@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import NetworkTable from '../../components/network/Table';
 import { Form, FormGroup, Label, Input, Col } from 'reactstrap';
-import PopupComfirm from 'components/common/PopupComfirm';
 import { NetworkActions } from '../../store/actions';
 import history from 'helpers/history';
 import { map } from 'lodash';
@@ -20,8 +19,7 @@ const PropsType = {
 };
 
 function Network({ data, getNetwork, deleteNetwork, getDetail, getDataSearch }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [networkID, setNetworkID] = useState(null);
+  const [ setNetworkID] = useState(null);
 
   useEffect(() => {
     getNetwork();
@@ -35,17 +33,6 @@ function Network({ data, getNetwork, deleteNetwork, getDetail, getDataSearch }) 
 
   const uniqueSet = Array.from(new Set(Category));
 
-  const onDelete = () => {
-    if (networkID !== null) {
-      deleteNetwork(networkID);
-      setIsOpen(!isOpen);
-    }
-  };
-
-  const onGetDetail = detail => {
-    getDetail(detail);
-    history.push('/network/detail');
-  };
   const [formState, setFormState] = useState({
     dataSearch: {},
   });
@@ -131,8 +118,6 @@ function Network({ data, getNetwork, deleteNetwork, getDetail, getDataSearch }) 
         <Col lg={4} md={4} />
 
         <NetworkTable data={list} getID={id => setNetworkID(id)}  deleteNetwork={deleteNetwork}  />
-
-        <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
       </Row>
     </React.Fragment>
   );

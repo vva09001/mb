@@ -1,7 +1,5 @@
 import Actions from './actions';
 import { filter, map } from 'lodash';
-import { Input } from 'reactstrap';
-import React from 'react';
 
 const initialState = {
   data: {},

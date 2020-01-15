@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import useBulkSelect from '../../../hooks/useBulkSelect';
+import PopupComfirm from 'components/common/PopupComfirm';
 
 const PropsType = {
   data: PropTypes.array,
@@ -27,10 +28,19 @@ const NetworkTable = ({ data,deleteNetwork }) => {
     toggleIsAllSelected,
     isIndeterminate
   } = useBulkSelect(fileIds);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openComfirm = () => {
+    if (selectedItems.length >0) {
+      setIsOpen(!isOpen);
+    }
+  };
+
   const clickDeleteNetwork = () => {
     if (selectedItems.length >0){
-      console.log(selectedItems.length);
       deleteNetwork(selectedItems);
+      setIsOpen(!isOpen);
     }
   };
   const { t } = useTranslation();
@@ -41,7 +51,7 @@ const NetworkTable = ({ data,deleteNetwork }) => {
     <React.Fragment>
       <Button
       color={'danger'}
-      onClick={clickDeleteNetwork}
+      onClick={openComfirm}
     >
       {t('delete')}
     </Button>
@@ -97,6 +107,7 @@ const NetworkTable = ({ data,deleteNetwork }) => {
           onPageChange={data => setPage(data.selected)}
         />
       </div>
+      <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={clickDeleteNetwork} />
     </React.Fragment>
   );
 };
