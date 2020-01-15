@@ -75,7 +75,8 @@ export const storefontRoutes = {
       name: 'menu.storeFont',
       exact: true,
       icon: 'pencil-alt'
-    }, {
+    },
+    {
       name: 'menu.network',
       to: '/network',
       exact: true,
@@ -122,11 +123,11 @@ export default [
   emailRoutes,
   formRoutes,
   menuRoutes,
-  toolMenu,
   sliderfontRoutes,
-  storefontRoutes,
-  mediaRouter,
   groupRouter,
+  mediaRouter,
+  storefontRoutes,
+  toolMenu,
   userRoutes,
   settingRoutes
 ];

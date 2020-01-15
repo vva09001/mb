@@ -634,7 +634,7 @@ function Page({
         type = blockValue[0].type_id;
       }
       if (type === 9) {
-        mutileImage.push(content);
+        mutileImage.push(...content);
       }
       listBlock.push({ ...values.blocks, content: values.content, title: values.title });
 

@@ -122,7 +122,6 @@ function PagesCreate({
   };
 
   const handleChangeImge = (event, itemIndex, index, acitve) => {
-
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -874,7 +873,6 @@ function PagesCreate({
                                   arr = [...arr, content];
                                 });
                                 let tem = arr[indexItems];
-
                                 return (
                                   <div key={indexItems}>
                                     {renderInputEdit(items, stateEdit[index][tem], stateEdit[index][`newsID`], index)}
