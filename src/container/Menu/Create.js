@@ -38,23 +38,31 @@ function CreateMenus({ addMenu }) {
     event.preventDefault();
     addMenu(formState.values);
   };
-
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
       <Row className="category__wapper">
         <Col lg={7} md={4}>
           <div>
-            <Alert color="primary">Vui lòng lưu menu trước khi thêm các mục menu</Alert>
+            <Alert color="primary">{t('menu.checksave')}</Alert>
           </div>
         </Col>
         <Col lg={5} md={4}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
-              <h4>Tạo Menu</h4>
+              <h4>{t('menu.create')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
                 <Input type="text" name="name" onChange={handleChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelect">{t('menu.Postion')}</Label>
+                <Input type="select" name="position" id="exampleSelect" onChange={handleChange}>
+                  <option value={''}>{t('menu.Select')}</option>
+                  <option value={'bottom'}>{t('menu.Bottom')}</option>
+                  <option value={'top'}>{t('menu.Top')}</option>
+                  <option value={'side'}>{t('menu.Side')}</option>
+                </Input>
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
