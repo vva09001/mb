@@ -132,7 +132,7 @@
     "network": "Quản lý mạng lưới",
     "tool_menu": "Thanh công cụ",
     "group": "Nhóm",
-    "checksave": "Vui lòng tạo Menu ",
+    "checksave": "Hãy tạo trước khi thêm vào mục Menu ",
     "Select": "Chọn...",
     "create": "Tạo Menu",
     "Postion": "Vị Trí Menu",
@@ -144,7 +144,12 @@
     "Type": "Loại",
     "CategoryNew": "Danh Mục Tin Tức",
     "url": "URl",
-    "parentMenu": "Menu Cha"
+    "parentMenu": "Menu Cha",
+    "FluidMenu": "Fluid Menu",
+    "Thisisafullwidthmenu": "Đây là Menu tối đa chiều rộng",
+    "Target": "Mục Tiêu",
+    "Enablethemenuitem": "Kích hoạt Menu",
+    "editMenuItem" : "chỉnh sửa Menu Item"
   },
   "user": {
     "fistname": "Tên",
