@@ -68,7 +68,7 @@ function CreateMenusItem({
 
   return (
     <React.Fragment>
-      <Row style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }}>
+      <Row style={{ background: '#fff', alignItems: 'center' }}>
         <Col lg={7} md={4}>
           <Form className="p-3" onSubmit={onSubmit}>
             <h4>{t('menu.createMenuItem')}</h4>

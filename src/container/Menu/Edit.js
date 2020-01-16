@@ -156,7 +156,7 @@ function EditMenus({
             <SortableTree
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
-              onMoveNode={treeData => onMove(treeData)}
+              onMoveNode={treeData => onMove(treeData)}              
               generateNodeProps={({ node, path }) => ({
                 buttons: [
                   // eslint-disable-next-line react/jsx-key
