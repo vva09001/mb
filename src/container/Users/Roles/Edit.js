@@ -248,6 +248,11 @@ function RolesEdit({
                   <Label for="exampleName">{t('name')}</Label>
                   <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
+                <FormGroup>
+                <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                      {t('save')}
+                    </Button>
+                </FormGroup>
               </Form>
             </TabPane>
             <TabPane tabId="2">

@@ -40,10 +40,7 @@ function CreateMenusItem({
     getCategorys();
     getMenuItems(dataMenu.id);
   }, [getPages, getCategorys, getMenu, getMenuItems, dataMenu.id]);
-
-  useEffect(() => {
-    console.log(formState.values);
-  });
+ 
   const { t } = useTranslation();
   const handleChange = event => {
     event.persist();
@@ -74,26 +71,26 @@ function CreateMenusItem({
       <Row style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }}>
         <Col lg={7} md={4}>
           <Form className="p-3" onSubmit={onSubmit}>
-            <h4>{t('createMenuItem')}</h4>
+            <h4>{t('menu.createMenuItem')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
               <Input type="text" name="name" onChange={handleChange} />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleSelect">Loại</Label>
+              <Label for="exampleSelect">{t('menu.Type')}</Label>
               <Input type="select" name="type" onChange={handleChange}>
-                <option>Chọn...</option>
-                <option value={1}>Page</option>
-                <option value={2}>Category</option>
-                <option value={3}>Catogory News</option>
-                <option value={4}>URL</option>
+                <option>{t('menu.Select')}</option>
+                <option value={1}>{t('menu.page')}</option>
+                <option value={2}>{t('menu.category')}</option>
+                <option value={3}>{t('menu.CategoryNew')}</option>
+                <option value={4}>{t('menu.url')}</option>
               </Input>
             </FormGroup>
             {active === 1 && (
               <FormGroup>
                 <Label for="exampleSelect">{t('page.page')}</Label>
                 <Input type="select" name="pagesId" onChange={handleChange}>
-                  <option>Chọn...</option>
+                  <option>{t('menu.Select')}</option>
                   {map(dataPage, value => (
                     <option value={value.id} key={value.id}>
                       {value.name}
@@ -106,7 +103,7 @@ function CreateMenusItem({
               <FormGroup>
                 <Label for="exampleSelect">{t('category')}</Label>
                 <Input type="select" name="categoryId" onChange={handleChange}>
-                  <option>Chọn...</option>
+                  <option>{t('menu.Select')}</option>
                   {map(dataCategory, value => (
                     <option value={value.id} key={value.id}>
                       {value.name}
@@ -119,7 +116,7 @@ function CreateMenusItem({
               <FormGroup>
                 <Label for="exampleSelect">{t('categoryNew')}</Label>
                 <Input type="select" name="categoryNewId" onChange={handleChange}>
-                  <option>Chọn...</option>
+                  <option>{t('menu.Select')}</option>
                   {map(dataCategory, value => (
                     <option value={value.id} key={value.id}>
                       {value.name}
@@ -136,7 +133,7 @@ function CreateMenusItem({
             )}
             <FormGroup>
               <div className="check__box">
-                <Label>{t('FluidMenu')}</Label>
+                <Label>{t('menu.FluidMenu')}</Label>
                 <div>
                   <Input type="checkbox" name="fluid" onChange={handleChange} />
                   <span>{t('Thisisafullwidthmenu')}</span>
@@ -144,17 +141,17 @@ function CreateMenusItem({
               </div>
             </FormGroup>
             <FormGroup>
-              <Label for="exampleSelect">Target</Label>
-              <Input type="select" name="target" id="exampleSelect" onChange={handleChange}>
-                <option value={1}>Chọn...</option>
-                <option value={2}>Same Tab</option>
-                <option value={3}>New Tab</option>
+              <Label for="exampleSelect">{t('menu.Taget')}</Label>
+              <Input type="select" name="targetId" id="exampleSelect" onChange={handleChange}>
+                <option value={1}>{t('menu.Select')}</option>
+                <option value={2}>{t('menu.SameTab')}</option>
+                <option value={3}>{t('menu.NewTab')}</option>
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label for="exampleSelect">{t('parentMenu')}</Label>
+              <Label for="exampleSelect">{t('menu.parentMenu')}</Label>
               <Input type="select" name="parentId" onChange={handleChange}>
-                <option>Chọn...</option>
+                <option>{t('menu.Select')}</option>
                 {map(dataAllItem, value => (
                   <option value={value.id} key={value.id}>
                     {value.name}

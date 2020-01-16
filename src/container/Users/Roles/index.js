@@ -46,7 +46,7 @@ function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
     <React.Fragment>
       <div>
         <Row>
-          <h4>{t('users')}</h4>
+          <h4>{t('roleinit.role')}</h4>
         </Row>
         <Row className="mb-2">
           <Button color="primary" className="mr-2" onClick={() => history.push('/users/listrole/create')}>

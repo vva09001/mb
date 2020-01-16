@@ -103,17 +103,17 @@ function EditMenus({
     if (treeData.nextParentNode !== null) {
       let idParent = treeData.nextParentNode.id;
       let idPage = treeData.node.id;
-      let positions = 0;
+      let positions = 1;
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
-          positions = i+1;
+          positions = i;
           break;
         }
       }
       updatePositionMenuItem(idPage, idParent, positions);
     } else {
-      getMenuItems();
+      getMenuItems(detail.id);
     }
   };
 
@@ -186,10 +186,19 @@ function EditMenus({
         <Col lg={5} md={8}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
-              <h4>{t('EditMenu')}</h4>
+              <h4>{t('menu.EditMenu')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
                 <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleSelect">{t('menu.Postion')}</Label>
+                <Input type="select" name="position" id="exampleSelect" onChange={handleChange}>
+                  <option value={''}>{t('menu.Select')}</option>
+                  <option value={'Bottom'}>{t('menu.Bottom')}</option>
+                  <option value={'Top'}>{t('menu.Top')}</option>
+                  <option value={'Side'}>{t('menu.Side')}</option>
+                </Input>
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
