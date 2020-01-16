@@ -68,7 +68,7 @@ function CreateMenusItem({
 
   return (
     <React.Fragment>
-      <Row style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }}>
+      <Row style={{ background: '#fff', alignItems: 'center' }}>
         <Col lg={7} md={4}>
           <Form className="p-3" onSubmit={onSubmit}>
             <h4>{t('menu.createMenuItem')}</h4>
@@ -136,12 +136,12 @@ function CreateMenusItem({
                 <Label>{t('menu.FluidMenu')}</Label>
                 <div>
                   <Input type="checkbox" name="fluid" onChange={handleChange} />
-                  <span>{t('Thisisafullwidthmenu')}</span>
+                  <span>{t('menu.Thisisafullwidthmenu')}</span>
                 </div>
               </div>
             </FormGroup>
             <FormGroup>
-              <Label for="exampleSelect">{t('menu.Taget')}</Label>
+              <Label for="exampleSelect">{t('menu.Target')}</Label>
               <Input type="select" name="targetId" id="exampleSelect" onChange={handleChange}>
                 <option value={1}>{t('menu.Select')}</option>
                 <option value={2}>{t('menu.SameTab')}</option>
@@ -164,7 +164,7 @@ function CreateMenusItem({
                 <Label>{t('status')}</Label>
                 <div>
                   <Input type="checkbox" name="active" onChange={handleChange} />
-                  <span>{t('Enablethemenuitem')}</span>
+                  <span>{t('menu.Enablethemenuitem')}</span>
                 </div>
               </div>
             </FormGroup>

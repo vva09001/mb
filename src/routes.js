@@ -99,22 +99,22 @@ export const mediaRouter = {
   icon: 'image'
 };
 
+export const groupRouter = {
+  name: 'menu.group',
+  to: '/group',
+  exact: true,
+  icon: 'code-branch'
+};
+
 export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
   icon: 'ellipsis-h',
   children: [
-    { to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true },
-    { to: '/exchangeRate', name: 'interest_rate.exchange_rate', exact: true }
+    { to: '/interest-rate', name: 'interest_rate.interest_rate' },
+    { to: '/exchangeRate', name: 'interest_rate.exchange_rate' }
   ]
-};
-
-export const groupRouter = {
-  name: 'menu.group',
-  to: '/group',
-  exact: true,
-  icon: 'code-branch'
 };
 export default [
   homeRoutes,
@@ -124,6 +124,12 @@ export default [
   formRoutes,
   menuRoutes,
   sliderfontRoutes,
+<<<<<<< HEAD
+=======
+  storefontRoutes,
+  mediaRouter,
+  toolMenu,
+>>>>>>> 96e02190d21619ddf9fcb26ee286e646cafbccb0
   groupRouter,
   mediaRouter,
   storefontRoutes,

@@ -12,7 +12,9 @@ const Proptype = {
 
 function CreateMenus({ addMenu }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: {
+      position:""
+    },
     touched: {}
   });
 
@@ -57,7 +59,7 @@ function CreateMenus({ addMenu }) {
               </FormGroup>
               <FormGroup>
                 <Label for="exampleSelect">{t('menu.Postion')}</Label>
-                <Input type="select" name="position" id="exampleSelect" onChange={handleChange}>
+                <Input type="select" name="position" onChange={handleChange}>
                   <option value={''}>{t('menu.Select')}</option>
                   <option value={'bottom'}>{t('menu.Bottom')}</option>
                   <option value={'top'}>{t('menu.Top')}</option>
