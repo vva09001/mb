@@ -121,6 +121,7 @@ function EditMenus({
     deleteMenuItem(detailItem);
     setIsOpen(!isOpen);
   };
+
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
@@ -193,18 +194,28 @@ function EditMenus({
               </FormGroup>
               <FormGroup>
                 <Label for="exampleSelect">{t('menu.Postion')}</Label>
-                <Input type="select" name="position" id="exampleSelect" onChange={handleChange}>
+                <Input
+                  type="select"
+                  name="position"
+                  value={formState.values.position === null ? '' : formState.values.position}
+                  onChange={handleChange}
+                >
                   <option value={''}>{t('menu.Select')}</option>
-                  <option value={'Bottom'}>{t('menu.Bottom')}</option>
-                  <option value={'Top'}>{t('menu.Top')}</option>
-                  <option value={'Side'}>{t('menu.Side')}</option>
+                  <option value={'bottom'}>{t('menu.Bottom')}</option>
+                  <option value={'top'}>{t('menu.Top')}</option>
+                  <option value={'side'}>{t('menu.Side')}</option>
                 </Input>
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="_Active" onChange={handleChange} />
+                    <Input
+                      type="checkbox"
+                      name="status"
+                      checked={formState.values.status === 1 ? true : false}
+                      onChange={handleChange}
+                    />
                     <span>{t('active')}</span>
                   </div>
                 </div>
