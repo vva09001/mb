@@ -124,12 +124,6 @@ export default [
   formRoutes,
   menuRoutes,
   sliderfontRoutes,
-<<<<<<< HEAD
-=======
-  storefontRoutes,
-  mediaRouter,
-  toolMenu,
->>>>>>> 96e02190d21619ddf9fcb26ee286e646cafbccb0
   groupRouter,
   mediaRouter,
   storefontRoutes,
