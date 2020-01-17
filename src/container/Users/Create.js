@@ -1,29 +1,108 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { UserActions } from '../../store/actions';
+import { UserActions, RoleActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import Select from 'react-select';
 
 const PropsType = {
-  addUsers: PropTypes.func
+  addUsers: PropTypes.func, 
+  getAllRole: PropTypes.func,
+  dataAllRole: PropTypes.array,
+  listPrivilegeByGroup: PropTypes.array,
 };
-
-function UsersCreate({ addUsers }) {
+let dataRolesToAdd = [];
+let dataPrivileges = [];
+function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: {
+      roles: [],
+    },
     touched: {}
   });
   const [activeTab, setActiveTab] = useState('1');
-
+  let optionRoles = [];
+  const [SelectedOption, setSelectedOption] = useState({
+    Select: []
+  });
   const { t } = useTranslation();
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+  useEffect(() => {
+    getAllRole();
+  }, [getAllRole])
+  useEffect(() => {
+    dataAllRole.forEach(function (data) {
+      var tmpSetDataOption = {
+        value: data.name,
+        label: data.name,
+        id: data.id,
+        idRole: data.idRole
+      }
+      optionRoles.push(tmpSetDataOption)
+    })
+  })
+  useEffect(() => {
+    dataPrivileges = listPrivilegeByGroup;
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        var check = {
+          checked: ''
+        };
+        docs = Object.assign(docs, check);
+      });
+    });
+  });
 
+  const allowBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) % 2 === 1) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = true;
+        }
+      });
+    });
+  };
+  const denyBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (Number(radios[i].value) % 2 === 0) {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = false;
+        }
+      });
+    });
+  };
+  const allowAll = () => {
+    dataPrivileges.forEach(function(data) {
+      allowBlock(data.groupRole);
+    });
+  };
+  const denyAll = () => {
+    dataPrivileges.forEach(function(data) {
+      denyBlock(data.groupRole);
+    });
+  };
   const handleChange = event => {
     event.persist();
 
@@ -39,18 +118,28 @@ function UsersCreate({ addUsers }) {
       }
     }));
   };
-
+  const handleChangeRoles = (event) => {
+    setSelectedOption(SelectedOption => ({
+      ...SelectedOption,
+      Select: event
+    }));
+    dataRolesToAdd = event;
+  };
   const onSubmitUsers = event => {
     event.preventDefault();
+    dataRolesToAdd.forEach(function(data) {
+      formState.values.roles.push(data.idRole);
+      })
     console.log(formState.values);
-    const body = {
-      ...formState.values,
-      roles: [formState.values.roles]
-    };
-    addUsers(body);
+    
+    addUsers(formState.values);
   };
-  
-  
+  const onSubmitPermission = event => {
+    event.preventDefault();
+    console.log(formState.values);
+    addUsers(formState.values);
+  };
+
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -66,52 +155,271 @@ function UsersCreate({ addUsers }) {
                 {t('user.account')}
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '2' })}
+                onClick={() => {
+                  toggle('2');
+                }}
+              >
+                {t('user.permission')}
+              </NavLink>
+            </NavItem>
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.fistname')}</Label>
-                  <Input type="text" name="fistName"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.fistname')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="fistName" onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.lastname')}</Label>
-                  <Input type="text" name="lastName"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.lastname')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="lastName" onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.username')}</Label>
-                  <Input type="text" name="username"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.username')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="username" onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.nickname')}</Label>
-                  <Input type="text" name="nickname"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.nickname')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="nickname" onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.department')}</Label>
-                  <Input type="text" name="department"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.department')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="department" onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.position')}</Label>
-                  <Input type="text" name="position"  onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('email.email')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="email"  onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('email.email')}</Label>
-                  <Input type="text" name="email" id="exampleName" onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.role')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                    <FormGroup>
+                      {optionRoles.length >= 0 && (
+                        <Select
+                          isMulti
+                          name="roles"
+                          value={SelectedOption.Select}
+                          onChange={handleChangeRoles}
+                          options={optionRoles}
+                        />
+                      )}
+                    </FormGroup>
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('roles')}</Label>
-                  <Input type="text" name="roles" id="exampleName" onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.password')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="password"  onChange={handleChange} />
+                    </Col>
+                  </Row>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">pass</Label>
-                  <Input type="text" name="password" id="exampleName3" onChange={handleChange} />
+                  <Row>
+                    <Col sm={2}>
+                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
+                        {t('user.confirmpassword')}
+                      </Label>
+                    </Col>
+                    <Col sm={6}>
+                      <Input type="text" name="passwordConfirm" onChange={handleChange} />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
+                  <Button color="primary" type="submit">
+                    {t('save')}
+                  </Button>
+                </Col>
+              </Form>
+            </TabPane>
+            <TabPane tabId="2">
+              <Row>
+                <Col lg={9} md={8}>
+                  <Form
+                    className="p-3"
+                    style={{ background: '#fff', justifyContent: 'center' }}
+                    onSubmit={onSubmitPermission}
+                  >
+                    <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
+                      <h4>{t('Permissions')}</h4>
+                    </FormGroup>
+                    <FormGroup>
+                      <Row>
+                        <Col />
+
+                        <Col>
+                          <ButtonGroup size="sm">
+                            <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
+                            <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
+                          </ButtonGroup>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    {dataPrivileges.map((values, index) => {
+                      return (
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                          <FormGroup>
+                            <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
+                              <Label>
+                                <h5>{values.groupRole}</h5>
+                              </Label>
+                            </Col>
+                          </FormGroup>
+                          <FormGroup>
+                            <Row>
+                              <Col xs="6">
+                                <div>
+                                  <Label for="exampleCheckbox" inline="true">
+                                    <h5>{t('ADMIN.' + values.groupRole)}</h5>
+                                  </Label>
+                                </div>
+                              </Col>
+                              <Col xs="6">
+                                <div>
+                                  <ButtonGroup size="sm">
+                                    <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
+                                    <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
+                                  </ButtonGroup>
+                                </div>
+                              </Col>
+                            </Row>
+                          </FormGroup>
+                          {values.privileges.map((value, index) => {
+                            return (
+                              <FormGroup key={index}>
+                                <Row style={{ paddingLeft: 16 }}>
+                                  <Col xs="6">
+                                    <Label for="exampleCheckbox">{t(value.name)}</Label>
+                                  </Col>
+                                  <Col xs="6">
+                                    <div>
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id}
+                                        value={value.privilegeId}
+                                        name={value.name}
+                                        label="Allow"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = true;
+                                        }}
+                                        // checked={}
+                                      />
+                                      <CustomInput
+                                        type="radio"
+                                        id={value.id + 1}
+                                        value={value.privilegeId + 1}
+                                        name={value.name}
+                                        label="Deny"
+                                        inline="true"
+                                        onClick={() => {
+                                          value.checked = false;
+                                        }}
+                                      />
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </FormGroup>
+                            );
+                          })}
+                        </Form>
+                      );
+                    })}
+                    <FormGroup>
+                      <Row>
+                        <Col xs="6">
+                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
+                        </Col>
+                        <Col xs="6">
+                          <div>
+                            <CustomInput type="radio" name="customRadio" label="Allow" inline />
+                            <CustomInput type="radio"  name="customRadio" label="Deny" inline />
+                            <CustomInput type="radio"  label="Inherit" inline />
+                          </div>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                    <Button color="primary" type="submit">
+                      {t('save')}
+                    </Button>
+                  </Form>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane tabId="3">
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
+                <h4>{t('newpassword')}</h4>
+                <FormGroup>
+                  <Label for="exampleName">{t('password')}</Label>
+                  <Input type="text" name="password" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleName">{t('user.lastname')}</Label>
-                  <Input type="text" name="nickname" id="exampleName2" onChange={handleChange} />
+                  <Label for="exampleName">{t('cpassword')}</Label>
+                  <Input type="text" name="cpassword" onChange={handleChange} />
                 </FormGroup>
-              
                 <Button color="primary" type="submit">
                   {t('save')}
                 </Button>
@@ -125,12 +433,19 @@ function UsersCreate({ addUsers }) {
 }
 
 UsersCreate.propTypes = PropsType;
+const mapStateToProps = state => {
+  return {
+  dataAllRole: state.RoleReducer.data,
+  listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
 
+  };
+};
 const mapDispatchToProps = {
-  addUsers: UserActions.AddUsers
+  addUsers: UserActions.AddUsers,
+  getAllRole: RoleActions.GetRoles
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(UsersCreate);

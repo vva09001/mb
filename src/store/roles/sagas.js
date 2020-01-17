@@ -45,7 +45,6 @@ function* getAllTeamSaga() {
 function* addRolesSaga() {
   yield takeLatest(actions.ADD_ROLES_REQUEST, function*(params) {
     const { data } = params;
-    console.log(data)
     try {
       const res = yield addRolesService(data);
       if (res.status === 200) {
