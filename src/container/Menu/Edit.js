@@ -10,7 +10,6 @@ import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import PopupComfirm from '../../components/common/PopupComfirm';
 import ButtonIcon from '../../components/common/ButtonIcon';
 
-
 const Proptype = {
   editMenu: Proptypes.func,
   detail: Proptypes.object,
@@ -109,7 +108,7 @@ function EditMenus({
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
-          positions = i;
+          positions = i+1;
           break;
         }
       }
@@ -155,10 +154,10 @@ function EditMenus({
             </span>
           </div>
           <div style={{ height: '100%' }}>
-            <SortableTree            
+            <SortableTree
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
-              onMoveNode={treeData => onMove(treeData)}              
+              onMoveNode={treeData => onMove(treeData)}
               generateNodeProps={({ node, path }) => ({
                 buttons: [
                   // eslint-disable-next-line react/jsx-key

@@ -92,7 +92,7 @@ function* getMenuItemsSaga() {
             .filter(item => item[link] === id)
             .map(item => ({
               ...item,
-              title: item.name,
+              title: `${item.name}+${item.position}`,
               children: nest(items.sort((a, b) => a.position - b.position), item.id),
               expanded: true
             }));
