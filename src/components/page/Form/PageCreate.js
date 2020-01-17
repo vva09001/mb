@@ -728,7 +728,7 @@ function PagesCreate({
                             type="text"
                             name="title"
                             value={value.title}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -737,7 +737,7 @@ function PagesCreate({
                             type="text"
                             name="description"
                             value={value.description}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -746,7 +746,7 @@ function PagesCreate({
                             type="text"
                             name="learnMore"
                             value={value.learnMore}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                       </div>
@@ -757,7 +757,7 @@ function PagesCreate({
                             type="text"
                             name="text"
                             value={value.text}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -766,7 +766,7 @@ function PagesCreate({
                             type="text"
                             name="url"
                             value={value.url}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
