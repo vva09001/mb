@@ -97,7 +97,19 @@
         "mail": "Mail",
         "css/js": "Customize CSS / JS",
         "setting": "Setting",
-        "settingeneral": "General settings"
+        "settingeneral": "General settings",
+        "countries_are_supported": "Countries are supported",
+        "location_supported": "Location supported",
+        "default_location": "Default location",
+        "mail_from_the_address": "Mail from the address",
+        "letter_from_the_name": "Letter from the name",
+        "mail_server": "Mail server",
+        "gate_mail": "Gate mail",
+        "mail_username": "Mail username",
+        "mail_password": "Mail Password",
+        "encrypt_mail": "Encrypt mail",
+        "header": "Header",
+        "footer": "Footer"
     },
     "block_page": {
         "title": "Block",

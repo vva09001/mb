@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import history from 'helpers/history';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import PopupComfirm from '../../components/common/PopupComfirm';
+import ButtonIcon from '../../components/common/ButtonIcon';
 
 const Proptype = {
   editMenu: Proptypes.func,
@@ -107,7 +108,7 @@ function EditMenus({
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
-          positions = i;
+          positions = i+1;
           break;
         }
       }
@@ -156,29 +157,28 @@ function EditMenus({
             <SortableTree
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
-              onMoveNode={treeData => onMove(treeData)}              
+              onMoveNode={treeData => onMove(treeData)}
               generateNodeProps={({ node, path }) => ({
                 buttons: [
                   // eslint-disable-next-line react/jsx-key
-                  <button
-                    type="button"
-                    style={{
-                      verticalAlign: 'middle'
-                    }}
+                  <ButtonIcon
+                    className="mr-1"
+                    color="primary"
+                    icon="plus"
+                    iconAlign="left"
                     onClick={() => click(node, path)}
-                  >
-                    ℹ
-                  </button>,
+                    size="sm"
+                    outline
+                  />,
                   // eslint-disable-next-line react/jsx-key
-                  <button
-                    type="button"
-                    style={{
-                      verticalAlign: 'middle'
-                    }}
+                  <ButtonIcon
+                    color="danger"
+                    icon="trash"
+                    iconAlign="left"
                     onClick={() => clickDelete(node, path)}
-                  >
-                    x
-                  </button>
+                    size="sm"
+                    outline
+                  />
                 ]
               })}
             />

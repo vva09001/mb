@@ -6,15 +6,41 @@ import { Error, Success } from 'helpers/notify';
 function* getStoreFontSaga() {
   yield takeLatest(actions.GET_STORE_FONT_REQUEST, function*(params) {
     const { name } = params;
-    try {
-      const res = yield getStoreFont(name);
-      if (res.status === 200) {
-        yield put({ type: actions.GET_STORE_FONT_RESPONSE, data: res.data });
-      } else {
-        yield Error(res.message);
+    if (name === 'general') {
+      try {
+        const res = yield getStoreFont(name);
+        if (res.status === 200) {
+          yield put({ type: actions.GET_GENERAL_RESPONE, data: res.data });
+        } else {
+          yield Error(res.message);
+        }
+      } catch (error) {
+        yield Error('Không thể kết nối đến server');
       }
-    } catch (error) {
-      yield Error('Không thể kết nối đến server');
+    } else {
+      if (name === 'logo') {
+        try {
+          const res = yield getStoreFont(name);
+          if (res.status === 200) {
+            yield put({ type: actions.GET_LOGO_RESPONE, data: res.data });
+          } else {
+            yield Error(res.message);
+          }
+        } catch (error) {
+          yield Error('Không thể kết nối đến server');
+        }
+      } else {
+        try {
+          const res = yield getStoreFont(name);
+          if (res.status === 200) {
+            yield put({ type: actions.GET_SOCIALLINK_RESPONSE, data: res.data });
+          } else {
+            yield Error(res.message);
+          }
+        } catch (error) {
+          yield Error('Không thể kết nối đến server');
+        }
+      }
     }
   });
 }

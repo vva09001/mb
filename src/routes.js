@@ -124,10 +124,10 @@ export default [
   formRoutes,
   menuRoutes,
   sliderfontRoutes,
-  storefontRoutes,
-  mediaRouter,
-  toolMenu,
   groupRouter,
+  mediaRouter,
+  storefontRoutes,
+  toolMenu,
   userRoutes,
   settingRoutes
 ];

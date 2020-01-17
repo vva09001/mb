@@ -14,8 +14,7 @@ const ButtonIcon = ({ icon, iconAlign, iconClassName, transform, children, ...re
         'ml-1': children && iconAlign === 'right'
       })}
       transform={transform}
-    />
-    {iconAlign === 'left' && children}
+    />   
   </Button>
 );
 

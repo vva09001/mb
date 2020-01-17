@@ -244,7 +244,7 @@ function SettingHome({
             <TabPane tabId="1">
               <Form className="p-3" onSubmit={onSubmit}>
                 <FormGroup>
-                  <Label>Các nước được hỗ trợ</Label>
+                  <Label>{t('setting.countries_are_supported')}</Label>
                   {formState.country.length ? (
                     <Select
                       closeMenuOnSelect={false}
@@ -263,7 +263,7 @@ function SettingHome({
                   ) : null}
                 </FormGroup>
                 <FormGroup>
-                  <Label>Địa điểm được hỗ trợ</Label>
+                  <Label>{t('setting.location_supported')}</Label>
                   <Select
                     name="supportLocales"
                     closeMenuOnSelect={false}
@@ -280,7 +280,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>Địa điểm mặc định</Label>
+                  <Label>{t('setting.default_location')}</Label>
                   <Input
                     type="select"
                     name="defaulCountries"
@@ -302,7 +302,7 @@ function SettingHome({
             <TabPane tabId="2">
               <Form className="p-3" onSubmit={onSubmit}>
                 <FormGroup>
-                  <Label for="exampleName">Thư từ địa chỉ</Label>
+                  <Label for="exampleName">{t('setting.mail_from_the_address')}</Label>
                   <Input
                     type="text"
                     name="mailFromAddress"
@@ -313,7 +313,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Thư từ tên</Label>
+                  <Label for="exampleFile">{t('setting.letter_from_the_name')}</Label>
                   <Input
                     type="text"
                     name="mailFromName"
@@ -322,7 +322,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Máy chủ thư</Label>
+                  <Label for="exampleFile">{t('setting.mail_server')}</Label>
                   <Input
                     type="text"
                     name="mailPort"
@@ -331,7 +331,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Cổng thư</Label>
+                  <Label for="exampleFile">{t('setting.gate_mail')}</Label>
                   <Input
                     type="text"
                     name="mailHost"
@@ -340,7 +340,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Tên người dùng thư</Label>
+                  <Label for="exampleFile">{t('setting.mail_username')}</Label>
                   <Input
                     type="text"
                     name="mailUsername"
@@ -349,7 +349,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Mail Password</Label>
+                  <Label for="exampleFile">{t('setting.mail_password')}</Label>
                   <Input
                     type="text"
                     name="mailPassword"
@@ -358,7 +358,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Mã hóa thư</Label>
+                  <Label for="exampleFile">{t('setting.encrypt_mail')}</Label>
 
                   <Input
                     type="select"
@@ -381,7 +381,7 @@ function SettingHome({
             <TabPane tabId="3">
               <Form className="p-3" onSubmit={onSubmit}>
                 <FormGroup>
-                  <Label for="exampleName">Header</Label>
+                  <Label for="exampleName">{t('setting.header')}</Label>
                   <Input
                     type="textarea"
                     rows="5"
@@ -395,7 +395,7 @@ function SettingHome({
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="exampleFile">Footer</Label>
+                  <Label for="exampleFile">{t('setting.footer')}</Label>
                   <Input
                     type="textarea"
                     rows="5"
