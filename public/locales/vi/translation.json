@@ -97,7 +97,19 @@
         "mail": "Mail",
         "css/js": "Tùy chỉnh CSS / JS",
         "setting": "Cài đặt",
-        "settingeneral": "Cài đặt chung"
+        "settingeneral": "Cài đặt chung",
+        "countries_are_supported": "Các nước được hỗ trợ",
+        "location_supported": "Địa điểm được hỗ trợ",
+        "default_location": "Địa điểm mặc định",
+        "mail_from_the_address": "Thư từ địa chỉ",
+        "letter_from_the_name": "Thư từ tên",
+        "mail_server": "Máy chủ thư",
+        "gate_mail": "Cổng thư",
+        "mail_username": "Tên người dùng thư",
+        "mail_password": "Mật khẩu thư",
+        "encrypt_mail": "Mã hóa thư",
+        "header": "Tiêu đề",
+        "footer": "Chân trang"
     },
     "block_page": {
         "title": "Khối",
