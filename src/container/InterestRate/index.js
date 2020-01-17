@@ -153,7 +153,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
     isIndeterminate
   } = useBulkSelect(fileIds);
   const clickDeleteInterestRate = () => {
-    if (selectedItems.length >0) {
+    if (selectedItems.length > 0) {
       deleteInterestRate(selectedItems, onSuccess, onFail);
       setIsOpen(!isOpen);
     }
@@ -163,7 +163,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
   const [isOpen, setIsOpen] = useState(false);
 
   const openComfirm = () => {
-    if (selectedItems.length >0) {
+    if (selectedItems.length > 0) {
       setIsOpen(!isOpen);
     }
   };

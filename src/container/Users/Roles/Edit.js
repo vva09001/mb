@@ -7,7 +7,7 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import map from 'lodash';
+
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
@@ -130,7 +130,7 @@ function RolesEdit({
     var i = 0;
     while (i < radios.length) {
       if (String(radios[i].type) === 'radio') {
-        if (radios[i].checked == '' && Number(radios[i].value) !== Number(id)) {
+        if (radios[i].checked === '' && Number(radios[i].value) !== Number(id)) {
           radios[i].checked = true;
         } else i++;
       }

@@ -66,6 +66,8 @@ function Page({
   const [formEdit, setFormEdit] = useState([]);
   const [actionChildrenSubmit, setActionChildrenSubmit] = useState(false);
   const [mutileImage, setMutileImage] = useState([]);
+  const [mutileEditor, setMutileEditor] = useState([]);
+  const [singerImage, setSingerImage] = useState([]);
 
   useEffect(() => {
     getPage();
@@ -99,7 +101,8 @@ function Page({
       } else {
         return {
           ...values,
-          [key]: data
+          [key]: data,
+          position: index
         };
       }
     });
@@ -158,7 +161,8 @@ function Page({
           ...values,
           [event.target.name]:
             event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value,
-          id: 0
+          id: 0,
+          position: index
         };
       }
     });
@@ -194,7 +198,8 @@ function Page({
         return {
           ...values,
           ...items,
-          id: 0
+          id: 0,
+          position: index
         };
       }
     });
@@ -220,7 +225,8 @@ function Page({
       } else {
         return {
           ...values,
-          ...items
+          ...items,
+          position: index
         };
       }
     });
@@ -245,6 +251,7 @@ function Page({
       } else {
         return {
           ...values,
+          position: index,
           mutilePost: data
         };
       }
@@ -270,6 +277,7 @@ function Page({
       } else {
         return {
           ...values,
+          position: index,
           mutilePost: data
         };
       }
@@ -323,6 +331,7 @@ function Page({
       } else {
         return {
           ...values,
+          position: index,
           mutileImge: data
         };
       }
@@ -339,6 +348,60 @@ function Page({
     });
     setContentData(newContent);
     setFormEdit(newValues);
+  };
+
+  const handleMutiEditor = (data, index) => {
+    let newForm = map(formBlock, (value, indexItems) => {
+      if (index !== indexItems) {
+        return value;
+      } else {
+        return {
+          ...value,
+          id: 0,
+          position: index,
+          id_block: value.block_id,
+          mutileEditor: data
+        };
+      }
+    });
+    let content = map(contentData, (values, indexItems) => {
+      if (index !== indexItems) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileEditor: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
+  };
+
+  const handleEditMutileEditor = (data, index) => {
+    let newForm = map(formEdit, (value, indexItems) => {
+      if (index !== indexItems) {
+        return value;
+      } else {
+        return {
+          ...value,
+          position: index,
+          mutileEditor: data
+        };
+      }
+    });
+    let content = map(contentData, (values, indexItems) => {
+      if (index !== indexItems) {
+        return values;
+      } else {
+        return {
+          ...values,
+          mutileEditor: data
+        };
+      }
+    });
+    setContentData(content);
+    setFormBlock(newForm);
   };
   const onSubmit = event => {
     event.preventDefault();
@@ -369,7 +432,7 @@ function Page({
             }</h2> ${contentHtml}</div`
           };
         }
-        if (contentData[i].mutileImge) {
+        if (contentData[i].mutileImge && contentData[i].mutileImge !== undefined) {
           for (let j = 0; j < contentData[i].mutileImge.length; j++) {
             let key = Object.keys(contentData[i].mutileImge[j]);
             let regexp = '';
@@ -390,7 +453,33 @@ function Page({
             ...formBlock[i],
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container"><h2>${
+            contentHtml: `<h2>${
+              contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
+            }</h2>${muitle_post_html}`
+          };
+        }
+        if (contentData[i].mutileEditor && contentData[i].mutileEditor !== undefined) {
+          for (let j = 0; j < contentData[i].mutileEditor.length; j++) {
+            let key = Object.keys(contentData[i].mutileEditor[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileEditor[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileEditor;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
+            content: JSON.stringify(content),
+            contentHtml: `<div><h2>${
               contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
             }</h2>${muitle_post_html}</div>`
           };
@@ -529,7 +618,30 @@ function Page({
           formBlock[i] = {
             ...formBlock[i],
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div class="post_container"><h2>${formBlock[i].title}</h2>${muitle_post_html}</div>`
+          };
+        }
+        if (contentData[i].mutileEditor) {
+          for (let j = 0; j < contentData[i].mutileEditor.length; j++) {
+            let key = Object.keys(contentData[i].mutileEditor[j]);
+            let regexp = '';
+            let replaceHTML = '';
+            key.forEach(items => {
+              regexp += items + '|';
+            });
+            let regex = new RegExp(regexp.substring(0, regexp.length - 1), 'g');
+            replaceHTML = html.replace(regex, function(match) {
+              return contentData[i].mutileEditor[j][match];
+            });
+            let contentHtml = replaceHTML.replace(/[{}]/g, '');
+            muitle_post_html = muitle_post_html + contentHtml;
+          }
+          let content = contentData[i].mutileImge;
+          formEdit[i] = {
+            ...formEdit[i],
+            ...formBlock[i],
+            content: JSON.stringify(content),
+            contentHtml: `<div class="post_container"><h2>${formBlock[i].title}</h2>${muitle_post_html}</div>`
           };
         }
         if (contentData[i].mutilePost) {
@@ -551,7 +663,7 @@ function Page({
           formBlock[i] = {
             ...formBlock[i],
             content: JSON.stringify(content),
-            contentHtml: `<div class="post_container">${muitle_post_html}</div>`
+            contentHtml: `<div class="post_container"><h2>${formBlock[i].title}</h2>${muitle_post_html}</div>`
           };
         }
       }
@@ -624,6 +736,8 @@ function Page({
     let newContent = [];
     let listBlock = [];
     let mutileImage = [];
+    let mutileEditor = [];
+    let singerImage = [];
     map(node.pageBlocks, (values, index) => {
       let content = JSON.parse(values.content);
       newContent.push(content);
@@ -634,7 +748,13 @@ function Page({
         type = blockValue[0].type_id;
       }
       if (type === 9) {
-        mutileImage.push(content);
+        mutileImage.push(...content);
+      }
+      if (type === 4) {
+        mutileEditor.push(...content);
+      }
+      if (type === 10) {
+        singerImage.push(...content);
       }
       listBlock.push({ ...values.blocks, content: values.content, title: values.title });
 
@@ -644,6 +764,8 @@ function Page({
       ];
     });
     setMutileImage(mutileImage);
+    setMutileEditor(mutileEditor);
+    setSingerImage(singerImage);
     setFormBlock(stateEdit);
     setContentData([...newContent, {}]);
     setFormEdit([...stateEdit]);
@@ -808,6 +930,10 @@ function Page({
                 mutileImage={mutileImage}
                 handleImge={handleImge}
                 handleEditImge={handleEditImge}
+                mutileEditor={mutileEditor}
+                handleMutiEditor={handleMutiEditor}
+                handleEditMutileEditor={handleEditMutileEditor}
+                singerImageData={singerImage}
                 editorChange={(data, key, index) => editorChange(data, key, index)}
                 onDelete={() => setIsOpen(!isOpen)}
               />
