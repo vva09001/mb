@@ -97,17 +97,22 @@ function PagesCreate({
   ]);
 
   const [fomEditor, setFomEditor] = useState([{}]);
-
   useEffect(() => {
-    setFormImg(mutileImage);
+    if (mutileImage.length > 0) {
+      setFormImg(mutileImage);
+    }
   }, [mutileImage]);
 
   useEffect(() => {
-    setFomEditor(mutileEditor);
+    if (mutileEditor.length > 0) {
+      setFomEditor(mutileEditor);
+    }
   }, [mutileEditor]);
 
   useEffect(() => {
-    setSingleImage(singerImageData);
+    if (singerImageData.length > 0) {
+      setSingleImage(singerImageData);
+    }
   }, [singerImageData]);
 
   const toggleOpened = (e, index) => {
