@@ -409,6 +409,7 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
+        console.log(contentData[i])
         if (contentData[i]) {
           let key = Object.keys(contentData[i]);
           let regexp = '';
@@ -453,9 +454,9 @@ function Page({
             ...formBlock[i],
             title: contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title,
             content: JSON.stringify(content),
-            contentHtml: `<h2>${
+            contentHtml: `<div><h2>${
               contentData[i].title !== undefined ? contentData[i].title : formBlock[i].title
-            }</h2>${muitle_post_html}`
+            }</h2><div class="post_container">${muitle_post_html}</div></div>`
           };
         }
         if (contentData[i].mutileEditor && contentData[i].mutileEditor !== undefined) {

@@ -97,17 +97,22 @@ function PagesCreate({
   ]);
 
   const [fomEditor, setFomEditor] = useState([{}]);
-
   useEffect(() => {
-    setFormImg(mutileImage);
+    if (mutileImage.length > 0) {
+      setFormImg(mutileImage);
+    }
   }, [mutileImage]);
 
   useEffect(() => {
-    setFomEditor(mutileEditor);
+    if (mutileEditor.length > 0) {
+      setFomEditor(mutileEditor);
+    }
   }, [mutileEditor]);
 
   useEffect(() => {
-    setSingleImage(singerImageData);
+    if (singerImageData.length > 0) {
+      setSingleImage(singerImageData);
+    }
   }, [singerImageData]);
 
   const toggleOpened = (e, index) => {
@@ -728,7 +733,7 @@ function PagesCreate({
                             type="text"
                             name="title"
                             value={value.title}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -737,7 +742,7 @@ function PagesCreate({
                             type="text"
                             name="description"
                             value={value.description}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -746,7 +751,7 @@ function PagesCreate({
                             type="text"
                             name="learnMore"
                             value={value.learnMore}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                       </div>
@@ -757,7 +762,7 @@ function PagesCreate({
                             type="text"
                             name="text"
                             value={value.text}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -766,7 +771,7 @@ function PagesCreate({
                             type="text"
                             name="url"
                             value={value.url}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
