@@ -120,8 +120,9 @@ function Media({
     setIsFolder(false);
     getPathFolder(key);
   };
-  console.log(PathFolder);
+  
   window.__isReactDndBackendSetUp = false;
+  
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>

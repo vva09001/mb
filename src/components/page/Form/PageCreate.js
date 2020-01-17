@@ -10,6 +10,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import IconNoImage from 'assets/img/mb/no_image.png';
 import Select from 'react-select';
+import UploadAdapter from 'services/uploadImage';
 import ModalMedia from 'components/Media/ModalMedia';
 import { map, filter } from 'lodash';
 import { NewActions } from 'store/actions';
@@ -26,6 +27,8 @@ const PropsType = {
   imageSeletedata: PropTypes.object,
   listGroup: PropTypes.array,
   mutileImage: PropTypes.array,
+  mutileEditor: PropTypes.array,
+  singerImageData: PropTypes.array,
   onSubmit: PropTypes.func,
   handleChange: PropTypes.func,
   value: PropTypes.object,
@@ -41,7 +44,9 @@ const PropsType = {
   mutiPost: PropTypes.func,
   mutiPostEdit: PropTypes.func,
   handleImge: PropTypes.func,
-  handleEditImge: PropTypes.func
+  handleEditImge: PropTypes.func,
+  handleMutiEditor: PropTypes.func,
+  handleEditMutileEditor: PropTypes.func
 };
 
 function PagesCreate({
@@ -54,6 +59,8 @@ function PagesCreate({
   value,
   detail,
   mutileImage,
+  mutileEditor,
+  singerImageData,
   imageSeletedata,
   stateEdit,
   onDelete,
@@ -69,7 +76,9 @@ function PagesCreate({
   mutiPost,
   mutiPostEdit,
   handleImge,
-  handleEditImge
+  handleEditImge,
+  handleMutiEditor,
+  handleEditMutileEditor
 }) {
   const [activeTab, setActiveTab] = useState('1');
 
@@ -83,10 +92,23 @@ function PagesCreate({
   const [formImg, setFormImg] = useState([
     { title: '', description: '', image: '', learnMore: '', text: '', url: '', video_url: '' }
   ]);
+  const [singleImage, setSingleImage] = useState([
+    { title: '', description: '', image: '', learnMore: '', text: '', url: '', video_url: '' }
+  ]);
+
+  const [fomEditor, setFomEditor] = useState([{}]);
 
   useEffect(() => {
     setFormImg(mutileImage);
-  }, [setFormImg, mutileImage]);
+  }, [mutileImage]);
+
+  useEffect(() => {
+    setFomEditor(mutileEditor);
+  }, [mutileEditor]);
+
+  useEffect(() => {
+    setSingleImage(singerImageData);
+  }, [singerImageData]);
 
   const toggleOpened = (e, index) => {
     e.preventDefault();
@@ -95,6 +117,10 @@ function PagesCreate({
 
   const addMoreFormImge = () => {
     setFormImg([...formImg, { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }]);
+  };
+
+  const addMoreFormEdittor = () => {
+    setFomEditor([...fomEditor, {}]);
   };
   const removeItem = (indexItems, index, acitve) => {
     const newValues = filter(formImg, (items, index) => index !== indexItems);
@@ -122,7 +148,6 @@ function PagesCreate({
   };
 
   const handleChangeImge = (event, itemIndex, index, acitve) => {
-
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -141,6 +166,21 @@ function PagesCreate({
     }
   };
 
+  const setImage = (itemIndex, index, acitve) => {
+    let newData = map(singleImage, (value, index) => {
+      if (itemIndex !== index) {
+        return value;
+      } else {
+        return {
+          ...value,
+          image: imageSeletedata.url
+        };
+      }
+    });
+    setSingleImage(newData);
+    handleEditImge(newData, index);
+  };
+
   const getNewsByCategoryID = id => {
     setID(JSON.parse(id));
     getNewByCategory(id);
@@ -156,6 +196,46 @@ function PagesCreate({
     let data = [];
     map(event, items => data.push(JSON.parse(items.value)));
     mutiPostEdit(data, index);
+  };
+
+  const handleMutiEditors = (data, key, indexData, index, acitve) => {
+    let editorData = map(fomEditor, (value, indexEditor) => {
+      if (indexData !== indexEditor) {
+        return value;
+      } else {
+        return {
+          ...value,
+          [key]: data
+        };
+      }
+    });
+    setFomEditor(editorData);
+    if (acitve) {
+      handleEditMutileEditor(editorData, index);
+    } else {
+      handleMutiEditor(editorData, index);
+    }
+
+    // console.log(fomEditor);
+  };
+
+  const handleImage = (event, itemIndex, index, acitve) => {
+    let newData = map(singleImage, (value, indexValue) => {
+      if (itemIndex !== indexValue) {
+        return value;
+      } else {
+        return {
+          ...value,
+          [event.target.name]: event.target.value
+        };
+      }
+    });
+    setSingleImage(newData);
+    if (acitve) {
+      handleEditImge(newData, index);
+    } else {
+      handleImge(newData, index);
+    }
   };
 
   const renderInput = (data, index) => {
@@ -215,13 +295,30 @@ function PagesCreate({
         return (
           <FormGroup>
             <Label>{data.title}</Label>
-            <CKEditor
-              editor={ClassicEditor}
-              onChange={(event, editor) => {
-                const editorData = editor.getData();
-                editorChange(editorData, data.key, index);
-              }}
-            />
+            {map(fomEditor, (value, indexEdittor) => {
+              return (
+                <div key={indexEdittor} className="mt-2">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    onChange={(event, editor) => {
+                      const editorData = editor.getData();
+                      handleMutiEditors(editorData, data.key, indexEdittor, index, false);
+                    }}
+                    onInit={editor => {
+                      editor.ui.view.editable.element.style.height = 'auto';
+                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                        return new UploadAdapter(loader);
+                      };
+                    }}
+                  />
+                </div>
+              );
+            })}
+            <div>
+              <Button className="mt-3" onClick={addMoreFormEdittor}>
+                {t('addBlock')}
+              </Button>
+            </div>
           </FormGroup>
         );
       case 8: //nutile post
@@ -343,41 +440,72 @@ function PagesCreate({
         return (
           <FormGroup>
             <Label for="template">{data.title}</Label>
-            <div className="form-img">
-              <div className="block_image">
-                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
-              </div>
-              <div className="input_image">
-                <div className="input_wapper">
-                  <div>
-                    <Label>Chú thích 1</Label>
-                    <Input type="text" name={data.key} />
+            {map(singleImage, (value, itemIndex) => {
+              console.log(value);
+              return (
+                <div key={itemIndex}>
+                  <div className="mt-3 btnBlock-remove">
+                    <Button onClick={() => removeItem(itemIndex, index, false)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
                   </div>
-                  <div>
-                    <Label>Chú thích 2</Label>
-                    <Input type="text" name={data.key} />
-                  </div>
-                  <div>
-                    <Label>Chú thích 3</Label>
-                    <Input type="text" name={data.key} />
+                  <div className="form-img">
+                    <div>
+                      <div className="block_image mb-2">
+                        <img
+                          alt="items"
+                          src={value.image === '' ? IconNoImage : value.image}
+                          style={{ maxWidth: '100%' }}
+                        />
+                      </div>
+                      <ModalMedia setState={() => setImage(itemIndex)} />
+                    </div>
+                    <div className="input_image">
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.title')}</Label>
+                          <Input type="text" name="title" onChange={event => handleImage(event, itemIndex, index)} />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.description')}</Label>
+                          <Input
+                            type="text"
+                            name="description"
+                            onChange={event => handleImage(event, itemIndex, index)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.learn_more')}</Label>
+                          <Input
+                            type="text"
+                            name="learnMore"
+                            onChange={event => handleImage(event, itemIndex, index)}
+                          />
+                        </div>
+                      </div>
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.text')}</Label>
+                          <Input type="text" name="text" onChange={event => handleImage(event, itemIndex, index)} />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.url')}</Label>
+                          <Input type="text" name="url" onChange={event => handleImage(event, itemIndex, index)} />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.video_url')}</Label>
+                          <Input
+                            type="text"
+                            name="video_url"
+                            onChange={event => handleImage(event, itemIndex, index)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="input_wapper">
-                  <div>
-                    <Label>Gọi hành động văn bản</Label>
-                    <Input type="text" name={data.key} />
-                  </div>
-                  <div>
-                    <Label>Gọi hành động URL</Label>
-                    <Input type="text" name={data.key} />
-                  </div>
-                  <div>
-                    <Label>Video URL</Label>
-                    <Input type="text" name={data.key} />
-                  </div>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </FormGroup>
         );
       case 11: //editor
@@ -389,6 +517,12 @@ function PagesCreate({
               onChange={(event, editor) => {
                 const editorData = editor.getData();
                 editorChange(editorData, data.key, index);
+              }}
+              onInit={editor => {
+                editor.ui.view.editable.element.style.height = 'auto';
+                editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                  return new UploadAdapter(loader);
+                };
               }}
             />
           </FormGroup>
@@ -511,7 +645,39 @@ function PagesCreate({
             )}
           </React.Fragment>
         );
-      case 4:
+      case 4: // mutile editor
+        return (
+          <FormGroup>
+            <Label>{items.title}</Label>
+            {map(fomEditor, (value, indexEditor) => {
+              return (
+                <div key={indexEditor} className="mt-2">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={value.content}
+                    onChange={(event, editor) => {
+                      const editorData = editor.getData();
+                      handleMutiEditors(editorData, items.key, indexEditor, index, true);
+                      // editorChange(editorData, items.key, index);
+                    }}
+                    onInit={editor => {
+                      editor.ui.view.editable.element.style.height = 'auto';
+                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                        return new UploadAdapter(loader);
+                      };
+                    }}
+                  />
+                </div>
+              );
+            })}
+            <div>
+              <Button className="mt-3" onClick={addMoreFormEdittor}>
+                {t('addBlock')}
+              </Button>
+            </div>
+          </FormGroup>
+        );
+      case 11: // editor
         return (
           <FormGroup>
             <Label>{items.title}</Label>
@@ -522,19 +688,11 @@ function PagesCreate({
                 const editorData = editor.getData();
                 editorChange(editorData, items.key, index);
               }}
-            />
-          </FormGroup>
-        );
-      case 11:
-        return (
-          <FormGroup>
-            <Label>{items.title}</Label>
-            <CKEditor
-              editor={ClassicEditor}
-              data={value}
-              onChange={(event, editor) => {
-                const editorData = editor.getData();
-                editorChange(editorData, items.key, index);
+              onInit={editor => {
+                editor.ui.view.editable.element.style.height = 'auto';
+                editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                  return new UploadAdapter(loader);
+                };
               }}
             />
           </FormGroup>
@@ -570,7 +728,7 @@ function PagesCreate({
                             type="text"
                             name="title"
                             value={value.title}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -579,7 +737,7 @@ function PagesCreate({
                             type="text"
                             name="description"
                             value={value.description}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -588,7 +746,7 @@ function PagesCreate({
                             type="text"
                             name="learnMore"
                             value={value.learnMore}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
                           />
                         </div>
                       </div>
@@ -599,7 +757,7 @@ function PagesCreate({
                             type="text"
                             name="text"
                             value={value.text}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -608,7 +766,7 @@ function PagesCreate({
                             type="text"
                             name="url"
                             value={value.url}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
                           />
                         </div>
                         <div>
@@ -633,45 +791,93 @@ function PagesCreate({
             </div>
           </FormGroup>
         );
-      case 6: // image
+      case 10: // image
         return (
           <FormGroup>
             <Label>{items.title}</Label>
-            <div className="form-img">
-              <div className="block_image">
-                <img alt="items" src={IconNoImage} style={{ maxWidth: '100%' }} />
-              </div>
-              <div className="input_image">
-                <div className="input_wapper">
-                  <div>
-                    <Label>Chú thích 1</Label>
-                    <Input type="text" name={items.key} />
+            {map(singleImage, (value, itemIndex) => {
+              return (
+                <div key={itemIndex}>
+                  <div className="mt-3 btnBlock-remove">
+                    <Button onClick={() => removeItem(itemIndex, index, true)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
                   </div>
-                  <div>
-                    <Label>Chú thích 2</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Chú thích 3</Label>
-                    <Input type="text" name={items.key} />
+                  <div className="form-img">
+                    <div>
+                      <div className="block_image mb-2">
+                        <img
+                          alt="items"
+                          src={value.image === '' ? IconNoImage : value.image}
+                          style={{ maxWidth: '100%' }}
+                        />
+                      </div>
+                      <ModalMedia setState={() => setImage(itemIndex, index, true)} />
+                    </div>
+                    <div className="input_image">
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.title')}</Label>
+                          <Input
+                            type="text"
+                            name="title"
+                            value={value.title}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.description')}</Label>
+                          <Input
+                            type="text"
+                            name="description"
+                            value={value.description}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.learn_more')}</Label>
+                          <Input
+                            type="text"
+                            name="learnMore"
+                            value={value.learnMore}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                      </div>
+                      <div className="input_wapper">
+                        <div>
+                          <Label>{t('block.image.text')}</Label>
+                          <Input
+                            type="text"
+                            name="text"
+                            value={value.text}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.url')}</Label>
+                          <Input
+                            type="text"
+                            name="url"
+                            value={value.url}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                        <div>
+                          <Label>{t('block.image.video_url')}</Label>
+                          <Input
+                            type="text"
+                            name="video_url"
+                            value={value.video_url}
+                            onChange={event => handleImage(event, itemIndex, index, true)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="input_wapper">
-                  <div>
-                    <Label>Gọi hành động văn bản</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Gọi hành động URL</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                  <div>
-                    <Label>Video URL</Label>
-                    <Input type="text" name={items.key} />
-                  </div>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </FormGroup>
         );
       case 13:
@@ -868,13 +1074,16 @@ function PagesCreate({
                                 return <div key={indexItems}>{renderInput(items, index)}</div>;
                               } else {
                                 let values = JSON.parse(value.content);
-                                let key = Object.keys(values);
+                                let key = null;
                                 let arr = [];
-                                map(key, content => {
-                                  arr = [...arr, content];
-                                });
-                                let tem = arr[indexItems];
-
+                                let tem = null;
+                                if (values !== null) {
+                                  key = Object.keys(values);
+                                  map(key, content => {
+                                    arr = [...arr, content];
+                                  });
+                                  tem = arr[indexItems];
+                                }
                                 return (
                                   <div key={indexItems}>
                                     {renderInputEdit(items, stateEdit[index][tem], stateEdit[index][`newsID`], index)}

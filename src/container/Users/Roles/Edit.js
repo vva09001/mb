@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-//import { map } from 'lodash';
+import Select from 'react-select';
 
 const PropsType = {
   editRole: PropTypes.func,
@@ -15,24 +15,46 @@ const PropsType = {
   listPrivilege: PropTypes.array,
   getListPrivilege: PropTypes.func,
   getListPrvilegesByGroup: PropTypes.func,
-  listPrivilegeByGroup: PropTypes.array
+  listPrivilegeByGroup: PropTypes.array,
+  dataTeam: PropTypes.array,
+  getAllTeam: PropTypes.func
 };
 let dataPrivileges = [];
 let dataIdCurrent = [];
-function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup, listPrivilegeByGroup }) {
+let dataTeamToEdit = [];
+let dataIdrole = [];
+function RolesEdit({
+  editRole,
+  detail,
+  getListPrivilege,
+  getListPrvilegesByGroup,
+  listPrivilegeByGroup,
+  dataTeam,
+  getAllTeam
+}) {
   const [formState, setFormState] = useState({
+    id: detail.id,
+    idRole: detail.idRole,
     name: detail.name,
-    privileges: detail.privileges
+    privileges: [],
+    teams: []
+  });
+  let dataIdSelect = [];
+  let optionTeam = [];
+  const [SelectedOption, setSelectedOption] = useState({
+    Select: []
   });
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
   useEffect(() => {
     getListPrvilegesByGroup();
-  }, [getListPrvilegesByGroup]);
+    getAllTeam();
+  }, [getListPrvilegesByGroup, getAllTeam]);
   useEffect(() => {
     getListPrivilege(detail.idRole);
     dataIdCurrent = detail.privileges;
+    dataIdrole = detail.teams;
   }, [detail, getListPrivilege]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
@@ -44,14 +66,43 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
         docs = Object.assign(docs, check);
       });
     });
-    console.log(detail)
-    console.log(dataPrivileges)
   });
+  useEffect(() => {
+    dataTeam.forEach(function(data) {
+      var tmpTeam = {
+        value: data.idTeam,
+        label: data.name
+      };
+      optionTeam.push(tmpTeam);
+    });
+    dataIdrole.forEach(function(data) {
+      defaultSelected(data);
+    });
+  });
+  const defaultSelected = idTeam => {
+    optionTeam.forEach(function(docs) {
+      if (docs.value === idTeam)
+      {
+      dataIdSelect.push(docs);
+    }
+    });
+  };
+  useEffect(()=> {
+    if (dataIdSelect !== null)
+    SelectedOption.Select = dataIdSelect;
+  }, [SelectedOption.Select])
+  const handleChangeTeam = (event) => {
+    setSelectedOption(SelectedOption => ({
+      ...SelectedOption,
+      Select: event
+    }));
+    dataTeamToEdit = event;
+  };
   const handleChecked = () => {
     dataPrivileges.forEach(function(data) {
       dataIdCurrent.forEach(function(docs) {
         handleCheckedchildrenAllow(data.groupRole, docs);
-        handleCheckedchildrenDeny(data.groupRole);
+        handleCheckedchildrenDeny(data.groupRole, docs);
       });
     });
   };
@@ -64,31 +115,31 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
         }
       }
     }
-    
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.privilegeId === id) {
+          docs.checked = true;
+        } else {
+          docs.checked = false;
+        }
+      });
+    });
   };
-  const handleCheckedchildrenDeny = groupRole => {
+  const handleCheckedchildrenDeny = (groupRole, id) => {
     var radios = document.forms[groupRole].elements;
-    for (var i = 1; i < radios.length; i++) {
+    var i = 0;
+    while (i < radios.length) {
       if (String(radios[i].type) === 'radio') {
-        if (radios[i].checked === '') {
-          if (Number(radios[i].value) % 2 === 0) {
-            radios[i].checked = true;
-          }
-        } else break;
+        if (radios[i].checked === '' && Number(radios[i].value) !== Number(id)) {
+          radios[i].checked = true;
+        } else i++;
       }
+      i++;
     }
   };
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  const handleChange = event => {
-    event.persist();
-    setFormState(formState => ({
-      ...formState,
-      name: event.target.value
-    }));
-  };
-
   const allowBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
@@ -133,10 +184,36 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
       denyBlock(data.groupRole);
     });
   };
-  const onSubmitRoles = event => {
-    event.preventDefault();
-    editRole(formState.values);
+  const handleChange = event => {
+    event.persist();
+    setFormState(formState => ({
+      ...formState,
+      name: event.target.value
+    }));
   };
+  const onSubmitRoles = event => {
+
+    event.preventDefault();
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === true) {
+          formState.privileges.push(docs.privilegeId);
+        }
+      });
+    });
+    event.preventDefault();
+    formState.teams.splice(0, formState.teams.length)
+    dataTeamToEdit.forEach(function(data) {
+      formState.teams.push(data.value);
+      })
+      if (formState.teams.length === 0)
+      formState.teams = detail.teams
+      if (formState.privileges.length <= 1)
+      formState.privileges = detail.privileges;
+      
+      editRole(formState)
+  };
+
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -171,15 +248,32 @@ function RolesEdit({ editRole, detail, getListPrivilege, getListPrvilegesByGroup
                   <Label for="exampleName">{t('name')}</Label>
                   <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
-                {/* <Button color="primary" type="submit" onClick={onSubmitRoles}>
-                  {t('save')}
-                </Button> */}
+                <FormGroup>
+                <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                      {t('save')}
+                    </Button>
+                </FormGroup>
               </Form>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
                   <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                    <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
+                      <h4>{t('Team')}</h4>
+                    </FormGroup>
+                     <FormGroup>
+                      {optionTeam.length >= 0 && (
+                        <Select
+                          isMulti
+                          name="teams"
+                          value={SelectedOption.Select}
+                          onChange={handleChangeTeam}
+                          options={optionTeam}
+                        />
+                      )}
+                    </FormGroup>
+                  
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -287,11 +381,13 @@ const mapStateToProps = state => {
   return {
     detail: state.RoleReducer.detail,
     listPrivilege: state.RoleReducer.listPrivilege,
-    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
+    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
+    dataTeam: state.RoleReducer.dataTeam
   };
 };
 const mapDispatchToProps = {
-  editRole: RoleActions.EditRoles,
+  getAllTeam: RoleActions.getAllTeam,
+  editRole: RoleActions.EditRole,
   getpermission: RoleActions.setPermission,
   getListPrivilege: RoleActions.getPrivilegeRole,
   getListRole: RoleActions.getListRole,

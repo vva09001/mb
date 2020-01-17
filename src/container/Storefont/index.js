@@ -50,7 +50,7 @@ function Storefont({
       values: activeTab === '1' ? dataGeneral : activeTab === '2' ? dataLogo : dataSociallink
     }));
   }, [dataGeneral, dataLogo, dataSociallink, activeTab]);
- 
+
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
     tab === '1' ? setStoreFontName('general') : tab === '2' ? setStoreFontName('logo') : setStoreFontName('socialLink');

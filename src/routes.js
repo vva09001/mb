@@ -75,7 +75,8 @@ export const storefontRoutes = {
       name: 'menu.storeFont',
       exact: true,
       icon: 'pencil-alt'
-    }, {
+    },
+    {
       name: 'menu.network',
       to: '/network',
       exact: true,
@@ -98,22 +99,22 @@ export const mediaRouter = {
   icon: 'image'
 };
 
+export const groupRouter = {
+  name: 'menu.group',
+  to: '/group',
+  exact: true,
+  icon: 'code-branch'
+};
+
 export const toolMenu = {
   name: 'menu.tool_menu',
   to: '/',
   exact: true,
   icon: 'ellipsis-h',
   children: [
-    { to: '/interest-rate', name: 'interest_rate.interest_rate', exact: true },
-    { to: '/exchangeRate', name: 'interest_rate.exchange_rate', exact: true }
+    { to: '/interest-rate', name: 'interest_rate.interest_rate' },
+    { to: '/exchangeRate', name: 'interest_rate.exchange_rate' }
   ]
-};
-
-export const groupRouter = {
-  name: 'menu.group',
-  to: '/group',
-  exact: true,
-  icon: 'code-branch'
 };
 export default [
   homeRoutes,
@@ -122,11 +123,11 @@ export default [
   emailRoutes,
   formRoutes,
   menuRoutes,
-  toolMenu,
   sliderfontRoutes,
-  storefontRoutes,
-  mediaRouter,
   groupRouter,
+  mediaRouter,
+  storefontRoutes,
+  toolMenu,
   userRoutes,
   settingRoutes
 ];

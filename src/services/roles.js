@@ -13,6 +13,19 @@ const getRolesService = () => {
     });
 };
 
+const getAllTeamService = () => {
+  return request({
+    url: '/teams',
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 const addRolesService = data => {
   return request({
     url: '/roles',
@@ -43,7 +56,7 @@ const editRolesService = data => {
 
 const deleteRolesService = id => {
   return request({
-    url: `roles/${id}`,
+    url: `/roles/${id}`,
     method: 'DELETE'
   })
     .then(res => {
@@ -107,6 +120,7 @@ const getPrivilegeRoleService = id => {
 
 export {
   getRolesService,
+  getAllTeamService,
   addRolesService,
   editRolesService,
   deleteRolesService,

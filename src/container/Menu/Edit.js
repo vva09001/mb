@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import history from 'helpers/history';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import PopupComfirm from '../../components/common/PopupComfirm';
+import ButtonIcon from '../../components/common/ButtonIcon';
+
 
 const Proptype = {
   editMenu: Proptypes.func,
@@ -103,7 +105,7 @@ function EditMenus({
     if (treeData.nextParentNode !== null) {
       let idParent = treeData.nextParentNode.id;
       let idPage = treeData.node.id;
-      let positions = 0;
+      let positions = 1;
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
@@ -113,7 +115,7 @@ function EditMenus({
       }
       updatePositionMenuItem(idPage, idParent, positions);
     } else {
-      getMenuItems();
+      getMenuItems(detail.id);
     }
   };
 
@@ -121,6 +123,7 @@ function EditMenus({
     deleteMenuItem(detailItem);
     setIsOpen(!isOpen);
   };
+
   return (
     <React.Fragment>
       <h4> {t('Menu')}</h4>
@@ -152,32 +155,31 @@ function EditMenus({
             </span>
           </div>
           <div style={{ height: '100%' }}>
-            <SortableTree
+            <SortableTree            
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
-              onMoveNode={treeData => onMove(treeData)}
+              onMoveNode={treeData => onMove(treeData)}              
               generateNodeProps={({ node, path }) => ({
                 buttons: [
                   // eslint-disable-next-line react/jsx-key
-                  <button
-                    type="button"
-                    style={{
-                      verticalAlign: 'middle'
-                    }}
+                  <ButtonIcon
+                    className="mr-1"
+                    color="primary"
+                    icon="plus"
+                    iconAlign="left"
                     onClick={() => click(node, path)}
-                  >
-                    ℹ
-                  </button>,
+                    size="sm"
+                    outline
+                  />,
                   // eslint-disable-next-line react/jsx-key
-                  <button
-                    type="button"
-                    style={{
-                      verticalAlign: 'middle'
-                    }}
+                  <ButtonIcon
+                    color="danger"
+                    icon="trash"
+                    iconAlign="left"
                     onClick={() => clickDelete(node, path)}
-                  >
-                    x
-                  </button>
+                    size="sm"
+                    outline
+                  />
                 ]
               })}
             />
@@ -186,16 +188,35 @@ function EditMenus({
         <Col lg={5} md={8}>
           <div>
             <Form className="cetegoryFrom" onSubmit={onSubmit}>
-              <h4>{t('EditMenu')}</h4>
+              <h4>{t('menu.EditMenu')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
                 <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
               </FormGroup>
               <FormGroup>
+                <Label for="exampleSelect">{t('menu.Postion')}</Label>
+                <Input
+                  type="select"
+                  name="position"
+                  value={formState.values.position === null ? '' : formState.values.position}
+                  onChange={handleChange}
+                >
+                  <option value={''}>{t('menu.Select')}</option>
+                  <option value={'bottom'}>{t('menu.Bottom')}</option>
+                  <option value={'top'}>{t('menu.Top')}</option>
+                  <option value={'side'}>{t('menu.Side')}</option>
+                </Input>
+              </FormGroup>
+              <FormGroup>
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="_Active" onChange={handleChange} />
+                    <Input
+                      type="checkbox"
+                      name="status"
+                      checked={formState.values.status === 1 ? true : false}
+                      onChange={handleChange}
+                    />
                     <span>{t('active')}</span>
                   </div>
                 </div>
