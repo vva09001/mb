@@ -97,17 +97,22 @@ function PagesCreate({
   ]);
 
   const [fomEditor, setFomEditor] = useState([{}]);
-
   useEffect(() => {
-    setFormImg(mutileImage);
+    if (mutileImage.length > 0) {
+      setFormImg(mutileImage);
+    }
   }, [mutileImage]);
 
   useEffect(() => {
-    setFomEditor(mutileEditor);
+    if (mutileEditor.length > 0) {
+      setFomEditor(mutileEditor);
+    }
   }, [mutileEditor]);
 
   useEffect(() => {
-    setSingleImage(singerImageData);
+    if (singerImageData.length > 0) {
+      setSingleImage(singerImageData);
+    }
   }, [singerImageData]);
 
   const toggleOpened = (e, index) => {
@@ -945,10 +950,10 @@ function PagesCreate({
               <div>
                 <Input
                   type="checkbox"
-                  name="status"
+                  name="is_active"
                   required
-                  checked={value.status === 0 || value.status === undefined ? false : true}
-                  value={value.status === 0 ? false : value.status}
+                  checked={value.is_active === 0 || value.is_active === undefined ? false : true}
+                  value={value.is_active === 0 ? false : value.is_active}
                   onChange={handleChange}
                 />
                 <span>{t('page.active')}</span>
