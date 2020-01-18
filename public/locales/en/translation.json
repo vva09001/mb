@@ -159,7 +159,7 @@
         "Youtube": "Youtube"
     },
     "user": {
-        "fistname": "Fist Name",
+        "firstname": "First Name",
         "lastname": "Last Name",
         "lastlogin": "Last Login",
         "nickname": "Nickname",
