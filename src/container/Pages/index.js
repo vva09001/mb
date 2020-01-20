@@ -748,15 +748,15 @@ function Page({
         type = blockValue[0].type_id;
       }
       if (type === 4) {
-        mutileEditor.push(...content);
+        content.forEach(data => mutileEditor.push({ ...data, id: values.id }));
       }
       if (type === 9) {
-        mutileImage.push(...content);
+        content.forEach(data => mutileImage.push({ ...data, id: values.id }));
       }
       if (type === 10) {
-        singerImage.push(...content);
+        content.forEach(data => singerImage.push({ ...data, id: values.id }));
       }
-      listBlock.push({ ...values.blocks, content: values.content, title: values.title });
+      listBlock.push({ ...values.blocks, id: values.id, content: values.content, title: values.title });
 
       stateEdit = [
         ...stateEdit,
