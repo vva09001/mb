@@ -61,7 +61,7 @@ function RolesEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
-          checked: ''
+          checked: 0
         };
         docs = Object.assign(docs, check);
       });
@@ -118,10 +118,9 @@ function RolesEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.privilegeId === id) {
-          docs.checked = true;
-        } else {
-          docs.checked = false;
-        }
+          var tmp = 1;
+          docs.checked = tmp;
+        } 
       });
     });
   };
@@ -130,7 +129,7 @@ function RolesEdit({
     var i = 0;
     while (i < radios.length) {
       if (String(radios[i].type) === 'radio') {
-        if (radios[i].checked === '' && Number(radios[i].value) !== Number(id)) {
+        if (radios[i].checked == '' && Number(radios[i].value) !== Number(id)) {
           radios[i].checked = true;
         } else i++;
       }
@@ -140,8 +139,8 @@ function RolesEdit({
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  const allowBlock = groupRole => {
-    var radios = document.forms[groupRole].elements;
+  const allowBlock = value => {
+    var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
         if (Number(radios[i].value) % 2 === 1) {
@@ -151,14 +150,14 @@ function RolesEdit({
     }
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === groupRole) {
-          docs.checked = true;
+        if (docs.groupRole === value.groupRole) {
+          docs.checked = 1;
         }
       });
     });
   };
-  const denyBlock = groupRole => {
-    var radios = document.forms[groupRole].elements;
+  const denyBlock = value => {
+    var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
         if (Number(radios[i].value) % 2 === 0) {
@@ -168,20 +167,20 @@ function RolesEdit({
     }
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === groupRole) {
-          docs.checked = false;
+        if (docs.groupRole === value.groupRole) {
+          docs.checked = 2;
         }
       });
     });
   };
   const allowAll = () => {
     dataPrivileges.forEach(function(data) {
-      allowBlock(data.groupRole);
+      allowBlock(data);
     });
   };
   const denyAll = () => {
     dataPrivileges.forEach(function(data) {
-      denyBlock(data.groupRole);
+      denyBlock(data);
     });
   };
   const handleChange = event => {
@@ -192,25 +191,22 @@ function RolesEdit({
     }));
   };
   const onSubmitRoles = event => {
-
-    event.preventDefault();
+     event.preventDefault();
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked === true) {
+        if (docs.checked !== 0 && docs.checked !==2) {
           formState.privileges.push(docs.privilegeId);
         }
       });
+
     });
-    event.preventDefault();
+   
     formState.teams.splice(0, formState.teams.length)
     dataTeamToEdit.forEach(function(data) {
       formState.teams.push(data.value);
       })
       if (formState.teams.length === 0)
       formState.teams = detail.teams
-      if (formState.privileges.length <= 1)
-      formState.privileges = detail.privileges;
-      
       editRole(formState)
   };
 
@@ -314,8 +310,8 @@ function RolesEdit({
                               <Col xs="6">
                                 <div>
                                   <ButtonGroup size="sm">
-                                    <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
-                                    <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
+                                    <Button onClick={() => allowBlock(values)}>{t('Allow All')}</Button>
+                                    <Button onClick={() => denyBlock(values)}>{t('Deny All')}</Button>
                                   </ButtonGroup>
                                 </div>
                               </Col>
@@ -338,7 +334,7 @@ function RolesEdit({
                                         label="Allow"
                                         inline="true"
                                         onClick={() => {
-                                          value.checked = true;
+                                          value.checked = 1;
                                         }}
                                       />
                                       <CustomInput
@@ -349,7 +345,7 @@ function RolesEdit({
                                         label="Deny"
                                         inline="true"
                                         onClick={() => {
-                                          value.checked = false;
+                                          value.checked = 2;
                                         }}
                                       />
                                     </div>

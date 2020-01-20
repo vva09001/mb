@@ -9,17 +9,20 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 
 const PropsType = {
-  addUsers: PropTypes.func, 
+  addUsers: PropTypes.func,
   getAllRole: PropTypes.func,
   dataAllRole: PropTypes.array,
   listPrivilegeByGroup: PropTypes.array,
+  getListPrivilegesByGroup: PropTypes.func
 };
 let dataRolesToAdd = [];
 let dataPrivileges = [];
-function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }) {
+function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, getListPrivilegesByGroup }) {
   const [formState, setFormState] = useState({
     values: {
       roles: [],
+      userPrivilegeRequests: [],
+      status: ''
     },
     touched: {}
   });
@@ -35,28 +38,41 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
   };
   useEffect(() => {
     getAllRole();
-  }, [getAllRole])
+    getListPrivilegesByGroup();
+  }, [getAllRole, getListPrivilegesByGroup]);
   useEffect(() => {
-    dataAllRole.forEach(function (data) {
+    dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
         value: data.name,
         label: data.name,
         id: data.id,
         idRole: data.idRole
-      }
-      optionRoles.push(tmpSetDataOption)
-    })
-  })
+      };
+      optionRoles.push(tmpSetDataOption);
+    });
+  });
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
+    console.log(dataPrivileges);
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
-          checked: ''
+          checked: '',
+          inherit: '',
         };
         docs = Object.assign(docs, check);
       });
     });
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (SelectedOption.Select === null || SelectedOption.Select.length === 0)
+        {
+        return ;
+        }
+        else docs.inherit = 0;
+      });
+    });
+    console.log(SelectedOption.Select)
   });
 
   const allowBlock = groupRole => {
@@ -72,6 +88,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === groupRole) {
           docs.checked = true;
+          docs.inherit = 1;
         }
       });
     });
@@ -89,6 +106,25 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === groupRole) {
           docs.checked = false;
+          docs.inherit = 2;
+        }
+      });
+    });
+  };
+  const inheritBlock = groupRole => {
+    var radios = document.forms[groupRole].elements;
+    for (var i = 1; i < radios.length; i++) {
+      if (String(radios[i].type) === 'radio') {
+        if (String(radios[i].value) === "empty") {
+          radios[i].checked = true;
+        }
+      }
+    }
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.groupRole === groupRole) {
+          docs.checked = "";
+          docs.inherit = 0;
         }
       });
     });
@@ -103,6 +139,11 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
       denyBlock(data.groupRole);
     });
   };
+  const inheritAll =() => {
+    dataPrivileges.forEach(function (data){
+      inheritBlock(data.groupRole);
+    });
+  }
   const handleChange = event => {
     event.persist();
 
@@ -118,7 +159,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
       }
     }));
   };
-  const handleChangeRoles = (event) => {
+  const handleChangeRoles = event => {
     setSelectedOption(SelectedOption => ({
       ...SelectedOption,
       Select: event
@@ -129,9 +170,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
     event.preventDefault();
     dataRolesToAdd.forEach(function(data) {
       formState.values.roles.push(data.idRole);
-      })
+    });
     console.log(formState.values);
-    
+
     addUsers(formState.values);
   };
   const onSubmitPermission = event => {
@@ -174,11 +215,11 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                   <Row>
                     <Col sm={2}>
                       <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.fistname')}
+                        {t('user.firstname')}
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="fistName" onChange={handleChange} />
+                      <Input type="text" name="firstName" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -238,7 +279,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="email"  onChange={handleChange} />
+                      <Input type="text" name="email" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -250,17 +291,17 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                       </Label>
                     </Col>
                     <Col sm={6}>
-                    <FormGroup>
-                      {optionRoles.length >= 0 && (
-                        <Select
-                          isMulti
-                          name="roles"
-                          value={SelectedOption.Select}
-                          onChange={handleChangeRoles}
-                          options={optionRoles}
-                        />
-                      )}
-                    </FormGroup>
+                      <FormGroup>
+                        {optionRoles.length >= 0 && (
+                          <Select
+                            isMulti
+                            name="roles"
+                            value={SelectedOption.Select}
+                            onChange={handleChangeRoles}
+                            options={optionRoles}
+                          />
+                        )}
+                      </FormGroup>
                     </Col>
                   </Row>
                 </FormGroup>
@@ -272,7 +313,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="password"  onChange={handleChange} />
+                      <Input type="text" name="password" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -298,7 +339,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form
+                  <div
                     className="p-3"
                     style={{ background: '#fff', justifyContent: 'center' }}
                     onSubmit={onSubmitPermission}
@@ -314,6 +355,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
                             <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
+                            <Button onClick={() => inheritAll()}>{t('Inherit All')}</Button>
                           </ButtonGroup>
                         </Col>
                       </Row>
@@ -342,6 +384,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                                   <ButtonGroup size="sm">
                                     <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
                                     <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
+                                    <Button onClick={() => inheritBlock(values.groupRole)}>{t('Inherit All')}</Button>
                                   </ButtonGroup>
                                 </div>
                               </Col>
@@ -365,6 +408,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                                         inline="true"
                                         onClick={() => {
                                           value.checked = true;
+                                          value.inherit = 1;
                                         }}
                                         // checked={}
                                       />
@@ -377,6 +421,20 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                                         inline="true"
                                         onClick={() => {
                                           value.checked = false;
+                                          value.inherit = 2;
+                                        }}
+                                      />
+                                      <CustomInput
+                                        id={"inherit"+value.id}
+                                        type="radio"
+                                        name={value.name}
+                                        label="Inherit"
+                                        inline
+                                        value={"empty"}
+                                        checked={value.inherit !==0 ? false : true}
+                                        onClick={() => {
+                                          value.checked = "";
+                                          value.inherit = 0;
                                         }}
                                       />
                                     </div>
@@ -388,24 +446,10 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
                         </Form>
                       );
                     })}
-                    <FormGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Label for="exampleCheckbox">{t('admin.banners')}</Label>
-                        </Col>
-                        <Col xs="6">
-                          <div>
-                            <CustomInput type="radio" name="customRadio" label="Allow" inline />
-                            <CustomInput type="radio"  name="customRadio" label="Deny" inline />
-                            <CustomInput type="radio"  label="Inherit" inline />
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormGroup>
                     <Button color="primary" type="submit">
                       {t('save')}
                     </Button>
-                  </Form>
+                  </div>
                 </Col>
               </Row>
             </TabPane>
@@ -435,14 +479,14 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup }
 UsersCreate.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
-  dataAllRole: state.RoleReducer.data,
-  listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
-
+    dataAllRole: state.RoleReducer.data,
+    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
   };
 };
 const mapDispatchToProps = {
   addUsers: UserActions.AddUsers,
-  getAllRole: RoleActions.GetRoles
+  getAllRole: RoleActions.GetRoles,
+  getListPrivilegesByGroup: RoleActions.getPrivilegeRoleByGroup
 };
 
 export default connect(
