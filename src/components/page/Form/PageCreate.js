@@ -446,7 +446,6 @@ function PagesCreate({
           <FormGroup>
             <Label for="template">{data.title}</Label>
             {map(singleImage, (value, itemIndex) => {
-              console.log(value);
               return (
                 <div key={itemIndex}>
                   <div className="mt-3 btnBlock-remove">

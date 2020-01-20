@@ -409,8 +409,7 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        console.log(contentData[i])
-        if (contentData[i]) {
+        if (contentData[i] !== undefined && contentData[i]) {
           let key = Object.keys(contentData[i]);
           let regexp = '';
           let replaceHTML = '';
@@ -433,7 +432,7 @@ function Page({
             }</h2> ${contentHtml}</div`
           };
         }
-        if (contentData[i].mutileImge && contentData[i].mutileImge !== undefined) {
+        if (contentData[i] !== undefined && contentData[i].mutileImge && contentData[i].mutileImge !== undefined) {
           for (let j = 0; j < contentData[i].mutileImge.length; j++) {
             let key = Object.keys(contentData[i].mutileImge[j]);
             let regexp = '';
@@ -459,7 +458,7 @@ function Page({
             }</h2><div class="post_container">${muitle_post_html}</div></div>`
           };
         }
-        if (contentData[i].mutileEditor && contentData[i].mutileEditor !== undefined) {
+        if (contentData[i] !== undefined && contentData[i].mutileEditor && contentData[i].mutileEditor !== undefined) {
           for (let j = 0; j < contentData[i].mutileEditor.length; j++) {
             let key = Object.keys(contentData[i].mutileEditor[j]);
             let regexp = '';
@@ -485,7 +484,7 @@ function Page({
             }</h2>${muitle_post_html}</div>`
           };
         }
-        if (contentData[i].content) {
+        if (contentData[i] !== undefined && contentData[i].content) {
           for (let j = 0; j < contentData[i].content.length; j++) {
             let key = Object.keys(contentData[i].content[j]);
             let regexp = '';
@@ -511,7 +510,7 @@ function Page({
             }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
-        if (contentData[i].length > 0) {
+        if (contentData[i] !== undefined && contentData[i].length > 0) {
           for (let j = 0; j < contentData[i].length; j++) {
             let key = Object.keys(contentData[i][j]);
             let regexp = '';
@@ -537,7 +536,7 @@ function Page({
             }</h2> <div class="post_container">${muitle_post_html}</div> </div>`
           };
         }
-        if (contentData[i].mutilePost) {
+        if (contentData[i] !== undefined && contentData[i].mutilePost) {
           for (let j = 0; j < contentData[i].mutilePost.length; j++) {
             let key = Object.keys(contentData[i].mutilePost[j]);
             let regexp = '';
@@ -581,7 +580,7 @@ function Page({
       for (let i = 0; i < listBlock.length; i++) {
         let html = listBlock[i].html;
         let muitle_post_html = '';
-        if (contentData[i]) {
+        if (contentData[i] !== undefined && contentData[i]) {
           let key = Object.keys(contentData[i]);
           let regexp = '';
           let replaceHTML = '';
@@ -600,7 +599,7 @@ function Page({
           };
         }
 
-        if (contentData[i].mutileImge) {
+        if (contentData[i] !== undefined && contentData[i].mutileImge) {
           for (let j = 0; j < contentData[i].mutileImge.length; j++) {
             let key = Object.keys(contentData[i].mutileImge[j]);
             let regexp = '';
@@ -622,7 +621,7 @@ function Page({
             contentHtml: `<div class="post_container"><h2>${formBlock[i].title}</h2>${muitle_post_html}</div>`
           };
         }
-        if (contentData[i].mutileEditor) {
+        if (contentData[i] !== undefined && contentData[i].mutileEditor) {
           for (let j = 0; j < contentData[i].mutileEditor.length; j++) {
             let key = Object.keys(contentData[i].mutileEditor[j]);
             let regexp = '';
@@ -645,7 +644,7 @@ function Page({
             contentHtml: `<div class="post_container"><h2>${formBlock[i].title}</h2>${muitle_post_html}</div>`
           };
         }
-        if (contentData[i].mutilePost) {
+        if (contentData[i] !== undefined && contentData[i].mutilePost) {
           for (let j = 0; j < contentData[i].mutilePost.length; j++) {
             let key = Object.keys(contentData[i].mutilePost[j]);
             let regexp = '';
@@ -748,11 +747,11 @@ function Page({
       if (blockValue[0] !== undefined) {
         type = blockValue[0].type_id;
       }
-      if (type === 9) {
-        mutileImage.push(...content);
-      }
       if (type === 4) {
         mutileEditor.push(...content);
+      }
+      if (type === 9) {
+        mutileImage.push(...content);
       }
       if (type === 10) {
         singerImage.push(...content);
@@ -768,7 +767,7 @@ function Page({
     setMutileEditor(mutileEditor);
     setSingerImage(singerImage);
     setFormBlock(stateEdit);
-    setContentData([...newContent, {}]);
+    setContentData([...newContent]);
     setFormEdit([...stateEdit]);
     setListBlock(listBlock);
     setAddChildrenActive(false);
