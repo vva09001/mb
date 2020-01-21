@@ -814,12 +814,21 @@ function Page({
     setListBlock(newValues);
     setFormBlock(newValues);
   };
-
-  const setListData = (items, index) => {
+  const setListData = (items, type_id, index) => {
     let newItems = {
       ...items,
-      newItem: 0
+      newItem: 0,
+      temple: type_id === 9 || type_id === 10 || type_id === 4 ? listBlock.length : null
     };
+    if (type_id === 9) {
+      setMutileImage([...mutileImage, { temple: listBlock.length }]);
+    }
+    if (type_id === 10) {
+      setSingerImage([...singerImage, { temple: listBlock.length }]);
+    }
+    if (type_id === 4) {
+      setMutileEditor([...mutileEditor, { temple: listBlock.length }]);
+    }
     setListBlock([...listBlock, newItems]);
     setFormBlock([...formBlock, items.blockValues[0]]);
     setContentData([...contentData, {}]);
@@ -894,13 +903,18 @@ function Page({
               <React.Fragment key={index}>
                 <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
                 <Collapse isOpen={opened === index}>
-                  {map(values.blocks, (items, index) => (
-                    <ListGroup key={index}>
-                      <ListGroupItem style={{ backgroundColor: '#f5f5f5' }} onClick={() => setListData(items, index)}>
-                        {items.name}
-                      </ListGroupItem>
-                    </ListGroup>
-                  ))}
+                  {map(values.blocks, (items, index) => {
+                    return (
+                      <ListGroup key={index}>
+                        <ListGroupItem
+                          style={{ backgroundColor: '#f5f5f5' }}
+                          onClick={() => setListData(items, items.blockValues[0].type_id, index)}
+                        >
+                          {items.name}
+                        </ListGroupItem>
+                      </ListGroup>
+                    );
+                  })}
                 </Collapse>
               </React.Fragment>
             ))}
