@@ -29,7 +29,8 @@ function* addUsersSaga() {
     const { data } = params;
     try {
       const res = yield addUsersService(data);
-      if (res.status === 200) {        
+      if (res.status === 200) {  
+        yield Success('Tạo thành công');      
         yield put({ type: actions.ADD_USERS_RESPONSE, data: res.data });
       } else {        
         yield Error(res.message);
@@ -60,14 +61,15 @@ function* aprrUsersSaga() {
 
 function* editUsersSaga() {
   yield takeLatest(actions.EDIT_USERS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield editUsersService(data);
+      console.log(data)
       if (res.status === 200) {
-        yield onSuccess();
+        
+        yield Success("Cập nhật thành công")
         yield put({ type: actions.EDIT_USERS_RESPONSE, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {
