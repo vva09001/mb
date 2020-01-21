@@ -120,12 +120,27 @@ function PagesCreate({
     return setOpened(opened === index ? null : index);
   };
 
-  const addMoreFormImge = () => {
-    setFormImg([...formImg, { title: '', description: '', learnMore: '', text: '', url: '', video_url: '' }]);
+  const addMoreFormImge = (key, temple) => {
+    if (key === 1) {
+      setFormImg([
+        ...formImg,
+        { title: '', description: '', learnMore: '', text: '', url: '', video_url: '', temple: temple }
+      ]);
+    }
+    if (key === 0) {
+      setFormImg([
+        ...formImg,
+        { title: '', description: '', learnMore: '', text: '', url: '', video_url: '', id: temple }
+      ]);
+    }
   };
-
-  const addMoreFormEdittor = () => {
-    setFomEditor([...fomEditor, {}]);
+  const addMoreFormEdittor = (key, temple) => {
+    if (key === 1) {
+      setFomEditor([...fomEditor, { temple: temple }]);
+    }
+    if (key === 0) {
+      setFomEditor([...fomEditor, { id: temple }]);
+    }
   };
   const removeItem = (indexItems, index, acitve) => {
     const newValues = filter(formImg, (items, index) => index !== indexItems);
@@ -152,7 +167,7 @@ function PagesCreate({
     handleEditImge(newData, index);
   };
 
-  const handleChangeImge = (event, itemIndex, index, acitve) => {
+  const handleChangeImge = (event, itemIndex, index, acitve, temple) => {
     let newData = map(formImg, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -165,9 +180,21 @@ function PagesCreate({
     });
     setFormImg(newData);
     if (acitve) {
-      handleEditImge(newData, index);
+      let data = [];
+      map(newData, value => {
+        if (value.id === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleEditImge(data, index);
     } else {
-      handleImge(newData, index);
+      let data = [];
+      map(newData, value => {
+        if (value.temple === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleImge(data, index);
     }
   };
 
@@ -203,7 +230,7 @@ function PagesCreate({
     mutiPostEdit(data, index);
   };
 
-  const handleMutiEditors = (data, key, indexData, index, acitve) => {
+  const handleMutiEditors = (data, key, indexData, index, acitve, temple) => {
     let editorData = map(fomEditor, (value, indexEditor) => {
       if (indexData !== indexEditor) {
         return value;
@@ -216,15 +243,25 @@ function PagesCreate({
     });
     setFomEditor(editorData);
     if (acitve) {
-      handleEditMutileEditor(editorData, index);
+      let data = [];
+      map(editorData, value => {
+        if (value.id === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleEditMutileEditor(data, index);
     } else {
-      handleMutiEditor(editorData, index);
+      let data = [];
+      map(editorData, value => {
+        if (value.temple === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleMutiEditor(data, index);
     }
-
-    // console.log(fomEditor);
   };
 
-  const handleImage = (event, itemIndex, index, acitve) => {
+  const handleImage = (event, itemIndex, index, acitve, temple) => {
     let newData = map(singleImage, (value, indexValue) => {
       if (itemIndex !== indexValue) {
         return value;
@@ -237,13 +274,24 @@ function PagesCreate({
     });
     setSingleImage(newData);
     if (acitve) {
-      handleEditImge(newData, index);
+      let data = [];
+      map(newData, value => {
+        if (value.id === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleEditImge(data, index);
     } else {
-      handleImge(newData, index);
+      let data = [];
+      map(newData, value => {
+        if (value.temple === temple) {
+          return (data = [...data, value]);
+        }
+      });
+      handleImge(data, index);
     }
   };
-
-  const renderInput = (data, index) => {
+  const renderInput = (data, index, temple) => {
     switch (data.type_id) {
       case 1: // input
         return (
@@ -301,26 +349,28 @@ function PagesCreate({
           <FormGroup>
             <Label>{data.title}</Label>
             {map(fomEditor, (value, indexEdittor) => {
-              return (
-                <div key={indexEdittor} className="mt-2">
-                  <CKEditor
-                    editor={ClassicEditor}
-                    onChange={(event, editor) => {
-                      const editorData = editor.getData();
-                      handleMutiEditors(editorData, data.key, indexEdittor, index, false);
-                    }}
-                    onInit={editor => {
-                      editor.ui.view.editable.element.style.height = 'auto';
-                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                        return new UploadAdapter(loader);
-                      };
-                    }}
-                  />
-                </div>
-              );
+              if (value.temple === temple) {
+                return (
+                  <div key={indexEdittor} className="mt-2">
+                    <CKEditor
+                      editor={ClassicEditor}
+                      onChange={(event, editor) => {
+                        const editorData = editor.getData();
+                        handleMutiEditors(editorData, data.key, indexEdittor, index, false, temple);
+                      }}
+                      onInit={editor => {
+                        editor.ui.view.editable.element.style.height = 'auto';
+                        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                          return new UploadAdapter(loader);
+                        };
+                      }}
+                    />
+                  </div>
+                );
+              }
             })}
             <div>
-              <Button className="mt-3" onClick={addMoreFormEdittor}>
+              <Button className="mt-3" onClick={() => addMoreFormEdittor(1, temple)}>
                 {t('addBlock')}
               </Button>
             </div>
@@ -362,80 +412,86 @@ function PagesCreate({
           <FormGroup>
             <Label for="template">{data.title}</Label>
             {map(formImg, (items, itemIndex) => {
-              return (
-                <div key={itemIndex}>
-                  <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex, index, false)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </div>
-                  <div className="form-img">
-                    <div>
-                      <div className="block_image mb-2">
-                        <img
-                          alt="items"
-                          src={items.image === '' ? IconNoImage : items.image}
-                          style={{ maxWidth: '100%' }}
-                        />
-                      </div>
-                      <ModalMedia setState={() => onSetState(itemIndex)} />
+              if (items.temple === temple) {
+                return (
+                  <div key={itemIndex}>
+                    <div className="mt-3 btnBlock-remove">
+                      <Button onClick={() => removeItem(itemIndex, index, false)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
                     </div>
-                    <div className="input_image">
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.title')}</Label>
-                          <Input
-                            type="text"
-                            name="title"
-                            onChange={event => handleChangeImge(event, itemIndex, index)}
+                    <div className="form-img">
+                      <div>
+                        <div className="block_image mb-2">
+                          <img
+                            alt="items"
+                            src={items.image === '' ? IconNoImage : items.image}
+                            style={{ maxWidth: '100%' }}
                           />
                         </div>
-                        <div>
-                          <Label>{t('block.image.description')}</Label>
-                          <Input
-                            type="text"
-                            name="description"
-                            onChange={event => handleChangeImge(event, itemIndex, index)}
-                          />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.learn_more')}</Label>
-                          <Input
-                            type="text"
-                            name="learnMore"
-                            onChange={event => handleChangeImge(event, itemIndex, index)}
-                          />
-                        </div>
+                        <ModalMedia setState={() => onSetState(itemIndex)} />
                       </div>
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.text')}</Label>
-                          <Input
-                            type="text"
-                            name="text"
-                            onChange={event => handleChangeImge(event, itemIndex, index)}
-                          />
+                      <div className="input_image">
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.title')}</Label>
+                            <Input
+                              type="text"
+                              name="title"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.description')}</Label>
+                            <Input
+                              type="text"
+                              name="description"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.learn_more')}</Label>
+                            <Input
+                              type="text"
+                              name="learnMore"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label>{t('block.image.url')}</Label>
-                          <Input type="text" name="url" onChange={event => handleChangeImge(event, itemIndex, index)} />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.video_url')}</Label>
-                          <Input
-                            type="text"
-                            name="video_url"
-                            onChange={event => handleChangeImge(event, itemIndex, index)}
-                          />
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.text')}</Label>
+                            <Input
+                              type="text"
+                              name="text"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.url')}</Label>
+                            <Input
+                              type="text"
+                              name="url"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.video_url')}</Label>
+                            <Input
+                              type="text"
+                              name="video_url"
+                              onChange={event => handleChangeImge(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
             <div>
-              <Button className="mt-3" onClick={addMoreFormImge}>
+              <Button className="mt-3" onClick={() => addMoreFormImge(1, temple)}>
                 {t('addBlock')}
               </Button>
             </div>
@@ -446,70 +502,83 @@ function PagesCreate({
           <FormGroup>
             <Label for="template">{data.title}</Label>
             {map(singleImage, (value, itemIndex) => {
-              console.log(value);
-              return (
-                <div key={itemIndex}>
-                  <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex, index, false)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </div>
-                  <div className="form-img">
-                    <div>
-                      <div className="block_image mb-2">
-                        <img
-                          alt="items"
-                          src={value.image === '' ? IconNoImage : value.image}
-                          style={{ maxWidth: '100%' }}
-                        />
-                      </div>
-                      <ModalMedia setState={() => setImage(itemIndex)} />
+              if (value.temple === temple) {
+                return (
+                  <div key={itemIndex}>
+                    <div className="mt-3 btnBlock-remove">
+                      <Button onClick={() => removeItem(itemIndex, index, false, temple)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
                     </div>
-                    <div className="input_image">
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.title')}</Label>
-                          <Input type="text" name="title" onChange={event => handleImage(event, itemIndex, index)} />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.description')}</Label>
-                          <Input
-                            type="text"
-                            name="description"
-                            onChange={event => handleImage(event, itemIndex, index)}
+                    <div className="form-img">
+                      <div>
+                        <div className="block_image mb-2">
+                          <img
+                            alt="items"
+                            src={value.image === '' ? IconNoImage : value.image}
+                            style={{ maxWidth: '100%' }}
                           />
                         </div>
-                        <div>
-                          <Label>{t('block.image.learn_more')}</Label>
-                          <Input
-                            type="text"
-                            name="learnMore"
-                            onChange={event => handleImage(event, itemIndex, index)}
-                          />
-                        </div>
+                        <ModalMedia setState={() => setImage(itemIndex)} />
                       </div>
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.text')}</Label>
-                          <Input type="text" name="text" onChange={event => handleImage(event, itemIndex, index)} />
+                      <div className="input_image">
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.title')}</Label>
+                            <Input
+                              type="text"
+                              name="title"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.description')}</Label>
+                            <Input
+                              type="text"
+                              name="description"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.learn_more')}</Label>
+                            <Input
+                              type="text"
+                              name="learnMore"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label>{t('block.image.url')}</Label>
-                          <Input type="text" name="url" onChange={event => handleImage(event, itemIndex, index)} />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.video_url')}</Label>
-                          <Input
-                            type="text"
-                            name="video_url"
-                            onChange={event => handleImage(event, itemIndex, index)}
-                          />
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.text')}</Label>
+                            <Input
+                              type="text"
+                              name="text"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.url')}</Label>
+                            <Input
+                              type="text"
+                              name="url"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.video_url')}</Label>
+                            <Input
+                              type="text"
+                              name="video_url"
+                              onChange={event => handleImage(event, itemIndex, index, false, temple)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
           </FormGroup>
         );
@@ -550,7 +619,7 @@ function PagesCreate({
     }
   };
 
-  const renderInputEdit = (items, value, newID, index) => {
+  const renderInputEdit = (items, value, idBlock, index) => {
     switch (items.type_id) {
       case 1:
         return (
@@ -655,28 +724,30 @@ function PagesCreate({
           <FormGroup>
             <Label>{items.title}</Label>
             {map(fomEditor, (value, indexEditor) => {
-              return (
-                <div key={indexEditor} className="mt-2">
-                  <CKEditor
-                    editor={ClassicEditor}
-                    data={value.content}
-                    onChange={(event, editor) => {
-                      const editorData = editor.getData();
-                      handleMutiEditors(editorData, items.key, indexEditor, index, true);
-                      // editorChange(editorData, items.key, index);
-                    }}
-                    onInit={editor => {
-                      editor.ui.view.editable.element.style.height = 'auto';
-                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                        return new UploadAdapter(loader);
-                      };
-                    }}
-                  />
-                </div>
-              );
+              if (value.id === idBlock) {
+                return (
+                  <div key={indexEditor} className="mt-2">
+                    <CKEditor
+                      editor={ClassicEditor}
+                      data={value.content}
+                      onChange={(event, editor) => {
+                        const editorData = editor.getData();
+                        handleMutiEditors(editorData, items.key, indexEditor, index, true, idBlock);
+                        // editorChange(editorData, items.key, index);
+                      }}
+                      onInit={editor => {
+                        editor.ui.view.editable.element.style.height = 'auto';
+                        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                          return new UploadAdapter(loader);
+                        };
+                      }}
+                    />
+                  </div>
+                );
+              }
             })}
             <div>
-              <Button className="mt-3" onClick={addMoreFormEdittor}>
+              <Button className="mt-3" onClick={() => addMoreFormEdittor(0, idBlock)}>
                 {t('addBlock')}
               </Button>
             </div>
@@ -707,90 +778,92 @@ function PagesCreate({
           <FormGroup>
             <Label for="template">{items.title}</Label>
             {map(formImg, (value, itemIndex) => {
-              return (
-                <div key={itemIndex}>
-                  <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex, index, true)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </div>
-                  <div className="form-img">
-                    <div>
-                      <div className="block_image mb-2">
-                        <img
-                          alt="items"
-                          src={value.image === '' ? IconNoImage : value.image}
-                          style={{ maxWidth: '100%' }}
-                        />
-                      </div>
-                      <ModalMedia setState={() => onSetState(itemIndex, index)} />
+              if (value.id === idBlock) {
+                return (
+                  <div key={itemIndex}>
+                    <div className="mt-3 btnBlock-remove">
+                      <Button onClick={() => removeItem(itemIndex, index, true)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
                     </div>
-                    <div className="input_image">
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.title')}</Label>
-                          <Input
-                            type="text"
-                            name="title"
-                            value={value.title}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
+                    <div className="form-img">
+                      <div>
+                        <div className="block_image mb-2">
+                          <img
+                            alt="items"
+                            src={value.image === '' ? IconNoImage : value.image}
+                            style={{ maxWidth: '100%' }}
                           />
                         </div>
-                        <div>
-                          <Label>{t('block.image.description')}</Label>
-                          <Input
-                            type="text"
-                            name="description"
-                            value={value.description}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
-                          />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.learn_more')}</Label>
-                          <Input
-                            type="text"
-                            name="learnMore"
-                            value={value.learnMore}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
-                          />
-                        </div>
+                        <ModalMedia setState={() => onSetState(itemIndex, index)} />
                       </div>
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.text')}</Label>
-                          <Input
-                            type="text"
-                            name="text"
-                            value={value.text}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
-                          />
+                      <div className="input_image">
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.title')}</Label>
+                            <Input
+                              type="text"
+                              name="title"
+                              value={value.title}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.description')}</Label>
+                            <Input
+                              type="text"
+                              name="description"
+                              value={value.description}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.learn_more')}</Label>
+                            <Input
+                              type="text"
+                              name="learnMore"
+                              value={value.learnMore}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label>{t('block.image.url')}</Label>
-                          <Input
-                            type="text"
-                            name="url"
-                            value={value.url}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
-                          />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.video_url')}</Label>
-                          <Input
-                            type="text"
-                            name="video_url"
-                            value={value.video_url}
-                            onChange={event => handleChangeImge(event, itemIndex, index, true)}
-                          />
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.text')}</Label>
+                            <Input
+                              type="text"
+                              name="text"
+                              value={value.text}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.url')}</Label>
+                            <Input
+                              type="text"
+                              name="url"
+                              value={value.url}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.video_url')}</Label>
+                            <Input
+                              type="text"
+                              name="video_url"
+                              value={value.video_url}
+                              onChange={event => handleChangeImge(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
             <div>
-              <Button className="mt-3" onClick={addMoreFormImge}>
+              <Button className="mt-3" onClick={() => addMoreFormImge(0, idBlock)}>
                 {t('addBlock')}
               </Button>
             </div>
@@ -801,87 +874,89 @@ function PagesCreate({
           <FormGroup>
             <Label>{items.title}</Label>
             {map(singleImage, (value, itemIndex) => {
-              return (
-                <div key={itemIndex}>
-                  <div className="mt-3 btnBlock-remove">
-                    <Button onClick={() => removeItem(itemIndex, index, true)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </div>
-                  <div className="form-img">
-                    <div>
-                      <div className="block_image mb-2">
-                        <img
-                          alt="items"
-                          src={value.image === '' ? IconNoImage : value.image}
-                          style={{ maxWidth: '100%' }}
-                        />
-                      </div>
-                      <ModalMedia setState={() => setImage(itemIndex, index, true)} />
+              if (value.id === idBlock) {
+                return (
+                  <div key={itemIndex}>
+                    <div className="mt-3 btnBlock-remove">
+                      <Button onClick={() => removeItem(itemIndex, index, true)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
                     </div>
-                    <div className="input_image">
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.title')}</Label>
-                          <Input
-                            type="text"
-                            name="title"
-                            value={value.title}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
+                    <div className="form-img">
+                      <div>
+                        <div className="block_image mb-2">
+                          <img
+                            alt="items"
+                            src={value.image === '' ? IconNoImage : value.image}
+                            style={{ maxWidth: '100%' }}
                           />
                         </div>
-                        <div>
-                          <Label>{t('block.image.description')}</Label>
-                          <Input
-                            type="text"
-                            name="description"
-                            value={value.description}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
-                          />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.learn_more')}</Label>
-                          <Input
-                            type="text"
-                            name="learnMore"
-                            value={value.learnMore}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
-                          />
-                        </div>
+                        <ModalMedia setState={() => setImage(itemIndex, index, true, idBlock)} />
                       </div>
-                      <div className="input_wapper">
-                        <div>
-                          <Label>{t('block.image.text')}</Label>
-                          <Input
-                            type="text"
-                            name="text"
-                            value={value.text}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
-                          />
+                      <div className="input_image">
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.title')}</Label>
+                            <Input
+                              type="text"
+                              name="title"
+                              value={value.title}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.description')}</Label>
+                            <Input
+                              type="text"
+                              name="description"
+                              value={value.description}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.learn_more')}</Label>
+                            <Input
+                              type="text"
+                              name="learnMore"
+                              value={value.learnMore}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label>{t('block.image.url')}</Label>
-                          <Input
-                            type="text"
-                            name="url"
-                            value={value.url}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
-                          />
-                        </div>
-                        <div>
-                          <Label>{t('block.image.video_url')}</Label>
-                          <Input
-                            type="text"
-                            name="video_url"
-                            value={value.video_url}
-                            onChange={event => handleImage(event, itemIndex, index, true)}
-                          />
+                        <div className="input_wapper">
+                          <div>
+                            <Label>{t('block.image.text')}</Label>
+                            <Input
+                              type="text"
+                              name="text"
+                              value={value.text}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.url')}</Label>
+                            <Input
+                              type="text"
+                              name="url"
+                              value={value.url}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
+                          <div>
+                            <Label>{t('block.image.video_url')}</Label>
+                            <Input
+                              type="text"
+                              name="video_url"
+                              value={value.video_url}
+                              onChange={event => handleImage(event, itemIndex, index, true, idBlock)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
           </FormGroup>
         );
@@ -946,7 +1021,7 @@ function PagesCreate({
               />
             </FormGroup>
             <div className="check__box">
-              <Label>{t('status')}</Label>
+              <Label>{t('active')}</Label>
               <div>
                 <Input
                   type="checkbox"
@@ -959,20 +1034,6 @@ function PagesCreate({
                 <span>{t('page.active')}</span>
               </div>
             </div>
-            {/* <div className="check__box">
-              <Label>{t('page.active')}</Label>
-              <div>
-                <Input
-                  type="checkbox"
-                  name="is_active"
-                  // required
-                  checked={value.is_active === 0 || value.is_active === undefined ? false : true}
-                  value={value.is_active === 0 ? false : value.is_active}
-                  onChange={handleChange}
-                />
-                <span>{t('page.active')}</span>
-              </div>
-            </div> */}
             <div className="check__box">
               <Label>{t('sidebar')}</Label>
               <div>
@@ -1071,12 +1132,12 @@ function PagesCreate({
                           </FormGroup>
                           {!deleteActive &&
                             map(value.blockValues, (items, itemIndex) => {
-                              return <div key={itemIndex}>{renderInput(items, index)}</div>;
+                              return <div key={itemIndex}>{renderInput(items, index, value.temple)}</div>;
                             })}
                           {deleteActive &&
                             map(value.blockValues, (items, indexItems) => {
                               if (value.newItem === 0) {
-                                return <div key={indexItems}>{renderInput(items, index)}</div>;
+                                return <div key={indexItems}>{renderInput(items, index, value.temple)}</div>;
                               } else {
                                 let values = JSON.parse(value.content);
                                 let key = null;
@@ -1091,7 +1152,7 @@ function PagesCreate({
                                 }
                                 return (
                                   <div key={indexItems}>
-                                    {renderInputEdit(items, stateEdit[index][tem], stateEdit[index][`newsID`], index)}
+                                    {renderInputEdit(items, stateEdit[index][tem], value.id, index)}
                                   </div>
                                 );
                               }
