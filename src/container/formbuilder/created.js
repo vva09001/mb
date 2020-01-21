@@ -82,7 +82,7 @@ function FormBuilder({ created }) {
       list: formDataBuilDer,
       embedded: renderhtml
     };
-    //console.log(body);
+    console.log(body);
     created(body);
   };
   return (

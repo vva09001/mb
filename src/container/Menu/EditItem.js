@@ -92,10 +92,10 @@ function EditMenusItem({
             {active === 1 && (
               <FormGroup>
                 <Label for="exampleSelect">{t('page.page')}</Label>
-                <Input type="select" name="pagesId" value={formState.values.pageId} onChange={handleChange}>
+                <Input type="select" name="slugPages" value={formState.values.pageId} onChange={handleChange}>
                   <option>{t('menu.Select')}</option>
                   {map(dataPage, value => (
-                    <option value={value.id} key={value.id}>
+                    <option value={value.slug} key={value.id}>
                       {value.name}
                     </option>
                   ))}
