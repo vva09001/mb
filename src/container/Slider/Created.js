@@ -174,7 +174,7 @@ function SliderCreate({ SliderCreate }) {
                   setActiveGroup(2);
                 }}
               >
-                {t('slider.logo')}
+                {t('slider.setting')}
               </ListGroupItem>
             </ListGroup>
           </Card>

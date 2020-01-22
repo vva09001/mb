@@ -7,7 +7,7 @@ import { UserActions, RoleActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-
+var classNames = require('classnames');
 const PropsType = {
   addUsers: PropTypes.func,
   getAllRole: PropTypes.func,
@@ -22,7 +22,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     values: {
       roles: [],
       userPrivilegeRequests: [],
-      status: ''
+      status: 0
     },
     touched: {}
   });
@@ -53,97 +53,93 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
   });
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
-    console.log(dataPrivileges);
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
           checked: '',
-          inherit: '',
+          status: ''
         };
         docs = Object.assign(docs, check);
       });
     });
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (SelectedOption.Select === null || SelectedOption.Select.length === 0)
-        {
-        return ;
-        }
-        else docs.inherit = 0;
+        if (SelectedOption.Select === null || SelectedOption.Select.length === 0) {
+          return;
+        } else docs.status = 2;
       });
     });
-    console.log(SelectedOption.Select)
   });
 
-  const allowBlock = groupRole => {
-    var radios = document.forms[groupRole].elements;
+  const allowBlock = value => {
+    var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
-        if (Number(radios[i].value) % 2 === 1) {
+        if (Number(radios[i].value) === 1) {
           radios[i].checked = true;
         }
       }
     }
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === groupRole) {
+        if (docs.groupRole === value.groupRole) {
           docs.checked = true;
-          docs.inherit = 1;
+          docs.status = 1;
         }
       });
     });
   };
-  const denyBlock = groupRole => {
-    var radios = document.forms[groupRole].elements;
+  const denyBlock = value => {
+    var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
-        if (Number(radios[i].value) % 2 === 0) {
+        if (Number(radios[i].value) === 0) {
           radios[i].checked = true;
         }
       }
     }
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === groupRole) {
+        if (docs.groupRole === value.groupRole) {
           docs.checked = false;
-          docs.inherit = 2;
+          docs.status = 0;
         }
       });
     });
   };
-  const inheritBlock = groupRole => {
-    var radios = document.forms[groupRole].elements;
+  const inheritBlock = value => {
+    var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
-        if (String(radios[i].value) === "empty") {
+        if (Number(radios[i].value) === 2) {
           radios[i].checked = true;
         }
       }
     }
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === groupRole) {
-          docs.checked = "";
-          docs.inherit = 0;
+        if (docs.groupRole === value.groupRole) {
+          docs.checked = '';
+          docs.status = 2;
         }
       });
     });
   };
   const allowAll = () => {
     dataPrivileges.forEach(function(data) {
-      allowBlock(data.groupRole);
+      allowBlock(data);
     });
   };
   const denyAll = () => {
     dataPrivileges.forEach(function(data) {
-      denyBlock(data.groupRole);
+      denyBlock(data);
     });
   };
-  const inheritAll =() => {
-    dataPrivileges.forEach(function (data){
-      inheritBlock(data.groupRole);
+  const inheritAll = () => {
+    dataPrivileges.forEach(function(data) {
+      inheritBlock(data);
     });
-  }
+  };
   const handleChange = event => {
     event.persist();
 
@@ -171,13 +167,23 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     dataRolesToAdd.forEach(function(data) {
       formState.values.roles.push(data.idRole);
     });
-    console.log(formState.values);
-
-    addUsers(formState.values);
-  };
-  const onSubmitPermission = event => {
-    event.preventDefault();
-    console.log(formState.values);
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.status === 1 && docs.privilegeId % 2 !== 0) {
+          var tmp = {
+            privilegeId: docs.privilegeId,
+            status: docs.status
+          };
+          formState.values.userPrivilegeRequests.push(tmp);
+        } else if (docs.status === 0 && docs.privilegeId % 2 !== 0) {
+          var tmp = {
+            privilegeId: docs.privilegeId,
+            status: docs.status
+          };
+          formState.values.userPrivilegeRequests.push(tmp);
+        }
+      });
+    });
     addUsers(formState.values);
   };
 
@@ -209,7 +215,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Row>
@@ -330,7 +336,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                   </Row>
                 </FormGroup>
                 <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
-                  <Button color="primary" type="submit">
+                  <Button color="primary" type="submit" onClick={onSubmitUsers}>
                     {t('save')}
                   </Button>
                 </Col>
@@ -339,11 +345,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <div
-                    className="p-3"
-                    style={{ background: '#fff', justifyContent: 'center' }}
-                    onSubmit={onSubmitPermission}
-                  >
+                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center' }}>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -382,9 +384,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                               <Col xs="6">
                                 <div>
                                   <ButtonGroup size="sm">
-                                    <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
-                                    <Button onClick={() => denyBlock(values.groupRole)}>{t('Deny All')}</Button>
-                                    <Button onClick={() => inheritBlock(values.groupRole)}>{t('Inherit All')}</Button>
+                                    <Button onClick={() => allowBlock(values)}>{t('Allow All')}</Button>
+                                    <Button onClick={() => denyBlock(values)}>{t('Deny All')}</Button>
+                                    <Button onClick={() => inheritBlock(values)}>{t('Inherit All')}</Button>
                                   </ButtonGroup>
                                 </div>
                               </Col>
@@ -402,41 +404,59 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                                       <CustomInput
                                         type="radio"
                                         id={value.id}
-                                        value={value.privilegeId}
+                                        value={1}
                                         name={value.name}
                                         label="Allow"
                                         inline="true"
-                                        onClick={() => {
+                                        // checked={value.inherit ===1}
+                                        onChange={() => {
                                           value.checked = true;
-                                          value.inherit = 1;
+                                          value.status = 1;
                                         }}
                                         // checked={}
                                       />
                                       <CustomInput
                                         type="radio"
                                         id={value.id + 1}
-                                        value={value.privilegeId + 1}
+                                        value={0}
                                         name={value.name}
                                         label="Deny"
                                         inline="true"
-                                        onClick={() => {
+                                        // checked={value.inherit ===0}
+                                        onChange={() => {
                                           value.checked = false;
-                                          value.inherit = 2;
+                                          value.status = 0;
                                         }}
                                       />
-                                      <CustomInput
-                                        id={"inherit"+value.id}
-                                        type="radio"
-                                        name={value.name}
-                                        label="Inherit"
-                                        inline
-                                        value={"empty"}
-                                        checked={value.inherit !==0 ? false : true}
-                                        onClick={() => {
-                                          value.checked = "";
-                                          value.inherit = 0;
-                                        }}
-                                      />
+                                      {value.status === 2 ? (
+                                        <CustomInput
+                                          id={'inherit' + value.id}
+                                          type="radio"
+                                          name={value.name}
+                                          label="Inherit"
+                                          inline
+                                          value={2}
+                                          // checked={value.inherit === 2}
+                                          defaultChecked
+                                          onChange={() => {
+                                            value.checked = '';
+                                            value.status = 2;
+                                          }}
+                                        />
+                                      ) : (
+                                        <CustomInput
+                                          id={'inherit' + value.id}
+                                          type="radio"
+                                          name={value.name}
+                                          label="Inherit"
+                                          inline
+                                          value={2}
+                                          onChange={() => {
+                                            value.checked = '';
+                                            value.status = 2;
+                                          }}
+                                        />
+                                      )}
                                     </div>
                                   </Col>
                                 </Row>
@@ -446,28 +466,12 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit">
+                    <Button color="primary" type="submit" onClick={onSubmitUsers}>
                       {t('save')}
                     </Button>
                   </div>
                 </Col>
               </Row>
-            </TabPane>
-            <TabPane tabId="3">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
-                <h4>{t('newpassword')}</h4>
-                <FormGroup>
-                  <Label for="exampleName">{t('password')}</Label>
-                  <Input type="text" name="password" onChange={handleChange} />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleName">{t('cpassword')}</Label>
-                  <Input type="text" name="cpassword" onChange={handleChange} />
-                </FormGroup>
-                <Button color="primary" type="submit">
-                  {t('save')}
-                </Button>
-              </Form>
             </TabPane>
           </TabContent>
         </Col>

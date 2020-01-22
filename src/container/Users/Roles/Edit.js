@@ -90,7 +90,7 @@ function RolesEdit({
   useEffect(()=> {
     if (dataIdSelect !== null)
     SelectedOption.Select = dataIdSelect;
-  }, [SelectedOption.Select])
+  })
   const handleChangeTeam = (event) => {
     setSelectedOption(SelectedOption => ({
       ...SelectedOption,

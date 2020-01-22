@@ -23,7 +23,9 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     privileges: [],
     teams: []
   });
-  const [selectOption, setSelectoption] = useState([]);
+  const [SelectedOption, setSelectedOption] = useState({
+    Select: []
+  });
   const optionTeam = [];
   useEffect(() => {
     getListPrivilegesByGroup();
@@ -68,12 +70,12 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     }));
   };
 
-  const handleChangeTeam = selectOption => {
-    setSelectoption(selectOption => ({
-      ...selectOption,
-      selectOption: selectOption
+  const handleChangeTeam = event => {
+    setSelectedOption(SelectedOption => ({
+      ...SelectedOption,
+      Select: event
     }));
-    dataTeamToAdd = selectOption;
+    dataTeamToAdd = event;
   };
   const onSubmitRoles = event => {
     event.preventDefault();
@@ -169,9 +171,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                   <Label for="exampleName">{t('name')}</Label>
                   <Input type="text" name="name" id="exampleName" onChange={handleChange} />
                 </FormGroup>
-                {/* <Button color="primary" type="submit" onClick={onSubmitRoles}>
-                  {t('save')}
-                </Button> */}
               </Form>
             </TabPane>
             <TabPane tabId="2">
@@ -183,7 +182,10 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                     </FormGroup>
                     <FormGroup>
                       {optionTeam.length >= 0 && (
-                        <Select name="teams" options={optionTeam} isMulti onChange={handleChangeTeam} />
+                        <Select name="teams" 
+                        value={SelectedOption.Select}
+                        options={optionTeam} isMulti 
+                        onChange={handleChangeTeam} />
                       )}
                     </FormGroup>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
@@ -249,7 +251,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                                         onClick={() => {
                                           value.checked = true;
                                         }}
-                                        // checked={}
                                       />
                                       <CustomInput
                                         type="radio"
