@@ -25,8 +25,7 @@ const UsersTable = ({ data, getID, getDetail }) => {
             <th>
               <input type="checkbox" />
             </th>
-            <th>{t('user.fistname')}</th>
-            <th>{t('user.lastname')}</th>
+            <th>{t('user.aaccount')}</th>           
             <th>{t('email.email')}</th>
             <th>{t('loginForm.login')}</th>
             <th>{t('created')}</th>
@@ -39,8 +38,7 @@ const UsersTable = ({ data, getID, getDetail }) => {
                 <th>
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.username}</td>
-                <td onClick={() => getDetail(values)}>{values.lastname}</td>
+                <td onClick={() => getDetail(values)}>{values.username}</td>               
                 <td onClick={() => getDetail(values)}>{values.email}</td>
                 <td onClick={() => getDetail(values)}>{moment(values.login).fromNow()}</td>
                 <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>

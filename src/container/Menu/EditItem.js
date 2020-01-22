@@ -170,7 +170,7 @@ function EditMenusItem({
             <FormGroup>
               <Label for="exampleSelect">{t('menu.parentMenu')}</Label>
               <Input type="select" name="parentId" value={formState.values.parentId} onChange={handleChange}>
-                <option>{t('menu.Select')}</option>
+                <option value={null}>{t('menu.Select')}</option>
                 {map(dataAllItem, value => {
                   if (value.id !== detailItem.id){
                     return (

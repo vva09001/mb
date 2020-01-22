@@ -40,6 +40,9 @@
   "slug": "slug",
   "approveds": "Approved",
   "pendings": "Pending",
+  "DayUpdate": "Day Update",
+  "id": "ID",
+  "cancel": "Cancel",
   "questionConfirm": "Are you sure you want to delete ?",
   "SeleteImage": "Selete Image",
   "customer": {
@@ -200,7 +203,7 @@
     "prev/next": "Show Prev/Next arrows"
   },
   "user": {
-    "fistname": "Fist Name",
+    "aaccount": "Account",
     "lastname": "Last Name",
     "lastlogin": "Last Login",
     "nickname": "Nickname",
