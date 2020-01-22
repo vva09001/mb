@@ -151,7 +151,7 @@ function CreateMenusItem({
             <FormGroup>
               <Label for="exampleSelect">{t('menu.parentMenu')}</Label>
               <Input type="select" name="parentId" onChange={handleChange}>
-                <option>{t('menu.Select')}</option>
+                <option value={null}>{t('menu.Select')}</option>
                 {map(dataAllItem, value => (
                   <option value={value.id} key={value.id}>
                     {value.name}
