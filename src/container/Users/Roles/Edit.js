@@ -271,7 +271,7 @@ function RolesEdit({
                     </FormGroup>
                   
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
-                      <h4>{t('Permissions')}</h4>
+                      <h4>{t('Permissions')}</h4>
                     </FormGroup>
                     <FormGroup>
                       <Row>
