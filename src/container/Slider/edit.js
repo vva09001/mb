@@ -252,7 +252,7 @@ function SliderEdit({ sliderEdit, detail, getSliderId }) {
                                 </Nav>
                                 <TabContent activeTab={activeTab}>
                                   <TabPane tabId="1">
-                                    <Form>
+                                    <Row>
                                       <Row form>
                                         <Col md={4}>
                                           <FormGroup>
@@ -352,10 +352,9 @@ function SliderEdit({ sliderEdit, detail, getSliderId }) {
                                           </FormGroup>
                                         </Col>
                                       </Row>
-                                    </Form>
+                                    </Row>
                                   </TabPane>
                                   <TabPane tabId="2">
-                                    <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderEdits}>
                                       <Row form>
                                         <Col md={4}>
                                           <FormGroup>
@@ -392,7 +391,6 @@ function SliderEdit({ sliderEdit, detail, getSliderId }) {
                                           </FormGroup>
                                         </Col>
                                       </Row>
-                                    </Form>
                                   </TabPane>
                                 </TabContent>
                               </FormGroup>

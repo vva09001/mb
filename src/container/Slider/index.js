@@ -48,7 +48,7 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
     <React.Fragment>
       <div>
         <Row>
-          <h4>Slider</h4>
+          <h4>{t('slider.slider')}</h4>
         </Row>
         <Row className="mb-2">
           <Button color="primary" className="mr-2" onClick={() => history.push('/slider/create')}>
