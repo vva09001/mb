@@ -319,7 +319,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="password" onChange={handleChange} />
+                      <Input type="password" name="password" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -331,7 +331,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="passwordConfirm" onChange={handleChange} />
+                      <Input type="password" name="passwordConfirm" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>

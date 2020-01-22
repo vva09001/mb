@@ -548,7 +548,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="password" onChange={handleChange} />
+                      <Input type="password" name="password" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
@@ -560,7 +560,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="passwordConfirm" onChange={handleChange} />
+                      <Input type="password" name="passwordConfirm" onChange={handleChange} />
                     </Col>
                   </Row>
                 </FormGroup>
