@@ -112,8 +112,6 @@ function SliderCreate({ SliderCreate }) {
         };
       }
     }
-    console.log(sliderSlides);
-    console.log(fields);
     setFields(sliderSlides);
   }
   console.log(formState.values);
@@ -248,7 +246,7 @@ function SliderCreate({ SliderCreate }) {
 
                                 <TabContent activeTab={activeTab}>
                                   <TabPane tabId="1">
-                                    <Form className="p-3" style={{ background: '#fff' }} onSubmit={sliderCreates}>
+                                    <Row>
                                       <Row form>
                                         <Col md={4}>
                                           <FormGroup>
@@ -256,6 +254,7 @@ function SliderCreate({ SliderCreate }) {
                                             <Input
                                               type="text"
                                               name="caption1"
+                                              required
                                               onChange={e => handleChange(idx, e)}
                                               // onChange={handleChanges}
                                               id="caption"
@@ -323,10 +322,9 @@ function SliderCreate({ SliderCreate }) {
                                           </FormGroup>
                                         </Col>
                                       </Row>
-                                    </Form>
+                                    </Row>
                                   </TabPane>
                                   <TabPane tabId="2">
-                                    <Form>
                                       <Row form>
                                         <Col md={4}>
                                           <FormGroup>
@@ -364,7 +362,6 @@ function SliderCreate({ SliderCreate }) {
                                           </FormGroup>
                                         </Col>
                                       </Row>
-                                    </Form>
                                   </TabPane>
                                 </TabContent>
                               </FormGroup>
@@ -397,7 +394,7 @@ function SliderCreate({ SliderCreate }) {
                     <Label for="exampleName" className="col-md-3">
                       {t('slider.name')}
                     </Label>
-                    <Input type="text" name="name" className="col-md-9" onChange={handleChanges} />
+                    <Input type="text" name="name" required className="col-md-9" onChange={handleChanges} />
                   </FormGroup>
                   <FormGroup style={{ display: 'flex' }}>
                     <Label className="col-md-3">{t('slider.autoplay')}</Label>
