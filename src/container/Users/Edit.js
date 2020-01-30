@@ -7,6 +7,8 @@ import { UserActions, RoleActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import { useForm } from 'react-hook-form';
+
 const PropsType = {
   editUser: PropTypes.func,
   detail: PropTypes.object,
@@ -32,8 +34,9 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
   const [SelectedOption, setSelectedOption] = useState({
     Select: []
   });
+  const [stateButton, setStateButton] = useState('1');
   const { t } = useTranslation();
-
+  const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -194,7 +197,8 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
     dataRolesToEdit = event;
   };
   const onSubmitUsers = event => {
-    event.preventDefault();
+    console.log(stateButton);
+    if (stateButton === '1') event.preventDefault();
     formState.values.roles.splice(0, formState.values.roles.length);
     if (dataRolesToEdit === null) formState.values.roles = [];
     else if (dataRolesToEdit.length === 0) {
@@ -210,11 +214,11 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.status === 1 && docs.privilegeId % 2 !== 0) {
-          var tmp = {
+          var tmpPrivilegeId = {
             privilegeId: docs.privilegeId,
             status: docs.status
           };
-          formState.values.userPrivilegeRequests.push(tmp);
+          formState.values.userPrivilegeRequests.push(tmpPrivilegeId);
         } else if (docs.status === 0 && docs.privilegeId % 2 !== 0) {
           var tmp = {
             privilegeId: docs.privilegeId,
@@ -269,7 +273,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Row>
@@ -372,7 +376,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                 </FormGroup>
 
                 <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
-                  <Button color="primary" type="submit" onClick={onSubmitUsers}>
+                  <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
                     {t('save')}
                   </Button>
                 </Col>
@@ -381,7 +385,11 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center' }}>
+                  <Form
+                    className="p-3"
+                    style={{ background: '#fff', justifyContent: 'center' }}
+                    onSubmit={onSubmitUsers}
+                  >
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -399,7 +407,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                     </FormGroup>
                     {dataPrivileges.map((values, index) => {
                       return (
-                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                        <div key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
                           <FormGroup>
                             <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
                               <Label>
@@ -526,29 +534,38 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                               </FormGroup>
                             );
                           })}
-                        </Form>
+                        </div>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={onSubmitUsers}>
+                    <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
                       {t('save')}
                     </Button>
-                  </div>
+                  </Form>
                 </Col>
               </Row>
             </TabPane>
           </TabContent>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="3">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitUsers)}>
                 <FormGroup>
                   <Row>
                     <Col sm={2}>
                       <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.newpassword')}
+                        {t('user.password')}
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="password" name="password" onChange={handleChange} />
+                      <input
+                        type="password"
+                        name="password"
+                        onChange={handleChange}
+                        ref={register({
+                          pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/
+                        })}
+                        className="inputStyle"
+                      />
+                      {errors.password && t('errors.passworderror')}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -560,11 +577,18 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="password" name="passwordConfirm" onChange={handleChange} />
+                      <input
+                        type="password"
+                        name="passwordConfirm"
+                        onChange={handleChange}
+                        ref={register({ validate: value => value === formState.values.password })}
+                        className="inputStyle"
+                      />
+                      {errors.passwordConfirm && t('errors.passwordnotmatch')}
                     </Col>
                   </Row>
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={onSubmitUsers}>
+                <Button color="primary" type="submit" onClick={() => setStateButton('2')}>
                   {t('save')}
                 </Button>
               </Form>
