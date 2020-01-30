@@ -6,6 +6,7 @@ import Proptypes from 'prop-types';
 import { FormBuilderActions } from '../../store/actions';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import history from 'helpers/history';
 
 window.jQuery = $;
 window.$ = $;
@@ -18,21 +19,17 @@ const Proptype = {
   editForm: Proptypes.func,
   getFormId: Proptypes.func
 };
-let listform = null;
 
-function EditFormBuilder({ formDetail, editForm ,getFormId}) {
+function EditFormBuilder({ formDetail, editForm, getFormId }) {
   let { id } = useParams();
+
   useEffect(() => {
-    getFormId(id);
-  }, [getFormId, id]);
-  
-  useEffect(()=>{
     setFormState(formState => ({
       ...formState,
       values: formDetail
-    })
-  )},[formDetail])
-  
+    }));
+  }, [formDetail]);
+
   const fb = createRef();
   const { t } = useTranslation();
   const [formState, setFormState] = useState({
@@ -42,18 +39,23 @@ function EditFormBuilder({ formDetail, editForm ,getFormId}) {
 
   const [form, setForm] = useState(null);
 
-  const [setSubmit] = useState(true);
+  const [checkSubmit, setSubmit] = useState(true);
 
   const options = {
     onSave: (event, formData) => onSend(formData)
   };
-  if (formDetail.list) {
-    listform = JSON.parse(formDetail.list);
-  }
+
   useEffect(() => {
-    $(fb.current).formBuilder({ formData: listform, onSave: (event, formData) => onSend(formData) });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [!fb.current, !options]);
+    getFormId(id);
+
+    if (formState.values.list) {
+      $(fb.current).formBuilder({
+        formData: JSON.parse(formState.values.list),
+        onSave: (event, formData) => onSend(formData)
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+  }, [!formState.values.list, id]);
 
   const handleChange = event => {
     event.persist();
@@ -93,7 +95,11 @@ function EditFormBuilder({ formDetail, editForm ,getFormId}) {
         <Form onSubmit={onSubmit}>
           <FormGroup>
             <Label>{t('name')}</Label>
-            <Input name="name" onChange={handleChange} value={formState.values.name} />
+            <Input
+              name="name"
+              onChange={handleChange}
+              value={formState.values.name === undefined ? '' : formState.values.name}
+            />
           </FormGroup>
           <div className="check__box">
             <Label>{t('status')}</Label>
@@ -108,8 +114,13 @@ function EditFormBuilder({ formDetail, editForm ,getFormId}) {
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={checkSubmit}>
             {t('save')}
+          </Button>
+          <Button style={{marginLeft: 10}}  onClick={()=>{
+            history.push('/form-builder/list')
+          }} color="success" >
+            {t('Back')}
           </Button>
         </Form>
       </div>
@@ -121,7 +132,7 @@ EditFormBuilder.propTypes = Proptype;
 
 const mapStateToProps = state => {
   return {
-    formDetail: state.FormBuilderReducer.detail,
+    formDetail: state.FormBuilderReducer.detail
   };
 };
 

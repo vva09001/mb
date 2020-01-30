@@ -40,10 +40,10 @@ const FormTable = ({ data, getID, getDetail }) => {
                   <input type="checkbox" onClick={() => getID(values.id)} />
                 </th>
                 <td>
-                  <Link to={`/form-builder/edit/${values.id}`}>{values.name}</Link>
+                  <Link  to={`/form-builder/edit/${values.id}`} onClick={() => getDetail(values)} >{values.name}</Link>
                 </td>
                 <td>
-                  <Link to={`/form-builder/edit/${values.id}`}>
+                  <Link  to={`/form-builder/edit/${values.id}`}>
                     <span className={'values.status === 0' ? 'green' : 'dot'} />
                   </Link>
                 </td>

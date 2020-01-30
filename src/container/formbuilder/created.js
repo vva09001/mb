@@ -71,7 +71,6 @@ function FormBuilder({ created }) {
     renderedForm.formRender(formRenderOpts);
 
     renderhtml = renderedForm.html();
-
   });
 
   const onSubmit = event => {
@@ -79,7 +78,7 @@ function FormBuilder({ created }) {
     const body = {
       name: formState.values.name,
       status: formState.values.status,
-      list: formDataBuilDer,
+      list: formDataBuilDer === null ? '' : formDataBuilDer,
       embedded: renderhtml
     };
     console.log(body);
