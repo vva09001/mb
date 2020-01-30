@@ -36,7 +36,7 @@ const FormBuilder = (state = initialState, action) => {
     case Actions.GET_FORM_DETAIL:
       return {
         ...state,
-        detail: action.detail
+        detail: action.data
       };
     case Actions.GET_FORM_BY_ID_RESPONSE:
       return {
