@@ -40,9 +40,9 @@ const Actions = {
   }),
 
   GET_FORM_DETAIL: 'GET_FORM_DETAIL',
-  getFormDetailAction: detail => ({
+  getFormDetailAction: data => ({
     type: Actions.GET_FORM_DETAIL,
-    detail
+    data
   })
 };
 

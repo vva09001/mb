@@ -178,6 +178,10 @@
     "GooglePlus": "Google Plus",
     "Youtube": "Youtube"
   },
+  "errors": {
+    "passworderror": "Password required to be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+    "passwordnotmatch": "Password does not match"
+  },
   "slider": {
     "createslider": "Create Slider",
     "inforslider": "Slider Information",
