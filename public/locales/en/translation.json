@@ -208,6 +208,7 @@
   },
   "user": {
     "aaccount": "Account",
+    "firstname": "First name",
     "lastname": "Last Name",
     "lastlogin": "Last Login",
     "nickname": "Nickname",

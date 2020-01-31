@@ -167,6 +167,7 @@
   },
   "user": {
     "aaccount": "Tên đăng nhập",
+    "firstname": "Tên",
     "lastname": "Họ",
     "lastlogin": "Đăng nhập lần cuối",
     "username": "Tên đăng nhập",

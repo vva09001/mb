@@ -329,10 +329,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                         ref={register({
                           pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/
                         })}
-                        className="inputStyle"
+                        className={errors.password === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
-                      {errors.password &&
-                        t('errors.passworderror')}
+                      <span>{t('errors.passworderror')}</span>
                     </Col>
                   </Row>
                 </FormGroup>
@@ -349,7 +348,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                         name="passwordConfirm"
                         onChange={handleChange}
                         ref={register({ validate: value => value === formState.values.password })}
-                        className="inputStyle"
+                        className={errors.passwordConfirm === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
                       {errors.passwordConfirm && t('errors.passwordnotmatch')}
                     </Col>
@@ -365,7 +364,11 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form className="p-3" style={{ background: '#fff', justifyContent: 'center' }} onSubmit={handleSubmit(onSubmitUser)}>
+                  <Form
+                    className="p-3"
+                    style={{ background: '#fff', justifyContent: 'center' }}
+                    onSubmit={handleSubmit(onSubmitUser)}
+                  >
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>

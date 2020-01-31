@@ -21,3 +21,26 @@
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.25);
 }
+.inputStyleError {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.625rem + 2px);
+    padding: 0.3125rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #344050;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d8e2ef;
+    border-radius: 0.25rem;
+    -webkit-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.inputStyleError:focus {
+    color: #344050;
+    background-color: #fff;
+    border-color: red;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.25);
+}

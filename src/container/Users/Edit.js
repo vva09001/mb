@@ -197,7 +197,6 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
     dataRolesToEdit = event;
   };
   const onSubmitUsers = event => {
-    console.log(stateButton);
     if (stateButton === '1') event.preventDefault();
     formState.values.roles.splice(0, formState.values.roles.length);
     if (dataRolesToEdit === null) formState.values.roles = [];
@@ -563,9 +562,9 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                         ref={register({
                           pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/
                         })}
-                        className="inputStyle"
+                        className={errors.password === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
-                      {errors.password && t('errors.passworderror')}
+                      <span>{t('errors.passworderror')}</span>
                     </Col>
                   </Row>
                 </FormGroup>
@@ -582,7 +581,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                         name="passwordConfirm"
                         onChange={handleChange}
                         ref={register({ validate: value => value === formState.values.password })}
-                        className="inputStyle"
+                        className={errors.passwordConfirm === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
                       {errors.passwordConfirm && t('errors.passwordnotmatch')}
                     </Col>
