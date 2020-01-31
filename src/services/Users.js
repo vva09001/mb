@@ -64,8 +64,9 @@ const editUsersService = data => {
 
 const deleteUsersService = id => {
   return request({
-    url: `users/${id}`,
-    method: 'DELETE'
+    url: `users/deleteIds`,
+    method: 'DELETE',
+    data: id
   })
     .then(res => {
       return res;

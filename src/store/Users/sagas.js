@@ -8,6 +8,7 @@ import {
 } from '../../services/Users';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
+import history from '../../helpers/history';
 
 function* getUsersSaga() {
   yield takeLatest(actions.GET_USERS_REQUEST, function*(params) {
@@ -85,7 +86,8 @@ function* deleteUsersSaga() {
       const res = yield deleteUsersService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_USERS_RESPONSE, data: id });
+        history.pushState('users/list');
+        yield put({ type: actions.GET_USERS_REQUEST, data: res.data });
       } else {
         yield Error('Xóa lỗi');
       }

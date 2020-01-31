@@ -28,13 +28,13 @@ const Users = (state = initialState, action) => {
           return values;
         })
       };
-    case Actions.DELETE_USERS_RESPONSE:
-      return {
-        ...state,
-        data: filter(state.data, values => {
-          return values.id !== action.data;
-        })
-      };
+    // case Actions.DELETE_USERS_RESPONSE:
+    //   return {
+    //     ...state,
+    //     data: filter(state.data, values => {
+    //       return values.id !== action.data;
+    //     })
+    //   };
     case Actions.GET_DETAIL_USERS:
       return {
         ...state,

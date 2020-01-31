@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import map from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -17,22 +19,33 @@ const PropsType = {
 
 function ListUsers({ data, getUsers, deleteUsers, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [usersID, setUsersID] = useState(null);
+  // const [usersID, setUsersID] = useState(null);
 
   useEffect(() => {
     getUsers();
   }, [getUsers]);
   const { t } = useTranslation();
+  const UserIds = map(data, values => {
+    return values.id;
+  });
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(UserIds);
 
   const openComfirm = () => {
-    if (usersID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (usersID !== null) {
-      deleteUsers(usersID);
+    if (selectedItems !== null) {
+      deleteUsers(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -57,7 +70,15 @@ function ListUsers({ data, getUsers, deleteUsers, getDetail }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <UserTable data={data} getID={id => setUsersID(id)} getDetail={onGetDetail} />
+          <UserTable
+            data={data}
+            getDetail={onGetDetail}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

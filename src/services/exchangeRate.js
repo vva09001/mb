@@ -41,11 +41,11 @@ const editExchangeRateService = (id,data) => {
     });
 };
 
-const deleteExchangeRateService = id => {
+const deleteExchangeRateService = ids => {
   return request({
     url: '/exchange_rate',
     method: 'DELETE',
-    data: id
+    data: ids
   })
     .then(res => {
       return res;
