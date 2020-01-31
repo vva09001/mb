@@ -167,6 +167,7 @@
   },
   "user": {
     "aaccount": "Tên đăng nhập",
+    "firstname": "Tên",
     "lastname": "Họ",
     "lastlogin": "Đăng nhập lần cuối",
     "username": "Tên đăng nhập",
@@ -203,6 +204,10 @@
     "Pinterest": "Pinterest",
     "GooglePlus": "Google Plus",
     "Youtube": "Youtube"
+  },
+  "errors": {
+    "passworderror": "Mật khẩu buộc phải có tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt",
+    "passwordnotmatch": "Mật khẩu không trùng khớp"
   },
   "slider": {
     "createslider": "Tạo Slider",

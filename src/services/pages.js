@@ -13,6 +13,19 @@ const getPagesService = () => {
     });
 };
 
+const getPageByIDService = id => {
+  return request({
+    url: `/pages/${id}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 const addPagesService = data => {
   return request({
     url: '/pages',
@@ -108,6 +121,7 @@ const getHomepageIDService = () => {
 
 export {
   getPagesService,
+  getPageByIDService,
   addPagesService,
   editPagesService,
   deletePagesService,
