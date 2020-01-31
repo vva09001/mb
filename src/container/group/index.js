@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { GroupActions } from '../../store/actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -19,19 +21,32 @@ function Group({ data, getGroup, deleteGroup }) {
   const [groupID, setGroupID] = useState(null);
   const { t } = useTranslation();
 
+  const groupIds = map(data, values => {
+    return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(groupIds);
+
   useEffect(() => {
     getGroup();
   }, [getGroup]);
 
   const openComfirm = () => {
-    if (groupID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (groupID !== null) {
-      deleteGroup(groupID);
+    if (selectedItems !== null) {
+      deleteGroup(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -50,7 +65,15 @@ function Group({ data, getGroup, deleteGroup }) {
         </Button>
       </Row>
       <Row style={{ background: '#fff' }} className="p-3">
-        <GroupTable data={data} getID={id => setGroupID(id)} />
+        <GroupTable
+          data={data}
+          getID={id => setGroupID(id)}
+          isSelectedItem={isSelectedItem}
+          isAllSelected={isAllSelected}
+          toggleSelectedItem={toggleSelectedItem}
+          toggleIsAllSelected={toggleIsAllSelected}
+          isIndeterminate={isIndeterminate}
+        />
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>
