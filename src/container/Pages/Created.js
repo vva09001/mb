@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Collapse } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, ListGroup, ListGroupItem } from 'reactstrap';
+import { map } from 'lodash';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { PageActions } from '../../store/actions';
+import { PageActions, TagActions, GroupActions } from '../../store/actions';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Error, Success } from '../../helpers/notify';
-import history from '../../helpers/history';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  pagesCreate: PropTypes.func
+  listTags: PropTypes.array,
+  listGroup: PropTypes.array,
+  getListTags: PropTypes.func,
+  getGroup: PropTypes.func,
+  pageCreate: PropTypes.func
 };
 
-function PagesCreate({ pagesCreate }) {
-  const [formState, setFormState] = useState({
-    values: {},
-    touched: {}
-  });
+function PageCreate({ listTags, listGroup, getListTags, getGroup, pageCreate }) {
+  const [formState, setFormState] = useState({ values: {} });
   const [activeTab, setActiveTab] = useState('1');
+  const [opened, setOpened] = useState(null);
+
+  const { id } = useParams();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    getListTags();
+    getGroup();
+  }, [getListTags, getGroup]);
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
-  const { t } = useTranslation();
 
   const handleChange = event => {
     event.persist();
@@ -35,117 +43,224 @@ function PagesCreate({ pagesCreate }) {
         ...formState.values,
         [event.target.name]:
           event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
       }
     }));
   };
 
-  const onSuccess = () => {
-    Success('Tạo thành công');
-    history.goBack();
+  const toggleOpened = (e, index) => {
+    e.preventDefault();
+    return setOpened(opened === index ? null : index);
   };
 
-  const onFail = () => {
-    Error('Tạo thất bại');
-  };
+  const setListData = (data, index) => {};
 
-  const createdPages = event => {
+  const onSubmit = event => {
     event.preventDefault();
-    pagesCreate(formState.values, onSuccess, onFail);
+    pageCreate({ ...formState.values, parent_id: id, pageBlocks: [] });
   };
+
   return (
-    <React.Fragment>
-      <Nav tabs>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '1' })}
-            onClick={() => {
-              toggle('1');
-            }}
-          >
-            {t('general')}
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => {
-              toggle('2');
-            }}
-          >
-            {t('seo')}
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdPages}>
-            <h4>{t('create')}</h4>
-            <FormGroup>
-              <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" id="exampleName" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input type="checkbox" name="status" value={0} onChange={handleChange} /> Enable the page
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input type="checkbox" name="has_sidebar" onChange={handleChange} /> Enable sidebar
-              </Label>
-            </FormGroup>
-            <FormGroup>
-              <Label for="template">Select</Label>
-              <Input type="select" name="template" id="template" onChange={handleChange}>
-                <option>Default</option>
-                <option>Full</option>
-              </Input>
-            </FormGroup>
-            <Button color="primary" type="submit">
-              {t('save')}
-            </Button>
-          </Form>
-        </TabPane>
-        <TabPane tabId="2">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdPages}>
-            <h4>{t('seo')}</h4>
-            <FormGroup>
-              <Label for="exampleName">Slug</Label>
-              <Input type="text" name="slug" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleName">Meta Title</Label>
-              <Input type="text" name="meta_title" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label>Meta keywords</Label>
-              <Input type="text" name="meta_keywords" onChange={handleChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="exampleText">Meta Description</Label>
-              <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
-            </FormGroup>
-            <Button color="primary" type="submit">
-              {t('save')}
-            </Button>
-          </Form>
-        </TabPane>
-      </TabContent>
-    </React.Fragment>
+    <Row style={{ background: '#fff', padding: '15px 0' }}>
+      <Col lg={3} md={4}>
+        <h4 className="text-center">{t('block_page.title')}</h4>
+        <div className="listBlock">
+          {map(listTags, (values, index) => (
+            <React.Fragment key={index}>
+              <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
+              <Collapse isOpen={opened === index}>
+                {map(values.blocks, (items, index) => {
+                  return (
+                    <ListGroup key={index}>
+                      <ListGroupItem
+                        style={{ backgroundColor: '#f5f5f5' }}
+                        onClick={() => setListData(items, items.blockValues[0].type_id, index)}
+                      >
+                        {items.name}
+                      </ListGroupItem>
+                    </ListGroup>
+                  );
+                })}
+              </Collapse>
+            </React.Fragment>
+          ))}
+        </div>
+      </Col>
+      <Col lg={9} md={8}>
+        <Nav tabs>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: activeTab === '1' })}
+              onClick={() => {
+                toggle('1');
+              }}
+            >
+              {t('general')}
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: activeTab === '2' })}
+              onClick={() => {
+                toggle('2');
+              }}
+            >
+              {t('seo')}
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmit}>
+          <TabContent activeTab={activeTab}>
+            <TabPane tabId="1">
+              <FormGroup>
+                <Label for="exampleName">{t('name')}</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  required
+                  value={formState.values.name === undefined ? '' : formState.values.name}
+                  onChange={handleChange}
+                />
+              </FormGroup>
+              <div className="check__box">
+                <Label>{t('active')}</Label>
+                <div>
+                  <Input
+                    type="checkbox"
+                    name="is_active"
+                    required
+                    checked={
+                      formState.values.is_active === 0 || formState.values.is_active === undefined ? false : true
+                    }
+                    value={formState.values.is_active === 0 ? false : formState.values.is_active}
+                    onChange={handleChange}
+                  />
+                  <span>{t('page.active')}</span>
+                </div>
+              </div>
+              <div className="check__box">
+                <Label>{t('sidebar')}</Label>
+                <div>
+                  <Input
+                    type="checkbox"
+                    name="has_sidebar"
+                    required
+                    checked={
+                      formState.values.has_sidebar === 0 || formState.values.has_sidebar === undefined ? false : true
+                    }
+                    value={formState.values.has_sidebar === 0 ? false : formState.values.has_sidebar}
+                    onChange={handleChange}
+                  />
+                  <span>{t('page.sidebar')}</span>
+                </div>
+              </div>
+              <FormGroup>
+                <Label for="template">{t('page.template')}</Label>
+                <Input
+                  type="select"
+                  name="template"
+                  required
+                  value={formState.values.template === undefined ? 1 : formState.values.template}
+                  onChange={handleChange}
+                >
+                  <option value={1}>{t('select')}</option>
+                  <option value={2}>{t('page.default')}</option>
+                  <option value={3}>{t('page.full')}</option>
+                </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="teams">{t('page.group')}</Label>
+                <Input
+                  type="select"
+                  name="teams"
+                  required
+                  value={formState.values.teams === undefined ? 0 : formState.values.teams}
+                  onChange={handleChange}
+                >
+                  <option value={0}>{t('select')}</option>
+                  {map(listGroup, (value, index) => (
+                    <option key={index} value={value.idTeam}>
+                      {value.name}
+                    </option>
+                  ))}
+                </Input>
+              </FormGroup>
+            </TabPane>
+            <TabPane tabId="2">
+              <h4>{t('seo')}</h4>
+              <FormGroup>
+                {(() => {
+                  if (formState.values.id) {
+                    return (
+                      <div>
+                        <Label for="exampleSlug">{t('slug')}</Label>
+                        <Input
+                          type="text"
+                          name="slug"
+                          value={formState.values.slug === undefined ? '' : formState.values.slug}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    );
+                  } else {
+                    return null;
+                  }
+                })()}
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleName">{t('meta.title')}</Label>
+                <Input
+                  type="text"
+                  name="meta_title"
+                  value={formState.values.meta_title === undefined ? '' : formState.values.meta_title}
+                  onChange={handleChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>{t('meta.keywords')}</Label>
+                <Input
+                  type="text"
+                  name="meta_keyword"
+                  value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
+                  onChange={handleChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleText">{t('meta.description')}</Label>
+                <Input
+                  type="textarea"
+                  name="meta_description"
+                  value={formState.values.meta_description === undefined ? '' : formState.values.meta_description}
+                  rows="5"
+                  onChange={handleChange}
+                />
+              </FormGroup>
+            </TabPane>
+          </TabContent>
+          <Button color="primary" type="submit">
+            {t('save')}
+          </Button>
+        </Form>
+      </Col>
+    </Row>
   );
 }
 
-PagesCreate.propTypes = PropsType;
+PageCreate.propTypes = PropsType;
+
+const mapStateToProps = state => {
+  return {
+    listTags: state.TagReducer.listTags,
+    listGroup: state.GroupReducer.listGroupByUser
+  };
+};
 
 const mapDispatchToProps = {
-  pagesCreate: PageActions.AddPages
+  getListTags: TagActions.getTagAction,
+  pageCreate: PageActions.AddPages,
+  getGroup: GroupActions.getGroupByUserAction
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(PagesCreate);
+)(PageCreate);

@@ -63,6 +63,11 @@ const Pages = (state = initialState, action) => {
         ...state,
         homeID: action.data
       };
+    case Actions.GET_PAGE_BY_ID_RESPONSE:
+      return {
+        ...state,
+        detail: action.data
+      };
     default:
       return state;
   }
