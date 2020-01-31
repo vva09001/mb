@@ -40,8 +40,8 @@ const CardSummary = ({ linkText, to, color, loadingValue, acceptValue }) => {
             <FontAwesomeIcon icon={faBars} />
           </div>
           <div className="cardItems">
-            <p className="m-0">{`${t('loading')} : ${loadingValue}`}</p>
-            <p className="m-0">{`${t('accept')} :  ${acceptValue}`}</p>
+            <p className="m-0">{`${t('acceptPage')} : ${loadingValue}`}</p>
+            <p className="m-0">{`${t('acceptNew')} :  ${acceptValue}`}</p>
           </div>
         </div>
         <Link className="font-weight-semi-bold fs--1 text-nowrap" to={to}>

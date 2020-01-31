@@ -6,14 +6,29 @@ import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { CustomInput } from 'reactstrap';
 
 const PropsType = {
   data: PropTypes.array,
   getID: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  isSelectedItem: PropTypes.func,
+  isAllSelected: PropTypes.bool,
+  toggleSelectedItem: PropTypes.func,
+  toggleIsAllSelected: PropTypes.func,
+  isIndeterminate: PropTypes.bool
 };
 
-const NewTable = ({ data, getID, getDetail }) => {
+const NewTable = ({
+  data,
+  getID,
+  getDetail,
+  isSelectedItem,
+  isAllSelected,
+  toggleSelectedItem,
+  toggleIsAllSelected,
+  isIndeterminate
+}) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -24,7 +39,13 @@ const NewTable = ({ data, getID, getDetail }) => {
         <thead>
           <tr>
             <th>
-              <input type="checkbox" />
+              <CustomInput
+                id="checkbox-bulk"
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={() => toggleIsAllSelected()}
+                innerRef={input => input && (input.indeterminate = isIndeterminate)}
+              />
             </th>
             <th>{t('name')}</th>
             <th>{t('status')}</th>
@@ -38,7 +59,12 @@ const NewTable = ({ data, getID, getDetail }) => {
             return (
               <tr key={values.newsId}>
                 <th>
-                  <input type="checkbox" onClick={() => getID(values.newsId)} />
+                  <CustomInput
+                    id={'checkbox-' + values.newsId}
+                    type="checkbox"
+                    checked={isSelectedItem(values.newsId)}
+                    onChange={() => toggleSelectedItem(values.newsId)}
+                  />
                 </th>
                 <td>
                   <Link to={`/news/edit/${values.newsId}`}>{values.title}</Link>

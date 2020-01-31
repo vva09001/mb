@@ -26,16 +26,16 @@ const Roles = (state = initialState, action) => {
         ...state,
         data: [...state.data, action.data]
       };
-    case Actions.EDIT_ROLES_REQUEST:
-      return {
-        ...state,
-        data: map(state.data, values => {
-          if (values.id === action.data.id) {
-            values = action.data;
-          }
-          return values;
-        })
-      };
+    // case Actions.EDIT_ROLES_REQUEST:
+    //   return {
+    //     ...state,
+    //     data: map(state.data, values => {
+    //       if (values.id === action.data.id) {
+    //         values = action.data;
+    //       }
+    //       return values;
+    //     })
+    //   };
     case Actions.DELETE_ROLES_RESPONSE:
       return {
         ...state,

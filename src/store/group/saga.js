@@ -98,7 +98,7 @@ function* deleteGroupSaga() {
       const res = yield deleteGroupService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_GROUP_RESPONSE, data: id });
+        yield put({ type: actions.GET_GROUP_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

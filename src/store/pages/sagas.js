@@ -7,8 +7,10 @@ import {
   updatePositionPagesService,
   apprPagesService,
   deletePageBlockService,
-  getHomepageIDService
+  getHomepageIDService,
+  getPageByIDService
 } from '../../services/pages';
+import history from 'helpers/history';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
 
@@ -78,7 +80,7 @@ function* addPagesSaga() {
       const res = yield addPagesService(data);
       if (res.status === 200) {
         Success('Thêm thành công');
-        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
+        yield history.push('/pages/list');
       } else {
         yield Error(res.message);
       }
@@ -95,7 +97,8 @@ function* editPagesSaga() {
       const res = yield editPagesService(data);
       if (res.status === 200) {
         yield Success('Sửa thành công');
-        yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
+        yield history.push('/pages/list');
+        // yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
       }
@@ -143,7 +146,6 @@ function* updatePositionPagesSaga() {
   yield takeLatest(actions.UPDATE_POSITION_PAGE, function*(params) {
     const { idPage, idParent, positions } = params;
     try {
-      // console.log(idPage, idParent, positions);
       const res = yield updatePositionPagesService(idPage, idParent, positions);
 
       if (res.status === 200) {
@@ -173,6 +175,22 @@ function* getHomepageIDSaga() {
   });
 }
 
+function* getPageByIDSaga() {
+  yield takeLatest(actions.GET_PAGE_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getPageByIDService(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_PAGE_BY_ID_RESPONSE, data: { ...res.data, teams: res.data.team.teamId } });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getPagesSaga),
@@ -183,6 +201,7 @@ export default function* rootSaga() {
     fork(getAllPagesSaga),
     fork(apprPagesSaga),
     fork(deletePageBlockSaga),
-    fork(getHomepageIDSaga)
+    fork(getHomepageIDSaga),
+    fork(getPageByIDSaga)
   ]);
 }

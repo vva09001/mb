@@ -79,6 +79,14 @@ const Actions = {
 
   getHomepageIDAction: () => ({
     type: Actions.GET_ID_HOMEPAGE_REQUEST
+  }),
+
+  GET_PAGE_BY_ID_REQUEST: 'GET_PAGE_BY_ID_REQUEST',
+  GET_PAGE_BY_ID_RESPONSE: 'GET_PAGE_BY_ID_RESPONSE',
+
+  getPageByID: id => ({
+    type: Actions.GET_PAGE_BY_ID_REQUEST,
+    id
   })
 };
 

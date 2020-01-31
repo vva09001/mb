@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from '../../components/common/PopupComfirm';
 import history from '../../helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -19,6 +21,19 @@ function ListMail({ data, getMails, deleteMails, getDetailMails }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mailsID, setmailsID] = useState(null);
 
+  const mailIds = map(data, values => {
+    return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(mailIds);
+
   useEffect(() => {
     getMails();
   }, [getMails]);
@@ -26,7 +41,7 @@ function ListMail({ data, getMails, deleteMails, getDetailMails }) {
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (mailsID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
@@ -37,8 +52,8 @@ function ListMail({ data, getMails, deleteMails, getDetailMails }) {
   };
 
   const onDelete = () => {
-    if (mailsID !== null) {
-      deleteMails(mailsID);
+    if (selectedItems !== null) {
+      deleteMails(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -58,7 +73,16 @@ function ListMail({ data, getMails, deleteMails, getDetailMails }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <MailTable data={data} getID={id => setmailsID(id)} getDetail={onGetDetail} />
+          <MailTable
+            data={data}
+            getID={id => setmailsID(id)}
+            getDetail={onGetDetail}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

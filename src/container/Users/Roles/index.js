@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -17,22 +19,33 @@ const PropsType = {
 
 function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [usersID, setRolesID] = useState(null);
+  // const [usersID, setRolesID] = useState(null);
+  const roleIds = map(data, values => {
+    return values.id;
+  });
 
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(roleIds);
   useEffect(() => {
     getRoles();
   }, [getRoles]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (usersID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (usersID !== null) {
-      deleteRoles(usersID);
+    if (selectedItems !== null) {
+      deleteRoles(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -57,7 +70,15 @@ function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <RoleTable data={data} getID={id => setRolesID(id)} getDetail={onGetDetail} />
+          <RoleTable
+            data={data}
+            getDetail={onGetDetail}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

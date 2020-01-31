@@ -66,10 +66,11 @@ const editGroupService = (id, data) => {
       return error.response.data;
     });
 };
-const deleteGroupService = id => {
+const deleteGroupService = ids => {
   return request({
-    url: `/teams/${id}`,
-    method: 'DELETE'
+    url: `/teams/deleteIds`,
+    method: 'DELETE',
+    data: ids
   })
     .then(res => {
       return res;
