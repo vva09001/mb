@@ -131,7 +131,7 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
                   onChange={handleChange}
                 />
               </FormGroup>
-              <div className="check__box">
+              {/* <div className="check__box">
                 <Label>{t('active')}</Label>
                 <div>
                   <Input
@@ -146,7 +146,7 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
                   />
                   <span>{t('page.active')}</span>
                 </div>
-              </div>
+              </div> */}
               <div className="check__box">
                 <Label>{t('sidebar')}</Label>
                 <div>

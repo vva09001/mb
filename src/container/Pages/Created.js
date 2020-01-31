@@ -56,7 +56,7 @@ function PageCreate({ listTags, listGroup, getListTags, getGroup, pageCreate }) 
 
   const onSubmit = event => {
     event.preventDefault();
-    pageCreate({ ...formState.values, parent_id: id, pageBlocks: [] });
+    pageCreate({ ...formState.values, parent_id: id, is_active: 0, pageBlocks: [] });
   };
 
   return (
@@ -121,7 +121,7 @@ function PageCreate({ listTags, listGroup, getListTags, getGroup, pageCreate }) 
                   onChange={handleChange}
                 />
               </FormGroup>
-              <div className="check__box">
+              {/* <div className="check__box">
                 <Label>{t('active')}</Label>
                 <div>
                   <Input
@@ -136,7 +136,7 @@ function PageCreate({ listTags, listGroup, getListTags, getGroup, pageCreate }) 
                   />
                   <span>{t('page.active')}</span>
                 </div>
-              </div>
+              </div> */}
               <div className="check__box">
                 <Label>{t('sidebar')}</Label>
                 <div>
