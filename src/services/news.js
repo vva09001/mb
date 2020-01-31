@@ -66,10 +66,11 @@ const aprrNews = data => {
     });
 };
 
-const deleteNews = id => {
+const deleteNews = ids => {
   return request({
-    url: `/news/${id}`,
-    method: 'DELETE'
+    url: `/news/deleteIds`,
+    method: 'DELETE',
+    data: ids
   })
     .then(res => {
       return res;

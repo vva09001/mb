@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from '../../components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -19,20 +21,34 @@ const PropsType = {
 function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
+
+  const NewIds = map(data, values => {
+    return values.newsId;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(NewIds);
+
   useEffect(() => {
     getNews();
   }, [getNews]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (newsID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (newsID !== null) {
-      deleteNews(newsID);
+    if (selectedItems !== null) {
+      deleteNews(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -56,7 +72,16 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <NewTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <NewTable
+            data={data}
+            getID={id => setNewsID(id)}
+            getDetail={onGetDetail}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

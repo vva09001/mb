@@ -95,7 +95,7 @@ function* deleteNewsSaga() {
       const res = yield deleteNews(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_NEWS_RESPONSE, data: id });
+        yield put({ type: actions.GET_NEWS_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

@@ -11,6 +11,10 @@ const Dashboard = () => {
         <CardSummary loadingValue={0} acceptValue={0} color="info" linkText={t('customer.enterprise')} />
         <CardSummary loadingValue={0} acceptValue={0} color="success" linkText={t('customer.institutions')} />
         <CardSummary loadingValue={0} acceptValue={0} color="info" linkText={t('customer.premium')} />
+        <CardSummary loadingValue={0} acceptValue={0} color="warning" linkText={t('customer.personal')} />
+        <CardSummary loadingValue={0} acceptValue={0} color="info" linkText={t('customer.enterprise')} />
+        <CardSummary loadingValue={0} acceptValue={0} color="success" linkText={t('customer.institutions')} />
+        <CardSummary loadingValue={0} acceptValue={0} color="info" linkText={t('customer.premium')} />
       </div>
     </Fragment>
   );
