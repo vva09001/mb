@@ -248,7 +248,8 @@
     "create": "Create new",
     "down": "Download the file",
     "processingunit": "Processing unit",
-    "lastupdateddate": "Last updated date"
+    "lastupdateddate": "Last updated date",
+    "districts":"Districts"
   },
   "roleinit": {
     "getallroleof": "Get all role current of",
