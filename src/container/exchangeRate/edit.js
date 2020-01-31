@@ -8,6 +8,7 @@ import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
 import XLSX from 'xlsx';
+import Download from '../../components/exchangeRate/downloadExcel';
 
 const PropsType = {
   detaicurrency: PropTypes.array,
@@ -95,6 +96,11 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
               >
                 {t('import Exel')}
               </Button>
+            </div>
+          </Col>
+          <Col>
+            <div style={{ padding: 10 }}>
+              <Download />
             </div>
           </Col>
         </Row>

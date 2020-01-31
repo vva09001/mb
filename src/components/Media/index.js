@@ -1,7 +1,5 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-import Img from 'react-image';
 import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 const PropsTypes = {
@@ -15,7 +13,9 @@ function MediaDetail({ detail }) {
         <h4>{detail.name}</h4>
         <Row>
           <Col lg={9} md={8}>
-            <Img src={detail.url} />
+            <div>
+              <img style={{ width: '100%' }} src={detail.url} />
+            </div>
           </Col>
         </Row>
       </div>

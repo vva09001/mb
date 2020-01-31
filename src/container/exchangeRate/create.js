@@ -8,6 +8,7 @@ import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
 import XLSX from 'xlsx';
+import Download from '../../components/exchangeRate/downloadExcel';
 
 const PropsType = {
   data: PropTypes.array,
@@ -45,7 +46,6 @@ function ExChangeRateCreate({ creatExchangeRate }) {
       }
     });
     setFormState(newValues);
-    console.log(formState);
   };
 
   const handleChangeFile = e => {
@@ -106,6 +106,11 @@ function ExChangeRateCreate({ creatExchangeRate }) {
               >
                 {t('import Exel')}
               </Button>
+            </div>
+          </Col>
+          <Col>
+            <div style={{ padding: 10 }}>
+              <Download />
             </div>
           </Col>
         </Row>
@@ -183,7 +188,13 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           <Button color={'success'} onClick={onSubmit}>
             {t('save')}
           </Button>
-          <input type="file" onChange={handleChangeFile} style={{ padding: '10px', display: 'none' }} id="exel" />
+          <input
+            type="file"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            onChange={handleChangeFile}
+            style={{ padding: '10px', display: 'none' }}
+            id="exel"
+          />
         </div>
       </div>
     </React.Fragment>
