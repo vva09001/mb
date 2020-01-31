@@ -7,6 +7,8 @@ import Table from '../../components/formbuilder/Table';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const Proptype = {
   listForms: PropTypes.array,
@@ -16,25 +18,38 @@ const Proptype = {
 };
 
 function Formbuilder({ listForms, getListForm, getFormDetail, deleteForm }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formID, setformID] = useState(null);
+  const [isOpen, setIsOpen] = useState(false); 
+
+  const formBuilderIds = map(listForms, values => {
+    return values.id;
+  });
+
   useEffect(() => {
     getListForm();
   }, [getListForm]);
 
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(formBuilderIds);
+
   const { t } = useTranslation();
   const onGetDetail = detail => {
     getFormDetail(detail);
-    history.push('/form-builder/edit');   
+    history.push('/form-builder/edit');
   };
   const openComfirm = () => {
-    if (formID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
   const onDelete = () => {
-    if (formID !== null) {
-      deleteForm(formID);
+    if (selectedItems !== null) {
+      deleteForm(selectedItems);
       setIsOpen(!isOpen);
     }
   };
@@ -53,7 +68,15 @@ function Formbuilder({ listForms, getListForm, getFormDetail, deleteForm }) {
         </Button>
       </Row>
       <Row className="p-3 backgroud__white">
-        <Table data={listForms} getID={id => setformID(id)} getDetail={onGetDetail} />
+        <Table
+          data={listForms}          
+          getDetail={onGetDetail}
+          isSelectedItem={isSelectedItem}
+          isAllSelected={isAllSelected}
+          toggleSelectedItem={toggleSelectedItem}
+          toggleIsAllSelected={toggleIsAllSelected}
+          isIndeterminate={isIndeterminate}
+        />
       </Row>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
     </React.Fragment>

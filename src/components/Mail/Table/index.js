@@ -6,14 +6,29 @@ import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { CustomInput } from 'reactstrap';
 
 const PropsType = {
   data: PropTypes.array,
   getID: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  isSelectedItem: PropTypes.func,
+  isAllSelected: PropTypes.bool,
+  toggleSelectedItem: PropTypes.func,
+  toggleIsAllSelected: PropTypes.func,
+  isIndeterminate: PropTypes.bool
 };
 
-const MailTable = ({ data, getID, getDetail }) => {
+const MailTable = ({
+  data,
+  getID,
+  getDetail,
+  isSelectedItem,
+  isAllSelected,
+  toggleSelectedItem,
+  toggleIsAllSelected,
+  isIndeterminate
+}) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const list = slice(data, page * 20, page * 20 + 20);
@@ -23,7 +38,13 @@ const MailTable = ({ data, getID, getDetail }) => {
         <thead>
           <tr>
             <th>
-              <input type="checkbox" />
+              <CustomInput
+                id="checkbox-bulk"
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={() => toggleIsAllSelected()}
+                innerRef={input => input && (input.indeterminate = isIndeterminate)}
+              />
             </th>
             <th>{t('name')}</th>
             <th>{t('status')}</th>
@@ -34,8 +55,13 @@ const MailTable = ({ data, getID, getDetail }) => {
           {map(list, (values, index) => {
             return (
               <tr key={values.id}>
-                <th>
-                  <input type="checkbox" onClick={() => getID(values.id)} />
+                   <th>
+                  <CustomInput
+                    id={'checkbox-' + values.id}
+                    type="checkbox"
+                    checked={isSelectedItem(values.id)}
+                    onChange={() => toggleSelectedItem(values.id)}
+                  />
                 </th>
                 <td>
                   <Link to={`/emails/edit/${values.id}`}>{values.name}</Link>

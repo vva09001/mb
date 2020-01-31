@@ -42,8 +42,8 @@ function* addMailsSaga() {
       const res = yield addMails(data);
       if (res.status === 200) {
         Success('Thêm mới thành công');
-        yield put({ type: actions.ADD_MAILS_RESPONSE, data: res.data });
-        yield history.push('/emails/list');
+        yield put({ type: actions.GET_MAILS_REQUEST, data: res.data });  
+        yield history.push('/emails/list'); 
       } else {
         yield Error(res.message);
       }
@@ -77,7 +77,7 @@ function* deleteMailsSaga() {
       const res = yield deleteMails(id);
       if (res.status === 200) {
         Success('Xóa thành công');
-        yield put({ type: actions.DELETE_MAILS_RESPONSE, data: id });
+        yield put({ type: actions.GET_MAILS_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

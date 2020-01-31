@@ -56,8 +56,9 @@ const editRolesService = data => {
 
 const deleteRolesService = id => {
   return request({
-    url: `/roles/${id}`,
-    method: 'DELETE'
+    url: '/roles',
+    method: 'DELETE',
+    data: id
   })
     .then(res => {
       return res;

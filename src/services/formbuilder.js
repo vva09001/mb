@@ -40,10 +40,11 @@ const editFormbuilderService = (id, data) => {
       return error.response.data;
     });
 };
-const deleteFormbuilderService = id => {
+const deleteFormbuilderService = ids => {
   return request({
-    url: `/forms/${id}`,
-    method: 'DELETE'
+    url: `/forms/deleteIds`,
+    method: 'DELETE',
+    data: ids
   })
     .then(res => {
       return res;

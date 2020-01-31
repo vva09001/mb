@@ -53,11 +53,12 @@ const editMails = data => {
     });
 };
 
-const deleteMails = async id => {
+const deleteMails = async ids => {
   try {
     const res = await request({
-      url: `/email/${id}`,
-      method: 'DELETE'
+      url: `/email/deleteIds`,
+      method: 'DELETE',
+      data: ids
     });
     return res;
   } catch (error) {

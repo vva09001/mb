@@ -8,7 +8,7 @@ import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
 import useBulkSelect from '../../hooks/useBulkSelect';
-import map from 'lodash';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -21,13 +21,10 @@ function ListUsers({ data, getUsers, deleteUsers, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   // const [usersID, setUsersID] = useState(null);
 
-  useEffect(() => {
-    getUsers();
-  }, [getUsers]);
-  const { t } = useTranslation();
-  const UserIds = map(data, values => {
+  const userIds = map(data, values => {
     return values.id;
   });
+
   const {
     selectedItems,
     isSelectedItem,
@@ -35,7 +32,12 @@ function ListUsers({ data, getUsers, deleteUsers, getDetail }) {
     toggleSelectedItem,
     toggleIsAllSelected,
     isIndeterminate
-  } = useBulkSelect(UserIds);
+  } = useBulkSelect(userIds);
+
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
+  const { t } = useTranslation();
 
   const openComfirm = () => {
     if (selectedItems !== null) {
@@ -72,6 +74,7 @@ function ListUsers({ data, getUsers, deleteUsers, getDetail }) {
         <Row style={{ background: '#fff' }} className="p-3">
           <UserTable
             data={data}
+            // getID={id => setUsersID(id)}
             getDetail={onGetDetail}
             isSelectedItem={isSelectedItem}
             isAllSelected={isAllSelected}

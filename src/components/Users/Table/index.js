@@ -73,9 +73,7 @@ const UsersTable = ({
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data && data.length / 20)}
-          previousLabel={t('previous')}
-          nextLabel={t('next')}
+          pageCount={Math.ceil(data.length / 20)}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
           nextLinkClassName={'page-link'}
