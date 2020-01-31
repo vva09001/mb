@@ -86,7 +86,7 @@ function* deleteSliderSaga() {
       const res = yield deleteSliderService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_SLIDER_RESPONSE, data: id });
+        yield put({ type: actions.GET_SLIDER_REQUEST, data: id });
       } else {
         yield Error(res.message);
       }

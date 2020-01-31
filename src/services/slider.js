@@ -54,10 +54,11 @@ const editSliderService = data => {
       return error.response.data;
     });
 };
-const deleteSliderService = id => {
+const deleteSliderService = ids => {
   return request({
-    url: `/slider/${id}`,
-    method: 'DELETE'
+    url: `/slider/deleteIds`,
+    method: 'DELETE',
+    data: ids
   })
     .then(res => {
       return res;

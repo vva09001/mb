@@ -89,7 +89,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           <Col>
             <div style={{ padding: 10 }}>
               <Button
-                color={'success'}
+                color={'primary'}
                 onClick={() => {
                   document.getElementById('exel').click();
                 }}
@@ -175,7 +175,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'success'} onClick={onSubmit}>
+          <Button color={'primary'} onClick={onSubmit}>
             {t('save')}
           </Button>
           <input type="file" onChange={handleChangeFile} style={{ padding: '10px', display: 'none' }} id="exel" />

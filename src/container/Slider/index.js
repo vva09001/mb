@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -17,7 +19,19 @@ const PropsType = {
 
 const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [sliderID, setSliderID] = useState(null);
+
+  const siderIds = map(data, values => {
+    return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(siderIds);
 
   useEffect(() => {
     getSilder();
@@ -25,24 +39,17 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (sliderID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
-  };
-
-  const onGetDetail = detail => {
-    getDetail(detail);
-    history.push('/slider/edit');
   };
 
   const onDelete = () => {
-    if (sliderID !== null) {
-      deleteSilder(sliderID);
+    if (selectedItems !== null) {
+      deleteSilder(selectedItems);
       setIsOpen(!isOpen);
     }
   };
-
-
 
   return (
     <React.Fragment>
@@ -59,7 +66,14 @@ const Slider = ({ data, getSilder, deleteSilder, getDetail }) => {
           </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <SliderTable data={data} getID={id => setSliderID(id)} getDetail={onGetDetail} />
+          <SliderTable
+            data={data}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

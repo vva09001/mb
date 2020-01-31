@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next';
 import PopupComfirm from 'components/common/PopupComfirm';
 import history from 'helpers/history';
 import { connect } from 'react-redux';
-// import { Redirect} from 'react-router-dom';
+import useBulkSelect from '../../hooks/useBulkSelect';
+import { map } from 'lodash';
 
 const PropsType = {
   data: PropTypes.array,
@@ -18,11 +19,20 @@ const PropsType = {
 
 function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [newsID, setMenusID] = useState(null);
-  // const [formState, setFormState] = useState({
-  //   values: [],
-  //   touched: {}
-  // });
+
+  const menuIds = map(data, values => {
+    return values.id;
+  });
+
+  const {
+    selectedItems,
+    isSelectedItem,
+    isAllSelected,
+    toggleSelectedItem,
+    toggleIsAllSelected,
+    isIndeterminate
+  } = useBulkSelect(menuIds);
+
   useEffect(() => {
     getMenus();
   }, [getMenus]);
@@ -30,22 +40,18 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
   const { t } = useTranslation();
 
   const openComfirm = () => {
-    if (newsID !== null) {
+    if (selectedItems !== null) {
       setIsOpen(!isOpen);
     }
   };
 
   const onDelete = () => {
-    if (newsID !== null) {
-      deleteMenus(newsID);
+    if (selectedItems !== null) {
+      deleteMenus(selectedItems);
       setIsOpen(!isOpen);
     }
   };
-  // const showDetail = () => {
-  //   return (
-  //     <Redirect to="/test" />
-  //   )
-  // };
+
   const onGetDetail = detail => {
     getDetailMenus(detail);
     history.push('/menu/edit');
@@ -63,10 +69,18 @@ function ListMenus({ data, getMenus, deleteMenus, getDetailMenus }) {
           </Button>
           <Button color="danger" className="mr-2" onClick={openComfirm}>
             {t('delete')}
-          </Button>          
+          </Button>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
-          <MenuTable data={data} getID={id => setMenusID(id)} getDetail={onGetDetail} />
+          <MenuTable
+            data={data}
+            getDetail={onGetDetail}
+            isSelectedItem={isSelectedItem}
+            isAllSelected={isAllSelected}
+            toggleSelectedItem={toggleSelectedItem}
+            toggleIsAllSelected={toggleIsAllSelected}
+            isIndeterminate={isIndeterminate}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />

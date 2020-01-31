@@ -71,7 +71,7 @@ function* deleteMenusSaga() {
       const res = yield deleteMenus(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.DELETE_MENUS_RESPONSE, data: id });
+        yield put({ type: actions.GET_MENUS_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }

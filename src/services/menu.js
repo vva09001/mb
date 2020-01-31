@@ -41,10 +41,11 @@ const editMenus = data => {
     });
 };
 
-const deleteMenus = id => {
+const deleteMenus = ids => {
   return request({
-    url: `/menu/${id}`,
-    method: 'DELETE'
+    url: `/menu/deleteIds`,
+    method: 'DELETE',
+    data: ids
   })
     .then(res => {
       return res;

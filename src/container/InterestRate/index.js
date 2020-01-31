@@ -177,7 +177,9 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
         <Button color="primary" className="mr-2" onClick={() => onClickCreate()}>
           {t('create')}
         </Button>
-        <Button onClick={openComfirm}>{t('delete')}</Button>
+        <Button color="danger" onClick={openComfirm}>
+          {t('delete')}
+        </Button>
       </Row>
       <React.Fragment>
         <Row className="p-3 backgroud__white">
@@ -292,7 +294,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
           <Button color="primary" onClick={onSave}>
             {t('save')}
           </Button>{' '}
-          <Button color="secondary" onClick={toggle}>
+          <Button color="danger" onClick={toggle}>
             {t('cancel')}
           </Button>
         </ModalFooter>

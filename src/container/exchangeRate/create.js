@@ -99,7 +99,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           <Col>
             <div style={{ padding: 10 }}>
               <Button
-                color={'success'}
+                color={'primary'}
                 onClick={() => {
                   document.getElementById('exel').click();
                 }}
@@ -185,7 +185,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'success'} onClick={onSubmit}>
+          <Button color={'primary'} onClick={onSubmit}>
             {t('save')}
           </Button>
           <input

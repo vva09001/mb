@@ -11,7 +11,7 @@ const dataSet1 = [];
 class Download extends React.Component {
   render() {
     return (
-      <ExcelFile element={<Button color={'success'}>Exel Template</Button>}>
+      <ExcelFile element={<Button color={'primary'}>Exel Template</Button>}>
         <ExcelSheet data={dataSet1} name="ExchangeRate">
           <ExcelColumn label="currency" />
           <ExcelColumn label="buy_cash" />
