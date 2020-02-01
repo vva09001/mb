@@ -7,19 +7,6 @@ const request = axios.create({
     Accept: 'application/json'
   }
 });
-request.interceptors.request.use(
-  async config => {
-    const token = await getToken();
-    if (token !== null) {
-      config.headers.Authorization = `Bearer ${getToken()}`;
-    }
-    return config;
-  },
-  error => {
-    Promise.reject(error);
-  }
-);
-
 
 const login = data => {
   return request({
