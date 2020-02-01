@@ -19,7 +19,15 @@ request.interceptors.request.use(
     Promise.reject(error);
   }
 );
-
+// after send request
+request.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 const getUsersService = () => {
   return request({

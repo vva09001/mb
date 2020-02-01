@@ -19,6 +19,15 @@ request.interceptors.request.use(
     Promise.reject(error);
   }
 );
+// after send request
+request.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 class UploadAdapter {
   constructor(loader) {
