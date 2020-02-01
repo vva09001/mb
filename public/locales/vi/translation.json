@@ -45,6 +45,8 @@
   "id": "ID",
   "cancel": "Hủy",
   "SeleteImage": "Chọn ảnh",
+  "acceptPage": "Trang chờ duyệt",
+  "acceptNew": "Tin chờ duyệt",
   "customer": {
     "personal": "Khách hàng cá nhân",
     "enterprise": "Khách hàng doanh nghiệp",
