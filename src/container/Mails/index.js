@@ -19,7 +19,6 @@ const PropsType = {
 
 function ListMail({ data, getMails, deleteMails, getDetailMails }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [mailsID, setmailsID] = useState(null);
 
   const mailIds = map(data, values => {
     return values.id;
@@ -75,7 +74,6 @@ function ListMail({ data, getMails, deleteMails, getDetailMails }) {
         <Row style={{ background: '#fff' }} className="p-3">
           <MailTable
             data={data}
-            getID={id => setmailsID(id)}
             getDetail={onGetDetail}
             isSelectedItem={isSelectedItem}
             isAllSelected={isAllSelected}

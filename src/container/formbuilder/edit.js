@@ -41,10 +41,6 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
 
   const [checkSubmit, setSubmit] = useState(true);
 
-  const options = {
-    onSave: (event, formData) => onSend(formData)
-  };
-
   useEffect(() => {
     getFormId(id);
 
@@ -53,8 +49,8 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
         formData: JSON.parse(formState.values.list),
         onSave: (event, formData) => onSend(formData)
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [!formState.values.list, id]);
 
   const handleChange = event => {
@@ -117,9 +113,13 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
           <Button type="submit" color="primary" disabled={checkSubmit}>
             {t('save')}
           </Button>
-          <Button style={{marginLeft: 10}}  onClick={()=>{
-            history.push('/form-builder/list')
-          }} color="success" >
+          <Button
+            style={{ marginLeft: 10 }}
+            onClick={() => {
+              history.push('/form-builder/list');
+            }}
+            color="success"
+          >
             {t('Back')}
           </Button>
         </Form>

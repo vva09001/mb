@@ -22,7 +22,8 @@ const Proptype = {
   expanstion: Proptypes.func,
   updatePosition: Proptypes.func,
   imageSeletedata: Proptypes.object,
-  getGroup: Proptypes.func
+  getGroup: Proptypes.func,
+  listGroup: Proptypes.array
 };
 
 function Category({

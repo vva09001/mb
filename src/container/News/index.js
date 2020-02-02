@@ -9,18 +9,19 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 import useBulkSelect from '../../hooks/useBulkSelect';
 import { map } from 'lodash';
+import { GroupActions } from '../../store/actions';
 
 const PropsType = {
   data: PropTypes.array,
   getNews: PropTypes.func,
   deleteNews: PropTypes.func,
   getDetail: PropTypes.func,
-  getCategory: PropTypes.func
+  getGroup: PropTypes.func,
+  listGroup: PropTypes.array
 };
 
-function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
+function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [newsID, setNewsID] = useState(null);
 
   const NewIds = map(data, values => {
     return values.newsId;
@@ -37,7 +38,8 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
 
   useEffect(() => {
     getNews();
-  }, [getNews]);
+    getGroup();
+  }, [getNews, getGroup]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
@@ -57,6 +59,8 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
     getDetail(detail);
   };
 
+  console.log(listGroup);
+
   return (
     <React.Fragment>
       <div>
@@ -74,7 +78,6 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
         <Row style={{ background: '#fff' }} className="p-3">
           <NewTable
             data={data}
-            getID={id => setNewsID(id)}
             getDetail={onGetDetail}
             isSelectedItem={isSelectedItem}
             isAllSelected={isAllSelected}
@@ -92,13 +95,14 @@ function Activity({ data, getNews, deleteNews, getCategory, getDetail }) {
 Activity.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data };
+  return { data: state.NewReducer.data, listGroup: state.GroupReducer.listGroupByUser };
 };
 
 const mapDispatchToProps = {
   getNews: NewActions.GetNews,
   deleteNews: NewActions.DeleteNews,
-  getDetail: NewActions.getDetail
+  getDetail: NewActions.getDetail,
+  getGroup: GroupActions.getGroupByUserAction
 };
 
 export default connect(

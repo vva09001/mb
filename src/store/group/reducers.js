@@ -42,7 +42,9 @@ const GroupReducer = (state = initialState, action) => {
     case Actions.GET_GROUP_BY_ID_RESPONSE:
       return {
         ...state,
-        detail: action.data
+        detail: action.data,
+        listPages: action.data.pages,
+        listNews: action.data.news
       };
     case Actions.GET_GROUP_BY_USER_RESPONSE:
       return {

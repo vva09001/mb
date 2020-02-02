@@ -41,9 +41,8 @@ const addPagesService = data => {
 };
 const apprPagesService = data => {
   return request({
-    url: `/pages/change_active/${data.id}`,
-    method: 'PUT',
-    data: data
+    url: `/pages/change_active/${data}`,
+    method: 'PUT'
   })
     .then(res => {
       return res;

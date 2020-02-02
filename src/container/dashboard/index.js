@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import CardSummary from 'components/dashboard/CardSummary';
-import { useTranslation } from 'react-i18next';
 import { map, filter } from 'lodash';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,8 +13,6 @@ const PropsType = {
 };
 
 function Dashboard({ data, getGroup }) {
-  const { t } = useTranslation();
-
   useEffect(() => {
     getGroup();
   }, [getGroup]);
@@ -30,6 +27,7 @@ function Dashboard({ data, getGroup }) {
             acceptValue={filter(values.news, { is_active: 0 }).length}
             color="success"
             linkText={values.name}
+            to={`/appr/${values.idTeam}`}
           />
         ))}
       </div>

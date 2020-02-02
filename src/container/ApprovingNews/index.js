@@ -11,10 +11,11 @@ const PropsType = {
   data: PropTypes.array,
   getNews: PropTypes.func,
   deleteNews: PropTypes.func,
-  getDetail: PropTypes.func
+  getDetail: PropTypes.func,
+  AprrNew: PropTypes.func
 };
 
-function AprrNews({ data, getNews, deleteNews, getDetail }) {
+function AprrNews({ data, getNews, deleteNews, getDetail, AprrNew }) {
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
@@ -38,7 +39,7 @@ function AprrNews({ data, getNews, deleteNews, getDetail }) {
     <React.Fragment>
       <div>
         <Row style={{ background: '#fff' }} className="p-3">
-          <AprrTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} />
+          <AprrTable data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} apprNews={AprrNew} />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -55,7 +56,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   getNews: NewActions.GetNews,
   deleteNews: NewActions.DeleteNews,
-  getDetail: NewActions.getDetail
+  getDetail: NewActions.getDetail,
+  AprrNew: NewActions.AprrNew
 };
 
 export default connect(

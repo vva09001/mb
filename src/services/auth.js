@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getToken } from '../helpers/localStorage';
 const request = axios.create({
   baseURL: 'https://sapotacorp.com:8443/api/',
   headers: {
