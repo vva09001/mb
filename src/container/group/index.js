@@ -50,7 +50,6 @@ function Group({ data, getGroup, deleteGroup, listNews }) {
       setIsOpen(!isOpen);
     }
   };
-  console.log(listNews);
   return (
     <React.Fragment>
       <Row>

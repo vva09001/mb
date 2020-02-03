@@ -85,7 +85,7 @@ const editUsersService = data => {
 
 const deleteUsersService = id => {
   return request({
-    url: `users/deleteIds`,
+    url: `/users/deleteIds`,
     method: 'DELETE',
     data: id
   })
@@ -97,4 +97,17 @@ const deleteUsersService = id => {
     });
 };
 
-export { getUsersService, addUsersService, editUsersService, deleteUsersService, apprUsersService };
+const getUserByIdService = id => {
+  return request({
+    url: `/users/${id}`,
+    method: 'GET'
+  })
+  .then(res => {
+    return res;
+  })
+  .catch(error => {
+    return error.response.data;
+  });
+};
+
+export { getUsersService, addUsersService, editUsersService, deleteUsersService, apprUsersService, getUserByIdService };

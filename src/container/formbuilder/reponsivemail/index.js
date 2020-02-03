@@ -29,7 +29,6 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId, detailrely, g
   if (formDetail.list) {
     listform = JSON.parse(formDetail.list);
   }
-  // console.log(listform);
   
   useEffect(() => {
     setFormState(formState => ({
@@ -37,7 +36,6 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId, detailrely, g
       values: detailrely
     }));
   }, [detailrely]);
-  console.log(detailrely);
 
   const [formState, setFormState] = useState({
     values: {},

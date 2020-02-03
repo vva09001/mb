@@ -81,7 +81,6 @@ function FormBuilder({ created }) {
       list: formDataBuilDer === null ? '' : formDataBuilDer,
       embedded: renderhtml
     };
-    console.log(body);
     created(body);
   };
   return (

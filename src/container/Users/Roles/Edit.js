@@ -38,14 +38,7 @@ function RolesEdit({
   getRoleById
 }) {
   const { id } = useParams();
-  console.log(id)
-  const [formState, setFormState] = useState({
-    id: detailById.id,
-    idRole: detailById.idRole,
-    name: detailById.name,
-    privileges: [],
-    teams: []
-  });
+  const [formState, setFormState] = useState({});
   let dataIdSelect = [];
   let optionTeam = [];
   const [SelectedOption, setSelectedOption] = useState({
@@ -54,13 +47,12 @@ function RolesEdit({
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
-  useEffect(() => { 
-    
-   
-      getRoleById(Number(id));
-      getRoleById(Number(id));
-  
-  },[getRoleById, id])
+  useEffect(() => {
+    setFormState(detailById);
+  }, [detailById]);
+  useEffect(() => {
+    getRoleById(Number(id));
+  }, [getRoleById, id]);
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
@@ -90,23 +82,21 @@ function RolesEdit({
       optionTeam.push(tmpTeam);
     });
     if (dataIdrole !== undefined)
-    dataIdrole.forEach(function(data) {
-      defaultSelected(data);
-    });
+      dataIdrole.forEach(function(data) {
+        defaultSelected(data);
+      });
   });
   const defaultSelected = idTeam => {
     optionTeam.forEach(function(docs) {
-      if (docs.value === idTeam)
-      {
-      dataIdSelect.push(docs);
-    }
+      if (docs.value === idTeam) {
+        dataIdSelect.push(docs);
+      }
     });
   };
-  useEffect(()=> {
-    if (dataIdSelect !== null)
-    SelectedOption.Select = dataIdSelect;
-  })
-  const handleChangeTeam = (event) => {
+  useEffect(() => {
+    if (dataIdSelect !== null) SelectedOption.Select = dataIdSelect;
+  });
+  const handleChangeTeam = event => {
     setSelectedOption(SelectedOption => ({
       ...SelectedOption,
       Select: event
@@ -135,7 +125,7 @@ function RolesEdit({
         if (docs.privilegeId === id) {
           var tmp = 1;
           docs.checked = tmp;
-        } 
+        }
       });
     });
   };
@@ -206,24 +196,22 @@ function RolesEdit({
     }));
   };
   const onSubmitRoles = event => {
-     event.preventDefault();
+    event.preventDefault();
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked !== 0 && docs.checked !==2) {
+        if (docs.checked !== 0 && docs.checked !== 2) {
           formState.privileges.push(docs.privilegeId);
         }
       });
-
     });
-   
-    formState.teams.splice(0, formState.teams.length)
+
+    formState.teams.splice(0, formState.teams.length);
     if (dataTeamToEdit !== null)
-    dataTeamToEdit.forEach(function(data) {
-      formState.teams.push(data.value);
-      })
-      else
-      formState.teams = detailById.teams
-      editRole(formState)
+      dataTeamToEdit.forEach(function(data) {
+        formState.teams.push(data.value);
+      });
+    else formState.teams = detailById.teams;
+    editRole(formState);
   };
 
   return (
@@ -261,9 +249,9 @@ function RolesEdit({
                   <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                <Button color="primary" type="submit" onClick={onSubmitRoles}>
-                      {t('save')}
-                    </Button>
+                  <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                    {t('save')}
+                  </Button>
                 </FormGroup>
               </Form>
             </TabPane>
@@ -274,7 +262,7 @@ function RolesEdit({
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
-                     <FormGroup>
+                    <FormGroup>
                       {optionTeam.length >= 0 && (
                         <Select
                           isMulti
@@ -285,7 +273,7 @@ function RolesEdit({
                         />
                       )}
                     </FormGroup>
-                  
+
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -395,7 +383,7 @@ const mapStateToProps = state => {
     listPrivilege: state.RoleReducer.listPrivilege,
     listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
     dataTeam: state.RoleReducer.dataTeam,
-    detailById: state.RoleReducer.adetailById
+    detailById: state.RoleReducer.detailById
   };
 };
 const mapDispatchToProps = {

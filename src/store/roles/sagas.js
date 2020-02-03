@@ -146,17 +146,12 @@ function* getRoleByIdSaga() {
     const { id } = params;
     try {
       const res = yield getRoleById(id);
-      console.log("continue")
       if (res.status === 200) {
-        console.log("accept")
         yield put({ type: actions.GET_ROLE_BY_ID_RESPONSE, data: res.data });
-        console.log(res.data)
       } else {
         yield Error(res.message);
-        console.log("bug1")
       }
     } catch (error) {
-      console.log("bug2")
       yield Error('Không thể kết nối đến server');
     }
   });
