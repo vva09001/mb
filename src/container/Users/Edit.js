@@ -129,6 +129,7 @@ function UsersEdit({
       });
   });
   const allowBlock = value => {
+    console.log(value)
     var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
@@ -430,7 +431,7 @@ function UsersEdit({
                     </FormGroup>
                     {dataPrivileges.map((values, index) => {
                       return (
-                        <div key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
                           <FormGroup>
                             <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
                               <Label>
@@ -557,7 +558,7 @@ function UsersEdit({
                               </FormGroup>
                             );
                           })}
-                        </div>
+                        </Form>
                       );
                     })}
                     <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
