@@ -6,18 +6,21 @@ import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
+  detailById: PropTypes.object,
   getpermission: PropTypes.func,
   listPrivilege: PropTypes.array,
   getListPrivilege: PropTypes.func,
   getListPrvilegesByGroup: PropTypes.func,
   listPrivilegeByGroup: PropTypes.array,
   dataTeam: PropTypes.array,
-  getAllTeam: PropTypes.func
+  getAllTeam: PropTypes.func,
+  getRoleById: PropTypes.func
 };
 let dataPrivileges = [];
 let dataIdCurrent = [];
@@ -26,16 +29,20 @@ let dataIdrole = [];
 function RolesEdit({
   editRole,
   detail,
+  detailById,
   getListPrivilege,
   getListPrvilegesByGroup,
   listPrivilegeByGroup,
   dataTeam,
-  getAllTeam
+  getAllTeam,
+  getRoleById
 }) {
+  const { id } = useParams();
+  console.log(id)
   const [formState, setFormState] = useState({
-    id: detail.id,
-    idRole: detail.idRole,
-    name: detail.name,
+    id: detailById.id,
+    idRole: detailById.idRole,
+    name: detailById.name,
     privileges: [],
     teams: []
   });
@@ -47,15 +54,22 @@ function RolesEdit({
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
+  useEffect(() => { 
+    
+   
+      getRoleById(Number(id));
+      getRoleById(Number(id));
+  
+  },[getRoleById, id])
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
   }, [getListPrvilegesByGroup, getAllTeam]);
   useEffect(() => {
-    getListPrivilege(detail.idRole);
-    dataIdCurrent = detail.privileges;
-    dataIdrole = detail.teams;
-  }, [detail, getListPrivilege]);
+    getListPrivilege(detailById.idRole);
+    dataIdCurrent = detailById.privileges;
+    dataIdrole = detailById.teams;
+  }, [detailById, getListPrivilege]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
     dataPrivileges.forEach(function(data) {
@@ -75,6 +89,7 @@ function RolesEdit({
       };
       optionTeam.push(tmpTeam);
     });
+    if (dataIdrole !== undefined)
     dataIdrole.forEach(function(data) {
       defaultSelected(data);
     });
@@ -202,11 +217,12 @@ function RolesEdit({
     });
    
     formState.teams.splice(0, formState.teams.length)
+    if (dataTeamToEdit !== null)
     dataTeamToEdit.forEach(function(data) {
       formState.teams.push(data.value);
       })
-      if (formState.teams.length === 0)
-      formState.teams = detail.teams
+      else
+      formState.teams = detailById.teams
       editRole(formState)
   };
 
@@ -277,7 +293,7 @@ function RolesEdit({
                       <Row>
                         <Col>
                           <Button onClick={() => handleChecked()}>
-                            {t('roleinit.getallroleof')} {detail.name}
+                            {t('roleinit.getallroleof')} {detailById.name}
                           </Button>
                         </Col>
                         <Col>
@@ -378,7 +394,8 @@ const mapStateToProps = state => {
     detail: state.RoleReducer.detail,
     listPrivilege: state.RoleReducer.listPrivilege,
     listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
-    dataTeam: state.RoleReducer.dataTeam
+    dataTeam: state.RoleReducer.dataTeam,
+    detailById: state.RoleReducer.adetailById
   };
 };
 const mapDispatchToProps = {
@@ -387,7 +404,8 @@ const mapDispatchToProps = {
   getpermission: RoleActions.setPermission,
   getListPrivilege: RoleActions.getPrivilegeRole,
   getListRole: RoleActions.getListRole,
-  getListPrvilegesByGroup: RoleActions.getPrivilegeRoleByGroup
+  getListPrvilegesByGroup: RoleActions.getPrivilegeRoleByGroup,
+  getRoleById: RoleActions.getRoleById
 };
 
 export default connect(

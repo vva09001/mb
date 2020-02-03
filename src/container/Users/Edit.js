@@ -477,7 +477,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                                           id={value.privilegeId}
                                           value={1}
                                           name={value.name}
-                                          label="Allow"
+                                          label="Deny"
                                           inline="true"
                                           defaultChecked
                                           onChange={() => {

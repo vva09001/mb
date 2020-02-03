@@ -19,7 +19,7 @@ const PropsType = {
 
 function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
-  // const [usersID, setRolesID] = useState(null);
+  //const [usersID, setRolesID] = useState(null);
   const roleIds = map(data, values => {
     return values.id;
   });
@@ -34,6 +34,7 @@ function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
   } = useBulkSelect(roleIds);
   useEffect(() => {
     getRoles();
+    
   }, [getRoles]);
   const { t } = useTranslation();
 

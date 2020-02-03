@@ -1,3 +1,5 @@
+import { getRoleById } from "../../services/roles";
+
 const Actions = {
   GET_ROLES_REQUEST: 'GET_ROLES_REQUEST',
   GET_ROLES_RESPONSE: 'GET_ROLES_RESPONSE',
@@ -65,8 +67,13 @@ const Actions = {
   getPrivilegeRoleByGroup: () => ({
     type: Actions.GET_PRIVILEGE_ROLE_BY_GROUP_REQUEST,
     
+  }),
+  GET_ROLE_BY_ID_REQUEST: 'GET_ROLE_BY_ID_REQUEST',
+  GET_ROLE_BY_ID_RESPONSE: 'GET_ROLE_BY_ID_RESPONSE', 
+  getRoleById: id => ({
+    type: Actions.GET_ROLE_BY_ID_REQUEST,
+    id
   })
-
 };
 
 

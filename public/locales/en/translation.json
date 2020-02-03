@@ -1,5 +1,6 @@
 {
   "name": "Name",
+  "hello": "Hello",
   "status": "Status",
   "sticky": "Sticky",
   "created": "Created",
