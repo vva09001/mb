@@ -116,9 +116,9 @@ const DashboardRoutes = () => (
     <Route path="/storefont" exact component={Storefont} />
 
     {/* Slider */}
-    <Route path="/slider" exact component={Slider} />
+    {/* <Route path="/slider" exact component={Slider} />
     <Route path="/slider/create" exact component={SliderCreate} />
-    <Route path="/slider/edit/:id" exact component={SliderEdit} />
+    <Route path="/slider/edit/:id" exact component={SliderEdit} /> */}
 
     {/* Network */}
     <Route path="/network" exact component={Network} />

@@ -22,7 +22,8 @@ const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) 
   };
 
   return routes.map((route, index) => {
-    if (!route.children) {
+    if (!route.children)
+    {
       return (
         <NavItem key={index}>
           <NavLink className="nav-link" {...route} onClick={handleNavbarVerticalCollapse}>
@@ -31,7 +32,6 @@ const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) 
         </NavItem>
       );
     }
-
     return (
       <NavItem key={index}>
         <Link
