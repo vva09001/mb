@@ -43,6 +43,12 @@ const Actions = {
   AprrUser: data => ({
     type: Actions.APRR_USERS_REQUEST,
     data
+  }),
+  GET_USER_BY_ID_REQUEST: 'GET_USER_BY_ID_REQUEST',
+  GET_USER_BY_ID_RESPONSE: 'GET_USER_BY_ID_RESPONSE',
+  getUserById: id => ({
+    type: Actions.GET_USER_BY_ID_REQUEST,
+    id
   })
 };
 

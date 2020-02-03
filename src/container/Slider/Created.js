@@ -87,10 +87,7 @@ function SliderCreate({ SliderCreate }) {
 
   function handleChange(i, event) {
     event.persist();
-    console.log(i);
-
     const sliderSlides = [...fields];
-    console.log(sliderSlides);
     if (event.target.name === 'callToActionUrl') {
       sliderSlides[i] = {
         ...sliderSlides[i],
@@ -114,7 +111,6 @@ function SliderCreate({ SliderCreate }) {
     }
     setFields(sliderSlides);
   }
-  console.log(formState.values);
 
   const handleAdd = () => {
     setFields([
@@ -142,7 +138,6 @@ function SliderCreate({ SliderCreate }) {
       ...formState.values,
       sliderSlides: fields
     };
-    console.log(body);
     SliderCreate(body, onSuccess, onFail);
   };
 
@@ -325,43 +320,43 @@ function SliderCreate({ SliderCreate }) {
                                     </Row>
                                   </TabPane>
                                   <TabPane tabId="2">
-                                      <Row form>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Label for="exampleEmail">{t('slider.caption1')}</Label>
-                                          </FormGroup>
-                                        </Col>
-                                        <Col md={4}> </Col>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
-                                          </FormGroup>
-                                        </Col>
-                                      </Row>
-                                      <Row form>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Label for="exampleEmail">{t('slider.delay')}</Label>
-                                          </FormGroup>
-                                        </Col>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Input type="number" name="email" onChange={e => handleChange(idx, e)} />
-                                          </FormGroup>
-                                        </Col>
-                                      </Row>
-                                      <Row form>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Label for="exampleEmail">{t('slider.effect')}</Label>
-                                          </FormGroup>
-                                        </Col>
-                                        <Col md={4}>
-                                          <FormGroup>
-                                            <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
-                                          </FormGroup>
-                                        </Col>
-                                      </Row>
+                                    <Row form>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Label for="exampleEmail">{t('slider.caption1')}</Label>
+                                        </FormGroup>
+                                      </Col>
+                                      <Col md={4}> </Col>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
+                                        </FormGroup>
+                                      </Col>
+                                    </Row>
+                                    <Row form>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Label for="exampleEmail">{t('slider.delay')}</Label>
+                                        </FormGroup>
+                                      </Col>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Input type="number" name="email" onChange={e => handleChange(idx, e)} />
+                                        </FormGroup>
+                                      </Col>
+                                    </Row>
+                                    <Row form>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Label for="exampleEmail">{t('slider.effect')}</Label>
+                                        </FormGroup>
+                                      </Col>
+                                      <Col md={4}>
+                                        <FormGroup>
+                                          <Input type="select" name="email" onChange={e => handleChange(idx, e)} />
+                                        </FormGroup>
+                                      </Col>
+                                    </Row>
                                   </TabPane>
                                 </TabContent>
                               </FormGroup>

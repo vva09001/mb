@@ -42,8 +42,8 @@ function* addMailsSaga() {
       const res = yield addMails(data);
       if (res.status === 200) {
         Success('Thêm mới thành công');
-        yield put({ type: actions.GET_MAILS_REQUEST, data: res.data });  
-        yield history.push('/emails/list'); 
+        yield put({ type: actions.GET_MAILS_REQUEST, data: res.data });
+        yield history.push('/emails/list');
       } else {
         yield Error(res.message);
       }
@@ -56,7 +56,6 @@ function* editMailsSaga() {
   yield takeLatest(actions.EDIT_MAILS_REQUEST, function*(params) {
     const { data } = params;
     try {
-      console.log(data);
       const res = yield editMails(data);
       if (res.status === 200) {
         yield Success('Sửa thành công');

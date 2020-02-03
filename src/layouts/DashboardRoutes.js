@@ -101,10 +101,10 @@ const DashboardRoutes = () => (
     {/* User */}
     <Route path="/users/list" exact component={ListUsers} />
     <Route path="/users/create" exact component={UsersCreate} />
-    <Route path="/users/edit" exact component={UsersEdit} />
+    <Route path="/users/edit/:id" exact component={UsersEdit} />
     <Route path="/users/listrole" exact component={ListRoles} />
     <Route path="/users/listrole/create" exact component={RolesCreate} />
-    <Route path="/users/listrole/edit" exact component={RolesEdit} />
+    <Route path="/users/listrole/edit/:id" exact component={RolesEdit} />
 
     {/*Menu*/}
     <Route path="/menu/list" exact component={ListMenus} />

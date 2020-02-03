@@ -8,7 +8,8 @@ import {
   acceptPrivilegeService,
   removePrivilegeService,
   getPrivilegeRoleService,
-  getPrivilegesByGroupService
+  getPrivilegesByGroupService,
+  getRoleById
 } from '../../services/roles';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
@@ -140,6 +141,21 @@ function* getPrivilegeRoleByGroupSaga() {
     }
   });
 }
+function* getRoleByIdSaga() {
+  yield takeLatest(actions.GET_ROLE_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getRoleById(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_ROLE_BY_ID_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 
 export default function* rootSaga() {
   yield all([
@@ -150,6 +166,7 @@ export default function* rootSaga() {
     fork(deleteRolesSaga),
     fork(setPermissionRoleSaga),
     fork(getPrivilegeRoleSaga),
-    fork(getPrivilegeRoleByGroupSaga)
+    fork(getPrivilegeRoleByGroupSaga),
+    fork(getRoleByIdSaga)
   ]);
 }

@@ -5,6 +5,7 @@ import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { CustomInput } from 'reactstrap';
 
 const PropsType = {
@@ -62,10 +63,18 @@ const UsersTable = ({
                     onChange={() => toggleSelectedItem(values.id)}
                   />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.username}</td>
-                <td onClick={() => getDetail(values)}>{values.email}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.login).fromNow()}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td>
+                  <Link to={`/users/edit/${values.id}`}>{values.username}</Link>
+                </td>
+                <td>
+                  <Link to={`/users/edit/${values.id}`}>{values.email}</Link>
+                </td>
+                <td>
+                  <Link to={`/users/edit/${values.id}`}>{moment(values.login).fromNow()}</Link>
+                </td>
+                <td>
+                  <Link to={`/users/edit/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
+                </td>
               </tr>
             );
           })}

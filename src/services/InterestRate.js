@@ -13,7 +13,7 @@ const getInterestRateService = () => {
     });
 };
 
-const createInterestRateService = (data) => {
+const createInterestRateService = data => {
   return request({
     url: '/interest_rate',
     method: 'POST',
@@ -27,8 +27,7 @@ const createInterestRateService = (data) => {
     });
 };
 
-const updateInterestRateService = (data) => {
-  console.log(data);
+const updateInterestRateService = data => {
   return request({
     url: `/interest_rate/${data.id}`,
     method: 'PUT',
@@ -42,7 +41,7 @@ const updateInterestRateService = (data) => {
     });
 };
 
-const deleteInterestRateService = (data) => {
+const deleteInterestRateService = data => {
   return request({
     url: `/interest_rate`,
     method: 'DELETE',
@@ -56,4 +55,4 @@ const deleteInterestRateService = (data) => {
     });
 };
 
-export { getInterestRateService ,createInterestRateService ,updateInterestRateService ,deleteInterestRateService};
+export { getInterestRateService, createInterestRateService, updateInterestRateService, deleteInterestRateService };

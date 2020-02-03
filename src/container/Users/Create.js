@@ -387,7 +387,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                     </FormGroup>
                     {dataPrivileges.map((values, index) => {
                       return (
-                        <div key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
                           <FormGroup>
                             <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
                               <Label>
@@ -486,7 +486,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                               </FormGroup>
                             );
                           })}
-                        </div>
+                        </Form>
                       );
                     })}
                     <Button color="primary" type="submit">

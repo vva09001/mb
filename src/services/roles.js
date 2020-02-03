@@ -119,6 +119,19 @@ const getPrivilegeRoleService = id => {
     });
 };
 
+const getRoleById = id => {
+  return request({
+    url: `/roles/${id}`,
+    method: 'GET'
+  })
+  .then(res => {
+    return res;
+  })
+  .catch(error => {
+    return error.response.data;
+  });
+};
+
 export {
   getRolesService,
   getAllTeamService,
@@ -128,5 +141,6 @@ export {
   acceptPrivilegeService,
   removePrivilegeService,
   getPrivilegesByGroupService,
-  getPrivilegeRoleService
+  getPrivilegeRoleService,
+  getRoleById
 };

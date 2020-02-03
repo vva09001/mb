@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { slice, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { CustomInput } from 'reactstrap';
 
 const PropsType = {
@@ -35,7 +36,7 @@ const RolesTable = ({
         <thead>
           <tr>
             <th>
-            <CustomInput
+              <CustomInput
                 id="checkbox-bulk"
                 type="checkbox"
                 checked={isAllSelected}
@@ -50,17 +51,21 @@ const RolesTable = ({
         <tbody>
           {map(list, values => {
             return (
-              <tr key={values.id}>
+              <tr key={values.idRole}>
                 <th>
-                <CustomInput
-                    id={'checkbox-' + values.id}
+                  <CustomInput
+                    id={'checkbox-' + values.idRole}
                     type="checkbox"
-                    checked={isSelectedItem(values.id)}
-                    onChange={() => toggleSelectedItem(values.id)}
+                    checked={isSelectedItem(values.idRole)}
+                    onChange={() => toggleSelectedItem(values.idRole)}
                   />
                 </th>
-                <td onClick={() => getDetail(values)}>{values.name}</td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                <td>
+                  <Link to={`/users/listrole/edit/${values.idRole}`}>{values.name}</Link>
+                </td>
+                <td>
+                  <Link to={`/users/listrole/edit/${values.idRole}`}>{moment(values.created_at).fromNow()}</Link>
+                </td>
               </tr>
             );
           })}

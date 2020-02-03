@@ -4,7 +4,8 @@ import {
   addUsersService,
   editUsersService,
   deleteUsersService,
-  apprUsersService
+  apprUsersService,
+  getUserByIdService
 } from '../../services/Users';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
@@ -30,10 +31,10 @@ function* addUsersSaga() {
     const { data } = params;
     try {
       const res = yield addUsersService(data);
-      if (res.status === 200) {  
-        yield Success('Tạo thành công');      
+      if (res.status === 200) {
+        yield Success('Tạo thành công');
         yield put({ type: actions.ADD_USERS_RESPONSE, data: res.data });
-      } else {        
+      } else {
         yield Error(res.message);
       }
     } catch (error) {
@@ -65,10 +66,8 @@ function* editUsersSaga() {
     const { data } = params;
     try {
       const res = yield editUsersService(data);
-      console.log(data)
       if (res.status === 200) {
-        
-        yield Success("Cập nhật thành công")
+        yield Success('Cập nhật thành công');
         yield put({ type: actions.EDIT_USERS_RESPONSE, data: res.data });
       } else {
         yield Error(res.message);
@@ -96,7 +95,29 @@ function* deleteUsersSaga() {
     }
   });
 }
+function* getRoleByIdSaga() {
+  yield takeLatest(actions.GET_USER_BY_ID_REQUEST, function*(params) {
+    const { id } = params;
+    try {
+      const res = yield getUserByIdService(id);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_USER_BY_ID_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
 
 export default function* rootSaga() {
-  yield all([fork(getUsersSaga), fork(addUsersSaga), fork(editUsersSaga), fork(deleteUsersSaga), fork(aprrUsersSaga)]);
+  yield all([
+    fork(getUsersSaga),
+    fork(addUsersSaga),
+    fork(editUsersSaga),
+    fork(deleteUsersSaga),
+    fork(aprrUsersSaga),
+    fork(getRoleByIdSaga)
+  ]);
 }

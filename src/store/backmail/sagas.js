@@ -1,5 +1,5 @@
 import { takeLatest, put, fork, all } from 'redux-saga/effects';
-import {getfeedbackMailsId, addfeedbackMail, editfeedbackMail  } from '../../services/backmail';
+import { getfeedbackMailsId, addfeedbackMail, editfeedbackMail } from '../../services/backmail';
 import { Error, Success } from '../../helpers/notify';
 import history from 'helpers/history';
 import actions from './actions';
@@ -42,7 +42,6 @@ function* editfeedbackMailSaga() {
   yield takeLatest(actions.EDIT_FEEDBACK_MAILS_REQUEST, function*(params) {
     const { data } = params;
     try {
-      console.log(data);
       const res = yield editfeedbackMail(data);
       if (res.status === 200) {
         yield Success('Sửa thành công');
@@ -57,5 +56,5 @@ function* editfeedbackMailSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([fork(addfeedbackMailSaga),fork(getfeedbackMailsIdSaga),fork(editfeedbackMailSaga)]);
+  yield all([fork(addfeedbackMailSaga), fork(getfeedbackMailsIdSaga), fork(editfeedbackMailSaga)]);
 }

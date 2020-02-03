@@ -3,7 +3,8 @@ import { filter, map } from 'lodash';
 
 const initialState = {
   data: [],
-  detail: {}
+  detail: {},
+  detailById: {}
 };
 
 const Users = (state = initialState, action) => {
@@ -28,17 +29,22 @@ const Users = (state = initialState, action) => {
           return values;
         })
       };
-    // case Actions.DELETE_USERS_RESPONSE:
-    //   return {
-    //     ...state,
-    //     data: filter(state.data, values => {
-    //       return values.id !== action.data;
-    //     })
-    //   };
+    case Actions.DELETE_USERS_RESPONSE:
+      return {
+        ...state,
+        data: filter(state.data, values => {
+          return values.id !== action.data;
+        })
+      };
     case Actions.GET_DETAIL_USERS:
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_USER_BY_ID_RESPONSE:
+      return {
+        ...state,
+        detailById: action.data
       };
     default:
       return state;

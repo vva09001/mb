@@ -8,10 +8,13 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 const PropsType = {
   editUser: PropTypes.func,
   detail: PropTypes.object,
+  detailById: PropTypes.object,
+  getUserById: PropTypes.func,
   getAllRole: PropTypes.func,
   dataAllRole: PropTypes.array,
   listPrivilegeByGroup: PropTypes.array,
@@ -21,7 +24,17 @@ let dataRolesToEdit = [];
 let dataPrivileges = [];
 let dataIdrole = [];
 let dataIdPrivileges = [];
-function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAllRole, getListPrivilegesByGroup }) {
+function UsersEdit({
+  editUser,
+  detail,
+  detailById,
+  getUserById,
+  listPrivilegeByGroup,
+  dataAllRole,
+  getAllRole,
+  getListPrivilegesByGroup
+}) {
+  const { id } = useParams();
   const [formState, setFormState] = useState({
     values: detail,
 
@@ -41,16 +54,26 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
     if (activeTab !== tab) setActiveTab(tab);
   };
   useEffect(() => {
+    getUserById(Number(id));
+  }, [getUserById, id]);
+  useEffect(() => {
+    setFormState(formState => ({
+      ...formState,
+      values: detailById
+    }));
+  }, [detailById]);
+  useEffect(() => {
     getAllRole();
     getListPrivilegesByGroup();
   }, [getAllRole, getListPrivilegesByGroup, detail]);
   useEffect(() => {
-    dataIdrole = detail.roles;
-    dataIdPrivileges = detail.userPrivilegeRequests;
-    dataIdPrivileges.forEach(function(data) {
-      if (data.status !== 2 && data.privilegeId % 2 !== 0) dataIdPrivilegesExact.push(data);
-    });
-  }, [detail, dataIdPrivilegesExact]);
+    dataIdrole = detailById.roles;
+    dataIdPrivileges = detailById.userPrivilegeRequests;
+    if (dataIdPrivileges !== undefined)
+      dataIdPrivileges.forEach(function(data) {
+        if (data.status !== 2 && data.privilegeId % 2 !== 0) dataIdPrivilegesExact.push(data);
+      });
+  }, [detailById, dataIdPrivilegesExact]);
   useEffect(() => {
     dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
@@ -59,9 +82,10 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
       };
       optionRoles.push(tmpSetDataOption);
     });
-    dataIdrole.forEach(function(data) {
-      defaultSelected(data);
-    });
+    if (dataIdrole !== undefined)
+      dataIdrole.forEach(function(data) {
+        defaultSelected(data);
+      });
   });
 
   const defaultSelected = idRole => {
@@ -105,6 +129,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
       });
   });
   const allowBlock = value => {
+    console.log(value)
     var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
@@ -406,7 +431,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                     </FormGroup>
                     {dataPrivileges.map((values, index) => {
                       return (
-                        <div key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
+                        <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
                           <FormGroup>
                             <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
                               <Label>
@@ -477,7 +502,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                                           id={value.privilegeId}
                                           value={1}
                                           name={value.name}
-                                          label="Allow"
+                                          label="Deny"
                                           inline="true"
                                           defaultChecked
                                           onChange={() => {
@@ -533,7 +558,7 @@ function UsersEdit({ editUser, detail, listPrivilegeByGroup, dataAllRole, getAll
                               </FormGroup>
                             );
                           })}
-                        </div>
+                        </Form>
                       );
                     })}
                     <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
@@ -605,14 +630,16 @@ const mapStateToProps = state => {
   return {
     detail: state.UserReducer.detail,
     dataAllRole: state.RoleReducer.data,
-    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup
+    listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
+    detailById: state.UserReducer.detailById
   };
 };
 
 const mapDispatchToProps = {
   editUser: UserActions.EditUser,
   getAllRole: RoleActions.GetRoles,
-  getListPrivilegesByGroup: RoleActions.getPrivilegeRoleByGroup
+  getListPrivilegesByGroup: RoleActions.getPrivilegeRoleByGroup,
+  getUserById: UserActions.getUserById
 };
 
 export default connect(

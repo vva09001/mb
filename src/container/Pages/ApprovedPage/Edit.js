@@ -18,9 +18,6 @@ function PagesAppr({ detail, apprPage }) {
     values: detail,
     touched: {}
   });
-  useEffect(() => {
-    console.log(formState.values.name);
-  });
 
   const [activeTab, setActiveTab] = useState('1');
 

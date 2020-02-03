@@ -6,18 +6,21 @@ import PropTypes from 'prop-types';
 import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 const PropsType = {
   editRole: PropTypes.func,
   detail: PropTypes.object,
+  detailById: PropTypes.object,
   getpermission: PropTypes.func,
   listPrivilege: PropTypes.array,
   getListPrivilege: PropTypes.func,
   getListPrvilegesByGroup: PropTypes.func,
   listPrivilegeByGroup: PropTypes.array,
   dataTeam: PropTypes.array,
-  getAllTeam: PropTypes.func
+  getAllTeam: PropTypes.func,
+  getRoleById: PropTypes.func
 };
 let dataPrivileges = [];
 let dataIdCurrent = [];
@@ -26,19 +29,16 @@ let dataIdrole = [];
 function RolesEdit({
   editRole,
   detail,
+  detailById,
   getListPrivilege,
   getListPrvilegesByGroup,
   listPrivilegeByGroup,
   dataTeam,
-  getAllTeam
+  getAllTeam,
+  getRoleById
 }) {
-  const [formState, setFormState] = useState({
-    id: detail.id,
-    idRole: detail.idRole,
-    name: detail.name,
-    privileges: [],
-    teams: []
-  });
+  const { id } = useParams();
+  const [formState, setFormState] = useState({});
   let dataIdSelect = [];
   let optionTeam = [];
   const [SelectedOption, setSelectedOption] = useState({
@@ -48,14 +48,20 @@ function RolesEdit({
 
   const { t } = useTranslation();
   useEffect(() => {
+    setFormState(detailById);
+  }, [detailById]);
+  useEffect(() => {
+    getRoleById(Number(id));
+  }, [getRoleById, id]);
+  useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
   }, [getListPrvilegesByGroup, getAllTeam]);
   useEffect(() => {
-    getListPrivilege(detail.idRole);
-    dataIdCurrent = detail.privileges;
-    dataIdrole = detail.teams;
-  }, [detail, getListPrivilege]);
+    getListPrivilege(detailById.idRole);
+    dataIdCurrent = detailById.privileges;
+    dataIdrole = detailById.teams;
+  }, [detailById, getListPrivilege]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
     dataPrivileges.forEach(function(data) {
@@ -75,23 +81,22 @@ function RolesEdit({
       };
       optionTeam.push(tmpTeam);
     });
-    dataIdrole.forEach(function(data) {
-      defaultSelected(data);
-    });
+    if (dataIdrole !== undefined)
+      dataIdrole.forEach(function(data) {
+        defaultSelected(data);
+      });
   });
   const defaultSelected = idTeam => {
     optionTeam.forEach(function(docs) {
-      if (docs.value === idTeam)
-      {
-      dataIdSelect.push(docs);
-    }
+      if (docs.value === idTeam) {
+        dataIdSelect.push(docs);
+      }
     });
   };
-  useEffect(()=> {
-    if (dataIdSelect !== null)
-    SelectedOption.Select = dataIdSelect;
-  })
-  const handleChangeTeam = (event) => {
+  useEffect(() => {
+    if (dataIdSelect !== null) SelectedOption.Select = dataIdSelect;
+  });
+  const handleChangeTeam = event => {
     setSelectedOption(SelectedOption => ({
       ...SelectedOption,
       Select: event
@@ -120,7 +125,7 @@ function RolesEdit({
         if (docs.privilegeId === id) {
           var tmp = 1;
           docs.checked = tmp;
-        } 
+        }
       });
     });
   };
@@ -191,23 +196,22 @@ function RolesEdit({
     }));
   };
   const onSubmitRoles = event => {
-     event.preventDefault();
+    event.preventDefault();
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked !== 0 && docs.checked !==2) {
+        if (docs.checked !== 0 && docs.checked !== 2) {
           formState.privileges.push(docs.privilegeId);
         }
       });
-
     });
-   
-    formState.teams.splice(0, formState.teams.length)
-    dataTeamToEdit.forEach(function(data) {
-      formState.teams.push(data.value);
-      })
-      if (formState.teams.length === 0)
-      formState.teams = detail.teams
-      editRole(formState)
+
+    formState.teams.splice(0, formState.teams.length);
+    if (dataTeamToEdit !== null)
+      dataTeamToEdit.forEach(function(data) {
+        formState.teams.push(data.value);
+      });
+    else formState.teams = detailById.teams;
+    editRole(formState);
   };
 
   return (
@@ -245,9 +249,9 @@ function RolesEdit({
                   <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
-                <Button color="primary" type="submit" onClick={onSubmitRoles}>
-                      {t('save')}
-                    </Button>
+                  <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                    {t('save')}
+                  </Button>
                 </FormGroup>
               </Form>
             </TabPane>
@@ -258,7 +262,7 @@ function RolesEdit({
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
-                     <FormGroup>
+                    <FormGroup>
                       {optionTeam.length >= 0 && (
                         <Select
                           isMulti
@@ -269,7 +273,7 @@ function RolesEdit({
                         />
                       )}
                     </FormGroup>
-                  
+
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -277,7 +281,7 @@ function RolesEdit({
                       <Row>
                         <Col>
                           <Button onClick={() => handleChecked()}>
-                            {t('roleinit.getallroleof')} {detail.name}
+                            {t('roleinit.getallroleof')} {detailById.name}
                           </Button>
                         </Col>
                         <Col>
@@ -378,7 +382,8 @@ const mapStateToProps = state => {
     detail: state.RoleReducer.detail,
     listPrivilege: state.RoleReducer.listPrivilege,
     listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
-    dataTeam: state.RoleReducer.dataTeam
+    dataTeam: state.RoleReducer.dataTeam,
+    detailById: state.RoleReducer.detailById
   };
 };
 const mapDispatchToProps = {
@@ -387,7 +392,8 @@ const mapDispatchToProps = {
   getpermission: RoleActions.setPermission,
   getListPrivilege: RoleActions.getPrivilegeRole,
   getListRole: RoleActions.getListRole,
-  getListPrvilegesByGroup: RoleActions.getPrivilegeRoleByGroup
+  getListPrvilegesByGroup: RoleActions.getPrivilegeRoleByGroup,
+  getRoleById: RoleActions.getRoleById
 };
 
 export default connect(

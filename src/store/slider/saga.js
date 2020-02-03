@@ -66,7 +66,6 @@ function* editSliderSaga() {
     try {
       const res = yield editSliderService(data);
       if (res.status === 200) {
-        console.log(res.data);
         yield onSuccess();
         yield put({ type: actions.EDIT_SLIDER_RESPONSE, data: res.data });
       } else {

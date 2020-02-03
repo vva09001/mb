@@ -4,6 +4,7 @@ import { filter, map } from 'lodash';
 const initialState = {
   data: [],
   detail: {},
+  detailById: {},
   dataTeam: [],
   listPrivilege: [],
   listPrivilegeByGroup: []
@@ -26,16 +27,16 @@ const Roles = (state = initialState, action) => {
         ...state,
         data: [...state.data, action.data]
       };
-    // case Actions.EDIT_ROLES_REQUEST:
-    //   return {
-    //     ...state,
-    //     data: map(state.data, values => {
-    //       if (values.id === action.data.id) {
-    //         values = action.data;
-    //       }
-    //       return values;
-    //     })
-    //   };
+    case Actions.EDIT_ROLES_REQUEST:
+      return {
+        ...state,
+        data: map(state.data, values => {
+          if (values.idRole === action.data.idRole) {
+            values = action.data;
+          }
+          return values;
+        })
+      };
     case Actions.DELETE_ROLES_RESPONSE:
       return {
         ...state,
@@ -53,11 +54,17 @@ const Roles = (state = initialState, action) => {
         ...state,
         listPrivilege: action.data
       };
+    case Actions.GET_ROLE_BY_ID_RESPONSE:
+      return {
+        ...state,
+        detailById: action.data
+      };
     case Actions.GET_PRIVILEGE_ROLE_BY_GROUP_RESPONSE:
       return {
         ...state,
         listPrivilegeByGroup: action.data
       };
+
     default:
       return state;
   }
