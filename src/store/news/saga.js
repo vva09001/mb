@@ -2,6 +2,7 @@ import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCategoryID } from 'services/news';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
+import Actions from '../group/actions';
 
 function* getNewsSaga() {
   yield takeLatest(actions.GET_NEWS_REQUEST, function*(params) {
@@ -93,7 +94,7 @@ function* deleteNewsSaga() {
       const res = yield deleteNews(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        yield put({ type: actions.GET_NEWS_REQUEST, data: id });
+        yield put({ type: Actions.GET_GROUP_BY_USER_REQUEST, data: id });
       } else {
         yield Error('Xóa lỗi');
       }
