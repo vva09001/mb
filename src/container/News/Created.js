@@ -34,6 +34,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
   });
 
   const [activeTab, setActiveTab] = useState('1');
+  const [status, setStatus] = useState(false);
   const { t } = useTranslation();
   const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
@@ -70,7 +71,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       }
     }));
   };
-   
+
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
@@ -146,12 +147,20 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('title')}</Label>
-                  <input type="text" name="title" onChange={handleChange} 
-                  className={formState.values.title !== null ? 'inputStyle' : 'inputStyleError'}/>
+                  <input
+                    type="text"
+                    name="title"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.title && <input type="hidden" onChange={Error('Thiếu trường tiêu đề')} />}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
@@ -212,7 +221,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     onChange={handleChangeSelect}
                   />
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={createdNews}>
+                <Button color="primary" type="submit">
                   {t('save')}
                 </Button>
               </Form>
