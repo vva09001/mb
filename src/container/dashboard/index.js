@@ -8,8 +8,7 @@ import { GroupActions } from '../../store/actions';
 const PropsType = {
   data: PropTypes.array,
   getGroup: PropTypes.func,
-  deleteGroup: PropTypes.func,
-  listNews: PropTypes.array
+  deleteGroup: PropTypes.func
 };
 
 function Dashboard({ data, getGroup }) {
@@ -38,11 +37,11 @@ function Dashboard({ data, getGroup }) {
 Dashboard.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.GroupReducer.listGroup, listNews: state.GroupReducer.listNews };
+  return { data: state.GroupReducer.listGroupByUser };
 };
 
 const mapDispatchToProps = {
-  getGroup: GroupActions.getGroupAction,
+  getGroup: GroupActions.getGroupByUserAction,
   deleteGroup: GroupActions.deleteGroupAction
 };
 
