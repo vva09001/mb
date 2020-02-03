@@ -22,7 +22,7 @@ function Group({ data, getGroup, deleteGroup, listNews }) {
   const { t } = useTranslation();
 
   const groupIds = map(data, values => {
-    return values.id;
+    return values.idTeam;
   });
 
   const {
