@@ -58,9 +58,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
   const onGetDetail = detail => {
     getDetail(detail);
   };
-
   console.log(listGroup);
-
   return (
     <React.Fragment>
       <div>
@@ -77,7 +75,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
           <NewTable
-            data={data}
+            data={listGroup}
             getDetail={onGetDetail}
             isSelectedItem={isSelectedItem}
             isAllSelected={isAllSelected}
@@ -95,7 +93,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
 Activity.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data, listGroup: state.GroupReducer.listGroupByUser };
+  return { data: state.NewReducer.data, listGroup: state.GroupReducer.listNews };
 };
 
 const mapDispatchToProps = {

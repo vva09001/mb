@@ -10,6 +10,8 @@ import {
 import history from 'helpers/history';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
+import { map } from 'lodash';
+import { faYenSign } from '@fortawesome/free-solid-svg-icons';
 
 function* getGroupSaga() {
   yield takeLatest(actions.GET_GROUP_REQUEST, function*(params) {
@@ -47,7 +49,23 @@ function* getGroupByUserSaga() {
     try {
       const res = yield getGroupByUser();
       if (res.status === 200) {
+        const getUnique = (arr, comp = 'newsId') => {
+          const unique = arr
+            .map(e => e[comp])
+
+            .map((e, i, final) => final.indexOf(e) === i && i)
+
+            .filter(e => arr[e])
+            .map(e => arr[e]);
+
+          return unique;
+        };
+        let data = [];
+        map(res.data, values => {
+          Array.prototype.push.apply(data, values.news);
+        });
         yield put({ type: actions.GET_GROUP_BY_USER_RESPONSE, data: res.data });
+        yield put({ type: actions.GET_NEWS_BY_USER_RESPONSE, data: getUnique(data) });
       } else {
         yield Error(res.message);
       }
