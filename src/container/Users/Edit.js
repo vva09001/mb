@@ -339,18 +339,6 @@ function UsersEdit({
                   <Row>
                     <Col sm={2}>
                       <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.nickname')}
-                      </Label>
-                    </Col>
-                    <Col sm={6}>
-                      <Input type="text" name="nickname" value={formState.values.nickname} onChange={handleChange} />
-                    </Col>
-                  </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Row>
-                    <Col sm={2}>
-                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
                         {t('user.department')}
                       </Label>
                     </Col>
