@@ -54,9 +54,8 @@ const editNews = data => {
 
 const aprrNews = data => {
   return request({
-    url: `/news/accept/${data.newsId}`,
-    method: 'PUT',
-    data: data
+    url: `/news/accept/${data}`,
+    method: 'PUT'
   })
     .then(res => {
       return res;

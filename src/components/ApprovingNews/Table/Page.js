@@ -11,10 +11,10 @@ import ButtonIcon from '../../common/ButtonIcon';
 const PropsType = {
   data: PropTypes.array,
   getDetail: PropTypes.func,
-  apprNews: PropTypes.func
+  apprPages: PropTypes.func
 };
 
-const AprrTable = ({ data, getDetail, getID, apprNews }) => {
+const AprrTablePage = ({ data, getID, apprPages }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
@@ -38,23 +38,23 @@ const AprrTable = ({ data, getDetail, getID, apprNews }) => {
           {map(list, values => {
             if (values.is_active === 0) {
               return (
-                <tr key={values.newsId}>
+                <tr key={values.id}>
                   <th>
-                    <input type="checkbox" onClick={() => getID(values.newsId)} />
+                    <input type="checkbox" onClick={() => getID(values.id)} />
                   </th>
                   <td>
-                    <Link to={`/news/approving/${values.newsId}`}>{values.title}</Link>
+                    <Link to={`/pages/approving/${values.id}`}>{values.name}</Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.newsId}`}>
+                    <Link to={`/news/approving/${values.id}`}>
                       <span className={values.is_active !== 0 ? 'green' : 'dot'} />
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.newsId}`}>{moment(values.created_at).fromNow()}</Link>
+                    <Link to={`/news/approving/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.newsId}`}>
+                    <Link to={`/news/approving/${values.id}`}>
                       {values.is_active === 1 ? `${t('approved.approved')}` : `${t('approved.notapproved')}`}
                     </Link>
                   </td>
@@ -67,7 +67,7 @@ const AprrTable = ({ data, getDetail, getID, apprNews }) => {
                       size="sm"
                       outline
                       onClick={() => {
-                        apprNews(values.newsId);
+                        apprPages(values.id);
                       }}
                     />
                   </td>
@@ -102,6 +102,6 @@ const AprrTable = ({ data, getDetail, getID, apprNews }) => {
   );
 };
 
-AprrTable.propTypes = PropsType;
+AprrTablePage.propTypes = PropsType;
 
-export default AprrTable;
+export default AprrTablePage;

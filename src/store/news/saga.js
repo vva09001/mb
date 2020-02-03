@@ -53,15 +53,13 @@ function* addNewsSaga() {
 
 function* aprrNewsSaga() {
   yield takeLatest(actions.APRR_NEWS_REQUEST, function*(params) {
-    const { data, onSuccess, onFail } = params;
+    const { data } = params;
     try {
       const res = yield aprrNews(data);
-      console.log(data);
       if (res.status === 200) {
-        yield onSuccess();
-        yield put({ type: actions.APRR_NEWS_RESPONSE, data: res.data });
+        yield Success('Duyệt thành công');
+        yield put({ type: actions.GET_NEWS_REQUEST, data: res.data });
       } else {
-        yield onFail();
         yield Error(res.message);
       }
     } catch (error) {

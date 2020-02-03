@@ -8,6 +8,7 @@ import { Table, Input } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
 import XLSX from 'xlsx';
+import Download from '../../components/exchangeRate/downloadExcel';
 
 const PropsType = {
   detaicurrency: PropTypes.array,
@@ -88,13 +89,18 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           <Col>
             <div style={{ padding: 10 }}>
               <Button
-                color={'success'}
+                color={'primary'}
                 onClick={() => {
                   document.getElementById('exel').click();
                 }}
               >
                 {t('import Exel')}
               </Button>
+            </div>
+          </Col>
+          <Col>
+            <div style={{ padding: 10 }}>
+              <Download />
             </div>
           </Col>
         </Row>
@@ -169,7 +175,7 @@ function ExChangeRateEdit({ detaicurrency, detail, editExChangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'success'} onClick={onSubmit}>
+          <Button color={'primary'} onClick={onSubmit}>
             {t('save')}
           </Button>
           <input type="file" onChange={handleChangeFile} style={{ padding: '10px', display: 'none' }} id="exel" />

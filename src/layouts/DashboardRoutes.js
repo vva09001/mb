@@ -54,9 +54,13 @@ import ListGroup from 'container/group';
 import CreateGroup from 'container/group/create';
 import EditGroup from 'container/group/edit';
 import ExChangeRateEdit from 'container/exchangeRate/edit';
+import ApprDashboard from 'container/dashboard/Appr'
 
 const DashboardRoutes = () => (
   <Switch>
+
+    <Route path="/appr/:id" exact component={ApprDashboard}/>
+
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
     <Route path="/news/edit/:id" exact component={NewsEdit} />

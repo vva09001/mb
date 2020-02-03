@@ -13,12 +13,12 @@ import { map } from 'lodash';
 const PropsType = {
   data: PropTypes.array,
   getGroup: PropTypes.func,
-  deleteGroup: PropTypes.func
+  deleteGroup: PropTypes.func,
+  listNews: PropTypes.array
 };
 
-function Group({ data, getGroup, deleteGroup }) {
+function Group({ data, getGroup, deleteGroup, listNews }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [groupID, setGroupID] = useState(null);
   const { t } = useTranslation();
 
   const groupIds = map(data, values => {
@@ -50,7 +50,7 @@ function Group({ data, getGroup, deleteGroup }) {
       setIsOpen(!isOpen);
     }
   };
-
+  console.log(listNews);
   return (
     <React.Fragment>
       <Row>
@@ -67,7 +67,6 @@ function Group({ data, getGroup, deleteGroup }) {
       <Row style={{ background: '#fff' }} className="p-3">
         <GroupTable
           data={data}
-          getID={id => setGroupID(id)}
           isSelectedItem={isSelectedItem}
           isAllSelected={isAllSelected}
           toggleSelectedItem={toggleSelectedItem}
@@ -83,7 +82,7 @@ function Group({ data, getGroup, deleteGroup }) {
 Group.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.GroupReducer.listGroup };
+  return { data: state.GroupReducer.listGroup, listNews: state.GroupReducer.listNews };
 };
 
 const mapDispatchToProps = {

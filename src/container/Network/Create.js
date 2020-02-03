@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { NetworkActions } from '../../store/actions';
+import { NetworkActions, ProvinceActions,DistrictActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
+import { map } from 'lodash';
 import { connect } from 'react-redux';
 
 const PropsType = {
-  NetworkCreate: PropTypes.func
+  NetworkCreate: PropTypes.func,
+  Province : PropTypes.func,
+  District : PropTypes.func,
+  dataProvince : PropTypes.array,
+  dataDistrict : PropTypes.array
 };
-
-function NetworksCreate({ NetworkCreate }) {
+function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDistrict}) {
   const [formState, setFormState] = useState({
     values: {},
     touched: {}
@@ -23,6 +27,10 @@ function NetworksCreate({ NetworkCreate }) {
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+
+  useEffect(() => {
+    Province();
+  }, [Province,District]);
 
   const { t } = useTranslation();
 
@@ -41,6 +49,23 @@ function NetworksCreate({ NetworkCreate }) {
       }
     }));
   };
+
+  const handleChangeDistrict = event => {
+    event.persist();
+    setFormState(formState => ({
+      ...formState,
+      values:{
+        ...formState.values,
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+      },
+      touched:{
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+    District(event.target.value);
+  };
+
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
@@ -54,7 +79,7 @@ function NetworksCreate({ NetworkCreate }) {
       }
     }));
   };
-  const createdMails = event => {
+  const createdNetwork = event => {
     event.preventDefault();
     NetworkCreate(formState.values);
   };
@@ -74,7 +99,7 @@ function NetworksCreate({ NetworkCreate }) {
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdMails}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNetwork}>
             <h4>{t('create')}</h4>
             <Row form style={{ display: 'flex' }}>
               <Col md={4}>
@@ -97,18 +122,6 @@ function NetworksCreate({ NetworkCreate }) {
               <Col md={8}>
                 <FormGroup>
                   <Input type="text" required name="address_name" onChange={handleChange} />
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row form style={{ display: 'flex' }}>
-              <Col md={4}>
-                <FormGroup>
-                  <Label for="exampleName">{t('network.language')}</Label>
-                </FormGroup>
-              </Col>
-              <Col md={8}>
-                <FormGroup>
-                  <Input type="text" required name="language" onChange={handleChange} />
                 </FormGroup>
               </Col>
             </Row>
@@ -156,7 +169,33 @@ function NetworksCreate({ NetworkCreate }) {
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="province_city" onChange={handleChange} />
+                  <Input type="select" required name="province_city" onChange={handleChangeDistrict}>
+                    <option value="">{t('select')}</option>
+                    {map(dataProvince, value => (
+                      <option value={value.id} key={value.id}>
+                        {value.name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row form style={{ display: 'flex' }}>
+              <Col md={4}>
+                <FormGroup>
+                  <Label for="exampleName">{t('network.districts')}</Label>
+                </FormGroup>
+              </Col>
+              <Col md={8}>
+                <FormGroup>
+                  <Input type="select" name="district_city" onChange={handleChange}>
+                    <option value="">{t('select')}</option>
+                    {map(dataDistrict,value => (
+                      <option value={value.id} key={value.name}>
+                        {value.name}
+                      </option>
+                    ))}
+                  </Input>
                 </FormGroup>
               </Col>
             </Row>
@@ -191,11 +230,20 @@ function NetworksCreate({ NetworkCreate }) {
 
 NetworksCreate.propTypes = PropsType;
 
+const mapStateToProps = state => {
+  return {
+    dataProvince: state.ProvinceReducer.data,
+    dataDistrict: state.DistrictReducer.data
+  };
+};
+
 const mapDispatchToProps = {
-  NetworkCreate: NetworkActions.createNetwork
+  NetworkCreate: NetworkActions.createNetwork,
+  Province : ProvinceActions.getProvinceAction,
+  District : DistrictActions.getDistrictAction
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(NetworksCreate);

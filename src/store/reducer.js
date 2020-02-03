@@ -23,6 +23,8 @@ import CountryReducer from './country/reducers';
 import InterestRateReducer from './interestrate/reducers';
 import ExChangeRateReducer from './exchangeRate/reducers';
 import GroupReducer from './group/reducers';
+import ProvinceReducer from './province/reducers';
+import DistrictReducer from './district/reducers';
 
 const reducers = combineReducers({
   NewReducer,
@@ -45,7 +47,9 @@ const reducers = combineReducers({
   NetworkReducer,
   InterestRateReducer,
   ExChangeRateReducer,
-  GroupReducer
+  GroupReducer,
+  ProvinceReducer,
+  DistrictReducer
 });
 
 const persistConfig = {

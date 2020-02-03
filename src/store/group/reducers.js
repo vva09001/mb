@@ -4,7 +4,9 @@ import { map, filter } from 'lodash';
 const initialState = {
   listGroup: [],
   detail: {},
-  listGroupByUser: []
+  listGroupByUser: [],
+  listPages:[],
+  listNews:[]
 };
 
 const GroupReducer = (state = initialState, action) => {
@@ -12,7 +14,8 @@ const GroupReducer = (state = initialState, action) => {
     case Actions.GET_GROUP_RESPONSE:
       return {
         ...state,
-        listGroup: action.data
+        listGroup: action.data,
+        listNews: action.data
       };
     case Actions.ADD_GROUP_RESPONSE:
       return {
@@ -39,7 +42,9 @@ const GroupReducer = (state = initialState, action) => {
     case Actions.GET_GROUP_BY_ID_RESPONSE:
       return {
         ...state,
-        detail: action.data
+        detail: action.data,
+        listPages: action.data.pages,
+        listNews: action.data.news
       };
     case Actions.GET_GROUP_BY_USER_RESPONSE:
       return {

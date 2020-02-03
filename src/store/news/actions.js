@@ -52,11 +52,9 @@ const Actions = {
   APRR_NEWS_REQUEST: 'APRR_NEWS_REQUEST',
   APRR_NEWS_RESPONSE: 'APRR_NEWS_RESPONSE',
 
-  AprrNew: (data, onSuccess, onFail) => ({
+  AprrNew: data => ({
     type: Actions.APRR_NEWS_REQUEST,
-    data,
-    onSuccess,
-    onFail
+    data
   }),
 
   GET_NEW_BY_CATEGORY_REQUEST: 'GET_NEW_BY_CATEGORY_REQUEST',
