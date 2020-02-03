@@ -51,13 +51,13 @@ const GroupTable = ({
         <tbody>
           {map(list, values => {
             return (
-              <tr key={values.id}>
+              <tr key={values.idTeam}>
                 <th>
                   <CustomInput
-                    id={'checkbox-' + values.id}
+                    id={'checkbox-' + values.idTeam}
                     type="checkbox"
-                    checked={isSelectedItem(values.id)}
-                    onChange={() => toggleSelectedItem(values.id)}
+                    checked={isSelectedItem(values.idTeam)}
+                    onChange={() => toggleSelectedItem(values.idTeam)}
                   />
                 </th>
                 <td>
