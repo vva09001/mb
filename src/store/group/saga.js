@@ -11,7 +11,6 @@ import history from 'helpers/history';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 import { map } from 'lodash';
-import { faYenSign } from '@fortawesome/free-solid-svg-icons';
 
 function* getGroupSaga() {
   yield takeLatest(actions.GET_GROUP_REQUEST, function*(params) {

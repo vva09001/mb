@@ -3,13 +3,29 @@ import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCa
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
 import Actions from '../group/actions';
+import { map } from 'lodash';
 
 function* getNewsSaga() {
   yield takeLatest(actions.GET_NEWS_REQUEST, function*(params) {
     try {
       const res = yield getNews();
       if (res.status === 200) {
-        yield put({ type: actions.GET_NEWS_RESPONSE, data: res.data });
+        const getUnique = (arr, comp = 'newsId') => {
+          const unique = arr
+            .map(e => e[comp])
+
+            .map((e, i, final) => final.indexOf(e) === i && i)
+
+            .filter(e => arr[e])
+            .map(e => arr[e]);
+
+          return unique;
+        };
+        let data = [];
+        map(res.data, values => {
+          Array.prototype.push.apply(data, values.news);
+        });
+        yield put({ type: actions.GET_NEWS_RESPONSE, data: getUnique(data) });
       } else {
         yield Error(res.message);
       }
