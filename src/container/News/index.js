@@ -15,12 +15,10 @@ const PropsType = {
   data: PropTypes.array,
   getNews: PropTypes.func,
   deleteNews: PropTypes.func,
-  getDetail: PropTypes.func,
-  getGroup: PropTypes.func,
-  listGroup: PropTypes.array
+  getDetail: PropTypes.func
 };
 
-function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup }) {
+function Activity({ data, getNews, deleteNews, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const NewIds = map(data, values => {
@@ -38,8 +36,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
 
   useEffect(() => {
     getNews();
-    getGroup();
-  }, [getNews, getGroup]);
+  }, [getNews]);
   const { t } = useTranslation();
 
   const openComfirm = () => {
@@ -58,7 +55,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
   const onGetDetail = detail => {
     getDetail(detail);
   };
-  console.log(listGroup);
+
   return (
     <React.Fragment>
       <div>
@@ -75,7 +72,7 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
           <NewTable
-            data={listGroup}
+            data={data}
             getDetail={onGetDetail}
             isSelectedItem={isSelectedItem}
             isAllSelected={isAllSelected}
@@ -93,14 +90,13 @@ function Activity({ data, getNews, deleteNews, getDetail, getGroup, listGroup })
 Activity.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.NewReducer.data, listGroup: state.GroupReducer.listNews };
+  return { data: state.NewReducer.data };
 };
 
 const mapDispatchToProps = {
   getNews: NewActions.GetNews,
   deleteNews: NewActions.DeleteNews,
-  getDetail: NewActions.getDetail,
-  getGroup: GroupActions.getGroupByUserAction
+  getDetail: NewActions.getDetail
 };
 
 export default connect(

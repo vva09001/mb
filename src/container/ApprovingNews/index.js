@@ -34,7 +34,6 @@ function AprrNews({ data, getNews, deleteNews, getDetail, AprrNew }) {
     getDetail(detail);
     history.push('/news/approving');
   };
-
   return (
     <React.Fragment>
       <div>
