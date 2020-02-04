@@ -34,7 +34,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
   });
 
   const [activeTab, setActiveTab] = useState('1');
-  const [status, setStatus] = useState(false);
   const { t } = useTranslation();
   const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
@@ -160,11 +159,17 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     })}
                     className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
-                  {errors.title && <input type="hidden" onChange={Error('Thiếu trường tiêu đề')} />}
+                  {/* {errors.title && <input type="hidden" onChange={Error(`${t('errorfield.title')}`)} />} */}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
-                  <Input type="textarea" name="shortDescription" rows="5" onChange={handleChange} />
+                  <input type="textarea" name="shortDescription" rows="5" onChange={handleChange} 
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
@@ -246,7 +251,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
-                  {t('save')}
+                  {t('save')} 
                 </Button>
               </Form>
             </TabPane>
