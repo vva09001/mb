@@ -15,6 +15,7 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 import ModalMedia from '../../components/Media/ModalMedia';
 import UploadAdapter from '../../services/uploadImage';
+import { useForm } from 'react-hook-form';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -34,7 +35,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const [activeTab, setActiveTab] = useState('1');
   const { t } = useTranslation();
-
+  const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -69,7 +70,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       }
     }));
   };
-   
+
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
       ...formState,
@@ -145,15 +146,30 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
-                  <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="title" onChange={handleChange} />
+                  <Label for="exampleName">{t('title')}</Label>
+                  <input
+                    type="text"
+                    name="title"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {/* {errors.title && <input type="hidden" onChange={Error(`${t('errorfield.title')}`)} />} */}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
-                  <Input type="textarea" name="shortDescription" rows="5" onChange={handleChange} />
+                  <input type="textarea" name="shortDescription" rows="5" onChange={handleChange} 
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
@@ -210,7 +226,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     onChange={handleChangeSelect}
                   />
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={createdNews}>
+                <Button color="primary" type="submit">
                   {t('save')}
                 </Button>
               </Form>
@@ -235,7 +251,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
-                  {t('save')}
+                  {t('save')} 
                 </Button>
               </Form>
             </TabPane>

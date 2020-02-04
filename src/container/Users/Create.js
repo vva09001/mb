@@ -260,18 +260,6 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                   <Row>
                     <Col sm={2}>
                       <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.nickname')}
-                      </Label>
-                    </Col>
-                    <Col sm={6}>
-                      <Input type="text" name="nickname" onChange={handleChange} />
-                    </Col>
-                  </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Row>
-                    <Col sm={2}>
-                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
                         {t('user.department')}
                       </Label>
                     </Col>

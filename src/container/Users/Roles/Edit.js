@@ -47,12 +47,13 @@ function RolesEdit({
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
+  
+  useEffect(() => {
+    getRoleById(id);
+  }, [getRoleById, id]);
   useEffect(() => {
     setFormState(detailById);
   }, [detailById]);
-  useEffect(() => {
-    getRoleById(Number(id));
-  }, [getRoleById, id]);
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
@@ -204,13 +205,16 @@ function RolesEdit({
         }
       });
     });
-
     formState.teams.splice(0, formState.teams.length);
     if (dataTeamToEdit !== null)
+    {
       dataTeamToEdit.forEach(function(data) {
         formState.teams.push(data.value);
       });
-    else formState.teams = detailById.teams;
+    }
+    else {SelectedOption.Select.forEach(function (data) {
+      formState.teams.push(data.value)
+    })}
     editRole(formState);
   };
 

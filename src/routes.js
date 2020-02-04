@@ -85,12 +85,12 @@ export const storefontRoutes = {
   ]
 };
 
-export const sliderfontRoutes = {
-  name: 'menu.slider',
-  to: '/slider',
-  exact: true,
-  icon: 'sliders-h'
-};
+// export const sliderfontRoutes = {
+//   name: 'menu.slider',
+//   to: '/slider',
+//   exact: true,
+//   icon: 'sliders-h'
+// };
 
 export const mediaRouter = {
   name: 'menu.media',
@@ -123,7 +123,7 @@ export default [
   emailRoutes,
   formRoutes,
   menuRoutes,
-  sliderfontRoutes,
+  // sliderfontRoutes,
   groupRouter,
   mediaRouter,
   storefontRoutes,

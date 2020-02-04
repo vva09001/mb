@@ -1,4 +1,3 @@
-import { getRoleById } from "../../services/roles";
 
 const Actions = {
   GET_ROLES_REQUEST: 'GET_ROLES_REQUEST',
