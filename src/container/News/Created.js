@@ -163,11 +163,15 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
-                  <input type="textarea" name="shortDescription" rows="5" onChange={handleChange} 
-                  ref={register({
-                    required: true
-                  })}
-                  className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
+                  <input
+                    type="textarea"
+                    name="shortDescription"
+                    rows="5"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
                   {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
                 </FormGroup>
@@ -251,7 +255,10 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
-                  {t('save')} 
+                  {t('save')}{' '}
+                  {(Object.keys(errors).length !== 0) ? (
+                    <Button type="hidden" onClick={Error(`${t('errors.error')}`)} />
+                  ) : null}
                 </Button>
               </Form>
             </TabPane>

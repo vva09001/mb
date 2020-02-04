@@ -53,9 +53,11 @@ function UsersEdit({
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  useEffect(() => {
-    getUserById(Number(id));
-  }, [getUserById, id]);
+  // useEffect(() => {
+  //   if (id !== undefined) {
+  //     console.log('123')
+  //   getUserById(id);}
+  // }, [getUserById, id]);
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
@@ -65,7 +67,7 @@ function UsersEdit({
   useEffect(() => {
     getAllRole();
     getListPrivilegesByGroup();
-  }, [getAllRole, getListPrivilegesByGroup, detail]);
+  }, [getAllRole, getListPrivilegesByGroup]);
   useEffect(() => {
     dataIdrole = detailById.roles;
     dataIdPrivileges = detailById.userPrivilegeRequests;
