@@ -14,7 +14,6 @@ const PropsType = {
   detail: PropTypes.object,
   detailById: PropTypes.object,
   getpermission: PropTypes.func,
-  listPrivilege: PropTypes.array,
   getListPrivilege: PropTypes.func,
   getListPrvilegesByGroup: PropTypes.func,
   listPrivilegeByGroup: PropTypes.array,
@@ -38,7 +37,10 @@ function RolesEdit({
   getRoleById
 }) {
   const { id } = useParams();
-  const [formState, setFormState] = useState({});
+  const [formState, setFormState] = useState({
+    values: {},
+    touched: {}
+  });
   let dataIdSelect = [];
   let optionTeam = [];
   const [SelectedOption, setSelectedOption] = useState({
@@ -47,22 +49,24 @@ function RolesEdit({
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
-  
+
   useEffect(() => {
     getRoleById(id);
   }, [getRoleById, id]);
   useEffect(() => {
-    setFormState(detailById);
+    setFormState(formState => ({
+      ...formState,
+      values: detailById
+    }));
   }, [detailById]);
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
   }, [getListPrvilegesByGroup, getAllTeam]);
   useEffect(() => {
-    getListPrivilege(detailById.idRole);
     dataIdCurrent = detailById.privileges;
     dataIdrole = detailById.teams;
-  }, [detailById, getListPrivilege]);
+  }, [detailById]);
   useEffect(() => {
     dataPrivileges = listPrivilegeByGroup;
     dataPrivileges.forEach(function(data) {
@@ -193,29 +197,38 @@ function RolesEdit({
     event.persist();
     setFormState(formState => ({
       ...formState,
-      name: event.target.value
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
     }));
   };
   const onSubmitRoles = event => {
     event.preventDefault();
+    formState.values.privileges = [];
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked !== 0 && docs.checked !== 2) {
-          formState.privileges.push(docs.privilegeId);
+        if (docs.checked === 1) {
+          formState.values.privileges.push(docs.privilegeId);
         }
       });
     });
-    formState.teams.splice(0, formState.teams.length);
-    if (dataTeamToEdit !== null)
-    {
+    formState.values.teams.splice(0, formState.values.teams.length);
+    if (dataTeamToEdit === null) formState.values.teams = [];
+    else if (dataTeamToEdit.length === 0) {
+      SelectedOption.Select.forEach(function(docs) {
+        formState.values.teams.push(docs.value);
+      });
+    } else {
       dataTeamToEdit.forEach(function(data) {
-        formState.teams.push(data.value);
+        formState.values.teams.push(data.value);
       });
     }
-    else {SelectedOption.Select.forEach(function (data) {
-      formState.teams.push(data.value)
-    })}
-    editRole(formState);
+    editRole(formState.values);
   };
 
   return (
@@ -250,7 +263,13 @@ function RolesEdit({
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" id="exampleName" value={formState.name} onChange={handleChange} />
+                  <Input
+                    type="text"
+                    name="name"
+                    id="exampleName"
+                    value={formState.values.name}
+                    onChange={handleChange}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Button color="primary" type="submit" onClick={onSubmitRoles}>
@@ -384,7 +403,6 @@ RolesEdit.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     detail: state.RoleReducer.detail,
-    listPrivilege: state.RoleReducer.listPrivilege,
     listPrivilegeByGroup: state.RoleReducer.listPrivilegeByGroup,
     dataTeam: state.RoleReducer.dataTeam,
     detailById: state.RoleReducer.detailById

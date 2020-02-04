@@ -54,7 +54,7 @@ function UsersEdit({
     if (activeTab !== tab) setActiveTab(tab);
   };
   useEffect(() => {
-    getUserById(Number(id));
+    getUserById(id);
   }, [getUserById, id]);
   useEffect(() => {
     setFormState(formState => ({
@@ -65,7 +65,7 @@ function UsersEdit({
   useEffect(() => {
     getAllRole();
     getListPrivilegesByGroup();
-  }, [getAllRole, getListPrivilegesByGroup, detail]);
+  }, [getAllRole, getListPrivilegesByGroup]);
   useEffect(() => {
     dataIdrole = detailById.roles;
     dataIdPrivileges = detailById.userPrivilegeRequests;
@@ -129,7 +129,6 @@ function UsersEdit({
       });
   });
   const allowBlock = value => {
-    console.log(value)
     var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {
