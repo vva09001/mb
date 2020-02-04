@@ -53,11 +53,9 @@ function UsersEdit({
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  // useEffect(() => {
-  //   if (id !== undefined) {
-  //     console.log('123')
-  //   getUserById(id);}
-  // }, [getUserById, id]);
+  useEffect(() => {
+    getUserById(id);
+  }, [getUserById, id]);
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
@@ -131,7 +129,6 @@ function UsersEdit({
       });
   });
   const allowBlock = value => {
-    console.log(value)
     var radios = document.forms[value.groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (String(radios[i].type) === 'radio') {

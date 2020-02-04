@@ -209,9 +209,10 @@ function RolesEdit({
   };
   const onSubmitRoles = event => {
     event.preventDefault();
+    formState.values.privileges = [];
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked !== 0 && docs.checked !== 2) {
+        if (docs.checked === 1) {
           formState.values.privileges.push(docs.privilegeId);
         }
       });
