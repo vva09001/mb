@@ -15,7 +15,6 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 import ModalMedia from '../../components/Media/ModalMedia';
 import UploadAdapter from '../../services/uploadImage';
-import { useForm } from 'react-hook-form';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -35,7 +34,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const [activeTab, setActiveTab] = useState('1');
   const { t } = useTranslation();
-  const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -146,7 +144,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('title')}</Label>
@@ -154,10 +152,8 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     type="text"
                     name="title"
                     onChange={handleChange}
-                    ref={register({
-                      required: true
-                    })}
-                    className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
+                   
+                    className='inputStyle'
                   />
                   {/* {errors.title && <input type="hidden" onChange={Error(`${t('errorfield.title')}`)} />} */}
                 </FormGroup>
@@ -168,10 +164,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     name="shortDescription"
                     rows="5"
                     onChange={handleChange}
-                    ref={register({
-                      required: true
-                    })}
-                    className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
+                    className='inputStyle'
                   />
                   {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
                 </FormGroup>
