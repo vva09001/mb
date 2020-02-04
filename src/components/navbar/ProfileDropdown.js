@@ -28,7 +28,14 @@ const ProfileDropdown = ({ logout }) => {
           <DropdownItem tag={Link} to="/pages/settings">
             Settings
           </DropdownItem>
-          <DropdownItem tag={Link} to="/authentication/login" onClick={() => logout()}>
+          <DropdownItem
+            tag={Link}
+            to="/authentication/login"
+            onClick={() => {
+              logout();
+              window.location.reload();
+            }}
+          >
             Logout
           </DropdownItem>
         </div>
