@@ -48,7 +48,7 @@ function* getGroupByUserSaga() {
     try {
       const res = yield getGroupByUser();
       if (res.status === 200) {
-        const getUnique = (arr, comp = 'newsId') => {
+        const getUnique = (arr, comp) => {
           const unique = arr
             .map(e => e[comp])
 
@@ -59,12 +59,12 @@ function* getGroupByUserSaga() {
 
           return unique;
         };
-        let data = [];
+        let datacategory = [];
         map(res.data, values => {
-          Array.prototype.push.apply(data, values.news);
+          Array.prototype.push.apply(datacategory, values.category);
         });
         yield put({ type: actions.GET_GROUP_BY_USER_RESPONSE, data: res.data });
-        yield put({ type: actions.GET_NEWS_BY_USER_RESPONSE, data: getUnique(data) });
+        yield put({ type: actions.GET_CATEGORIES_BY_GROUP, data: getUnique(datacategory, 'id') });
       } else {
         yield Error(res.message);
       }

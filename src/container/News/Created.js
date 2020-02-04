@@ -5,7 +5,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions, CategoryActions, FormBuilderActions, MediaActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions, MediaActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import Select from 'react-select';
@@ -163,11 +163,15 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
-                  <input type="textarea" name="shortDescription" rows="5" onChange={handleChange} 
-                  ref={register({
-                    required: true
-                  })}
-                  className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
+                  <input
+                    type="textarea"
+                    name="shortDescription"
+                    rows="5"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
                   {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
                 </FormGroup>
@@ -251,7 +255,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={createdNews}>
-                  {t('save')} 
+                  {t('save')}
                 </Button>
               </Form>
             </TabPane>
@@ -266,7 +270,7 @@ NewsCreate.propTypes = PropsType;
 
 const mapStateToProps = state => {
   return {
-    listOptions: state.CategoryReducer.listOption,
+    listOptions: state.GroupReducer.listCategories,
     listForm: state.FormBuilderReducer.listForm,
     imageSeletedata: state.MediaReducer.detail
   };
@@ -274,7 +278,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   newsCreate: NewActions.AddNews,
-  getCategory: CategoryActions.getCategoryAction,
+  getCategory: GroupActions.getGroupByUserAction,
   getForm: FormBuilderActions.getFormAction,
   addFiles: MediaActions.AddImages
 };

@@ -6,7 +6,8 @@ const initialState = {
   detail: {},
   listGroupByUser: [],
   listPages: [],
-  listNews: []
+  listNews: [],
+  listCategories: []
 };
 
 const GroupReducer = (state = initialState, action) => {
@@ -55,6 +56,11 @@ const GroupReducer = (state = initialState, action) => {
       return {
         ...state,
         listNews: action.data
+      };
+    case Actions.GET_CATEGORIES_BY_GROUP:
+      return {
+        ...state,
+        listCategories: action.data
       };
     default:
       return state;
