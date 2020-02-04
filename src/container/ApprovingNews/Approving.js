@@ -5,26 +5,42 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
-import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
-import history from 'helpers/history';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { map } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import ModalMedia from '../../components/Media/ModalMedia';
+import UploadAdapter from '../../services/uploadImage';
+import history from 'helpers/history';
 
 const PropsType = {
+  listForm: PropTypes.array,
+  listOptions: PropTypes.array,
   detail: PropTypes.object,
   editNew: PropTypes.func,
-  AprrNew: PropTypes.func,
-  listOptions : PropTypes.array,
   getCategory: PropTypes.func,
   getForm: PropTypes.func,
-  listForm: PropTypes.array,
+  getNewsId: PropTypes.func,
+  imageSeletedata: PropTypes.object,
+  AprrNew: PropTypes.func
 };
 
-function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm, getNewsId }) {
-  let { id } = useParams();
+function AprrEdit({
+  detail,
+  editNew,
+  getCategory,
+  listOptions,
+  listForm,
+  getForm,
+  getNewsId,
+  imageSeletedata,
+  AprrNew
+}) {
+  const { id } = useParams();
   useEffect(() => {
     getNewsId(id);
     getCategory();
@@ -42,14 +58,23 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
     values: {},
     touched: {}
   });
+
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
-
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        base_image: imageSeletedata.url
+      }
+    }));
+  };
   const handleChange = event => {
     event.persist();
 
@@ -57,7 +82,8 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
       },
       touched: {
         ...formState.touched,
@@ -79,13 +105,28 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
     }
   };
 
+  const handleChangeSelect = event => {
+    let arr = [];
+    map(event, items => arr.push({ id: items.value, name: items.label }));
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        categories: arr
+      },
+      touched: {
+        ...formState.touched,
+        categories: true
+      }
+    }));
+  };
+
   const onSuccess = () => {
-    Success('Phê Duyệt Thành Công');
-    history.goBack();
+    Success('Sửa thành công');
   };
 
   const onFail = () => {
-    Error('Phê Duyệt Thất Bại');
+    Error('Sửa thất bại');
   };
   const ckEditorChange = (event, data) => {
     setFormState(formState => ({
@@ -100,13 +141,14 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
       }
     }));
   };
-  const aprrNews = event => {
+
+  const editNews = event => {
     event.preventDefault();
     const body = {
       ...formState.values,
       newsBlocks: []
     };
-    AprrNew(formState.values, onSuccess, onFail, body);
+    editNew(body, onSuccess, onFail);
   };
   return (
     <React.Fragment>
@@ -134,13 +176,16 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={aprrNews}>
+          <Form className="p-3" style={{ background: '#fff' }}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="title" 
-              value={formState.values.title === undefined ? '' : formState.values.title}
-              onChange={handleChange} />
+              <Input
+                type="text"
+                name="title"
+                value={formState.values.title === undefined ? '' : formState.values.title}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('summary')}</Label>
@@ -161,80 +206,151 @@ function AprrEdit({ detail, AprrNew, getCategory, listOptions, listForm, getForm
                   const data = editor.getData();
                   ckEditorChange(event, data);
                 }}
+                onInit={editor => {
+                  editor.ui.view.editable.element.style.height = 'auto';
+                  editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                    return new UploadAdapter(loader);
+                  };
+                }}
               />
             </FormGroup>
             <FormGroup>
               <Label>{t('authName')}</Label>
-              <Input type="text" name="author_name" value={formState.values.author_name} onChange={handleChange} />
+              <Input
+                type="text"
+                name="author_name"
+                value={formState.values.author_name === undefined ? '' : formState.values.author_name}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
-              <Label for="exampleFile">{t('baseImages')}</Label>
-              <Input type="file" name="base_image" id="exampleFile" />
+              <img
+                src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                style={{ width: '100px' }}
+                alt="icon"
+              />
+              <ModalMedia setState={onSetState} />
             </FormGroup>
+            <div className="check__box">
+              <Label>{t('sticky')}</Label>
+              <div>
+                <Input
+                  type="checkbox"
+                  name="is_sticky"
+                  checked={formState.values.is_sticky === 0 ? false : true}
+                  onChange={handleChange}
+                />
+                <span>{t('category_page.form.activeCategory')}</span>
+              </div>
+            </div>
             <FormGroup>
               <Label for="exampleSelect">{t('category')}</Label>
-              <Input type="select" name="category" 
-              value={formState.values.category} onChange={handleChange}>
-                <option>{t('select')}</option>
-                {map(listOptions, value => (
-                  <option value={value.id} key={value.id}>
-                    {value.name}
-                  </option>
-                ))}
-              </Input>
+              <Select
+                name="categorys"
+                closeMenuOnSelect={false}
+                components={makeAnimated}
+                value={map(formState.values.categories, items => {
+                  return {
+                    value: items.id,
+                    label: items.name
+                  };
+                })}
+                options={map(listOptions, values => {
+                  return {
+                    value: values.id,
+                    label: values.name
+                  };
+                })}
+                isMulti
+                onChange={handleChangeSelect}
+              />
             </FormGroup>
-            <FormGroup>
-              <Button color="primary" type="submit">
-                {t('approved.approved')}
-              </Button>
-            </FormGroup>
+            <Button color="primary" onClick={editNews}>
+              {t('edit')}
+            </Button>{' '}
+            <Button
+              color="primary"
+              onClick={() => {
+                AprrNew(formState.values.newsId);
+                history.push('/news/approved_listings');
+              }}
+            >
+              {t('approved.approved')}
+            </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={aprrNews}>
+          <Form className="p-3" style={{ background: '#fff' }}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
-              <Input type="text" name="meta_title" value={formState.values.meta_title} onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_title"
+                value={formState.values.meta_title === null ? '' : formState.values.meta_title}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <Input type="text" name="meta_keyword" value={formState.values.meta_keyword} onChange={handleChange} />
+              <Input
+                type="text"
+                name="meta_keyword"
+                value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
+                onChange={handleChange}
+              />
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
               <Input
                 type="textarea"
                 name="meta_description"
-                value={formState.values.meta_description}
+                value={formState.values.meta_description === undefined ? '' : formState.values.meta_description}
                 rows="5"
                 onChange={handleChange}
               />
             </FormGroup>
             <FormGroup>
-              <Button color="primary" type="submit">
-              {t('approved.approved')}
-              </Button>
+              <Label>{t('URL')}</Label>
+              <Input
+                type="text"
+                name="url"
+                value={formState.values.url === undefined ? '' : formState.values.url}
+                onChange={handleChange}
+              />
             </FormGroup>
+            <Button color="primary" onClick={editNews}>
+              {t('edit')}
+            </Button>{' '}
+            <Button
+              color="primary"
+              onClick={() => {
+                AprrNew(formState.values.newsId);
+                history.push('/news/approved_listings');
+              }}
+            >
+              {t('approved.approved')}
+            </Button>
           </Form>
         </TabPane>
       </TabContent>
     </React.Fragment>
   );
 }
-
 AprrEdit.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { 
+  return {
     detail: state.NewReducer.detail,
     listOptions: state.CategoryReducer.listOption,
-    listForm: state.FormBuilderReducer.listForm
+    listForm: state.FormBuilderReducer.listForm,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 
 const mapDispatchToProps = {
   AprrNew: NewActions.AprrNew,
+  editNew: NewActions.EditNew,
   getCategory: CategoryActions.getCategoryAction,
   getForm: FormBuilderActions.getFormAction,
   getNewsId: NewActions.GetNewsId
