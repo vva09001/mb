@@ -117,7 +117,7 @@ function* deleteGroupSaga() {
         yield Success('Xóa thành công');
         yield put({ type: actions.GET_GROUP_REQUEST, data: id });
       } else {
-        yield Error('Xóa lỗi');
+        yield Error(res.message);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
