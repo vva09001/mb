@@ -181,7 +181,11 @@
   },
   "errors": {
     "passworderror": "Password required to be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
-    "passwordnotmatch": "Password does not match"
+    "passwordnotmatch": "Password does not match",
+    "required": "This field is required",
+    "create": "Creating failed, check the fields again",
+    "edit": "Editting failed, check the fields again",
+    "minone": "This field needs to select at least one value"
   },
   "slider": {
     "createslider": "Create Slider",

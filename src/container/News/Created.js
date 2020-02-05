@@ -26,16 +26,22 @@ const PropsType = {
   imageSeletedata: PropTypes.object,
   addFiles: PropTypes.func
 };
-
 function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, imageSeletedata, addFiles }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: {
+      description: '',
+      categories: []
+    },
     touched: {}
   });
 
   const [activeTab, setActiveTab] = useState('1');
   const { t } = useTranslation();
-  const { register, errors, handleSubmit } = useForm();
+  const [status, setStatus] = useState({
+    description: false,
+    categories: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -83,6 +89,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         description: true
       }
     }));
+    console.log(data);
   };
 
   const handleChangeSelect = event => {
@@ -109,14 +116,16 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
   const onFail = () => {
     Error('Tạo thất bại');
   };
+  const createdNews = () => {
+    // event.preventDefault();
 
-  const createdNews = event => {
-    event.preventDefault();
     const body = {
       ...formState.values,
       newsBlocks: []
     };
-    newsCreate(body, onSuccess, onFail);
+    console.log(status);
+    if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
+    else Error(t('errors.create'));
   };
   return (
     <React.Fragment>
@@ -146,7 +155,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
+              <form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('title')}</Label>
@@ -159,7 +168,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     })}
                     className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
-                  {/* {errors.title && <input type="hidden" onChange={Error(`${t('errorfield.title')}`)} />} */}
+                  {errors.title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('summary')}</Label>
@@ -173,23 +182,29 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     })}
                     className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
-                  {/* {errors.shortDescription && <input type="hidden" onChange={Error(`${t('errorfield.shortDescription')}`)} />} */}
+                  {errors.shortDescription && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                  {console.log(errors.shortDescription)}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
                   <CKEditor
+                    config="my_styles"
                     editor={ClassicEditor}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
                     }}
                     onInit={editor => {
-                      editor.ui.view.editable.element.style.height = 'auto';
+                      editor.ui.view.editable.element.style.height = 'auto%';
                       editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
                         return new UploadAdapter(loader);
                       };
                     }}
                   />
+                  {console.log(formState.values.description)}
+                  {formState.values.description === '' && status.description && (
+                    <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                  )}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('authName')}</Label>
@@ -204,7 +219,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                       alt="logo"
                     />
                   </div>
-
                   <ModalMedia setState={onSetState} />
                 </FormGroup>
                 <div className="check__box">
@@ -229,36 +243,119 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     isMulti
                     onChange={handleChangeSelect}
                   />
+                  {formState.values.categories.length === 0 && status.categories && (
+                    <span style={{ color: 'red' }}>{t('errors.minone')}</span>
+                  )}
                 </FormGroup>
-                <Button color="primary" type="submit">
+                <Button
+                  color="primary"
+                  type="submit"
+                  onClick={async () => {
+                    var title = await triggerValidation('title');
+                    var shortDescription = await triggerValidation('shortDescription');
+                    var meta_title = await triggerValidation('meta_title');
+                    var meta_keyword = await triggerValidation('meta_keyword');
+                    var meta_description = await triggerValidation('meta_description');
+                    if (
+                      title === false ||
+                      shortDescription === false ||
+                      meta_title === false ||
+                      meta_keyword === false ||
+                      meta_description === false
+                    ) Error(t('errors.create'));
+                    if (formState.values.description === '')
+                      setStatus(status => ({
+                        ...status,
+                        description: true
+                      }));
+                    if (formState.values.categories.length === 0)
+                      setStatus(status => ({
+                        ...status,
+                        categories: true
+                      }));
+                  }}
+                >
                   {t('save')}
                 </Button>
-              </Form>
+              </form>
             </TabPane>
             <TabPane tabId="2">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
                 <h4>{t('seo')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('meta.title')}</Label>
-                  <Input type="text" name="meta_title" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="meta_title"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.meta_title === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.meta_title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('meta.keywords')}</Label>
-                  <Input type="text" name="meta_keyword" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="meta_keyword"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.meta_keyword === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.meta_keyword && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('meta.description')}</Label>
-                  <Input type="textarea" name="meta_description" rows="5" onChange={handleChange} />
+                  <input
+                    type="textarea"
+                    name="meta_description"
+                    rows="5"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.meta_description === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.meta_description && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('URL')}</Label>
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={createdNews}>
-                  {t('save')}{' '}
-                  {(Object.keys(errors).length !== 0) ? (
-                    <Button type="hidden" onClick={Error(`${t('errors.error')}`)} />
-                  ) : null}
+                <Button
+                  color="primary"
+                  type="submit"
+                  onClick={async () => {
+                    var title = await triggerValidation('title');
+                    var shortDescription = await triggerValidation('shortDescription');
+                    var meta_title = await triggerValidation('meta_title');
+                    var meta_keyword = await triggerValidation('meta_keyword');
+                    var meta_description = await triggerValidation('meta_description');
+                    if (
+                      title === false ||
+                      shortDescription === false ||
+                      meta_title === false ||
+                      meta_keyword === false ||
+                      meta_description === false
+                    )
+                      Error(t('errors.create'));
+                    if (formState.values.description === '')
+                      setStatus(status => ({
+                        ...status,
+                        description: true
+                      }));
+                    if (formState.values.categories.length === 0)
+                      setStatus(status => ({
+                        ...status,
+                        categories: true
+                      }));
+                  }}
+                >
+                  {t('save')}
                 </Button>
               </Form>
             </TabPane>
