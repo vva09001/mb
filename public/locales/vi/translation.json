@@ -210,7 +210,11 @@
   },
   "errors": {
     "passworderror": "Mật khẩu buộc phải có tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt",
-    "passwordnotmatch": "Mật khẩu không trùng khớp"
+    "passwordnotmatch": "Mật khẩu không trùng khớp",
+    "required": "Trường này là bắt buộc",
+    "create": "Tạo không thành công, kiểm tra lại các trường",
+    "edit": "Chỉnh sửa không thành công, kiểm tra lại các trường",
+    "minone": "Trường này cần chọn ít nhất một giá trị"
   },
   "slider": {
     "createslider": "Tạo Slider",
