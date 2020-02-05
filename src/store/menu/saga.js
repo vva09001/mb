@@ -167,7 +167,7 @@ function* updatePositionMenuItemsSaga() {
       const res = yield updatePositionMenuItemsService(idMenuItem, idParent, positions);
       if (res.status === 200) {
         Success(' Sửa thành công');
-        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data[0].menuId });
+        yield put({ type: actions.GET_MENUITEMS_REQUEST, id: res.data });
       } else {
         yield Error(res.message);
       }

@@ -102,19 +102,20 @@ function EditMenus({
   };
   const onMove = treeData => {
     if (treeData.nextParentNode !== null) {
+      console.log(treeData)
       let idParent = treeData.nextParentNode.id;
       let idPage = treeData.node.id;
       let positions = 1;
       let childrenData = treeData.nextParentNode.children;
       for (let i = 0; i < childrenData.length; i++) {
         if (childrenData[i].id === idPage) {
-          positions = i+1;
+          positions = i + 1;
           break;
         }
       }
       updatePositionMenuItem(idPage, idParent, positions);
-    } else {
-      getMenuItems(detail.id);
+    } else {     
+      updatePositionMenuItem(treeData.node.id, -1, treeData.nextTreeIndex + 1);
     }
   };
 

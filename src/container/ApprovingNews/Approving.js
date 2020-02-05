@@ -4,7 +4,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions, CategoryActions, FormBuilderActions } from '../../store/actions';
+import { NewActions, CategoryActions, FormBuilderActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import Select from 'react-select';
@@ -342,7 +342,7 @@ AprrEdit.propTypes = PropsType;
 const mapStateToProps = state => {
   return {
     detail: state.NewReducer.detail,
-    listOptions: state.CategoryReducer.listOption,
+    listOptions: state.GroupReducer.listCategories,
     listForm: state.FormBuilderReducer.listForm,
     imageSeletedata: state.MediaReducer.detail
   };
@@ -351,7 +351,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   AprrNew: NewActions.AprrNew,
   editNew: NewActions.EditNew,
-  getCategory: CategoryActions.getCategoryAction,
+  getCategory: GroupActions.getGroupByUserAction,
   getForm: FormBuilderActions.getFormAction,
   getNewsId: NewActions.GetNewsId
 };

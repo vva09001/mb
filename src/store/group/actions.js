@@ -2,6 +2,8 @@ const Actions = {
   GET_GROUP_REQUEST: 'GET_GROUP_REQUEST',
   GET_GROUP_RESPONSE: 'GET_GROUP_RESPONSE',
 
+  GET_CATEGORIES_BY_GROUP: 'GET_CATEGORIES_BY_GROUP',
+
   getGroupAction: () => ({
     type: Actions.GET_GROUP_REQUEST
   }),
