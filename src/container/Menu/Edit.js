@@ -102,7 +102,6 @@ function EditMenus({
   };
   const onMove = treeData => {
     if (treeData.nextParentNode !== null) {
-      console.log(treeData)
       let idParent = treeData.nextParentNode.id;
       let idPage = treeData.node.id;
       let positions = 1;
@@ -114,7 +113,7 @@ function EditMenus({
         }
       }
       updatePositionMenuItem(idPage, idParent, positions);
-    } else {     
+    } else {
       updatePositionMenuItem(treeData.node.id, -1, treeData.nextTreeIndex + 1);
     }
   };
@@ -159,6 +158,7 @@ function EditMenus({
               treeData={dataItem}
               onChange={treeData => changeTree(treeData)}
               onMoveNode={treeData => onMove(treeData)}
+              getNodeKey={({ node }) => node.id}
               generateNodeProps={({ node, path }) => ({
                 buttons: [
                   // eslint-disable-next-line react/jsx-key

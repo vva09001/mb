@@ -88,7 +88,7 @@ function* getMenuItemsSaga() {
       let data = [];
       if (res.status === 200) {
         const nest = (items, id = null, link = 'parentId') => {
-          return items
+          return items.sort((a, b) => a.position - b.position)
             .filter(item => item[link] === id)
             .map(item => ({
               ...item,
