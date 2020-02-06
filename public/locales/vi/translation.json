@@ -275,7 +275,8 @@
     "down": "Tải file",
     "processingunit": "Đơn vị xử lý",
     "lastupdateddate": "Ngày cuối cập nhập",
-    "districts": "Quận/Huyện"
+    "districts": "Quận/Huyện",
+    "content": "Nội dung"
   },
   "roleinit": {
     "getallroleof": "Hiển thị quyền hiện tại của",

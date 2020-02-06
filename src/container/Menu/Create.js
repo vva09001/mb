@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { MenuActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const Proptype = {
   addMenu: Proptypes.func
@@ -13,13 +15,16 @@ const Proptype = {
 function CreateMenus({ addMenu }) {
   const [formState, setFormState] = useState({
     values: {
-      position:""
+      position: ''
     },
     touched: {}
   });
 
   const { t } = useTranslation();
-
+  const [status, setStatus] = useState({
+    position: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const handleChange = event => {
     event.persist();
 
@@ -36,9 +41,26 @@ function CreateMenus({ addMenu }) {
       }
     }));
   };
-  const onSubmit = event => {
-    event.preventDefault();
-    addMenu(formState.values);
+  const handleError = async () => {
+    var name = await triggerValidation('name');
+    if (name === false) {
+      Error(t('errors.create'));
+    }
+    if (formState.values.position === '')
+      setStatus(status => ({
+        ...status,
+        position: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        position: false
+      }));
+    }
+  };
+  const onSubmit = () => {
+    if (status.position === false) addMenu(formState.values);
+    else Error(t('errors.create'));
   };
   return (
     <React.Fragment>
@@ -51,11 +73,20 @@ function CreateMenus({ addMenu }) {
         </Col>
         <Col lg={5} md={4}>
           <div>
-            <Form className="cetegoryFrom" onSubmit={onSubmit}>
+            <Form className="cetegoryFrom" onSubmit={handleSubmit(onSubmit)}>
               <h4>{t('menu.create')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
-                <Input type="text" name="name" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                />
+                {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
               </FormGroup>
               <FormGroup>
                 <Label for="exampleSelect">{t('menu.Postion')}</Label>
@@ -65,6 +96,9 @@ function CreateMenus({ addMenu }) {
                   <option value={'top'}>{t('menu.Top')}</option>
                   <option value={'side'}>{t('menu.Side')}</option>
                 </Input>
+                {formState.values.position === '' && status.position && (
+                  <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                )}
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
@@ -75,7 +109,7 @@ function CreateMenus({ addMenu }) {
                   </div>
                 </div>
               </FormGroup>
-              <Button color="primary" type="submit">
+              <Button color="primary" type="submit" onClick={handleError}>
                 {t('create')}
               </Button>
             </Form>

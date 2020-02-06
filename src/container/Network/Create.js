@@ -5,32 +5,41 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { NetworkActions, ProvinceActions,DistrictActions } from '../../store/actions';
+import { NetworkActions, ProvinceActions, DistrictActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
 import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   NetworkCreate: PropTypes.func,
-  Province : PropTypes.func,
-  District : PropTypes.func,
-  dataProvince : PropTypes.array,
-  dataDistrict : PropTypes.array
+  Province: PropTypes.func,
+  District: PropTypes.func,
+  dataProvince: PropTypes.array,
+  dataDistrict: PropTypes.array
 };
-function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDistrict}) {
+function NetworksCreate({ NetworkCreate, dataProvince, Province, District, dataDistrict }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: {
+      province_city: '',
+      district_city: ''
+    },
     touched: {}
   });
   const [activeTab, setActiveTab] = useState('1');
-
+  const [status, setStatus] = useState({
+    province_city: false,
+    district_city: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   useEffect(() => {
     Province();
-  }, [Province,District]);
+  }, [Province, District]);
 
   const { t } = useTranslation();
 
@@ -54,11 +63,11 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
     event.persist();
     setFormState(formState => ({
       ...formState,
-      values:{
+      values: {
         ...formState.values,
         [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
       },
-      touched:{
+      touched: {
         ...formState.touched,
         [event.target.name]: true
       }
@@ -79,9 +88,46 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
       }
     }));
   };
-  const createdNetwork = event => {
-    event.preventDefault();
-    NetworkCreate(formState.values);
+  const handleError = async () => {
+    var address = await triggerValidation('address');
+    var address_name = await triggerValidation('address_name');
+    var longitude = await triggerValidation('longitude');
+    var latitude = await triggerValidation('latitude');
+    var network_category = await triggerValidation('network_category');
+    if (
+      address === false ||
+      address_name === false ||
+      longitude === false ||
+      latitude === false ||
+      network_category === false
+    )
+      Error(t('errors.create'));
+    if (formState.values.province_city === '')
+      setStatus(status => ({
+        ...status,
+        province_city: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        province_city: false
+      }));
+    }
+    if (formState.values.district_city === '')
+      setStatus(status => ({
+        ...status,
+        district_city: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        district_city: false
+      }));
+    }
+  };
+  const createdNetwork = () => {
+    if (status.province_city === false && status.province_city === false) NetworkCreate(formState.values);
+    else Error(t('errors.create'));
   };
   return (
     <React.Fragment>
@@ -99,7 +145,7 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNetwork}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNetwork)}>
             <h4>{t('create')}</h4>
             <Row form style={{ display: 'flex' }}>
               <Col md={4}>
@@ -109,7 +155,16 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="address" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="address"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.address === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.address && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </Col>
             </Row>
@@ -121,7 +176,16 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="address_name" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="address_name"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.address_name === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.address_name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </Col>
             </Row>
@@ -133,7 +197,16 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="latitude" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="latitude"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.latitude === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.latitude && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </Col>
             </Row>
@@ -145,7 +218,16 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="longitude" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="longitude"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.longitude === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.longitude && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </Col>
             </Row>
@@ -157,7 +239,16 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="text" required name="network_category" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="network_category"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.network_category === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.network_category && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </Col>
             </Row>
@@ -169,7 +260,7 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <Input type="select" required name="province_city" onChange={handleChangeDistrict}>
+                  <Input type="select" name="province_city" onChange={handleChangeDistrict}>
                     <option value="">{t('select')}</option>
                     {map(dataProvince, value => (
                       <option value={value.id} key={value.id}>
@@ -177,6 +268,9 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
                       </option>
                     ))}
                   </Input>
+                  {formState.values.province_city === '' && status.province_city && (
+                    <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
@@ -190,12 +284,15 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
                 <FormGroup>
                   <Input type="select" name="district_city" onChange={handleChange}>
                     <option value="">{t('select')}</option>
-                    {map(dataDistrict,value => (
+                    {map(dataDistrict, value => (
                       <option value={value.id} key={value.name}>
                         {value.name}
                       </option>
                     ))}
                   </Input>
+                  {formState.values.district_city === '' && status.district_city && (
+                    <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                  )}
                 </FormGroup>
               </Col>
             </Row>
@@ -218,7 +315,7 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
             </Row>
 
-            <Button color="primary" type="submit">
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('save')}
             </Button>
           </Form>
@@ -239,8 +336,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   NetworkCreate: NetworkActions.createNetwork,
-  Province : ProvinceActions.getProvinceAction,
-  District : DistrictActions.getDistrictAction
+  Province: ProvinceActions.getProvinceAction,
+  District: DistrictActions.getDistrictAction
 };
 
 export default connect(

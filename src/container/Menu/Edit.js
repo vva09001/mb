@@ -9,6 +9,7 @@ import history from 'helpers/history';
 import SortableTree, { toggleExpandedForAll } from 'react-sortable-tree';
 import PopupComfirm from '../../components/common/PopupComfirm';
 import ButtonIcon from '../../components/common/ButtonIcon';
+import { useForm } from 'react-hook-form';
 
 const Proptype = {
   editMenu: Proptypes.func,
@@ -49,6 +50,10 @@ function EditMenus({
     show: false,
     hiden: false
   });
+  const [status, setStatus] = useState({
+    position: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
 
   const { t } = useTranslation();
 
@@ -68,9 +73,9 @@ function EditMenus({
       }
     }));
   };
-  const onSubmit = event => {
-    event.preventDefault();
-    editMenu(formState.values);
+  const onSubmit = () => {
+    if (status.position === false) editMenu(formState.values);
+    else Error(t('errors.edit'));
   };
   const changeTree = treeData => {
     expanstion(treeData);
@@ -117,7 +122,23 @@ function EditMenus({
       updatePositionMenuItem(treeData.node.id, -1, treeData.nextTreeIndex + 1);
     }
   };
-
+  const handleError = async () => {
+    var name = await triggerValidation('name');
+    if (name === false) {
+      Error(t('errors.edit'));
+    }
+    if (formState.values.position === '')
+      setStatus(status => ({
+        ...status,
+        position: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        position: false
+      }));
+    }
+  };
   const onDelete = () => {
     deleteMenuItem(detailItem);
     setIsOpen(!isOpen);
@@ -187,11 +208,21 @@ function EditMenus({
         </Col>
         <Col lg={5} md={8}>
           <div>
-            <Form className="cetegoryFrom" onSubmit={onSubmit}>
+            <Form className="cetegoryFrom" onSubmit={handleSubmit(onSubmit)}>
               <h4>{t('menu.EditMenu')}</h4>
               <FormGroup>
                 <Label for="exampleName">{t('name')}</Label>
-                <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
+                <input
+                  type="text"
+                  name="name"
+                  value={formState.values.name}
+                  onChange={handleChange}
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                />
+                {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
               </FormGroup>
               <FormGroup>
                 <Label for="exampleSelect">{t('menu.Postion')}</Label>
@@ -206,6 +237,9 @@ function EditMenus({
                   <option value={'top'}>{t('menu.Top')}</option>
                   <option value={'side'}>{t('menu.Side')}</option>
                 </Input>
+                {formState.values.position === '' && status.position && (
+                  <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                )}
               </FormGroup>
               <FormGroup>
                 <div className="check__box">
@@ -221,7 +255,7 @@ function EditMenus({
                   </div>
                 </div>
               </FormGroup>
-              <Button color="primary" type="submit">
+              <Button color="primary" type="submit" onClick={handleError}>
                 {t('save')}
               </Button>
             </Form>

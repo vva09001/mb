@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Row, Button, Form, FormGroup, Label } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import { TagActions } from '../../store/actions';
 import { useParams } from 'react-router-dom';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
 
 const Proptype = {
   detail: Proptypes.object,
@@ -19,13 +20,10 @@ function CreateTag({ editTag, getDetail, detail }) {
   });
   const { id } = useParams();
   const { t } = useTranslation();
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   useEffect(() => {
     getDetail(id);
-    setFormState(formState => ({
-      ...formState,
-      values: detail
-    }));
-  }, [getDetail, id, detail]);
+  }, [getDetail, id]);
 
   useEffect(() => {
     setFormState(formState => ({
@@ -36,22 +34,22 @@ function CreateTag({ editTag, getDetail, detail }) {
 
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
         ...formState.values,
-        [event.target.name]:
-          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+        [event.target.name]: event.target.value
       },
       touched: {
         ...formState.touched,
         [event.target.name]: true
       }
     }));
+  }; const handleError = async () => {
+    var name = await triggerValidation('name');
+    if (name === false) Error(t('errors.create'));
   };
-  const onSubmit = event => {
-    event.preventDefault();
+  const onSubmit = () => {
     editTag(formState.values.id, formState.values);
   };
 
@@ -61,12 +59,21 @@ function CreateTag({ editTag, getDetail, detail }) {
         <h4>{t('tags')}</h4>
       </Row>
       <Row className="backgroud__white p-3">
-        <Form className="cetegoryFrom" onSubmit={onSubmit} style={{ width: '100%' }}>
+        <Form className="cetegoryFrom" onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <FormGroup>
             <Label for="exampleName">{t('name')}</Label>
-            <Input type="text" name="name" value={formState.values.name} onChange={handleChange} required />
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              ref={register({
+                required: true
+              })}
+              className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+            />
+            {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
           </FormGroup>
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" onClick={handleError}>
             {t('create')}
           </Button>
         </Form>

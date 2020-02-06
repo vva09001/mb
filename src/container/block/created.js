@@ -190,7 +190,6 @@ function BlockCreate({ listTags, listTypes, getTags, getTypes, createBlock }) {
                       </option>
                     ))}
                   </Input>
-                  {console.log(typeof(formState.values.tagId))}
                   {formState.values.tagId === '0' && status.tagId && (
                     <span style={{ color: 'red' }}>{t('errors.required')}</span>
                   )}

@@ -259,7 +259,8 @@
     "down": "Download the file",
     "processingunit": "Processing unit",
     "lastupdateddate": "Last updated date",
-    "districts":"Districts"
+    "districts":"Districts",
+    "content": "Content"
   },
   "roleinit": {
     "getallroleof": "Get all role current of",
