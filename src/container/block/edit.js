@@ -4,12 +4,14 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import classnames from 'classnames';
+import { Error } from 'helpers/notify';
 import PropTypes from 'prop-types';
 import { map, filter } from 'lodash';
 import CodeMirror from 'react-codemirror';
 import { BlockActions, TagActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
 
 const PropsType = {
   detail: PropTypes.object,
@@ -33,7 +35,11 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
   const [code, setCode] = useState(formState.values.html);
   const [formAddMore, setFormAddMore] = useState(detail.blockValues);
   const [activeTab, setActiveTab] = useState('1');
-
+  const [status, setStatus] = useState({
+    tagId: false,
+    html: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   useEffect(() => {
     getTags();
     getTypes();
@@ -98,14 +104,46 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
       setFormAddMore(newValues);
     }
   };
+  const handleError = async () => {
+    var title = await triggerValidation('title');
+    var key = await triggerValidation('key');
+    var name = await triggerValidation('name');
+    var active = await triggerValidation('active');
+    if (title === false || key === false || name === false || active === false) {
+      Error(t('errors.edit'));
+    }
+    if (formState.values.tagId === '0')
+      setStatus(status => ({
+        ...status,
+        tagId: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        tagId: false
+      }));
+    }
+    if (code === '')
+      setStatus(status => ({
+        ...status,
+        html: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        html: false
+      }));
+    }
+  };
 
-  const createdNews = event => {
-    event.preventDefault();
-    editBlock(formState.values.id, {
-      ...formState.values,
-      html: code,
-      blockValues: formAddMore
-    });
+  const editNews = () => {
+    if (status.tagId === false && status.html === false)
+      editBlock(formState.values.id, {
+        ...formState.values,
+        html: code,
+        blockValues: formAddMore
+      });
+    else Error(t('errors.edit'));
   };
 
   return (
@@ -134,32 +172,55 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
               </NavLink>
             </NavItem>
           </Nav>
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdNews}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(editNews)}>
             <TabContent activeTab={activeTab}>
               <TabPane tabId="1">
                 <h4>{t('general')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" value={formState.values.name} onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formState.values.name}
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleSelect">{t('tags')}</Label>
                   <Input type="select" name="tagId" value={formState.values.tagId} onChange={handleChange} required>
-                    <option>Chọn...</option>
+                    <option value={0}>Chọn...</option>
                     {map(listTags, value => (
                       <option value={value.id} key={value.id}>
                         {value.name}
                       </option>
                     ))}
                   </Input>
+                  {formState.values.tagId === '0' && status.tagId && (
+                    <span style={{ color: 'red' }}>{t('errors.required')}</span>
+                  )}
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('status')}</Label>
                   <div>
-                    <Input type="checkbox" name="active" checked={formState.values.active} onChange={handleChange} />
+                    <input
+                      type="checkbox"
+                      name="active"
+                      checked={formState.values.active}
+                      onChange={handleChange}
+                      ref={register({
+                        validate: value => value === true
+                      })}
+                      className={errors.active === undefined ? 'inputStyle' : 'inputStyleError'}
+                    />
                     <span>{t('block_page.activeBock')}</span>
                   </div>
                 </div>
+                {errors.active && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 <FormGroup>
                   <Label>{t('html')}</Label>
                   <CodeMirror
@@ -168,6 +229,7 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
                     value={formState.values.html}
                     onChange={newCode => setCode(newCode)}
                   />
+                  {code === '' && status.html && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
               </TabPane>
               <TabPane tabId="2">
@@ -177,23 +239,31 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
                     <div key={index} style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
                       <FormGroup className="mr-4">
                         <Label for="exampleName">{t('key')}</Label>
-                        <Input
+                        <input
                           type="text"
                           name="key"
                           value={items.key}
                           onChange={event => handleChangeAddMore(event, index)}
-                          required
+                          ref={register({
+                            required: true
+                          })}
+                          className={errors.key === undefined ? 'inputStyle' : 'inputStyleError'}
                         />
+                        {errors.key && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                       </FormGroup>
                       <FormGroup className="mr-4">
                         <Label for="exampleName">{t('title')}</Label>
-                        <Input
+                        <input
                           type="text"
                           name="title"
                           value={items.title}
                           onChange={event => handleChangeAddMore(event, index)}
-                          required
+                          ref={register({
+                            required: true
+                          })}
+                          className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
                         />
+                        {errors.title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                       </FormGroup>
                       <FormGroup className="mr-4">
                         <Label for="exampleSelect">{t('type')}</Label>
@@ -223,7 +293,7 @@ function BlockEdit({ detail, listTags, listTypes, getTypes, getTags, deleteBlock
                 </Button>
               </TabPane>
             </TabContent>
-            <Button color="primary" type="submit">
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('save')}
             </Button>
           </Form>

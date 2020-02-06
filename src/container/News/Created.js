@@ -134,15 +134,25 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         ...status,
         description: true
       }));
+      else {
+        setStatus(status => ({
+          ...status,
+          description: false
+        }));
+      }
     if (formState.values.categories.length === 0)
       setStatus(status => ({
         ...status,
         categories: true
       }));
+      else {
+        setStatus(status => ({
+          ...status,
+          categories: false
+        }));
+      }
   };
   const createdNews = () => {
-    // event.preventDefault();
-
     const body = {
       ...formState.values,
       newsBlocks: []

@@ -149,20 +149,31 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       meta_description === false
     )
       Error(t('errors.edit'));
-    if (formState.values.description === '')
+      if (formState.values.description === '')
       setStatus(status => ({
         ...status,
         description: true
       }));
+      else {
+        setStatus(status => ({
+          ...status,
+          description: false
+        }));
+      }
     if (formState.values.categories.length === 0)
       setStatus(status => ({
         ...status,
         categories: true
       }));
+      else {
+        setStatus(status => ({
+          ...status,
+          categories: false
+        }));
+      }
   };
 
   const editNews = () => {
-    // event.preventDefault();
     const body = {
       ...formState.values,
       newsBlocks: []
