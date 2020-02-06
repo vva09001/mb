@@ -10,7 +10,6 @@ if (permission !== null) {
   listScopes = permission.scopes.split(',');
 }
 
-
 export const homeRoutes = {
   name: 'menu.dashborad',
   to: '/',
@@ -93,11 +92,11 @@ export const menuRoutes = {
 export const userRoutes = {
   name: 'menu.user',
   to: '/users',
-  permission: indexOf(listScopes, 'ROLE_XEM USER') > 0 ? true : false,
+  permission: indexOf(listScopes, 'ROLE_XEM NHÂN VIÊN') > 0 ? true : false,
   exact: true,
   icon: 'user',
   children: [
-    { to: '/users/list', name: 'menu.user', permission: indexOf(listScopes, 'ROLE_XEM USER') >= 0 ? true : false },
+    { to: '/users/list', name: 'menu.user', permission: indexOf(listScopes, 'ROLE_XEM NHÂN VIÊN') > 0 ? true : false },
     {
       to: '/users/listrole',
       name: 'menu.role',
@@ -169,7 +168,7 @@ export const toolMenu = {
     {
       to: '/exchangeRate',
       name: 'interest_rate.exchange_rate',
-      permission: indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') >= 0 ? true : false,
+      permission: indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') >= 0 ? true : false
     }
   ]
 };
