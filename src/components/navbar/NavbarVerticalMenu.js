@@ -22,8 +22,7 @@ const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) 
   };
 
   return routes.map((route, index) => {
-    if (!route.children)
-    {
+    if (!route.children && route.permission) {
       return (
         <NavItem key={index}>
           <NavLink className="nav-link" {...route} onClick={handleNavbarVerticalCollapse}>
@@ -32,27 +31,29 @@ const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) 
         </NavItem>
       );
     }
-    return (
-      <NavItem key={index}>
-        <Link
-          to="#!"
-          onClick={e => toggleOpened(e, index)}
-          className="nav-link dropdown-indicator"
-          aria-expanded={opened === index}
-        >
-          <NavbarVerticalMenuItem route={route} />
-        </Link>
-        <Collapse isOpen={opened === index}>
-          <Nav>
-            <NavbarVerticalMenu
-              routes={route.children}
-              location={location}
-              handleNavbarVerticalCollapse={handleNavbarVerticalCollapse}
-            />
-          </Nav>
-        </Collapse>
-      </NavItem>
-    );
+    if (route.permission) {
+      return (
+        <NavItem key={index}>
+          <Link
+            to="#!"
+            onClick={e => toggleOpened(e, index)}
+            className="nav-link dropdown-indicator"
+            aria-expanded={opened === index}
+          >
+            <NavbarVerticalMenuItem route={route} />
+          </Link>
+          <Collapse isOpen={opened === index}>
+            <Nav>
+              <NavbarVerticalMenu
+                routes={route.children}
+                location={location}
+                handleNavbarVerticalCollapse={handleNavbarVerticalCollapse}
+              />
+            </Nav>
+          </Collapse>
+        </NavItem>
+      );
+    }
   });
 };
 

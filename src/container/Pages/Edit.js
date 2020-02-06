@@ -31,7 +31,7 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
     getDetailById(id);
     getListTags();
     getGroup();
-  }, [getListTags, getGroup]);
+  }, [getDetailById, id, getListTags, getGroup]);
 
   useEffect(() => {
     setFormState(formState => ({
@@ -66,7 +66,7 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
 
   const onSubmit = event => {
     event.preventDefault();
-    pageEdit({ ...formState.values, pageBlocks: [] });
+    pageEdit({ ...formState.values, teams: formState.values.team, pageBlocks: [] });
   };
 
   return (
@@ -131,29 +131,12 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
                   onChange={handleChange}
                 />
               </FormGroup>
-              {/* <div className="check__box">
-                <Label>{t('active')}</Label>
-                <div>
-                  <Input
-                    type="checkbox"
-                    name="is_active"
-                    required
-                    checked={
-                      formState.values.is_active === 0 || formState.values.is_active === undefined ? false : true
-                    }
-                    value={formState.values.is_active === 0 ? false : formState.values.is_active}
-                    onChange={handleChange}
-                  />
-                  <span>{t('page.active')}</span>
-                </div>
-              </div> */}
               <div className="check__box">
                 <Label>{t('sidebar')}</Label>
                 <div>
                   <Input
                     type="checkbox"
                     name="has_sidebar"
-                    required
                     checked={
                       formState.values.has_sidebar === 0 || formState.values.has_sidebar === undefined ? false : true
                     }
@@ -181,9 +164,9 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
                 <Label for="team">{t('page.group')}</Label>
                 <Input
                   type="select"
-                  name="teams"
+                  name="team"
                   required
-                  value={formState.values.teams === undefined ? 0 : formState.values.teams}
+                  value={formState.values.team === undefined ? 0 : formState.values.team}
                   onChange={handleChange}
                 >
                   <option value={0}>{t('select')}</option>

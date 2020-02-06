@@ -15,7 +15,6 @@ function Dashboard({ data, getGroup }) {
   useEffect(() => {
     getGroup();
   }, [getGroup]);
-
   return (
     <Fragment>
       <div className="card-deck">

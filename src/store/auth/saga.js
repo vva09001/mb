@@ -12,10 +12,11 @@ function* loginSaga() {
       const res = yield login(data);
       if (res.status === 200) {
         yield localStorage.setItem('logged', true);
-        yield put({ type: actions.LOGIN_RESPONSE, data: res.data });    
-     if(getToken() !== undefined){
-        yield history.push('/');}
-        else{
+        yield put({ type: actions.LOGIN_RESPONSE, data: res.data });
+        if (getToken() !== undefined) {
+          yield history.push('/');
+          window.location.reload();
+        } else {
           yield put({ type: actions.LOGIN_REQUEST, data: data });
         }
       } else {
