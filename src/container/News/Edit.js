@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ModalMedia from '../../components/Media/ModalMedia';
 import UploadAdapter from '../../services/uploadImage';
+import { useForm } from 'react-hook-form';
 
 const PropsType = {
   listForm: PropTypes.array,
@@ -29,6 +30,21 @@ const PropsType = {
 
 function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, getNewsId, imageSeletedata }) {
   const { id } = useParams();
+  const [formState, setFormState] = useState({
+    values: {
+      description: '',
+      categories: []
+    },
+    touched: {}
+  });
+  const [status, setStatus] = useState({
+    description: false,
+    categories: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
+  const [activeTab, setActiveTab] = useState('1');
+
+  const { t } = useTranslation();
   useEffect(() => {
     getNewsId(id);
     getCategory();
@@ -41,19 +57,9 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       values: detail
     }));
   }, [detail]);
-
-  const [formState, setFormState] = useState({
-    values: {},
-    touched: {}
-  });
-
-  const [activeTab, setActiveTab] = useState('1');
-
-  const { t } = useTranslation();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-
   const onSetState = () => {
     setFormState(formState => ({
       ...formState,
@@ -129,14 +135,40 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       }
     }));
   };
+  const handleError = async () => {
+    var title = await triggerValidation('title');
+    var shortDescription = await triggerValidation('shortDescription');
+    var meta_title = await triggerValidation('meta_title');
+    var meta_keyword = await triggerValidation('meta_keyword');
+    var meta_description = await triggerValidation('meta_description');
+    if (
+      title === false ||
+      shortDescription === false ||
+      meta_title === false ||
+      meta_keyword === false ||
+      meta_description === false
+    )
+      Error(t('errors.edit'));
+    if (formState.values.description === '')
+      setStatus(status => ({
+        ...status,
+        description: true
+      }));
+    if (formState.values.categories.length === 0)
+      setStatus(status => ({
+        ...status,
+        categories: true
+      }));
+  };
 
-  const editNews = event => {
-    event.preventDefault();
+  const editNews = () => {
+    // event.preventDefault();
     const body = {
       ...formState.values,
       newsBlocks: []
     };
-    editNew(body, onSuccess, onFail);
+    if (status.description === false && status.categories === false) editNew(body, onSuccess, onFail);
+    else Error(t('errors.edit'));
   };
   return (
     <React.Fragment>
@@ -164,26 +196,36 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(editNews)}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input
+              <input
                 type="text"
                 name="title"
                 value={formState.values.title === undefined ? '' : formState.values.title}
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('summary')}</Label>
-              <Input
+              <input
                 type="textarea"
                 name="shortDescription"
                 rows="5"
                 value={formState.values.shortDescription === undefined ? '' : formState.values.shortDescription}
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.shortDescription && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label>{t('description')}</Label>
@@ -201,6 +243,9 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                   };
                 }}
               />
+              {formState.values.description === '' && status.description && (
+                <span style={{ color: 'red' }}>{t('errors.required')}</span>
+              )}
             </FormGroup>
             <FormGroup>
               <Label>{t('authName')}</Label>
@@ -252,42 +297,58 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 isMulti
                 onChange={handleChangeSelect}
               />
+              {status.categories && <span style={{ color: 'red' }}>{t('errors.minone')}</span>}
             </FormGroup>
-            <Button color="primary" onClick={editNews}>
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('edit')}
             </Button>
           </Form>
         </TabPane>
         <TabPane tabId="2">
-          <Form className="p-3" style={{ background: '#fff' }}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(editNews)}>
             <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('meta.title')}</Label>
-              <Input
+              <input
                 type="text"
                 name="meta_title"
                 value={formState.values.meta_title === null ? '' : formState.values.meta_title}
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.meta_title === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.meta_title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <Input
+              <input
                 type="text"
                 name="meta_keyword"
                 value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.meta_keyword === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.meta_keyword && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
-              <Input
+              <input
                 type="textarea"
                 name="meta_description"
                 value={formState.values.meta_description === undefined ? '' : formState.values.meta_description}
                 rows="5"
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.meta_description === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.meta_description && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label>{t('URL')}</Label>
@@ -298,7 +359,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 onChange={handleChange}
               />
             </FormGroup>
-            <Button color="primary" onClick={editNews}>
+            <Button color="primary" type="submit"  onClick={handleError}>
               {t('edit')}
             </Button>
           </Form>

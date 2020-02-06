@@ -89,7 +89,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         description: true
       }
     }));
-    console.log(data);
   };
 
   const handleChangeSelect = event => {
@@ -115,6 +114,31 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
 
   const onFail = () => {
     Error('Tạo thất bại');
+  };
+  const handleError = async () => {
+    var title = await triggerValidation('title');
+    var shortDescription = await triggerValidation('shortDescription');
+    var meta_title = await triggerValidation('meta_title');
+    var meta_keyword = await triggerValidation('meta_keyword');
+    var meta_description = await triggerValidation('meta_description');
+    if (
+      title === false ||
+      shortDescription === false ||
+      meta_title === false ||
+      meta_keyword === false ||
+      meta_description === false
+    )
+      Error(t('errors.create'));
+    if (formState.values.description === '')
+      setStatus(status => ({
+        ...status,
+        description: true
+      }));
+    if (formState.values.categories.length === 0)
+      setStatus(status => ({
+        ...status,
+        categories: true
+      }));
   };
   const createdNews = () => {
     // event.preventDefault();
@@ -155,7 +179,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('title')}</Label>
@@ -163,8 +187,10 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     type="text"
                     name="title"
                     onChange={handleChange}
-                   
-                    className='inputStyle'
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.title === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
                   {errors.title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
@@ -175,10 +201,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     name="shortDescription"
                     rows="5"
                     onChange={handleChange}
-                    className='inputStyle'
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.shortDescription === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
                   {errors.shortDescription && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
-                  {console.log(errors.shortDescription)}
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('description')}</Label>
@@ -196,7 +224,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                       };
                     }}
                   />
-                  {console.log(formState.values.description)}
                   {formState.values.description === '' && status.description && (
                     <span style={{ color: 'red' }}>{t('errors.required')}</span>
                   )}
@@ -242,37 +269,10 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     <span style={{ color: 'red' }}>{t('errors.minone')}</span>
                   )}
                 </FormGroup>
-                <Button
-                  color="primary"
-                  type="submit"
-                  onClick={async () => {
-                    var title = await triggerValidation('title');
-                    var shortDescription = await triggerValidation('shortDescription');
-                    var meta_title = await triggerValidation('meta_title');
-                    var meta_keyword = await triggerValidation('meta_keyword');
-                    var meta_description = await triggerValidation('meta_description');
-                    if (
-                      title === false ||
-                      shortDescription === false ||
-                      meta_title === false ||
-                      meta_keyword === false ||
-                      meta_description === false
-                    ) Error(t('errors.create'));
-                    if (formState.values.description === '')
-                      setStatus(status => ({
-                        ...status,
-                        description: true
-                      }));
-                    if (formState.values.categories.length === 0)
-                      setStatus(status => ({
-                        ...status,
-                        categories: true
-                      }));
-                  }}
-                >
+                <Button color="primary" type="submit" onClick={handleError}>
                   {t('save')}
                 </Button>
-              </form>
+              </Form>
             </TabPane>
             <TabPane tabId="2">
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdNews)}>
@@ -321,35 +321,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <Label>{t('URL')}</Label>
                   <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
                 </FormGroup>
-                <Button
-                  color="primary"
-                  type="submit"
-                  onClick={async () => {
-                    var title = await triggerValidation('title');
-                    var shortDescription = await triggerValidation('shortDescription');
-                    var meta_title = await triggerValidation('meta_title');
-                    var meta_keyword = await triggerValidation('meta_keyword');
-                    var meta_description = await triggerValidation('meta_description');
-                    if (
-                      title === false ||
-                      shortDescription === false ||
-                      meta_title === false ||
-                      meta_keyword === false ||
-                      meta_description === false
-                    )
-                      Error(t('errors.create'));
-                    if (formState.values.description === '')
-                      setStatus(status => ({
-                        ...status,
-                        description: true
-                      }));
-                    if (formState.values.categories.length === 0)
-                      setStatus(status => ({
-                        ...status,
-                        categories: true
-                      }));
-                  }}
-                >
+                <Button color="primary" type="submit" onClick={handleError}>
                   {t('save')}
                 </Button>
               </Form>
