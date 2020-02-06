@@ -600,7 +600,16 @@ function Page({
         }
 
         if (contentData[i] !== undefined && contentData[i].mutileImge) {
+
+            // check html có #end
+            let htmlelement = [];
+            if(html.indexOf('#end') > 0) {
+            htmlelement =  html.split('#end');
+            }
           for (let j = 0; j < contentData[i].mutileImge.length; j++) {
+            htmlelement[j];
+
+
             let key = Object.keys(contentData[i].mutileImge[j]);
             let regexp = '';
             let replaceHTML = '';

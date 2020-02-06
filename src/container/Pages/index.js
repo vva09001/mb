@@ -103,10 +103,6 @@ function Page({ data, homeID, getPage, getHomeID, deletePage, expanstion, update
   //   setDeleteActive(true);
   //   setPageDetai(node);
   // };
-  const click = (node, path) => {
-    // getDetailMenuItem(node);
-    // history.push('/menu/edit/item/edit');
-  };
   const clickDelete = (node, path) => {
     setPageID(node.id);
     setIsOpen(!isOpen);
@@ -195,7 +191,6 @@ function Page({ data, homeID, getPage, getHomeID, deletePage, expanstion, update
                     outline
                   />
                 ]
-                // onClick: () => click(node, path)
               })}
               onMoveNode={treeData => onMove(treeData)}
             />
