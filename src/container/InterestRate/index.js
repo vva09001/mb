@@ -10,7 +10,8 @@ import {
   ModalBody,
   ModalFooter,
   Table,
-  CustomInput
+  CustomInput,
+  Form
 } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -22,6 +23,7 @@ import { map, slice } from 'lodash';
 import ReactPaginate from 'react-paginate';
 import useBulkSelect from '../../hooks/useBulkSelect';
 import PopupComfirm from 'components/common/PopupComfirm';
+import { useForm } from 'react-hook-form';
 
 const Proptype = {
   data: PropTypes.array,
@@ -37,7 +39,7 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
   }, [getInterestRate]);
 
   const { t } = useTranslation();
-
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const [formState, setFormState] = useState({
     data: [],
     dataCreate: {},
@@ -117,6 +119,14 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
       ...formState,
       dataCreate: values
     }));
+  };
+  const handleError = async () => {
+    var term = await triggerValidation('term');
+    var interest_rate = await triggerValidation('interest_rate');
+    if (term === false || interest_rate === false) {
+      if (!formState.dataCreate.id) Error(t('errors.create'));
+      else Error(t('errors.edit'));
+    }
   };
 
   const onClickCreate = values => {
@@ -254,50 +264,60 @@ function InterestRate({ getInterestRate, data, createInterestRate, updateInteres
       </React.Fragment>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader>{!formState.dataCreate.id ? t('interest_rate.create') : t('interest_rate.update')}</ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <Label>{t('interest_rate.term')}</Label>
-            <p style={{ color: 'red' }}>{!formState.termError ? null : formState.termError}</p>
-            <Input
-              name="term"
-              type="number"
-              value={!formState.dataCreate.term ? '' : formState.dataCreate.term}
-              onChange={handleChangeCreate}
-              required="required"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('interest_rate.interest_rate')}</Label>
-            <p style={{ color: 'red' }}>{!formState.interestRateError ? null : formState.interestRateError}</p>
-            <Input
-              name="interest_rate"
-              type="number"
-              min="0"
-              max="10"
-              value={!formState.dataCreate.interest_rate ? '' : formState.dataCreate.interest_rate}
-              onChange={handleChangeCreate}
-              required="required"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>{t('description')}</Label>
-            <Input
-              name="description"
-              type="textarea"
-              value={!formState.dataCreate.description ? '' : formState.dataCreate.description}
-              onChange={handleChangeCreate}
-              rows="5"
-            />
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={onSave}>
-            {t('save')}
-          </Button>{' '}
-          <Button color="danger" onClick={toggle}>
-            {t('cancel')}
-          </Button>
-        </ModalFooter>
+        <Form onSubmit={handleSubmit(onSave)}>
+          <ModalBody>
+            <FormGroup>
+              <Label>{t('interest_rate.term')}</Label>
+              <p style={{ color: 'red' }}>{!formState.termError ? null : formState.termError}</p>
+              <input
+                name="term"
+                type="number"
+                value={!formState.dataCreate.term ? '' : formState.dataCreate.term}
+                onChange={handleChangeCreate}
+                ref={register({
+                  required: true
+                })}
+                className={errors.term === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.term && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+            </FormGroup>
+            <FormGroup>
+              <Label>{t('interest_rate.interest_rate')}</Label>
+              <p style={{ color: 'red' }}>{!formState.interestRateError ? null : formState.interestRateError}</p>
+              <input
+                name="interest_rate"
+                type="number"
+                min="0"
+                max="10"
+                value={!formState.dataCreate.interest_rate ? '' : formState.dataCreate.interest_rate}
+                onChange={handleChangeCreate}
+                ref={register({
+                  required: true
+                })}
+                className={errors.interest_rate === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.interest_rate && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+            </FormGroup>
+            <FormGroup>
+              <Label>{t('description')}</Label>
+              <Input
+                name="description"
+                type="textarea"
+                value={!formState.dataCreate.description ? '' : formState.dataCreate.description}
+                onChange={handleChangeCreate}
+                rows="5"
+              />
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" type="submit" onClick={handleError}>
+              {t('save')}
+            </Button>{' '}
+            <Button color="danger" onClick={toggle}>
+              {t('cancel')}
+            </Button>
+          </ModalFooter>
+        </Form>
       </Modal>
       <div className="pagination__wapper" />
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={clickDeleteInterestRate} />

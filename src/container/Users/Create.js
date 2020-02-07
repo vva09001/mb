@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   addUsers: PropTypes.func,
@@ -28,7 +29,10 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     },
     touched: {}
   });
-  const { register, errors, handleSubmit } = useForm();
+  const [status, setStatus] = useState({
+    roles: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const [activeTab, setActiveTab] = useState('1');
   let optionRoles = [];
   const [SelectedOption, setSelectedOption] = useState({
@@ -165,8 +169,35 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     }));
     dataRolesToAdd = event;
   };
-  const onSubmitUser = event => {
-    // event.preventDefault();
+  const handleError = async () => {
+    var firstName = await triggerValidation('firstName');
+    var lastName = await triggerValidation('lastName');
+    var username = await triggerValidation('username');
+    var password = await triggerValidation('password');
+    var passwordConfirm = await triggerValidation('passwordConfirm');
+    if (
+      firstName === false ||
+      lastName === false ||
+      username === false ||
+      password === false ||
+      passwordConfirm === false
+    ) {
+      Error(t('errors.create'));
+    }
+
+    if (SelectedOption.Select.length === 0)
+      setStatus(status => ({
+        ...status,
+        roles: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        roles: false
+      }));
+    }
+  };
+  const onSubmitUser = () => {
     dataRolesToAdd.forEach(function(data) {
       formState.values.roles.push(data.idRole);
     });
@@ -187,7 +218,8 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
         }
       });
     });
-    addUsers(formState.values);
+    if (status.roles === false) addUsers(formState.values);
+    else Error(t('errors.create'));
   };
 
   return (
@@ -228,7 +260,17 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="firstName" onChange={handleChange} />
+                      {/* [A-Za-z\. -]+ */}
+                      <input
+                        type="text"
+                        name="firstName"
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.firstName === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.firstName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -240,7 +282,16 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="lastName" onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="lastName"
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.firstName === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.firstName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -252,7 +303,16 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="username" onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="username"
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.firstName === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.firstName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -298,6 +358,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                             options={optionRoles}
                           />
                         )}
+                        {SelectedOption.Select.length === 0 && status.roles && (
+                          <span style={{ color: 'red' }}>{t('errors.minone')}</span>
+                        )}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -338,12 +401,12 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                         ref={register({ validate: value => value === formState.values.password })}
                         className={errors.passwordConfirm === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
-                      {errors.passwordConfirm && t('errors.passwordnotmatch')}
+                      {errors.passwordConfirm && <span style={{ color: 'red' }}>{t('errors.passwordnotmatch')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
                 <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
-                  <Button color="primary" type="submit">
+                  <Button color="primary" type="submit" onClick={handleError}>
                     {t('save')}
                   </Button>
                 </Col>
