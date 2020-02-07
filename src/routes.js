@@ -5,11 +5,15 @@ import jwt from 'jsonwebtoken';
 const token = getToken();
 const permission = jwt.decode(token);
 let listScopes = [];
+let tool_menu = true;
 
 if (permission !== null) {
   listScopes = permission.scopes.split(',');
 }
 
+if (indexOf(listScopes, 'ROLE_XEM LÃI SUẤT') < 0 && indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') < 0) {
+  tool_menu = false;
+}
 
 export const homeRoutes = {
   name: 'menu.dashborad',
@@ -93,11 +97,11 @@ export const menuRoutes = {
 export const userRoutes = {
   name: 'menu.user',
   to: '/users',
-  permission: indexOf(listScopes, 'ROLE_XEM USER') > 0 ? true : false,
+  permission: indexOf(listScopes, 'ROLE_XEM NHÂN VIÊN') > 0 ? true : false,
   exact: true,
   icon: 'user',
   children: [
-    { to: '/users/list', name: 'menu.user', permission: indexOf(listScopes, 'ROLE_XEM USER') >= 0 ? true : false },
+    { to: '/users/list', name: 'menu.user', permission: indexOf(listScopes, 'ROLE_XEM NHÂN VIÊN') > 0 ? true : false },
     {
       to: '/users/listrole',
       name: 'menu.role',
@@ -156,9 +160,9 @@ export const groupRouter = {
 
 export const toolMenu = {
   name: 'menu.tool_menu',
-  to: '/',
+  to: '/interest-rate',
   exact: true,
-  permission: true,
+  permission: tool_menu,
   icon: 'ellipsis-h',
   children: [
     {
@@ -169,7 +173,7 @@ export const toolMenu = {
     {
       to: '/exchangeRate',
       name: 'interest_rate.exchange_rate',
-      permission: indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') >= 0 ? true : false,
+      permission: indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') >= 0 ? true : false
     }
   ]
 };

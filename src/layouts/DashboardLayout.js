@@ -16,6 +16,8 @@ const DashboardLayout = ({ location }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // check thay đổi user
   return (
     <div className="container-fluid">
       <NavbarVertical />

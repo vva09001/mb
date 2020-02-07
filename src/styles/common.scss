@@ -141,3 +141,25 @@ label {
     }
   }
 }
+
+@media only screen and (max-width: 700px) {
+  .icon_logo {
+    width: 100px !important;
+  }
+  .card-deck {
+    .card {
+      max-width: unset !important;
+    }
+  }
+}
+
+@media only screen and (width: 768px) {
+  .icon_logo {
+    width: 100px !important;
+  }
+  .card-deck {
+    .card {
+      max-width: 48% !important;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse, Nav, NavItem } from 'reactstrap';
 import { Link, NavLink, withRouter } from 'react-router-dom';
+import { map } from 'lodash';
 import NavbarVerticalMenuItem from './NavbarVerticalMenuItem';
 
 const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) => {
@@ -21,7 +22,7 @@ const NavbarVerticalMenu = ({ routes, location, handleNavbarVerticalCollapse }) 
     return setOpened(opened === index ? null : index);
   };
 
-  return routes.map((route, index) => {
+  return map(routes, (route, index) => {
     if (!route.children && route.permission) {
       return (
         <NavItem key={index}>

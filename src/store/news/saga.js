@@ -2,7 +2,6 @@ import { takeLatest, put, fork, all } from 'redux-saga/effects';
 import { getNews, addNews, editNews, deleteNews, aprrNews, getNewsId, getNewByCategoryID } from 'services/news';
 import { Error, Success } from 'helpers/notify';
 import actions from './actions';
-import Actions from '../group/actions';
 import { map } from 'lodash';
 
 function* getNewsSaga() {

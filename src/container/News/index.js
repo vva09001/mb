@@ -9,7 +9,6 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 import useBulkSelect from '../../hooks/useBulkSelect';
 import { map } from 'lodash';
-import { GroupActions } from '../../store/actions';
 
 const PropsType = {
   data: PropTypes.array,

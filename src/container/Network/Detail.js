@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { map } from 'lodash';
 import { useParams } from 'react-router-dom';
-import Districts from '../../store/district/reducers';
 
 const PropsType = {
   detail: PropTypes.object,
