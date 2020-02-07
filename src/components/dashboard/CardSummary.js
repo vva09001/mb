@@ -32,7 +32,7 @@ const getContentClassNames = color => {
 const CardSummary = ({ linkText, to, color, loadingValue, acceptValue }) => {
   const { t } = useTranslation();
   return (
-    <Card className="mb-3 overflow-hidden" style={{ minWidth: '12rem' }}>
+    <Card className="mb-3 overflow-hidden" style={{ maxWidth: '16rem', minWidth: '16rem' }}>
       <Background image={getImage(color)} className="bg-card" />
       <CardBody className="position-relative">
         <div className={getContentClassNames(color)}>

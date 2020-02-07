@@ -26,7 +26,7 @@ const Logo = ({ at, width, className, ...rest }) => {
           className
         )}
       >
-        <img src={logo} alt="Logo" style={{ width: '130px' }} />
+        <img src={logo} alt="Logo" style={{ width: '130px' }} className="icon_logo" />
       </div>
     </Link>
   );

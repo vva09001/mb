@@ -16,7 +16,6 @@ const Layout = () => {
     AuthBasicLayout.preload();
     Landing.preload();
   }, []);
-
   return (
     <Router history={history}>
       <Switch>
