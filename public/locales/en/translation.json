@@ -241,7 +241,8 @@
     "code": "Code",
     "subject": "Subject",
     "emailCc": "To",
-    "content": "Content"
+    "content": "Content",
+    "active":"Active"
   },
   "network": {
     "approved": "Approved",

@@ -8,18 +8,24 @@ import PropTypes from 'prop-types';
 import { MailActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 const PropsType = {
   MailsCreate: PropTypes.func
 };
 
 function MailsCreate({ MailsCreate }) {
   const [formState, setFormState] = useState({
-    values: {},
+    values: {
+      content: ''
+    },
     touched: {}
   });
   const [activeTab, setActiveTab] = useState('1');
-
+  const [status, setStatus] = useState({
+    content: false
+  })
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -56,10 +62,31 @@ function MailsCreate({ MailsCreate }) {
     }));
     // console.log(formState);
   };
-  const createdMails = event => {
-    event.preventDefault();
-    //console.log(formState.values);
+  const handleError = async () => {
+    var code = await triggerValidation('code');
+    var subject = await triggerValidation('subject');
+    var name = await triggerValidation('name');
+    var emailCc = await triggerValidation('emailCc');
+    var active = await triggerValidation('active');
+    if (code === false || subject === false || name === false || emailCc === false || active === false) {
+      Error(t('errors.create'));
+    }
+    if (formState.values.content === '')
+      setStatus(status => ({
+        ...status,
+        content: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        content: false
+      }));
+    }
+  };
+  const createdMails = () => {
+    if (status.content === false)
     MailsCreate(formState.values);
+    else Error(t('errors.create'))
   };
   return (
     <React.Fragment>
@@ -77,37 +104,85 @@ function MailsCreate({ MailsCreate }) {
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={createdMails}>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(createdMails)}>
             <h4>{t('create')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" required name="name" onChange={handleChange} />
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input type="text" required name="code" onChange={handleChange} />
+              <input
+                type="text"
+                name="code"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.code === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.code && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
-              <Input type="text" required name="subject" onChange={handleChange} />
+              <input
+                type="text"
+                name="subject"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.subject === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.subject && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
-              <Label for="exampleName">{t('mail.emailCc')}</Label>
-              <Input type="text" required name="emailCc" onChange={handleChange} />
+              <Label for="exampleName">{t('mail.active')}</Label>
+              <input
+                type="checkbox"
+                name="active"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.active === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.active && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+            </FormGroup>
+            <FormGroup>
+            <Label for="exampleName">{t('mail.emailCc')}</Label>
+              <input
+                type="text"
+                name="emailCc"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.emailCc === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.emailCc && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label>{t('mail.content')}</Label>
               <CKEditor
-                required
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   ckEditorChange(event, data);
                 }}
               />
+              {formState.values.content === '' && status.content && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
-
-            <Button color="primary" type="submit">
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('save')}
             </Button>
           </Form>

@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   detail: PropTypes.object,
@@ -34,7 +36,10 @@ function MailEdit({ detail, editMail, getMailsId }) {
     values: {},
     touched: {}
   });
-
+  const [status, setStatus] = useState({
+    content: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const [activeTab, setActiveTab] = useState('1');
 
   const toggle = tab => {
@@ -72,10 +77,31 @@ function MailEdit({ detail, editMail, getMailsId }) {
       }
     }));
   };
+  const handleError = async () => {
+    var name = await triggerValidation('name');
+    var code = await triggerValidation('code');
+    var subject = await triggerValidation('subject');
+    var emailCc = await triggerValidation('emailCc');
+    var active = await triggerValidation('active');
+    if (code === false || subject === false || name === false || emailCc === false || active === false) {
+      Error(t('errors.edit'));
+    }
+    if (formState.values.content === '')
+      setStatus(status => ({
+        ...status,
+        content: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        content: false
+      }));
+    }
+  };
 
-  const editMails = event => {
-    event.preventDefault();
-    editMail(formState.values);
+  const editMails = () => {
+    if (status.content === false) editMail(formState.values);
+    else Error(t('errors.edit'));
   };
 
   return (
@@ -94,56 +120,86 @@ function MailEdit({ detail, editMail, getMailsId }) {
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Form className="p-3" style={{ background: '#fff' }} onSubmit={editMails}>
-            <h4>Chỉnh sửa</h4>
+          <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(editMails)}>
+            <h4>{t('edit')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input
+              <input
                 type="text"
-                required
                 name="name"
                 value={formState.values.name}
                 id="exampleName1"
-                onChange={handleChange}
+                onChange
+                ref={register({
+                  required: true
+                })}
+                className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.code')}</Label>
-              <Input
+              <input
                 type="text"
-                required
                 name="code"
                 value={formState.values.code}
                 id="exampleName2"
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.code === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.code && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.subject')}</Label>
-              <Input
+              <input
                 type="text"
                 name="subject"
-                required
                 value={formState.values.subject}
                 id="exampleName3"
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.subject === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.subject && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleName">{t('mail.active')}</Label>
+              <input
+                type="checkbox"
+                name="active"
+                value={formState.values.active}
+                checked={formState.values.active}
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.active === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.active && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleName">{t('mail.emailCc')}</Label>
-              <Input
+              <input
                 type="text"
                 name="emailCc"
-                required
                 value={formState.values.emailCc}
                 id="exampleName4"
                 onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.emailCc === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.emailCc && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
-              <Label>Nội Dung</Label>
+              <Label>{t('mail.content')}</Label>
               <CKEditor
-                required
                 data={formState.values.content}
                 editor={ClassicEditor}
                 onChange={(event, editor) => {
@@ -151,8 +207,11 @@ function MailEdit({ detail, editMail, getMailsId }) {
                   ckEditorChange(event, data);
                 }}
               />
+              {formState.values.content === '' && status.content && (
+                <span style={{ color: 'red' }}>{t('errors.required')}</span>
+              )}
             </FormGroup>
-            <Button color="primary" type="submit">
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('save')}
             </Button>
           </Form>

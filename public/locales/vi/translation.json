@@ -247,7 +247,8 @@
     "code": "Mã",
     "subject": "Chủ đề",
     "emailCc": "Gửi đến",
-    "content": "Nội dung"
+    "content": "Nội dung",
+    "active":"Kích hoạt"
   },
   "block": {
     "image": {
@@ -283,7 +284,7 @@
     "role": "Vai Trò"
   },
   "interest_rate": {
-    "interest_rate": "Lãi xuất",
+    "interest_rate": "Lãi suất",
     "term": "Kì hạn",
     "month": "Tháng",
     "create": "Tạo",
