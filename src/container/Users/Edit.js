@@ -280,7 +280,7 @@ function UsersEdit({
                   toggle('2');
                 }}
               >
-                {t('user.permissions')}
+                {t('user.permission')}
               </NavLink>
             </NavItem>
             <NavItem>
@@ -407,7 +407,7 @@ function UsersEdit({
                     <FormGroup>
                       <Row>
                         <Col />
-                        <Col>
+                        <Col xs="12" lg="6">
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
                             <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
@@ -420,7 +420,7 @@ function UsersEdit({
                       return (
                         <Form key={index} name={values.groupRole} style={{ paddingBottom: 40 }}>
                           <FormGroup>
-                            <Col sm={9} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
+                            <Col sm={11} style={{ borderBottom: '1px solid #ccc', paddingLeft: 0 }}>
                               <Label>
                                 <h5>{values.groupRole}</h5>
                               </Label>
@@ -428,14 +428,14 @@ function UsersEdit({
                           </FormGroup>
                           <FormGroup>
                             <Row>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <Label for="exampleCheckbox" inline="true">
                                     <h5>{t('ADMIN.' + values.groupRole)}</h5>
                                   </Label>
                                 </div>
                               </Col>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <ButtonGroup size="sm">
                                     <Button onClick={() => allowBlock(values)}>{t('Allow All')}</Button>

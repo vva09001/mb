@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom';
 import Dashboard from 'container/dashboard/';
 import NavbarTop from '../components/navbar/NavbarTop';
 import NavbarVertical from '../components/navbar/NavbarVertical';
-
 import loadable from '@loadable/component';
 const DashboardRoutes = loadable(() => import('./DashboardRoutes'));
 
@@ -32,6 +31,8 @@ const DashboardLayout = ({ location }) => {
   );
 };
 
-DashboardLayout.propTypes = { location: PropTypes.object.isRequired };
+DashboardLayout.propTypes = {
+  location: PropTypes.object.isRequired
+};
 
 export default DashboardLayout;

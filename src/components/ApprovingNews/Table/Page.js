@@ -43,18 +43,18 @@ const AprrTablePage = ({ data, getID, apprPages }) => {
                     <input type="checkbox" onClick={() => getID(values.id)} />
                   </th>
                   <td>
-                    <Link to={`/pages/approving/${values.id}`}>{values.name}</Link>
+                    <Link to={`/pages/approved/${values.id}`}>{values.name}</Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.id}`}>
+                    <Link to={`/pages/approved/${values.id}`}>
                       <span className={values.is_active !== 0 ? 'green' : 'dot'} />
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
+                    <Link to={`/pages/approved/${values.id}`}>{moment(values.created_at).fromNow()}</Link>
                   </td>
                   <td>
-                    <Link to={`/news/approving/${values.id}`}>
+                    <Link to={`/pages/approved/${values.id}`}>
                       {values.is_active === 1 ? `${t('approved.approved')}` : `${t('approved.notapproved')}`}
                     </Link>
                   </td>
