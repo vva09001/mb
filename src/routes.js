@@ -5,9 +5,14 @@ import jwt from 'jsonwebtoken';
 const token = getToken();
 const permission = jwt.decode(token);
 let listScopes = [];
+let tool_menu = true;
 
 if (permission !== null) {
   listScopes = permission.scopes.split(',');
+}
+
+if (indexOf(listScopes, 'ROLE_XEM LÃI SUẤT') < 0 && indexOf(listScopes, 'ROLE_XEM TỈ GIÁ') < 0) {
+  tool_menu = false;
 }
 
 export const homeRoutes = {
@@ -155,9 +160,9 @@ export const groupRouter = {
 
 export const toolMenu = {
   name: 'menu.tool_menu',
-  to: '/',
+  to: '/interest-rate',
   exact: true,
-  permission: true,
+  permission: tool_menu,
   icon: 'ellipsis-h',
   children: [
     {

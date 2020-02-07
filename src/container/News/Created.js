@@ -5,7 +5,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
-import { NewActions, CategoryActions, FormBuilderActions, MediaActions, GroupActions } from '../../store/actions';
+import { NewActions, FormBuilderActions, MediaActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
 import Select from 'react-select';

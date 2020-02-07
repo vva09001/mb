@@ -139,6 +139,7 @@ function RolesEdit({
     var i = 0;
     while (i < radios.length) {
       if (String(radios[i].type) === 'radio') {
+        // eslint-disable-next-line
         if (radios[i].checked == '' && Number(radios[i].value) !== Number(id)) {
           radios[i].checked = true;
         } else i++;

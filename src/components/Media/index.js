@@ -14,7 +14,7 @@ function MediaDetail({ detail }) {
         <Row>
           <Col lg={9} md={8}>
             <div>
-              <img style={{ width: '100%' }} src={detail.url} />
+              <img style={{ width: '100%' }} src={detail.url} alt={detail.name} />
             </div>
           </Col>
         </Row>
