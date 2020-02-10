@@ -167,6 +167,18 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
       ...SelectedOption,
       Select: event
     }));
+    
+    if (event !== null)
+      setStatus(status => ({
+        ...status,
+        roles: false
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        roles: true
+      }));
+    }
     dataRolesToAdd = event;
   };
   const handleError = async () => {
@@ -185,7 +197,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
       Error(t('errors.create'));
     }
 
-    if (SelectedOption.Select.length === 0)
+    if (SelectedOption.Select === null || SelectedOption.Select.length === 0)
       setStatus(status => ({
         ...status,
         roles: true
@@ -198,6 +210,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     }
   };
   const onSubmitUser = () => {
+    if (dataRolesToAdd !== null)
     dataRolesToAdd.forEach(function(data) {
       formState.values.roles.push(data.idRole);
     });
@@ -358,7 +371,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                             options={optionRoles}
                           />
                         )}
-                        {SelectedOption.Select.length === 0 && status.roles && (
+                        { status.roles && (
                           <span style={{ color: 'red' }}>{t('errors.minone')}</span>
                         )}
                       </FormGroup>
