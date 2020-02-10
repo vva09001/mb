@@ -66,7 +66,7 @@ function PageEdit({ detail, listTags, listGroup, getDetailById, getListTags, get
 
   const onSubmit = event => {
     event.preventDefault();
-    pageEdit({ ...formState.values, teams: formState.values.team, pageBlocks: [] });
+    pageEdit({ ...formState.values, teams: formState.values.team, pageBlocks: [] }, '/pages/list');
   };
 
   return (

@@ -45,7 +45,8 @@ function CreateTag({ editTag, getDetail, detail }) {
         [event.target.name]: true
       }
     }));
-  }; const handleError = async () => {
+  };
+  const handleError = async () => {
     var name = await triggerValidation('name');
     if (name === false) Error(t('errors.create'));
   };
@@ -66,6 +67,7 @@ function CreateTag({ editTag, getDetail, detail }) {
               type="text"
               name="name"
               onChange={handleChange}
+              value={formState.values.name}
               ref={register({
                 required: true
               })}

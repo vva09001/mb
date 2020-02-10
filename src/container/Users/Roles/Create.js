@@ -208,7 +208,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                   toggle('2');
                 }}
               >
-                {t('user.permissions')}
+                {t('user.permission')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -268,7 +268,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                       <Row>
                         <Col />
 
-                        <Col>
+                        <Col xs="12" lg="6">
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
                             <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
@@ -288,14 +288,14 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                           </FormGroup>
                           <FormGroup>
                             <Row>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <Label for="exampleCheckbox" inline="true">
                                     <h5>{t('ADMIN.' + values.groupRole)}</h5>
                                   </Label>
                                 </div>
                               </Col>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <ButtonGroup size="sm">
                                     <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>

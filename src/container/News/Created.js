@@ -157,7 +157,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       ...formState.values,
       newsBlocks: []
     };
-    console.log(status);
     if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };

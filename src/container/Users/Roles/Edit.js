@@ -305,7 +305,7 @@ function RolesEdit({
                   toggle('2');
                 }}
               >
-                {t('user.permissions')}
+                {t('user.permission')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -362,12 +362,12 @@ function RolesEdit({
                     </FormGroup>
                     <FormGroup>
                       <Row>
-                        <Col>
+                        <Col xs="12" lg="6" className="mt-2">
                           <Button onClick={() => handleChecked()}>
                             {t('roleinit.getallroleof')} {detailById.name}
                           </Button>
                         </Col>
-                        <Col>
+                        <Col xs="12" lg="6" className="mt-2">
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
                             <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
@@ -387,14 +387,14 @@ function RolesEdit({
                           </FormGroup>
                           <FormGroup>
                             <Row>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <Label for="exampleCheckbox" inline="true">
                                     <h5>{t('ADMIN.' + values.groupRole)}</h5>
                                   </Label>
                                 </div>
                               </Col>
-                              <Col xs="6">
+                              <Col xs="12" lg="6">
                                 <div>
                                   <ButtonGroup size="sm">
                                     <Button onClick={() => allowBlock(values)}>{t('Allow All')}</Button>

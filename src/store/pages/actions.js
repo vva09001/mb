@@ -24,9 +24,10 @@ const Actions = {
   EDIT_PAGES_REQUEST: 'EDIT_PAGES_REQUEST',
   EDIT_PAGES_RESPONSE: 'EDIT_PAGES_RESPONSE',
 
-  EditPages: data => ({
+  EditPages: (data, link) => ({
     type: Actions.EDIT_PAGES_REQUEST,
-    data
+    data,
+    link
   }),
 
   DELETE_PAGES_REQUEST: 'DELETE_PAGES_REQUEST',

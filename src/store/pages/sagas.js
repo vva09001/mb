@@ -92,12 +92,12 @@ function* addPagesSaga() {
 
 function* editPagesSaga() {
   yield takeLatest(actions.EDIT_PAGES_REQUEST, function*(params) {
-    const { data } = params;
+    const { data, link } = params;
     try {
       const res = yield editPagesService(data);
       if (res.status === 200) {
         yield Success('Sửa thành công');
-        yield history.push('/pages/list');
+        yield history.push(link);
         // yield put({ type: actions.GET_PAGES_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
