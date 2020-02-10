@@ -666,7 +666,9 @@ function PageCreate({
         contentHtml: formBlock[i].contentHtml.replace(/[{}]/g, '')
       };
     }
-
+    if (formState.values.has_sidebar === undefined)
+    formState.values.has_sidebar = 0;
+  
     // console.log(formBlock);
 
     pageCreate({ ...formState.values, parent_id: id, is_active: 0, pageBlocks: formBlock });
