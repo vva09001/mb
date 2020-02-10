@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Select from 'react-select';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   editRole: PropTypes.func,
@@ -46,6 +48,11 @@ function RolesEdit({
   const [SelectedOption, setSelectedOption] = useState({
     Select: []
   });
+  const [status, setStatus] = useState({
+    teams: false,
+    privileges: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const [activeTab, setActiveTab] = useState('1');
 
   const { t } = useTranslation();
@@ -72,7 +79,8 @@ function RolesEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
-          checked: 0
+          checked: 0,
+          status: 0
         };
         docs = Object.assign(docs, check);
       });
@@ -208,12 +216,54 @@ function RolesEdit({
       }
     }));
   };
-  const onSubmitRoles = event => {
-    event.preventDefault();
+  const handleError = async () => {
     formState.values.privileges = [];
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked === 1) {
+        if (docs.checked === true) {
+          formState.values.privileges.push(docs.privilegeId);
+        }
+      });
+    });
+    var name = await triggerValidation('name');
+    if (name === false) Error(t('errors.create'));
+    if (SelectedOption.Select.length === 0)
+      setStatus(status => ({
+        ...status,
+        teams: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        teams: false
+      }));
+    }
+    if (formState.values.privileges.length === 0)
+      setStatus(status => ({
+        ...status,
+        privileges: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        privileges: false
+      }));
+    }
+  };
+  const onSubmitRoles = () => {
+    // event.preventDefault();
+    
+    // dataPrivileges.forEach(function(data) {
+    //   data.privileges.forEach(function(docs) {
+    //     if (docs.checked === 1) {
+    //       formState.values.privileges.push(docs.privilegeId);
+    //     }
+    //   });
+    // });
+    formState.values.privileges = [];
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === true) {
           formState.values.privileges.push(docs.privilegeId);
         }
       });
@@ -229,7 +279,8 @@ function RolesEdit({
         formState.values.teams.push(data.value);
       });
     }
-    editRole(formState.values);
+    console.log(formState.values)
+    // editRole(formState.values);
   };
 
   return (
@@ -260,20 +311,25 @@ function RolesEdit({
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitRoles)}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input
+                  <input
                     type="text"
                     name="name"
                     id="exampleName"
                     value={formState.values.name}
                     onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
                   />
+                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
-                  <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                  <Button color="primary" type="submit" onClick={handleError}>
                     {t('save')}
                   </Button>
                 </FormGroup>
@@ -282,7 +338,7 @@ function RolesEdit({
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                  <Form className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }} onSubmit={handleSubmit(onSubmitRoles)}>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
@@ -297,7 +353,10 @@ function RolesEdit({
                         />
                       )}
                     </FormGroup>
-
+                        {console.log()}
+                         {SelectedOption.Select === null && status.teams && (
+                        <span style={{ color: 'red' }}>{t('errors.minone')}</span>
+                      )}
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
                     </FormGroup>
@@ -385,10 +444,10 @@ function RolesEdit({
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                    <Button color="primary" type="submit" onClick={handleError}>
                       {t('save')}
                     </Button>
-                  </div>
+                  </Form>
                 </Col>
               </Row>
             </TabPane>

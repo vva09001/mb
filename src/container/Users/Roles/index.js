@@ -21,7 +21,7 @@ function ListRoles({ data, getRoles, deleteRoles, getDetail }) {
   const [isOpen, setIsOpen] = useState(false);
   //const [usersID, setRolesID] = useState(null);
   const roleIds = map(data, values => {
-    return values.id;
+    return values.idRole;
   });
 
   const {

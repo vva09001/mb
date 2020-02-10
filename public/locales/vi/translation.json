@@ -214,7 +214,8 @@
     "required": "Trường này là bắt buộc",
     "create": "Tạo không thành công, kiểm tra lại các trường",
     "edit": "Chỉnh sửa không thành công, kiểm tra lại các trường",
-    "minone": "Trường này cần chọn ít nhất một giá trị"
+    "minone": "Trường này cần chọn ít nhất một giá trị",
+    "minallow": "Trường này cần chọn ít nhất một quyền là cho phép"
   },
   "slider": {
     "createslider": "Tạo Slider",

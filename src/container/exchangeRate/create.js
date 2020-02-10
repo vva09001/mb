@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { Table, Input } from 'reactstrap';
+import { Table, Input, Form } from 'reactstrap';
 import { map } from 'lodash';
 import moment from 'moment';
 import XLSX from 'xlsx';
 import Download from '../../components/exchangeRate/downloadExcel';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   data: PropTypes.array,
@@ -29,7 +31,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
     }
   ]);
   const { t } = useTranslation();
-
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const addNewCurrency = () => {
     setFormState([...formState, { currency: '', buy_cash: '', buy_transfer: '', sell: '', change_USD: '' }]);
   };
@@ -65,7 +67,17 @@ function ExChangeRateCreate({ creatExchangeRate }) {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
+  const handleError = async () => {
+    var currency = await triggerValidation('currency');
+    var buy_cash = await triggerValidation('buy_cash');
+    var buy_transfer = await triggerValidation('buy_transfer');
+    var sell = await triggerValidation('sell');
+    var change_USD = await triggerValidation('change_USD');
 
+    if (currency === false || buy_cash === false || buy_transfer === false || sell === false || change_USD === false) {
+      Error(t('errors.create'));
+    }
+  };
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
@@ -76,7 +88,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
   const date = new Date();
   return (
     <React.Fragment>
-      <div style={{ backgroundColor: 'white', height: 'auto' }}>
+      <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col xs="5">
             <div style={{ padding: 10 }}>
@@ -128,56 +140,81 @@ function ExChangeRateCreate({ creatExchangeRate }) {
             {formState.map((values, index) => {
               return (
                 <tr key={index}>
-                  <th scope="row">
+                  <td scope="row">
                     {' '}
-                    <Input
+                    <input
                       type="text"
                       name="currency"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.currency}
+                      ref={register({
+                        required: true,
+                      })}
+                      className={errors.currency === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                  </th>
+                    {errors.currency && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                  </td>
                   <td>
-                    <Input
+                    <input
                       type="text"
                       name="buy_cash"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.buy_cash}
+                      ref={register({
+                        required: true
+                      })}
+                      className={errors.buy_cash === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
+                    {errors.buy_cash && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   </td>
                   <td>
-                    <Input
+                    <input
                       type="text"
                       name="buy_transfer"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.buy_transfer}
+                      ref={register({
+                        required: true
+                      })}
+                      className={errors.buy_transfer === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
+                    {errors.buy_transfer && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   </td>
                   <td>
-                    <Input
+                    <input
                       type="text"
                       name="sell"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.sell}
+                      ref={register({
+                        required: true
+                      })}
+                      className={errors.sell === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
+                    {errors.sell && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   </td>
                   <td>
-                    <Input
+                    <input
                       type="text"
                       name="change_USD"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.change_USD}
+                      ref={register({
+                        required: true
+                      })}
+                      className={errors.change_USD === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
+                    {errors.change_USD && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   </td>
                 </tr>
               );
@@ -185,7 +222,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'primary'} onClick={onSubmit}>
+          <Button color={'primary'} type="submit" onClick={handleError}>
             {t('save')}
           </Button>
           <input
@@ -196,7 +233,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
             id="exel"
           />
         </div>
-      </div>
+      </Form>
     </React.Fragment>
   );
 }

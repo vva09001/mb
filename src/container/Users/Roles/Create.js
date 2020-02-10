@@ -7,6 +7,8 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   getListPrvilegesByGroup: PropTypes.func,
@@ -19,13 +21,20 @@ let dataPrivileges = [];
 let dataTeamToAdd = [];
 function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, getAllTeam, dataTeam }) {
   const [formState, setFormState] = useState({
-    name: '',
-    privileges: [],
-    teams: []
+    values: {
+      teams: [],
+      privileges: []
+    },
+    touched: {}
   });
   const [SelectedOption, setSelectedOption] = useState({
     Select: []
   });
+  const [status, setStatus] = useState({
+    teams: false,
+    privileges: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const optionTeam = [];
   useEffect(() => {
     getListPrivilegesByGroup();
@@ -62,11 +71,26 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  // const handleChange = event => {
+  //   event.persist();
+  //   setFormState(formState => ({
+  //     ...formState,
+  //     name: event.target.value
+  //   }));
+  // };
   const handleChange = event => {
     event.persist();
+
     setFormState(formState => ({
       ...formState,
-      name: event.target.value
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
     }));
   };
 
@@ -76,21 +100,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
       Select: event
     }));
     dataTeamToAdd = event;
-  };
-  const onSubmitRoles = event => {
-    event.preventDefault();
-    dataPrivileges.forEach(function(data) {
-      data.privileges.forEach(function(docs) {
-        if (docs.checked === true) {
-          formState.privileges.push(docs.privilegeId);
-        }
-      });
-    });
-    event.preventDefault();
-    dataTeamToAdd.forEach(function(data) {
-      formState.teams.push(data.idTeam);
-    });
-    addRole(formState);
   };
 
   const allowBlock = groupRole => {
@@ -137,6 +146,46 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
       denyBlock(data.groupRole);
     });
   };
+  const handleError = async () => {
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === true) {
+          formState.values.privileges.push(docs.privilegeId);
+        }
+      });
+    });
+    var name = await triggerValidation('name');
+    if (name === false) Error(t('errors.create'));
+    if (SelectedOption.Select.length === 0)
+      setStatus(status => ({
+        ...status,
+        teams: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        teams: false
+      }));
+    }
+    if (formState.values.privileges.length === 0)
+      setStatus(status => ({
+        ...status,
+        privileges: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        privileges: false
+      }));
+    }
+  };
+  const onSubmitRoles = () => {
+    dataTeamToAdd.forEach(function(data) {
+      formState.values.teams.push(data.idTeam);
+    });
+    if (status.teams === false && status.privileges === false) addRole(formState.values);
+    else Error(t('errors.create'));
+  };
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -165,31 +214,55 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitRoles)}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
+                  <input
+                    type="text"
+                    name="name"
+                    id="exampleName"
+                    onChange={handleChange}
+                    ref={register({
+                      required: true
+                    })}
+                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
+                <Button color="primary" type="submit" onClick={handleError}>
+                  {t('save')}
+                </Button>
               </Form>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
+                  <Form
+                    className="p-3"
+                    style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}
+                    onSubmit={handleSubmit(onSubmitRoles)}
+                  >
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
                     <FormGroup>
                       {optionTeam.length >= 0 && (
-                        <Select name="teams" 
-                        value={SelectedOption.Select}
-                        options={optionTeam} isMulti 
-                        onChange={handleChangeTeam} />
+                        <Select
+                          name="teams"
+                          value={SelectedOption.Select}
+                          options={optionTeam}
+                          isMulti
+                          onChange={handleChangeTeam}
+                        />
+                      )}
+                      {SelectedOption.Select.length === 0 && status.teams && (
+                        <span style={{ color: 'red' }}>{t('errors.minone')}</span>
                       )}
                     </FormGroup>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
-                      <h4>{t('Permissions')}</h4>
+                      <h4>{t('Permissions')}</h4>{' '}
+                      {status.privileges && <span style={{ color: 'red' }}>{t('errors.minallow')}</span>}
                     </FormGroup>
                     <FormGroup>
                       <Row>
@@ -272,10 +345,10 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={onSubmitRoles}>
+                    <Button color="primary" type="submit" onClick={handleError}>
                       {t('save')}
                     </Button>
-                  </div>
+                  </Form>
                 </Col>
               </Row>
             </TabPane>

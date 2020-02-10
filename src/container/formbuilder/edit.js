@@ -7,6 +7,8 @@ import { FormBuilderActions } from '../../store/actions';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import history from 'helpers/history';
+import { useForm } from 'react-hook-form';
+import { Error } from 'helpers/notify';
 
 window.jQuery = $;
 window.$ = $;
@@ -36,6 +38,8 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
     values: {},
     touched: {}
   });
+
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
 
   const [form, setForm] = useState(null);
 
@@ -74,8 +78,16 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
     setForm(formData);
   };
 
-  const onSubmit = event => {
-    event.preventDefault();
+  const handleError = async () => {
+    var name = await triggerValidation('name');
+    var status = await triggerValidation('status');
+    console.log('status: ', status);
+    if (name === false || status === false) {
+      Error(t('errors.edit'));
+    }
+  };
+
+  const onSubmit = () => {
     const data = {
       name: formState.values.name,
       status: formState.values.status,
@@ -88,29 +100,39 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
     <React.Fragment>
       <h4>{t('formBuilder.title')}</h4>
       <div className="backgroud__white p-3">
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
             <Label>{t('name')}</Label>
-            <Input
+            <input
               name="name"
               onChange={handleChange}
               value={formState.values.name === undefined ? '' : formState.values.name}
+              ref={register({
+                required: true
+              })}
+              className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
             />
+            {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
           </FormGroup>
           <div className="check__box">
             <Label>{t('status')}</Label>
             <div>
-              <Input
+              <input
                 type="checkbox"
                 name="status"
                 onChange={handleChange}
                 checked={formState.values.status === 0 ? false : true}
+                ref={register({
+                  required: true
+                })}
+                className={errors.status === undefined ? 'inputStyle' : 'inputStyleError'}
               />
+              {errors.status && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
               <span>{t('category_page.form.activeCategory')}</span>
             </div>
           </div>
           <div id="fb-editor" className="fb-editor" ref={fb} />
-          <Button type="submit" color="primary" disabled={checkSubmit}>
+          <Button type="submit" color="primary" disabled={checkSubmit} onClick={handleError}>
             {t('save')}
           </Button>
           <Button

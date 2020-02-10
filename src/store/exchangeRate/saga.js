@@ -27,6 +27,7 @@ function* getExchangeRateSaga() {
 function* createExchangeRateSaga() {
   yield takeLatest(Actions.CREATE_EXCHANGE_RATE_REQUEST, function*(params) {
     const { data } = params;
+    console.log(data)
     try {
       const res = yield createExchangeRateService(data);
       if (res.status === 200) {
@@ -34,7 +35,7 @@ function* createExchangeRateSaga() {
         yield put({ type: Actions.CREATE_EXCHANGE_RATE_RESPONSE, data: res.data });
       } else {
         if (res.status === 400) {
-          Error('Đã tạo tỷ giá ngày hôm nay');
+          Error('Đã tạo tỷ giá ngày hôm nay', res.message);
         } else {
           yield Error(res.message);
         }

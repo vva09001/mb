@@ -79,9 +79,9 @@ function* editRolesSaga() {
 
 function* deleteRolesSaga() {
   yield takeLatest(actions.DELETE_ROLES_REQUEST, function*(params) {
-    const { ids } = params;
+    const { id } = params;
     try {
-      const res = yield deleteRolesService(ids);
+      const res = yield deleteRolesService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
         yield put({ type: actions.GET_ROLES_REQUEST, data: res.data });

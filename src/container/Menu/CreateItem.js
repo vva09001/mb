@@ -5,7 +5,9 @@ import { MenuActions, CategoryActions, PageActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
+import { Error } from 'helpers/notify';
 import { map } from 'lodash';
+import { useForm } from 'react-hook-form';
 
 const Proptype = {
   addMenuItem: Proptypes.func,
@@ -35,6 +37,11 @@ function CreateMenusItem({
     values: {},
     touched: {}
   });
+  const [status, setStatus] = useState({
+    tagId: false,
+    html: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   useEffect(() => {
     getPages();
     getCategorys();
@@ -60,8 +67,7 @@ function CreateMenusItem({
 
     setActive(event.target.name === 'type' ? parseInt(event.target.value) : active);
   };
-  const onSubmit = event => {
-    event.preventDefault();
+  const onSubmit = () => {
     addMenuItem(dataMenu.id, formState.values);
     history.push('/menu/edit');
   };
@@ -74,7 +80,12 @@ function CreateMenusItem({
             <h4>{t('menu.createMenuItem')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <Input type="text" name="name" onChange={handleChange} />
+              <input type="text" name="name" onChange={handleChange} ref={register({
+                      required: true
+                    })}
+                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                  />
+                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('menu.Type')}</Label>

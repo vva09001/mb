@@ -185,7 +185,8 @@
     "required": "This field is required",
     "create": "Creating failed, check the fields again",
     "edit": "Editting failed, check the fields again",
-    "minone": "This field needs to select at least one value"
+    "minone": "This field needs to select at least one value",
+    "minallow": "This field needs to choose at least one allow permission"
   },
   "slider": {
     "createslider": "Create Slider",

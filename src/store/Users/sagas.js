@@ -56,7 +56,8 @@ function* aprrUsersSaga() {
         yield Error(res.message);
       }
     } catch (error) {
-      yield Error('Không thể kết nối đến server');
+      // console.log(error)
+      // yield Error('Không thể kết nối đến server', error.message);
     }
   });
 }
@@ -85,7 +86,7 @@ function* deleteUsersSaga() {
       const res = yield deleteUsersService(id);
       if (res.status === 200) {
         yield Success('Xóa thành công');
-        history.pushState('users/list');
+        history.push('/users/list');
         yield put({ type: actions.GET_USERS_REQUEST, data: res.data });
       } else {
         yield Error('Xóa lỗi');
