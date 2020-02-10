@@ -66,6 +66,8 @@ function PageEdit({ detail,
       ...formState,
       values: detail
     }));
+    // console.log(detail.pageBlocks);
+    setListBlock(detail.pageBlocks);
   }, [detail]);
 
   const toggle = tab => {
@@ -623,7 +625,7 @@ function PageEdit({ detail,
       <Col lg={3} md={4}>
         <h4 className="text-center">{t('block_page.title')}</h4>
         <div className="listBlock">
-          {map(listTags, (values, index) => (
+          {listTags && map(listTags, (values, index) => (
             <React.Fragment key={index}>
               <ListGroupItem onClick={e => toggleOpened(e, index)}>{values.name}</ListGroupItem>
               <Collapse isOpen={opened === index}>
@@ -727,7 +729,7 @@ function PageEdit({ detail,
                 </Input>
               </FormGroup>
               <div className="mb-3">
-                {listBlock.length > 0 &&
+              {listBlock && listBlock.length > 0 &&
                   map(listBlock, (value, index) => (
                     <div key={index + 1} className="mt-2 mb-2">
                       <ListGroupItem className="block__title" onClick={e => toggleOpeneBlock(e, value, index)}>
