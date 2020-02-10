@@ -109,5 +109,17 @@ const getUserByIdService = id => {
     return error.response.data;
   });
 };
+const editPasswordService = id => {
+  return request({
+    url: `/users/password/${id}`,
+    method: 'PUT'
+  })
+  .then(res => {
+    return res;
+  })
+  .catch(error => {
+    return error.response.data;
+  });
+};
 
-export { getUsersService, addUsersService, editUsersService, deleteUsersService, apprUsersService, getUserByIdService };
+export { getUsersService, addUsersService, editUsersService, deleteUsersService, apprUsersService, getUserByIdService, editPasswordService };

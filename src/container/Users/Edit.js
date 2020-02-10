@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { Error } from 'helpers/notify';
 
 const PropsType = {
   editUser: PropTypes.func,
@@ -24,6 +25,7 @@ let dataRolesToEdit = [];
 let dataPrivileges = [];
 let dataIdrole = [];
 let dataIdPrivileges = [];
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
 function UsersEdit({
   editUser,
   detail,
@@ -44,12 +46,17 @@ function UsersEdit({
   let optionRoles = [];
   let dataIdSelect = [];
   let dataIdPrivilegesExact = [];
+  const [status, setStatus] = useState({
+    roles: false,
+    password: false,
+    passwordConfirm: false
+  });
+  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const [SelectedOption, setSelectedOption] = useState({
     Select: []
   });
-  const [stateButton, setStateButton] = useState('1');
+
   const { t } = useTranslation();
-  const { register, errors, handleSubmit } = useForm();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -74,6 +81,7 @@ function UsersEdit({
         if (data.status !== 2 && data.privilegeId % 2 !== 0) dataIdPrivilegesExact.push(data);
       });
   }, [detailById, dataIdPrivilegesExact]);
+  console.log(formState.values);
   useEffect(() => {
     dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
@@ -198,9 +206,8 @@ function UsersEdit({
     });
   };
 
-  const handleChange = event => {
+  const handleChange = async event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -212,16 +219,106 @@ function UsersEdit({
         [event.target.name]: true
       }
     }));
+    if (event.target.name === 'password')
+      if (passwordRegex.test(event.target.value) === false)
+        setStatus(status => ({
+          ...status,
+          password: true
+        }));
+      else {
+        setStatus(status => ({
+          ...status,
+          password: false
+        }));
+      }
+
+    if (event.target.name === 'passwordConfirm')
+      if (event.target.value !== formState.values.password)
+        setStatus(status => ({
+          ...status,
+          passwordConfirm: true
+        }));
+      else {
+        setStatus(status => ({
+          ...status,
+          passwordConfirm: false
+        }));
+      }
   };
+
   const handleChangeRoles = event => {
     setSelectedOption(SelectedOption => ({
       ...SelectedOption,
       Select: event
     }));
+    if (event !== null)
+      setStatus(status => ({
+        ...status,
+        roles: false
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        roles: true
+      }));
+    }
     dataRolesToEdit = event;
   };
-  const onSubmitUsers = event => {
-    if (stateButton === '1') event.preventDefault();
+  const handleGenaral = async () => {
+    var firstName = await triggerValidation('firstName');
+    var lastName = await triggerValidation('lastName');
+    var username = await triggerValidation('username');
+    if (firstName === false || lastName === false || username === false) {
+      Error(t('errors.edit'));
+    }
+
+    if (SelectedOption.Select === null || SelectedOption.Select.length === 0)
+      setStatus(status => ({
+        ...status,
+        roles: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        roles: false
+      }));
+    }
+  };
+
+  console.log(formState.values.passwordConfirm);
+  const handleErrorPassword = async () => {
+    handleGenaral();
+    console.log(passwordRegex.test(formState.values.password));
+    if (passwordRegex.test(formState.values.password) === false)
+      setStatus(status => ({
+        ...status,
+        password: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        password: false
+      }));
+    }
+
+    if (formState.values.passwordConfirm !== formState.values.password)
+      setStatus(status => ({
+        ...status,
+        passwordConfirm: true
+      }));
+    else {
+      setStatus(status => ({
+        ...status,
+        passwordConfirm: false
+      }));
+    }
+  };
+  const handleError = async () => {
+    handleGenaral();
+    {
+    }
+  };
+  const onSubmitUsers = () => {
     formState.values.roles.splice(0, formState.values.roles.length);
     if (dataRolesToEdit === null) formState.values.roles = [];
     else if (dataRolesToEdit.length === 0) {
@@ -255,7 +352,9 @@ function UsersEdit({
       formState.values.password = '';
       formState.values.passwordConfirm = '';
     }
-    editUser(formState.values);
+    if (status.roles === false && status.password === false && status.passwordConfirm === false)
+      editUser(formState.values);
+    else Error(t('errors.edit'));
   };
 
   return (
@@ -296,7 +395,7 @@ function UsersEdit({
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitUsers)}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Row>
@@ -306,7 +405,17 @@ function UsersEdit({
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="firstName" value={formState.values.firstName} onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formState.values.firstName}
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.firstName === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.firstName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -318,7 +427,17 @@ function UsersEdit({
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="lastName" value={formState.values.lastName} onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formState.values.lastName}
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.lastName === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.lastName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -330,7 +449,17 @@ function UsersEdit({
                       </Label>
                     </Col>
                     <Col sm={6}>
-                      <Input type="text" name="username" value={formState.values.username} onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="username"
+                        value={formState.values.username}
+                        onChange={handleChange}
+                        ref={register({
+                          required: true
+                        })}
+                        className={errors.username === undefined ? 'inputStyle' : 'inputStyleError'}
+                      />
+                      {errors.username && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
@@ -381,13 +510,14 @@ function UsersEdit({
                             options={optionRoles}
                           />
                         )}
+                        {status.roles && <span style={{ color: 'red' }}>{t('errors.minone')}</span>}
                       </FormGroup>
                     </Col>
                   </Row>
                 </FormGroup>
 
                 <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
-                  <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
+                  <Button color="primary" type="submit" onClick={handleError}>
                     {t('save')}
                   </Button>
                 </Col>
@@ -399,7 +529,7 @@ function UsersEdit({
                   <Form
                     className="p-3"
                     style={{ background: '#fff', justifyContent: 'center' }}
-                    onSubmit={onSubmitUsers}
+                    onSubmit={handleSubmit(onSubmitUsers)}
                   >
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Permissions')}</h4>
@@ -548,7 +678,7 @@ function UsersEdit({
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={() => setStateButton('1')}>
+                    <Button color="primary" type="submit" onClick={handleError}>
                       {t('save')}
                     </Button>
                   </Form>
@@ -571,10 +701,10 @@ function UsersEdit({
                         type="password"
                         name="password"
                         onChange={handleChange}
-                        ref={register({
-                          pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^+])[A-Za-z\d@$!%*?&^+]{8,}/
-                        })}
-                        className={errors.password === undefined ? 'inputStyle' : 'inputStyleError'}
+                        // ref={register({
+                        //   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^+])[A-Za-z\d@$!%*?&^+]{8,}/
+                        // })}
+                        className={status.password === false ? 'inputStyle' : 'inputStyleError'}
                       />
                       <span>{t('errors.passworderror')}</span>
                     </Col>
@@ -592,14 +722,14 @@ function UsersEdit({
                         type="password"
                         name="passwordConfirm"
                         onChange={handleChange}
-                        ref={register({ validate: value => value === formState.values.password })}
-                        className={errors.passwordConfirm === undefined ? 'inputStyle' : 'inputStyleError'}
+                        // ref={register({ validate: value => value === formState.values.password })}
+                        className={status.passwordConfirm === false ? 'inputStyle' : 'inputStyleError'}
                       />
-                      {errors.passwordConfirm && t('errors.passwordnotmatch')}
+                      {status.passwordConfirm && <span style={{ color: 'red' }}>{t('errors.passwordnotmatch')}</span>}
                     </Col>
                   </Row>
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={() => setStateButton('2')}>
+                <Button color="primary" type="submit" onClick={handleErrorPassword}>
                   {t('save')}
                 </Button>
               </Form>
