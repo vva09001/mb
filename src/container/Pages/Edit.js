@@ -66,7 +66,6 @@ function PageEdit({ detail,
       ...formState,
       values: detail
     }));
-    // console.log(detail.pageBlocks);
     setListBlock(detail.pageBlocks);
   }, [detail]);
 
@@ -747,7 +746,7 @@ function PageEdit({ detail,
                               <Label>Tên khối</Label>
                               <Input type="text" name="title" onChange={event => handleTitle(event, index)} required />
                             </FormGroup>
-                            {map(value.blockValues, (item, indexItem) => {
+                            {map(value.blocks.blockValues, (item, indexItem) => {
                               return renderElement(item, index, indexItem);
                             })}
                           </ListGroupItem>
