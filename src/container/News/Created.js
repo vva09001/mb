@@ -149,13 +149,20 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         categories: false
       }));
     }
+    if (formState.values.meta_title === '')
+    formState.values.meta_title = formState.values.title;
+    if (formState.values.meta_description === '')
+    formState.values.meta_description = formState.values.shortDescription;
+    if (formState.values.url === '')
+    formState.values.url = formState.values.title;
   };
   const createdNews = () => {
     const body = {
       ...formState.values,
       newsBlocks: []
     };
-    if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
+    if (status.description === false && status.categories === false) 
+    newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };
   return (
