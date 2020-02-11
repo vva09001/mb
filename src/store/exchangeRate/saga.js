@@ -27,7 +27,6 @@ function* getExchangeRateSaga() {
 function* createExchangeRateSaga() {
   yield takeLatest(Actions.CREATE_EXCHANGE_RATE_REQUEST, function*(params) {
     const { data } = params;
-    console.log(data)
     try {
       const res = yield createExchangeRateService(data);
       if (res.status === 200) {
