@@ -207,7 +207,8 @@
     "Linkedin": "Linkedin",
     "Pinterest": "Pinterest",
     "GooglePlus": "Google Plus",
-    "Youtube": "Youtube"
+    "Youtube": "Youtube",
+    "footer":"Chân trang"
   },
   "errors": {
     "passworderror": "Mật khẩu buộc phải có tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt",

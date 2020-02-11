@@ -178,7 +178,8 @@
     "Linkedin": "Linkedin",
     "Pinterest": "Pinterest",
     "GooglePlus": "Google Plus",
-    "Youtube": "Youtube"
+    "Youtube": "Youtube",
+    "footer": "Footer"
   },
   "errors": {
     "passworderror": "Password required to be minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
