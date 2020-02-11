@@ -158,7 +158,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };
-  console.log(formState.values.meta_title);
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>

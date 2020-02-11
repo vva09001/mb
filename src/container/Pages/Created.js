@@ -81,6 +81,16 @@ function PageCreate({
     }));
   };
 
+  const getImage = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        miniImage: imageSeletedata.url
+      }
+    }));
+  };
+
   const toggleOpened = (e, index) => {
     e.preventDefault();
     return setOpened(opened === index ? null : index);
@@ -666,9 +676,8 @@ function PageCreate({
         contentHtml: formBlock[i].contentHtml.replace(/[{}]/g, '')
       };
     }
-    if (formState.values.has_sidebar === undefined)
-    formState.values.has_sidebar = 0;
-  
+    if (formState.values.has_sidebar === undefined) formState.values.has_sidebar = 0;
+
     // console.log(formBlock);
 
     pageCreate({ ...formState.values, parent_id: id, is_active: 0, pageBlocks: formBlock });
@@ -757,6 +766,17 @@ function PageCreate({
                     </option>
                   ))}
                 </Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleFile">{t('baseImages')}</Label>
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                  <img
+                    src={formState.values.miniImage === undefined ? '' : formState.values.miniImage}
+                    style={{ maxWidth: '100px' }}
+                    alt="logo"
+                  />
+                </div>
+                <ModalMedia setState={getImage} />
               </FormGroup>
               <div className="mb-3">
                 {listBlock.length > 0 &&

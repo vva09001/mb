@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Error } from 'helpers/notify';
+var jwt = require('jsonwebtoken');
 
 const PropsType = {
  profileUsername: PropTypes.object,
@@ -29,9 +30,9 @@ function UsersEdit({
     touched: {}
   });
   const [activeTab, setActiveTab] = useState('1');
-
+  const token = profileUsername.token;
+  const decode = jwt.decode(token);
   const [status, setStatus] = useState({
-    roles: false,
     password: false,
     passwordConfirm: false
   });
@@ -43,7 +44,7 @@ function UsersEdit({
     if (activeTab !== tab) setActiveTab(tab);
   };
   useEffect(() => {
-    getUserByUsername(profileUsername.userName);
+    getUserByUsername(decode.sub);
   }, [getUserByUsername]);
   useEffect(() => {
     setFormState(formState => ({
@@ -98,12 +99,9 @@ function UsersEdit({
   const handleGenaral = async () => {
     var firstName = await triggerValidation('firstName');
     var lastName = await triggerValidation('lastName');
-    var username = await triggerValidation('username');
-    if (firstName === false || lastName === false || username === false) {
+    if (firstName === false || lastName === false) {
       Error(t('errors.edit'));
     }
-
-   
   };
 
   const handleErrorPassword = async () => {
@@ -144,8 +142,8 @@ function UsersEdit({
       formState.values.password = '';
       formState.values.passwordConfirm = '';
     }
-    if (status.roles === false && status.password === false && status.passwordConfirm === false)
-      editUser(formState.values);
+    if (status.password === false && status.passwordConfirm === false)
+     editUser(formState.values);
     else Error(t('errors.edit'));
   };
 
@@ -220,45 +218,6 @@ function UsersEdit({
                         className={errors.lastName === undefined ? 'inputStyle' : 'inputStyleError'}
                       />
                       {errors.lastName && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
-                    </Col>
-                  </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Row>
-                    <Col sm={2}>
-                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.username')}
-                      </Label>
-                    </Col>
-                    <Col sm={6}>
-                      <input
-                        type="text"
-                        name="username"
-                        value={formState.values.username}
-                        onChange={handleChange}
-                        ref={register({
-                          required: true
-                        })}
-                        className={errors.username === undefined ? 'inputStyle' : 'inputStyleError'}
-                      />
-                      {errors.username && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
-                    </Col>
-                  </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Row>
-                    <Col sm={2}>
-                      <Label for="exampleName" style={{ color: 'rgb(60, 60, 60)' }}>
-                        {t('user.department')}
-                      </Label>
-                    </Col>
-                    <Col sm={6}>
-                      <Input
-                        type="text"
-                        name="department"
-                        value={formState.values.department}
-                        onChange={handleChange}
-                      />
                     </Col>
                   </Row>
                 </FormGroup>

@@ -81,7 +81,6 @@ function EditFormBuilder({ formDetail, editForm, getFormId }) {
   const handleError = async () => {
     var name = await triggerValidation('name');
     var status = await triggerValidation('status');
-    console.log('status: ', status);
     if (name === false || status === false) {
       Error(t('errors.edit'));
     }
