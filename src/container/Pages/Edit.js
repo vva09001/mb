@@ -33,12 +33,19 @@ const PropsType = {
   getNewByCategory: PropTypes.func
 };
 
-function PageEdit({ detail, 
-  listCategory, 
-  imageSeletedata, 
-  getNewByCategory, 
+function PageEdit({
+  detail,
+  listCategory,
+  imageSeletedata,
+  getNewByCategory,
   listNew,
-  listTags, listGroup, getDetailById, getListTags, getGroup, pageEdit }) {
+  listTags,
+  listGroup,
+  getDetailById,
+  getListTags,
+  getGroup,
+  pageEdit
+}) {
   const [formState, setFormState] = useState({ values: {} });
   const [activeTab, setActiveTab] = useState('1');
   const [opened, setOpened] = useState(null);
@@ -81,6 +88,16 @@ function PageEdit({ detail,
         ...formState.values,
         [event.target.name]:
           event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      }
+    }));
+  };
+
+  const getImage = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        miniImage: imageSeletedata.url
       }
     }));
   };
@@ -726,6 +743,17 @@ function PageEdit({ detail,
                   ))}
                 </Input>
               </FormGroup>
+              <FormGroup>
+                <Label for="exampleFile">{t('baseImages')}</Label>
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                  <img
+                    src={formState.values.miniImage === undefined ? '' : formState.values.miniImage}
+                    style={{ maxWidth: '100px' }}
+                    alt="logo"
+                  />
+                </div>
+                <ModalMedia setState={getImage} />
+              </FormGroup>
               <div className="mb-3">
                 {listBlock.length > 0 &&
                   map(listBlock, (value, index) => (
@@ -821,7 +849,8 @@ const mapStateToProps = state => {
   return {
     detail: state.PageReducer.detail,
     listTags: state.TagReducer.listTags,
-    listGroup: state.GroupReducer.listGroupByUser
+    listGroup: state.GroupReducer.listGroupByUser,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 
