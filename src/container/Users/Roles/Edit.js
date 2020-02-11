@@ -217,14 +217,14 @@ function RolesEdit({
     }));
   };
   const handleError = async () => {
-    formState.values.privileges = [];
-    dataPrivileges.forEach(function(data) {
-      data.privileges.forEach(function(docs) {
-        if (docs.checked === true) {
-          formState.values.privileges.push(docs.privilegeId);
-        }
-      });
-    });
+    // formState.values.privileges = [];
+    // dataPrivileges.forEach(function(data) {
+    //   data.privileges.forEach(function(docs) {
+    //     if (docs.checked === true) {
+    //       formState.values.privileges.push(docs.privilegeId);
+    //     }
+    //   });
+    // });
     var name = await triggerValidation('name');
     if (name === false) Error(t('errors.create'));
     if (SelectedOption.Select.length === 0)
@@ -250,16 +250,15 @@ function RolesEdit({
       }));
     }
   };
-  const onSubmitRoles = () => {
-    // event.preventDefault();
-    
-    // dataPrivileges.forEach(function(data) {
-    //   data.privileges.forEach(function(docs) {
-    //     if (docs.checked === 1) {
-    //       formState.values.privileges.push(docs.privilegeId);
-    //     }
-    //   });
-    // });
+  const onSubmitRoles = event => {
+    event.preventDefault();
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === 1) {
+          formState.values.privileges.push(docs.privilegeId);
+        }
+      });
+    });
     formState.values.privileges = [];
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
@@ -311,7 +310,7 @@ function RolesEdit({
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitRoles)}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitRoles}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
@@ -321,15 +320,17 @@ function RolesEdit({
                     id="exampleName"
                     value={formState.values.name}
                     onChange={handleChange}
-                    ref={register({
-                      required: true
-                    })}
-                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                    // ref={register({
+                    //   required: true
+                    // })}
+                    // className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                    className='inputStyle'
                   />
-                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                  {/* {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>} */}
                 </FormGroup>
                 <FormGroup>
-                  <Button color="primary" type="submit" onClick={handleError}>
+                  <Button color="primary" type="submit" > 
+                  {/* /onClick={handleError} */}
                     {t('save')}
                   </Button>
                 </FormGroup>
@@ -338,7 +339,7 @@ function RolesEdit({
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }} onSubmit={handleSubmit(onSubmitRoles)}>
+                  <Form className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }} onSubmit={onSubmitRoles}>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
@@ -444,7 +445,8 @@ function RolesEdit({
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={handleError}>
+                    <Button color="primary" type="submit" >
+                    {/* onClick={handleError} */}
                       {t('save')}
                     </Button>
                   </Form>

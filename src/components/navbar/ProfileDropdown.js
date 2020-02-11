@@ -20,12 +20,12 @@ const ProfileDropdown = ({ logout }) => {
       <DropdownMenu right className="dropdown-menu-card">
         <div className="bg-white rounded-soft py-2">
           <DropdownItem href="#!">Set status</DropdownItem>
-          <DropdownItem tag={Link} to="/pages/profile">
+          <DropdownItem tag={Link} to="/users/profile">
             Profile &amp; account
           </DropdownItem>
           <DropdownItem href="#!">Feedback</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem tag={Link} to="/pages/settings">
+          <DropdownItem tag={Link} to="/settings">
             Settings
           </DropdownItem>
           <DropdownItem

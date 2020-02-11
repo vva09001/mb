@@ -4,7 +4,8 @@ import { filter, map } from 'lodash';
 const initialState = {
   data: [],
   detail: {},
-  detailById: {}
+  detailById: {},
+  detailByUsername: {}
 };
 
 const Users = (state = initialState, action) => {
@@ -45,6 +46,11 @@ const Users = (state = initialState, action) => {
       return {
         ...state,
         detailById: action.data
+      };
+      case Actions.GET_USER_BY_USERNAME_RESPONSE:
+      return {
+        ...state,
+        detailByUsername: action.data
       };
     default:
       return state;

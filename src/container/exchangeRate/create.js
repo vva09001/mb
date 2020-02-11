@@ -140,8 +140,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
             {formState.map((values, index) => {
               return (
                 <tr key={index}>
-                  <td scope="row">
-                    {' '}
+                  <td>
                     <input
                       type="text"
                       name="currency"

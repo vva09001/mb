@@ -49,6 +49,12 @@ const Actions = {
   getUserById: id => ({
     type: Actions.GET_USER_BY_ID_REQUEST,
     id
+  }),
+  GET_USER_BY_USERNAME_REQUEST: 'GET_USER_BY_USERNAME_REQUEST',
+  GET_USER_BY_USERNAME_RESPONSE: 'GET_USER_BY_USERNAME_RESPONSE',
+  getUserByUsername: username => ({
+    type: Actions.GET_USER_BY_USERNAME_REQUEST,
+    username
   })
 };
 

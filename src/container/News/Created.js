@@ -30,7 +30,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
   const [formState, setFormState] = useState({
     values: {
       description: '',
-      categories: []
+      categories: [],
+      meta_title: '',
+      title: '',
+      meta_description: '',
+      shortDescription: '',
+      url: ''
     },
     touched: {}
   });
@@ -119,38 +124,31 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     var title = await triggerValidation('title');
     var shortDescription = await triggerValidation('shortDescription');
     var meta_title = await triggerValidation('meta_title');
-    var meta_keyword = await triggerValidation('meta_keyword');
     var meta_description = await triggerValidation('meta_description');
-    if (
-      title === false ||
-      shortDescription === false ||
-      meta_title === false ||
-      meta_keyword === false ||
-      meta_description === false
-    )
+    if (title === false || shortDescription === false || meta_title === false || meta_description === false)
       Error(t('errors.create'));
     if (formState.values.description === '')
       setStatus(status => ({
         ...status,
         description: true
       }));
-      else {
-        setStatus(status => ({
-          ...status,
-          description: false
-        }));
-      }
+    else {
+      setStatus(status => ({
+        ...status,
+        description: false
+      }));
+    }
     if (formState.values.categories.length === 0)
       setStatus(status => ({
         ...status,
         categories: true
       }));
-      else {
-        setStatus(status => ({
-          ...status,
-          categories: false
-        }));
-      }
+    else {
+      setStatus(status => ({
+        ...status,
+        categories: false
+      }));
+    }
   };
   const createdNews = () => {
     const body = {
@@ -160,6 +158,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };
+  console.log(formState.values.meta_title);
   return (
     <React.Fragment>
       <Row style={{ background: '#fff', padding: '15px 0' }}>
@@ -291,6 +290,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                   <input
                     type="text"
                     name="meta_title"
+                    value={formState.values.meta_title === '' ? formState.values.title : formState.values.meta_title}
                     onChange={handleChange}
                     ref={register({
                       required: true
@@ -301,16 +301,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('meta.keywords')}</Label>
-                  <input
-                    type="text"
-                    name="meta_keyword"
-                    onChange={handleChange}
-                    ref={register({
-                      required: true
-                    })}
-                    className={errors.meta_keyword === undefined ? 'inputStyle' : 'inputStyleError'}
-                  />
-                  {errors.meta_keyword && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                  <Input type="text" name="meta_keyword" onChange={handleChange} />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">{t('meta.description')}</Label>
@@ -318,6 +309,11 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     type="textarea"
                     name="meta_description"
                     rows="5"
+                    value={
+                      formState.values.meta_description === ''
+                        ? formState.values.shortDescription
+                        : formState.values.meta_description
+                    }
                     onChange={handleChange}
                     ref={register({
                       required: true
@@ -328,7 +324,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('URL')}</Label>
-                  <Input type="text" name="url" value={formState.values.title} onChange={handleChange} />
+                  <Input
+                    type="text"
+                    name="url"
+                    value={formState.values.url === '' ? formState.values.title : formState.values.url}
+                    onChange={handleChange}
+                  />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={handleError}>
                   {t('save')}

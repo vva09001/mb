@@ -5,6 +5,7 @@ import Dashboard from 'container/dashboard/';
 import NavbarTop from '../components/navbar/NavbarTop';
 import NavbarVertical from '../components/navbar/NavbarVertical';
 import loadable from '@loadable/component';
+import Profile from '../container/auth/Profile'
 const DashboardRoutes = loadable(() => import('./DashboardRoutes'));
 
 const DashboardLayout = ({ location }) => {
@@ -24,6 +25,7 @@ const DashboardLayout = ({ location }) => {
         <NavbarTop />
         <Switch>
           <Route path="/" exact component={Dashboard} />
+          <Route path="/users/profile" exact component={Profile}/>
           <DashboardRoutes />
         </Switch>
       </div>

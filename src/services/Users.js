@@ -102,24 +102,45 @@ const getUserByIdService = id => {
     url: `/users/${id}`,
     method: 'GET'
   })
-  .then(res => {
-    return res;
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+const getUserByUsernameService = username => {
+  return request({
+    url: `/users/profile?username=${username}`,
+    method: 'GET',
   })
-  .catch(error => {
-    return error.response.data;
-  });
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 const editPasswordService = id => {
   return request({
     url: `/users/password/${id}`,
     method: 'PUT'
   })
-  .then(res => {
-    return res;
-  })
-  .catch(error => {
-    return error.response.data;
-  });
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
 };
 
-export { getUsersService, addUsersService, editUsersService, deleteUsersService, apprUsersService, getUserByIdService, editPasswordService };
+export {
+  getUsersService,
+  addUsersService,
+  editUsersService,
+  deleteUsersService,
+  apprUsersService,
+  getUserByIdService,
+  editPasswordService,
+  getUserByUsernameService
+};

@@ -54,7 +54,7 @@ import ListGroup from 'container/group';
 import CreateGroup from 'container/group/create';
 import EditGroup from 'container/group/edit';
 import ExChangeRateEdit from 'container/exchangeRate/edit';
-import ApprDashboard from 'container/dashboard/Appr'
+import ApprDashboard from 'container/dashboard/Appr';
 
 const DashboardRoutes = () => (
   <Switch>
@@ -67,7 +67,6 @@ const DashboardRoutes = () => (
     <Route path="/news/category" component={Category} />
     <Route path="/news/approved_listings" exact component={AprrNews} />
     <Route path="/news/approving/:id" exact component={AprrEdit} />
-
     <Route path="/pages/list" exact component={ListPage} />
     <Route path="/pages/create/:id" exact component={PagesCreate} />
     <Route path="/pages/edit/:id" exact component={PageEdit} />
@@ -105,7 +104,6 @@ const DashboardRoutes = () => (
     <Route path="/users/listrole" exact component={ListRoles} />
     <Route path="/users/listrole/create" exact component={RolesCreate} />
     <Route path="/users/listrole/edit/:id" exact component={RolesEdit} />
-
     {/*Menu*/}
     <Route path="/menu/list" exact component={ListMenus} />
     <Route path="/menu/create" exact component={CreateMenus} />

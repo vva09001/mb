@@ -236,6 +236,7 @@ function EditMenus({
                   <option value={'bottom'}>{t('menu.Bottom')}</option>
                   <option value={'top'}>{t('menu.Top')}</option>
                   <option value={'side'}>{t('menu.Side')}</option>
+                  <option value={'middle'}>{t('menu.Middle')}</option>
                 </Input>
                 {formState.values.position === '' && status.position && (
                   <span style={{ color: 'red' }}>{t('errors.required')}</span>
