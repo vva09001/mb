@@ -1,7 +1,30 @@
-import request from 'helpers/request';
-const getNews = () => {
+import axios from 'axios';
+const request = axios.create({
+  baseURL: 'https://sapotacorp.com:8443/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
+});
+
+const login = data => {
   return request({
-    url: '/news',
+    url: '/users/login',
+    method: 'POST',
+    data: data
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
+const getNews = data => {
+  console.log(data);
+  return request({
+    url: `/users/profile?username=${data}`,
     method: 'GET'
   })
     .then(res => {

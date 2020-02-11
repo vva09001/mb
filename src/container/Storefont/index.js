@@ -4,7 +4,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { StoreFontActions } from '../../store/actions';
 import classnames from 'classnames';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -207,14 +207,7 @@ function Storefont({
                 </FormGroup>
                 <FormGroup>
                   <Label>{t('storefont.footerbrief')}</Label>s
-                  <CKEditor
-                    editor={ClassicEditor}
-                    data={formState.values.footer_brief === undefined ? '' : formState.values.footer_brief}
-                    onChange={(event, editor) => {
-                      const data = editor.getData();
-                      ckEditorChange(event, data);
-                    }}
-                  />
+                
                 </FormGroup>
                 <Button color="primary" type="submit">
                   {t('save')}

@@ -5,7 +5,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import IconNoImage from 'assets/img/mb/no_image.png';
@@ -352,19 +352,7 @@ function PagesCreate({
               if (value.temple === temple) {
                 return (
                   <div key={indexEdittor} className="mt-2">
-                    <CKEditor
-                      editor={ClassicEditor}
-                      onChange={(event, editor) => {
-                        const editorData = editor.getData();
-                        handleMutiEditors(editorData, data.key, indexEdittor, index, false, temple);
-                      }}
-                      onInit={editor => {
-                        editor.ui.view.editable.element.style.height = 'auto';
-                        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                          return new UploadAdapter(loader);
-                        };
-                      }}
-                    />
+                    
                   </div>
                 );
               }
@@ -586,19 +574,7 @@ function PagesCreate({
         return (
           <FormGroup>
             <Label>{data.title}</Label>
-            <CKEditor
-              editor={ClassicEditor}
-              onChange={(event, editor) => {
-                const editorData = editor.getData();
-                editorChange(editorData, data.key, index);
-              }}
-              onInit={editor => {
-                editor.ui.view.editable.element.style.height = 'auto';
-                editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                  return new UploadAdapter(loader);
-                };
-              }}
-            />
+         
           </FormGroup>
         );
       case 13: // textara
@@ -727,21 +703,8 @@ function PagesCreate({
               if (value.id === idBlock) {
                 return (
                   <div key={indexEditor} className="mt-2">
-                    <CKEditor
-                      editor={ClassicEditor}
-                      data={value.content}
-                      onChange={(event, editor) => {
-                        const editorData = editor.getData();
-                        handleMutiEditors(editorData, items.key, indexEditor, index, true, idBlock);
-                        // editorChange(editorData, items.key, index);
-                      }}
-                      onInit={editor => {
-                        editor.ui.view.editable.element.style.height = 'auto';
-                        editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                          return new UploadAdapter(loader);
-                        };
-                      }}
-                    />
+                   
+                   
                   </div>
                 );
               }
@@ -757,20 +720,7 @@ function PagesCreate({
         return (
           <FormGroup>
             <Label>{items.title}</Label>
-            <CKEditor
-              editor={ClassicEditor}
-              data={value}
-              onChange={(event, editor) => {
-                const editorData = editor.getData();
-                editorChange(editorData, items.key, index);
-              }}
-              onInit={editor => {
-                editor.ui.view.editable.element.style.height = 'auto';
-                editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                  return new UploadAdapter(loader);
-                };
-              }}
-            />
+          
           </FormGroup>
         );
       case 9: // mutile image

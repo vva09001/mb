@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import PropTypes from 'prop-types';
 import { NewActions, CategoryActions, FormBuilderActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -199,20 +199,7 @@ function AprrEdit({
             </FormGroup>
             <FormGroup>
               <Label>{t('description')}</Label>
-              <CKEditor
-                editor={ClassicEditor}
-                data={formState.values.description === undefined ? '' : formState.values.description}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  ckEditorChange(event, data);
-                }}
-                onInit={editor => {
-                  editor.ui.view.editable.element.style.height = 'auto';
-                  editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                    return new UploadAdapter(loader);
-                  };
-                }}
-              />
+             
             </FormGroup>
             <FormGroup>
               <Label>{t('authName')}</Label>

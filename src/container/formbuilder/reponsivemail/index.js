@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, FormGroup, Input, Label, Button, Col, Row, Table } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FeedbackActions } from '../../../store/actions';
@@ -135,16 +134,7 @@ function ReponmailCreate({ ReponmailCreate, formDetail, getFormId, detailrely, g
             </Col>
             <Col sm="10">
               <FormGroup>
-                <CKEditor
-                  style={{ width: '100%' }}
-                  required
-                  editor={ClassicEditor}
-                  data={formState.values.messageBody}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    ckEditorChange(event, data);
-                  }}
-                />
+                
               </FormGroup>
             </Col>
           </Row>

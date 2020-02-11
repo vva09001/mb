@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { TabContent, TabPane } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import PropTypes from 'prop-types';
 import { NetworkActions,ProvinceActions,DistrictActions } from '../../store/actions';
 import Gmap from '../../components/network/map/index';
@@ -260,14 +260,7 @@ function NetworkDetail({ detail, aprrNetwork, getNetworkId, getDetail,Province,D
                 </Col>
                 <Col md={9}>
                   <FormGroup>
-                    <CKEditor
-                      editor={ClassicEditor}
-                      data={formState.values.description || ''}
-                      onChange={(event, editor) => {
-                        const data = editor.getData();
-                        ckEditorChange(event, data);
-                      }}
-                    />
+                   
                   </FormGroup>
                 </Col>
               </Row>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { NetworkActions, ProvinceActions,DistrictActions } from '../../store/actions';
@@ -207,13 +207,7 @@ function NetworksCreate({ NetworkCreate,dataProvince,Province ,District,dataDist
               </Col>
               <Col md={8}>
                 <FormGroup>
-                  <CKEditor
-                    editor={ClassicEditor}
-                    onChange={(event, editor) => {
-                      const data = editor.getData();
-                      ckEditorChange(event, data);
-                    }}
-                  />
+                 
                 </FormGroup>
               </Col>
             </Row>

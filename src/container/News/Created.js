@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
 import PropTypes from 'prop-types';
 import { NewActions, CategoryActions, FormBuilderActions, MediaActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import ModalMedia from '../../components/Media/ModalMedia';
 import UploadAdapter from '../../services/uploadImage';
 import { useForm } from 'react-hook-form';
+import InsertImage from '../../components/PluginCkEditor/mediaplugin';
 
 const PropsType = {
   listOptions: PropTypes.array,
@@ -89,7 +90,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         description: true
       }
     }));
-    console.log(data);
   };
 
   const handleChangeSelect = event => {
@@ -123,7 +123,6 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
       ...formState.values,
       newsBlocks: []
     };
-    console.log(status);
     if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };
@@ -159,13 +158,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 <h4>{t('create')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('title')}</Label>
-                  <input
-                    type="text"
-                    name="title"
-                    onChange={handleChange}
-                   
-                    className='inputStyle'
-                  />
+                  <input type="text" name="title" onChange={handleChange} className="inputStyle" />
                   {errors.title && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                 </FormGroup>
                 <FormGroup>
@@ -175,7 +168,7 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                     name="shortDescription"
                     rows="5"
                     onChange={handleChange}
-                    className='inputStyle'
+                    className="inputStyle"
                   />
                   {errors.shortDescription && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   {console.log(errors.shortDescription)}
@@ -183,18 +176,26 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 <FormGroup>
                   <Label>{t('description')}</Label>
                   <CKEditor
+                  id = 'editor'
                     config="my_styles"
-                    editor={ClassicEditor}
+                    data={''}
+                    editor={InlineEditor}
+                    config={{
+                      plugins: [InsertImage],
+                      toolbar: [ 'bold', 'italic', 'insertImage' ]
+                      
+                    }}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       ckEditorChange(event, data);
                     }}
-                    onInit={editor => {
-                      editor.ui.view.editable.element.style.height = 'auto%';
-                      editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                        return new UploadAdapter(loader);
-                      };
-                    }}
+                    // onInit={editor => {
+                    //   console.log(editor.plugins.get('FileRepository'))
+                    //   editor.ui.view.editable.element.style.height = 'auto%';
+                    //   editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+                    //     return new UploadAdapter(loader);
+                    //   };
+                    // }}
                   />
                   {console.log(formState.values.description)}
                   {formState.values.description === '' && status.description && (
@@ -257,7 +258,8 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                       meta_title === false ||
                       meta_keyword === false ||
                       meta_description === false
-                    ) Error(t('errors.create'));
+                    )
+                      Error(t('errors.create'));
                     if (formState.values.description === '')
                       setStatus(status => ({
                         ...status,
@@ -382,3 +384,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(NewsCreate);
+

@@ -6,7 +6,7 @@ const initialState = {
 
 const Auth = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.LOGIN_RESPONSE:
+    case Actions.LOGIN_RESPONSE:      
       return {
         ...state,
         profile: action.data

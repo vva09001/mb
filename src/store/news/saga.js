@@ -7,8 +7,11 @@ import { map } from 'lodash';
 
 function* getNewsSaga() {
   yield takeLatest(actions.GET_NEWS_REQUEST, function*(params) {
+    let datauser = {
+      username: 'admin'
+    };
     try {
-      const res = yield getNews();
+      const res = yield getNews('admin');
       if (res.status === 200) {
         const getUnique = (arr, comp = 'newsId') => {
           const unique = arr

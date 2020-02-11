@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { MailActions } from '../../store/actions';
@@ -97,14 +97,7 @@ function MailsCreate({ MailsCreate }) {
             </FormGroup>
             <FormGroup>
               <Label>{t('mail.content')}</Label>
-              <CKEditor
-                required
-                editor={ClassicEditor}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  ckEditorChange(event, data);
-                }}
-              />
+              
             </FormGroup>
 
             <Button color="primary" type="submit">
