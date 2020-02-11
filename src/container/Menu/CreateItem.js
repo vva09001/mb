@@ -8,6 +8,7 @@ import history from 'helpers/history';
 import { Error } from 'helpers/notify';
 import { map } from 'lodash';
 import { useForm } from 'react-hook-form';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const Proptype = {
   addMenuItem: Proptypes.func,
@@ -18,7 +19,8 @@ const Proptype = {
   dataCategory: Proptypes.array,
   dataPage: Proptypes.array,
   dataMenu: Proptypes.object,
-  dataAllItem: Proptypes.array
+  dataAllItem: Proptypes.array,
+  imageSeletedata: Proptypes.object
 };
 
 function CreateMenusItem({
@@ -30,7 +32,8 @@ function CreateMenusItem({
   dataMenu,
   getMenu,
   getMenuItems,
-  dataAllItem
+  dataAllItem,
+  imageSeletedata
 }) {
   const [active, setActive] = useState(0);
   const [formState, setFormState] = useState({
@@ -47,7 +50,7 @@ function CreateMenusItem({
     getCategorys();
     getMenuItems(dataMenu.id);
   }, [getPages, getCategorys, getMenu, getMenuItems, dataMenu.id]);
- 
+
   const { t } = useTranslation();
   const handleChange = event => {
     event.persist();
@@ -67,6 +70,17 @@ function CreateMenusItem({
 
     setActive(event.target.name === 'type' ? parseInt(event.target.value) : active);
   };
+
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        icon: imageSeletedata.url
+      }
+    }));
+  };
+
   const onSubmit = () => {
     addMenuItem(dataMenu.id, formState.values);
     history.push('/menu/edit');
@@ -80,12 +94,16 @@ function CreateMenusItem({
             <h4>{t('menu.createMenuItem')}</h4>
             <FormGroup>
               <Label for="exampleName">{t('name')}</Label>
-              <input type="text" name="name" onChange={handleChange} ref={register({
-                      required: true
-                    })}
-                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
-                  />
-                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+              <input
+                type="text"
+                name="name"
+                onChange={handleChange}
+                ref={register({
+                  required: true
+                })}
+                className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+              />
+              {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleSelect">{t('menu.Type')}</Label>
@@ -179,6 +197,17 @@ function CreateMenusItem({
                 </div>
               </div>
             </FormGroup>
+            <FormGroup>
+              <Label for="exampleFile">{t('baseImages')}</Label>
+              <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                <img
+                  src={formState.values.icon === undefined ? '' : formState.values.icon}
+                  style={{ maxWidth: '100px' }}
+                  alt="logo"
+                />
+              </div>
+              <ModalMedia setState={onSetState} />
+            </FormGroup>
             <Button color="primary" type="submit">
               {t('save')}
             </Button>
@@ -196,7 +225,8 @@ const mapStateToProps = state => {
     dataPage: state.PageReducer.data,
     dataCategory: state.CategoryReducer.listOption,
     dataMenu: state.MenuReducer.detail,
-    dataAllItem: state.MenuReducer.dataAllItem
+    dataAllItem: state.MenuReducer.dataAllItem,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 const mapDispatchToProps = {

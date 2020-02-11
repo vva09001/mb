@@ -6,6 +6,7 @@ import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
 import { map } from 'lodash';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const Proptype = {
   editMenuItem: Proptypes.func,
@@ -17,7 +18,8 @@ const Proptype = {
   dataPage: Proptypes.array,
   dataMenu: Proptypes.object,
   dataAllItem: Proptypes.array,
-  detailItem: Proptypes.object
+  detailItem: Proptypes.object,
+  imageSeletedata: Proptypes.object
 };
 
 function EditMenusItem({
@@ -30,7 +32,8 @@ function EditMenusItem({
   getMenu,
   getMenuItems,
   dataAllItem,
-  detailItem
+  detailItem,
+  imageSeletedata
 }) {
   const [active, setActive] = useState(0);
   const [formState, setFormState] = useState({
@@ -43,7 +46,7 @@ function EditMenusItem({
     getMenuItems(dataMenu.id);
   }, [getPages, getCategorys, getMenu, getMenuItems, dataMenu.id]);
 
-  useEffect(() => {    
+  useEffect(() => {
     setActive(parseInt(formState.values.type));
   }, [formState.values]);
   const { t } = useTranslation();
@@ -60,6 +63,15 @@ function EditMenusItem({
       touched: {
         ...formState.touched,
         [event.target.name]: true
+      }
+    }));
+  };
+  const onSetState = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        icon: imageSeletedata.url
       }
     }));
   };
@@ -172,12 +184,13 @@ function EditMenusItem({
               <Input type="select" name="parentId" value={formState.values.parentId} onChange={handleChange}>
                 <option value={null}>{t('menu.Select')}</option>
                 {map(dataAllItem, value => {
-                  if (value.id !== detailItem.id){
+                  if (value.id !== detailItem.id) {
                     return (
                       <option value={value.id} key={value.id}>
                         {value.name}
                       </option>
-                    );}
+                    );
+                  }
                 })}
               </Input>
             </FormGroup>
@@ -195,6 +208,17 @@ function EditMenusItem({
                   <span>{t('menu.Enablethemenuitem')}</span>
                 </div>
               </div>
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleFile">{t('baseImages')}</Label>
+              <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                <img
+                  src={formState.values.icon === undefined ? '' : formState.values.icon}
+                  style={{ maxWidth: '100px' }}
+                  alt="logo"
+                />
+              </div>
+              <ModalMedia setState={onSetState} />
             </FormGroup>
             <Button color="primary" type="submit">
               {t('save')}
@@ -214,7 +238,8 @@ const mapStateToProps = state => {
     dataCategory: state.CategoryReducer.listOption,
     dataMenu: state.MenuReducer.detail,
     dataAllItem: state.MenuReducer.dataAllItem,
-    detailItem: state.MenuReducer.detailItem
+    detailItem: state.MenuReducer.detailItem,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 const mapDispatchToProps = {

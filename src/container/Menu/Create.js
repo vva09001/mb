@@ -89,6 +89,19 @@ function CreateMenus({ addMenu }) {
                 {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
               </FormGroup>
               <FormGroup>
+                <Label for="exampleName">{t('title')}</Label>
+                <input
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                />
+                {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+              </FormGroup>
+              <FormGroup>
                 <Label for="exampleSelect">{t('menu.Postion')}</Label>
                 <Input type="select" name="position" onChange={handleChange}>
                   <option value={''}>{t('menu.Select')}</option>

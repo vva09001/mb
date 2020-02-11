@@ -186,7 +186,7 @@ function EditMenus({
                   <ButtonIcon
                     className="mr-1"
                     color="primary"
-                    icon="plus"
+                    icon="pencil-alt"
                     iconAlign="left"
                     onClick={() => click(node, path)}
                     size="sm"
@@ -216,6 +216,20 @@ function EditMenus({
                   type="text"
                   name="name"
                   value={formState.values.name}
+                  onChange={handleChange}
+                  ref={register({
+                    required: true
+                  })}
+                  className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
+                />
+                {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleName">{t('title')}</Label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formState.values.title}
                   onChange={handleChange}
                   ref={register({
                     required: true
