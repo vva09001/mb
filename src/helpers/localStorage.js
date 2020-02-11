@@ -1,11 +1,15 @@
 export const getToken = () => {
-  const localStore = JSON.parse(localStorage.getItem('persist:root'));
-  let token = '';
-  if (localStore !== null) {
-    const profile = JSON.parse(localStore.AuthReducer);
-    token = profile.profile.token;
+  try {
+    const localStore = JSON.parse(localStorage.getItem('persist:root'));
+    let token = '';
+    if (localStore !== null) {
+      const profile = JSON.parse(localStore.AuthReducer);
+      token = profile.profile.token;
+    }
+    return token;
+  } catch (err) {
+    return '';
   }
-  return token;
 };
 
 export const setLang = lang => {
