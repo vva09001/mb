@@ -101,12 +101,12 @@ function PageEdit({
     }));
   };
 
-  const getImage = () => {
+  const getImage = key => {
     setFormState(formState => ({
       ...formState,
       values: {
         ...formState.values,
-        miniImage: imageSeletedata.url
+        [key]: imageSeletedata.url
       }
     }));
   };
@@ -721,7 +721,7 @@ function PageEdit({
                 </div>
               </div>
               <FormGroup>
-                <Label for="template">{t('page.tab')}</Label>
+                <Label for="template">{t('page.menuMiddle')}</Label>
                 <Input
                   type="select"
                   name="menuMiddleId"
@@ -770,14 +770,25 @@ function PageEdit({
               </FormGroup>
               <FormGroup>
                 <Label for="exampleFile">{t('baseImages')}</Label>
-                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
                   <img
-                    src={formState.values.miniImage === undefined ? '' : formState.values.miniImage}
+                    src={formState.values.baseImage === undefined ? IconNoImage : formState.values.baseImage}
                     style={{ maxWidth: '100px' }}
                     alt="logo"
                   />
                 </div>
-                <ModalMedia setState={getImage} />
+                <ModalMedia setState={() => getImage('baseImage')} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleFile">{t('miniImages')}</Label>
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                  <img
+                    src={formState.values.miniImage === undefined ? IconNoImage : formState.values.miniImage}
+                    style={{ maxWidth: '100px' }}
+                    alt="logo"
+                  />
+                </div>
+                <ModalMedia setState={() => getImage('miniImage')} />
               </FormGroup>
               <div className="mb-3">
                 {listBlock.length > 0 &&

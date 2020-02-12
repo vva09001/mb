@@ -13,6 +13,7 @@
   "description": "Mô tả",
   "imgDescription": "Ảnh mô tả",
   "baseImages": "Ảnh đại diện",
+  "miniImages": "Ản đại diện nhỏ",
   "category": "Danh mục",
   "general": "Chung",
   "seo": "SEO",
@@ -91,7 +92,7 @@
     "full": "Đầy đủ",
     "default": "Mặc định",
     "group": "Nhóm tin",
-    "tab": "Tab"
+    "menuMiddle": "Menu giữa"
   },
   "formBuilder": {
     "title": "Tạo Form",
