@@ -21,7 +21,7 @@ const PropsType = {
 };
 
 function ExChangeRateCreate({ creatExchangeRate }) {
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
   const [formState, setFormState] = useState([
     {
       currency: '',
@@ -86,11 +86,11 @@ function ExChangeRateCreate({ creatExchangeRate }) {
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
-      date_update: date
+      date_update: date.setHours(0, 0, 0, 0)
     };
     creatExchangeRate(body);
   };
-
+  console.log(date);
   return (
     <React.Fragment>
       <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={onSubmit}>
