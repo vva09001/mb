@@ -119,27 +119,32 @@ export const settingRoutes = {
 };
 
 export const storefontRoutes = {
-  name: 'menu.storeFont',
-  to: '/storefont',
-  permission: indexOf(listScopes, 'ROLE_XEM STORE') > 0 ? true : false,
-  exact: true,
-  icon: 'pencil-alt',
-  children: [
-    {
-      to: '/storefont',
-      name: 'menu.storeFont',
-      exact: true,
-      icon: 'pencil-alt',
-      permission: indexOf(listScopes, 'ROLE_XEM STORE') > 0 ? true : false
-    },
-    {
-      name: 'menu.network',
+  // name: 'menu.network',
+  // to: '/storefont',
+  // permission: indexOf(listScopes, 'ROLE_XEM STORE') > 0 ? true : false,
+  // exact: true,
+  // icon: 'pencil-alt',
+  // children: [
+  //   // {
+  //   //   to: '/storefont',
+  //   //   name: 'menu.storeFont',
+  //   //   exact: true,
+  //   //   icon: 'pencil-alt',
+  //   //   permission: indexOf(listScopes, 'ROLE_XEM STORE') > 0 ? true : false
+  //   // },
+  //   {
+  //     name: 'menu.network',
+  //     to: '/network',
+  //     exact: true,
+  //     icon: 'code-branch',
+  //     permission: indexOf(listScopes, 'ROLE_XEM MẠNG LƯỚI') > 0 ? true : false
+  //   }
+  // ]
+   name: 'menu.network',
       to: '/network',
       exact: true,
       icon: 'code-branch',
       permission: indexOf(listScopes, 'ROLE_XEM MẠNG LƯỚI') > 0 ? true : false
-    }
-  ]
 };
 
 export const mediaRouter = {

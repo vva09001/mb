@@ -27,7 +27,7 @@ import Resemail from 'container/formbuilder/reponsivemail/index';
 import Formdata from 'container/formbuilder/formdata/index';
 import Embeded from 'container/formbuilder/emmbedform/index';
 import SettingHome from 'container/SettingHome/index';
-import Storefont from '../container/Storefont';
+// import Storefont from '../container/Storefont';
 // import Slider from '../container/Slider';
 // import SliderCreate from '../container/Slider/Created';
 // import SliderEdit from 'container/Slider/edit';
@@ -111,7 +111,7 @@ const DashboardRoutes = () => (
     <Route path="/menu/edit/item" exact component={CreateMenusItem} />
     <Route path="/menu/edit/item/edit" exact component={EditMenusItem} />
 
-    <Route path="/storefont" exact component={Storefont} />
+    {/* <Route path="/storefont" exact component={Storefont} /> */}
 
     {/* Slider */}
     {/* <Route path="/slider" exact component={Slider} />

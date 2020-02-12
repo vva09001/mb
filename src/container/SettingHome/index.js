@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { SettingActions } from '../../store/actions';
+import { SettingActions, StoreFontActions } from '../../store/actions';
 import { CountryActions } from '../../store/actions';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { map } from 'lodash';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ModalMedia from '../../components/Media/ModalMedia';
 
 const PropsType = {
   detail: PropTypes.object,
@@ -25,9 +28,18 @@ const PropsType = {
   country: PropTypes.array,
   encryption: PropTypes.array,
   getDataEncryption: PropTypes.func,
-  editSetting: PropTypes.func
+  editSetting: PropTypes.func,
+  data: PropTypes.object,
+  dataGeneral: PropTypes.object,
+  dataLogo: PropTypes.object,
+  dataSociallink: PropTypes.object,
+  getStoreFont: PropTypes.func,
+  editStoreFontGeneral: PropTypes.func,
+  editStoreFontLogo: PropTypes.func,
+  editStoreFontSocialLink: PropTypes.func,
+  imageSeletedata: PropTypes.object
 };
-
+let dataChange = {};
 function SettingHome({
   getData,
   detail,
@@ -38,8 +50,18 @@ function SettingHome({
   country,
   getDataEncryption,
   encryption,
-  editSetting
+  editSetting,
+  data,
+  getStoreFont,
+  editStoreFontGeneral,
+  editStoreFontLogo,
+  editStoreFontSocialLink,
+  dataSociallink,
+  dataGeneral,
+  dataLogo,
+  imageSeletedata
 }) {
+  const [StoreFontName, setStoreFontName] = useState('general');
   const [formState, setFormState] = useState({
     value: {},
     customerFontend: {},
@@ -49,12 +71,31 @@ function SettingHome({
     encryption: {},
     touched: {}
   });
+  const [formStateSF, setFormStateSF] = useState({
+    values: {},
+    touched: {}
+  });
+  const [activeTab, setActiveTab] = useState('1');
+
+  const { t } = useTranslation();
+
+  dataChange = Object.assign(data, dataChange);
   const animatedComponents = makeAnimated();
   useEffect(() => {
     getData();
     getDataCountry();
     getDataEncryption();
   }, [getData, getDataCountry, getDataEncryption]);
+  useEffect(() => {
+    getStoreFont(StoreFontName);
+  }, [getStoreFont, StoreFontName]);
+  useEffect(() => {
+    setFormStateSF(formStateSF => ({
+      ...formStateSF,
+      values: activeTab === '4' ? dataGeneral : activeTab === '5' ? dataLogo : activeTab === '6' ? dataSociallink : activeTab
+    }));
+  }, [dataGeneral, dataLogo, dataSociallink, activeTab]);
+
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
@@ -66,12 +107,15 @@ function SettingHome({
     }));
   }, [detail, country, encryption, customerFontend, generals, mailSettings]);
 
-  const [activeTab, setActiveTab] = useState('1');
-
-  const { t } = useTranslation();
-
+ 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
+    if (tab === '4')
+      setStoreFontName('general')
+    if (tab === '5')
+    setStoreFontName('logo')
+      if( tab === '6')
+      setStoreFontName('socialLink')
   };
 
   const handleChangeMail = event => {
@@ -85,6 +129,19 @@ function SettingHome({
       touched: {
         ...formState.touched,
         [event.target.name]: true
+      }
+    }));
+  };
+  const ckEditorChange = (event, data) => {
+    setFormStateSF(formStateSF => ({
+      ...formStateSF,
+      footer_brief: '',
+      values: {
+        ...formStateSF.values,
+        footer_brief: data
+      },
+      touched: {
+        ...formStateSF.touched
       }
     }));
   };
@@ -168,7 +225,82 @@ function SettingHome({
       }
     }));
   };
-
+  const handleChange = event => {
+    event.persist();
+    setFormState(formStateSF => ({
+      ...formStateSF,
+      values: {
+        ...formStateSF.values,
+        [event.target.name]:
+          event.target.type === 'checkbox' ? (event.target.checked === false ? 0 : 1) : event.target.value
+      },
+      touched: {
+        ...formStateSF.touched,
+        [event.target.name]: true
+      }
+    }));
+    if (event.target.name === 'name') {
+      setFormState(formStateSF => ({
+        ...formStateSF,
+        values: {
+          ...formStateSF.values,
+          [event.target.name]: event.target.value
+        },
+        touched: {
+          ...formStateSF.touched,
+          [event.target.name]: true
+        }
+      }));
+    }
+  };
+  const editStoreFontsGeneral = event => {
+    event.preventDefault();
+    editStoreFontGeneral(formStateSF.values);
+  };
+  const editStoreFontsLogo = event => {
+    event.preventDefault();
+    editStoreFontLogo(formStateSF.values);
+  };
+  const editStoreFontsSocialLink = event => {
+    event.preventDefault();
+    editStoreFontSocialLink(formStateSF.values);
+  };
+  const onSetStateHearderLogo = () => {
+    setFormStateSF(formStateSF => ({
+      ...formStateSF,
+      values: {
+        ...formStateSF.values,
+        hearderLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFavicon = () => {
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        favicon: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterLogo = () => {
+    setFormStateSF(formStateSF => ({
+      ...formStateSF,
+      values: {
+        ...formStateSF.values,
+        footerLogo: imageSeletedata.url
+      }
+    }));
+  };
+  const onSetStateFooterBackground = () => {
+    setFormStateSF(formStateSF => ({
+      ...formStateSF,
+      values: {
+        ...formStateSF.values,
+        footerBackground: imageSeletedata.url
+      }
+    }));
+  };
   const onSubmit = event => {
     event.preventDefault();
     if (formState.generals) {
@@ -230,6 +362,37 @@ function SettingHome({
                 }}
               >
                 {t('setting.css/js')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '4' })}
+                onClick={() => {
+                  toggle('4');
+                }}
+              >
+                {' '}
+                {t('storefont.footer')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '5' })}
+                onClick={() => {
+                  toggle('5');
+                }}
+              >
+                {t('storefont.logo')}
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: activeTab === '6' })}
+                onClick={() => {
+                  toggle('6');
+                }}
+              >
+                {t('storefont.sociallinks')}
               </NavLink>
             </NavItem>
           </Nav>
@@ -413,6 +576,170 @@ function SettingHome({
                 </Button>
               </Form>
             </TabPane>
+            <TabPane tabId="4">
+              <Form className="p-3" onSubmit={editStoreFontsGeneral}>
+                <FormGroup>
+                  <Label>{t('storefont.footeraddress')}</Label>
+                  <Input
+                    type="text"
+                    name="footer_address"
+                    value={formStateSF.values === undefined ? '' : formStateSF.values.footer_address}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>{t('storefont.footerbrief')}</Label>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={formStateSF.values.footer_brief === undefined ? '' : formStateSF.values.footer_brief}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      ckEditorChange(event, data);
+                    }}
+                  />
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="5">
+              <Form className="p-3" onSubmit={editStoreFontsLogo}>
+                <FormGroup>
+                  <Label for="favicon">{t('storefont.Favicon')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFavicon} />
+                    </Col>
+                    <Col>
+                      <img
+                        src={formStateSF.values.favicon === undefined ? '' : formStateSF.values.favicon}
+                        style={{ width: '100px' }}
+                        alt="Favicon"
+                      />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="hearderLogo">{t('storefont.HeaderLogo')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateHearderLogo} />
+                    </Col>
+                    <Col>
+                      <img
+                        src={formStateSF.values.hearderLogo === undefined ? '' : formStateSF.values.hearderLogo}
+                        style={{ width: '100px' }}
+                        alt="hearderLogo"
+                      />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="footerLogo">{t('storefont.FooterLogo')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFooterLogo} />
+                    </Col>
+                    <Col>
+                      <img
+                        src={formStateSF.values.footerLogo === undefined ? '' : formStateSF.values.footerLogo}
+                        style={{ width: '100px' }}
+                        alt="FooterLogo"
+                      />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="footerBackground">{t('storefont.FooterBackground')}</Label>
+                  <Row style={{ borderTop: '1px solid #ccc', width: '80%' }}>
+                    <Col style={{ paddingTop: 40, paddingBottom: 40 }}>
+                      <ModalMedia setState={onSetStateFooterBackground} />
+                    </Col>
+                    <Col>
+                      <img
+                        src={formStateSF.values.footerBackground === undefined ? '' : formStateSF.values.footerBackground}
+                        style={{ width: '100px' }}
+                        alt="FooterBackground"
+                      />
+                    </Col>
+                  </Row>
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tabId="6">
+              <Form className="p-3" onSubmit={editStoreFontsSocialLink}>
+                <FormGroup>
+                  <Label for="facebook">{t('storefont.Facebook')}</Label>
+                  <Input
+                    type="text"
+                    name="facebook"
+                    value={formStateSF.values.facebook === undefined ? '' : formStateSF.values.facebook}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="twitter">{t('storefont.Twitter')}</Label>
+                  <Input
+                    type="text"
+                    name="twitter"
+                    value={formStateSF.values.twitter === undefined ? '' : formStateSF.values.twitter}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="instagram">{t('storefont.Instagram')}</Label>
+                  <Input
+                    type="text"
+                    name="instagram"
+                    value={formStateSF.values.instagram === undefined ? '' : formStateSF.values.instagram}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="linkedin">{t('storefont.Linkedin')}</Label>
+                  <Input
+                    type="text"
+                    name="linkedin"
+                    value={formStateSF.values.linkedin === undefined ? '' : formStateSF.values.linkedin}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="pinterest">{t('storefont.Pinterest')}</Label>
+                  <Input
+                    type="text"
+                    name="pinterest"
+                    value={formStateSF.values.pinterest === undefined ? '' : formStateSF.values.pinterest}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="googleplus">{t('storefont.GooglePlus')}</Label>
+                  <Input
+                    type="text"
+                    name="googleplus"
+                    value={formStateSF.values.googleplus === undefined ? '' : formStateSF.values.googleplus}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="youtube">{t('storefont.Youtube')}</Label>
+                  <Input
+                    type="text"
+                    name="youtube"
+                    value={formStateSF.values.youtube === undefined ? '' : formStateSF.values.youtube}
+                    onChange={handleChange}
+                  />
+                </FormGroup>
+                <Button color="primary" type="submit">
+                  {t('save')}
+                </Button>
+              </Form>
+            </TabPane>
           </TabContent>
         </Col>
       </Row>
@@ -429,7 +756,12 @@ const mapStateToProps = state => {
     generals: state.SettingReducer.generals,
     mailSettings: state.SettingReducer.mailSettings,
     country: state.CountryReducer.detail,
-    encryption: state.SettingReducer.encryption
+    encryption: state.SettingReducer.encryption,
+    data: state.StoreFontReducer.dataStoreFont,
+    dataGeneral: state.StoreFontReducer.dataStoreFontGeneral,
+    dataLogo: state.StoreFontReducer.dataStoreFontLogo,
+    dataSociallink: state.StoreFontReducer.dataStoreFontSociallink,
+    imageSeletedata: state.MediaReducer.detail
   };
 };
 
@@ -437,7 +769,11 @@ const mapDispatchToProps = {
   getData: SettingActions.getSettingAction,
   getDataCountry: CountryActions.getCountryAction,
   getDataEncryption: SettingActions.getEncryptionAction,
-  editSetting: SettingActions.editSettingAction
+  editSetting: SettingActions.editSettingAction,
+  getStoreFont: StoreFontActions.getStoreFontAction,
+  editStoreFontGeneral: StoreFontActions.editStoreFontGeneralAction,
+  editStoreFontLogo: StoreFontActions.editStoreFontLogoAction,
+  editStoreFontSocialLink: StoreFontActions.editStoreFontSocialLinkAction
 };
 
 export default connect(
