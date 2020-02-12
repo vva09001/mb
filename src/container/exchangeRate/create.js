@@ -9,8 +9,8 @@ import { map } from 'lodash';
 import moment from 'moment';
 import XLSX from 'xlsx';
 import Download from '../../components/exchangeRate/downloadExcel';
-import { useForm } from 'react-hook-form';
-import { Error } from 'helpers/notify';
+// import { useForm } from 'react-hook-form';
+// import { Error } from 'helpers/notify';
 
 const PropsType = {
   data: PropTypes.array,
@@ -31,7 +31,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
     }
   ]);
   const { t } = useTranslation();
-  const { register, errors, triggerValidation, handleSubmit } = useForm();
+  // const { register, errors, triggerValidation, handleSubmit } = useForm();
   const addNewCurrency = () => {
     setFormState([...formState, { currency: '', buy_cash: '', buy_transfer: '', sell: '', change_USD: '' }]);
   };
@@ -67,17 +67,17 @@ function ExChangeRateCreate({ creatExchangeRate }) {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-  const handleError = async () => {
-    var currency = await triggerValidation('currency');
-    var buy_cash = await triggerValidation('buy_cash');
-    var buy_transfer = await triggerValidation('buy_transfer');
-    var sell = await triggerValidation('sell');
-    var change_USD = await triggerValidation('change_USD');
+  // const handleError = async () => {
+  //   var currency = await triggerValidation('currency');
+  //   var buy_cash = await triggerValidation('buy_cash');
+  //   var buy_transfer = await triggerValidation('buy_transfer');
+  //   var sell = await triggerValidation('sell');
+  //   var change_USD = await triggerValidation('change_USD');
 
-    if (currency === false || buy_cash === false || buy_transfer === false || sell === false || change_USD === false) {
-      Error(t('errors.create'));
-    }
-  };
+  //   if (currency === false || buy_cash === false || buy_transfer === false || sell === false || change_USD === false) {
+  //     Error(t('errors.create'));
+  //   }
+  // };
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
@@ -88,7 +88,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
   const date = new Date();
   return (
     <React.Fragment>
-      <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={handleSubmit(onSubmit)}>
+      <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={onSubmit}>
         <Row>
           <Col xs="5">
             <div style={{ padding: 10 }}>
@@ -141,79 +141,74 @@ function ExChangeRateCreate({ creatExchangeRate }) {
               return (
                 <tr key={index}>
                   <td>
-                    <input
+                    <Input
                       type="text"
                       name="currency"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.currency}
-                      ref={register({
-                        required: true,
-                      })}
-                      className={errors.currency === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                    {errors.currency && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
                   </td>
                   <td>
-                    <input
+                    <Input
                       type="text"
                       name="buy_cash"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.buy_cash}
-                      ref={register({
-                        required: true
-                      })}
-                      className={errors.buy_cash === undefined ? 'inputStyle' : 'inputStyleError'}
+                      // ref={register({
+                      //   required: true
+                      // })}
+                      // className={errors.buy_cash === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                    {errors.buy_cash && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                    {/* {errors.buy_cash && <span style={{ color: 'red' }}>{t('errors.required')}</span>} */}
                   </td>
                   <td>
-                    <input
+                    <Input
                       type="text"
                       name="buy_transfer"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.buy_transfer}
-                      ref={register({
-                        required: true
-                      })}
-                      className={errors.buy_transfer === undefined ? 'inputStyle' : 'inputStyleError'}
+                      // ref={register({
+                      //   required: true
+                      // })}
+                      // className={errors.buy_transfer === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                    {errors.buy_transfer && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                    {/* {errors.buy_transfer && <span style={{ color: 'red' }}>{t('errors.required')}</span>} */}
                   </td>
                   <td>
-                    <input
+                    <Input
                       type="text"
                       name="sell"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.sell}
-                      ref={register({
-                        required: true
-                      })}
-                      className={errors.sell === undefined ? 'inputStyle' : 'inputStyleError'}
+                      // ref={register({
+                      //   required: true
+                      // })}
+                      // className={errors.sell === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                    {errors.sell && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                    {/* {errors.sell && <span style={{ color: 'red' }}>{t('errors.required')}</span>} */}
                   </td>
                   <td>
-                    <input
+                    <Input
                       type="text"
                       name="change_USD"
                       onChange={event => {
                         handleChange(event, index);
                       }}
                       value={values.change_USD}
-                      ref={register({
-                        required: true
-                      })}
-                      className={errors.change_USD === undefined ? 'inputStyle' : 'inputStyleError'}
+                      // ref={register({
+                      //   required: true
+                      // })}
+                      // className={errors.change_USD === undefined ? 'inputStyle' : 'inputStyleError'}
                     />
-                    {errors.change_USD && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                    {/* {errors.change_USD && <span style={{ color: 'red' }}>{t('errors.required')}</span>} */}
                   </td>
                 </tr>
               );
@@ -221,7 +216,7 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'primary'} type="submit" onClick={handleError}>
+          <Button color={'primary'} type="submit" >
             {t('save')}
           </Button>
           <input
