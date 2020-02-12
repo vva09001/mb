@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Table, Input, Form } from 'reactstrap';
 import { map } from 'lodash';
-import moment from 'moment';
 import XLSX from 'xlsx';
 import Download from '../../components/exchangeRate/downloadExcel';
+import DatePicker from 'react-date-picker';
 // import { useForm } from 'react-hook-form';
 // import { Error } from 'helpers/notify';
 
@@ -21,6 +21,7 @@ const PropsType = {
 };
 
 function ExChangeRateCreate({ creatExchangeRate }) {
+  const [date, setDate] = useState(null);
   const [formState, setFormState] = useState([
     {
       currency: '',
@@ -78,6 +79,10 @@ function ExChangeRateCreate({ creatExchangeRate }) {
   //     Error(t('errors.create'));
   //   }
   // };
+  const onChangedate = date => {
+    setDate(date);
+  };
+
   const onSubmit = () => {
     const body = {
       exchangeRateDetail: formState,
@@ -85,12 +90,12 @@ function ExChangeRateCreate({ creatExchangeRate }) {
     };
     creatExchangeRate(body);
   };
-  const date = new Date();
+
   return (
     <React.Fragment>
       <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={onSubmit}>
         <Row>
-          <Col xs="5">
+          <Col xs="4">
             <div style={{ padding: 10 }}>
               <Button color={'primary'} onClick={addNewCurrency}>
                 {t('ExChangeRate.AddNewCurrency')}
@@ -98,14 +103,8 @@ function ExChangeRateCreate({ creatExchangeRate }) {
             </div>
           </Col>
           <Col>
-            <div style={{ padding: 10, paddingLeft: 30 }}>
-              <Input
-                type="text"
-                name="buy_transfer"
-                disabled
-                value={moment(date).format('DD/MM/YYYY')}
-                style={{ width: 120 }}
-              />
+            <div style={{ padding: 10 }}>
+              <DatePicker onChange={onChangedate} value={date} />
             </div>
           </Col>
           <Col>
@@ -216,12 +215,17 @@ function ExChangeRateCreate({ creatExchangeRate }) {
           </tbody>
         </Table>
         <div style={{ padding: 10 }}>
-          <Button color={'primary'} type="submit" >
+          <Button
+            color={'primary'}
+            onClick={() => {
+              onSubmit();
+            }}
+          >
             {t('save')}
           </Button>
           <input
             type="file"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            accept=".xlsx,.xls"
             onChange={handleChangeFile}
             style={{ padding: '10px', display: 'none' }}
             id="exel"

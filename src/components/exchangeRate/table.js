@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table } from 'reactstrap';
 import ReactPaginate from 'react-paginate';
-import { slice, map } from 'lodash';
+import { slice, map, filter } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
@@ -15,7 +15,8 @@ const PropsType = {
   isAllSelected: PropTypes.bool,
   toggleSelectedItem: PropTypes.func,
   toggleIsAllSelected: PropTypes.func,
-  isIndeterminate: PropTypes.bool
+  isIndeterminate: PropTypes.bool,
+  date: PropTypes.object
 };
 
 const ExchangeRateTable = ({
@@ -25,13 +26,14 @@ const ExchangeRateTable = ({
   isAllSelected,
   toggleSelectedItem,
   toggleIsAllSelected,
-  isIndeterminate
+  isIndeterminate,
+  date
 }) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
 
   const list = slice(data, page * 20, page * 20 + 20);
- 
+
   return (
     <React.Fragment>
       <Table size="sm">
@@ -51,25 +53,55 @@ const ExchangeRateTable = ({
           </tr>
         </thead>
         <tbody>
-          {map(list, values => {
-            return (
-              <tr key={values.id}>
-                <th>
-                  <CustomInput
-                    id={'checkbox-' + values.id}
-                    type="checkbox"
-                    checked={isSelectedItem(values.id)}
-                    onChange={() => toggleSelectedItem(values.id)}
-                  />
-                </th>
-                <td onClick={() => getDetail(values)}>
-                  <Moment format="DD/MM/YYYY">{values.date_update}</Moment>
-                </td>
-                <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
-                <td />
-              </tr>
-            );
-          })}
+          {date === null &&
+            map(list, values => {
+              return (
+                <tr key={values.id}>
+                  <th>
+                    <CustomInput
+                      id={'checkbox-' + values.id}
+                      type="checkbox"
+                      checked={isSelectedItem(values.id)}
+                      onChange={() => toggleSelectedItem(values.id)}
+                    />
+                  </th>
+                  <td onClick={() => getDetail(values)}>
+                    <Moment format="DD/MM/YYYY ">{values.date_update}</Moment>
+                  </td>
+                  <td onClick={() => getDetail(values)}>
+                    {' '}
+                    <Moment format="HH:mm | DD/MM/YYYY ">{values.created_at}</Moment>
+                  </td>
+                  <td />
+                </tr>
+              );
+            })}
+          {date !== null &&
+            map(
+              filter(list, values => {
+                console.log(date.getTime(), values.date_update);
+                return values.date_update === date.getTime();
+              }),
+              values => {
+                return (
+                  <tr key={values.id}>
+                    <th>
+                      <CustomInput
+                        id={'checkbox-' + values.id}
+                        type="checkbox"
+                        checked={isSelectedItem(values.id)}
+                        onChange={() => toggleSelectedItem(values.id)}
+                      />
+                    </th>
+                    <td onClick={() => getDetail(values)}>
+                      <Moment format="DD/MM/YYYY">{values.date_update}</Moment>
+                    </td>
+                    <td onClick={() => getDetail(values)}>{moment(values.created_at).fromNow()}</td>
+                    <td />
+                  </tr>
+                );
+              }
+            )}
         </tbody>
       </Table>
       <div className="pagination__wapper">

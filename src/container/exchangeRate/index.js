@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ExChangeRateTable from '../../components/exchangeRate/table';
-import { Row, Button } from 'reactstrap';
+import { Row, Button, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExChangeRateActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import history from 'helpers/history';
 import { connect } from 'react-redux';
 import useBulkSelect from '../../hooks/useBulkSelect';
 import { map } from 'lodash';
+import DatePicker from 'react-date-picker';
 
 const PropsType = {
   data: PropTypes.array,
@@ -19,6 +20,7 @@ const PropsType = {
 
 function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getExChangeRatesDetail }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [date, setDate] = useState(null);
 
   useEffect(() => {
     getExChangeRates();
@@ -55,6 +57,9 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getExCh
       setIsOpen(!isOpen);
     }
   };
+  const onChangedate = date => {
+    setDate(date);
+  };
 
   return (
     <React.Fragment>
@@ -63,12 +68,19 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getExCh
           <h4>{t('ExChangeRate.ExchangeRate')}</h4>
         </Row>
         <Row className="mb-2">
-          <Button color="primary" className="mr-2" onClick={() => history.push('/exchangeRate/create')}>
-            {t('create')}
-          </Button>
-          <Button color="danger" className="mr-2" onClick={openComfirm}>
-            {t('delete')}
-          </Button>
+          <Col lg="5">
+            <Button color="primary" className="mr-2" onClick={() => history.push('/exchangeRate/create')}>
+              {t('create')}
+            </Button>
+            <Button color="danger" className="mr-2" onClick={openComfirm}>
+              {t('delete')}
+            </Button>
+          </Col>
+          <Col lg="7">
+            <div>
+              <DatePicker onChange={onChangedate} value={date} />
+            </div>
+          </Col>
         </Row>
         <Row style={{ background: '#fff' }} className="p-3">
           <ExChangeRateTable
@@ -79,6 +91,7 @@ function ListExchangeRate({ data, getExChangeRates, deleteExChangeRates, getExCh
             toggleSelectedItem={toggleSelectedItem}
             toggleIsAllSelected={toggleIsAllSelected}
             isIndeterminate={isIndeterminate}
+            date={date}
           />
         </Row>
       </div>

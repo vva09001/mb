@@ -31,13 +31,10 @@ function* createExchangeRateSaga() {
       const res = yield createExchangeRateService(data);
       if (res.status === 200) {
         Success('Tạo mới thành công');
-        yield put({ type: Actions.CREATE_EXCHANGE_RATE_RESPONSE, data: res.data });
+        history.push('/exchangeRate');
+        yield put({ type: Actions.GET_EXCHANGE_RATE_REQUEST, data: res.data });
       } else {
-        if (res.status === 400) {
-          Error('Đã tạo tỷ giá ngày hôm nay', res.message);
-        } else {
-          yield Error(res.message);
-        }
+        yield Error(res.message);
       }
     } catch (error) {
       yield Error('Không thể kết nối đến server');
@@ -69,7 +66,6 @@ function* deleteExchangeRateSaga() {
       const res = yield deleteExchangeRateService(id);
       if (res.status === 200) {
         Success('Xóa thành công');
-        history.push('/exchangeRate');
         yield put({ type: Actions.GET_EXCHANGE_RATE_REQUEST, data: res.data });
       } else {
         yield Error(res.message);
