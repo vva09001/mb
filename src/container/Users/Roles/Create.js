@@ -106,7 +106,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) % 2 === 1) {
+        if (Number(radios[i].value) === 1) {
           radios[i].checked = true;
         }
       }
@@ -123,7 +123,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) % 2 === 0) {
+        if (Number(radios[i].value) === 0) {
           radios[i].checked = true;
         }
       }
@@ -314,26 +314,31 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                                   </Col>
                                   <Col xs="6">
                                     <div>
-                                      <CustomInput
+                                    <CustomInput
                                         type="radio"
                                         id={value.id}
-                                        value={value.privilegeId}
+                                        value={1}
                                         name={value.name}
                                         label="Allow"
                                         inline="true"
-                                        onClick={() => {
+                                        // checked={value.inherit ===1}
+                                        onChange={() => {
                                           value.checked = true;
+                                          value.status = 1;
                                         }}
+                                        // checked={}
                                       />
                                       <CustomInput
                                         type="radio"
                                         id={value.id + 1}
-                                        value={value.privilegeId + 1}
+                                        value={0}
                                         name={value.name}
                                         label="Deny"
                                         inline="true"
-                                        onClick={() => {
+                                        // checked={value.inherit ===0}
+                                        onChange={() => {
                                           value.checked = false;
+                                          value.status = 0;
                                         }}
                                       />
                                     </div>
