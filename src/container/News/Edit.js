@@ -140,13 +140,11 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
     var title = await triggerValidation('title');
     var shortDescription = await triggerValidation('shortDescription');
     var meta_title = await triggerValidation('meta_title');
-    var meta_keyword = await triggerValidation('meta_keyword');
     var meta_description = await triggerValidation('meta_description');
     if (
       title === false ||
       shortDescription === false ||
       meta_title === false ||
-      meta_keyword === false ||
       meta_description === false
     )
       Error(t('errors.edit'));
