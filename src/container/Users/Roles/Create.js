@@ -147,7 +147,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     });
   };
   const handleError = async () => {
-    dataPrivileges.forEach(function(data) {
+   dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.checked === true) {
           formState.values.privileges.push(docs.privilegeId);
@@ -167,7 +167,8 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
         teams: false
       }));
     }
-    if (formState.values.privileges.length === 0)
+    console.log(formState.values.privileges.length)
+      if (formState.values.privileges.length === 0)
       setStatus(status => ({
         ...status,
         privileges: true
@@ -350,7 +351,9 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={handleError}>
+                    <Button color="primary" type="submit" onClick={() => {
+              handleError();
+            }}>
                       {t('save')}
                     </Button>
                   </Form>
