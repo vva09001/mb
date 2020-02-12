@@ -5,7 +5,7 @@ import { MenuActions, CategoryActions, PageActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from 'helpers/history';
-import { Error } from 'helpers/notify';
+// import { Error } from 'helpers/notify';
 import { map } from 'lodash';
 import { useForm } from 'react-hook-form';
 import ModalMedia from '../../components/Media/ModalMedia';

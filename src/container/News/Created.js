@@ -5,6 +5,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import classnames from 'classnames';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import PropTypes from 'prop-types';
+import IconNoImage from 'assets/img/mb/no_image.png';
 import { NewActions, FormBuilderActions, MediaActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
@@ -56,12 +57,12 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
     getForm();
   }, [getCategory, getForm]);
 
-  const onSetState = () => {
+  const onSetState = key => {
     setFormState(formState => ({
       ...formState,
       values: {
         ...formState.values,
-        base_image: imageSeletedata.url
+        [key]: imageSeletedata.url
       }
     }));
   };
@@ -149,20 +150,16 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
         categories: false
       }));
     }
-    if (formState.values.meta_title === '')
-    formState.values.meta_title = formState.values.title;
-    if (formState.values.meta_description === '')
-    formState.values.meta_description = formState.values.shortDescription;
-    if (formState.values.url === '')
-    formState.values.url = formState.values.title;
+    if (formState.values.meta_title === '') formState.values.meta_title = formState.values.title;
+    if (formState.values.meta_description === '') formState.values.meta_description = formState.values.shortDescription;
+    if (formState.values.url === '') formState.values.url = formState.values.title;
   };
   const createdNews = () => {
     const body = {
       ...formState.values,
       newsBlocks: []
     };
-    if (status.description === false && status.categories === false) 
-    newsCreate(body, onSuccess, onFail);
+    if (status.description === false && status.categories === false) newsCreate(body, onSuccess, onFail);
     else Error(t('errors.create'));
   };
   return (
@@ -248,14 +245,25 @@ function NewsCreate({ newsCreate, getCategory, listOptions, listForm, getForm, i
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">{t('baseImages')}</Label>
-                  <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                  <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
                     <img
-                      src={formState.values.base_image === undefined ? '' : formState.values.base_image}
+                      src={formState.values.base_image === undefined ? IconNoImage : formState.values.base_image}
                       style={{ maxWidth: '100px' }}
                       alt="logo"
                     />
                   </div>
-                  <ModalMedia setState={onSetState} />
+                  <ModalMedia setState={() => onSetState('base_image')} />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="exampleFile">{t('miniImages')}</Label>
+                  <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
+                    <img
+                      src={formState.values.miniImage === undefined ? IconNoImage : formState.values.miniImage}
+                      style={{ maxWidth: '100px' }}
+                      alt="logo"
+                    />
+                  </div>
+                  <ModalMedia setState={() => onSetState('miniImage')} />
                 </FormGroup>
                 <div className="check__box">
                   <Label>{t('sticky')}</Label>

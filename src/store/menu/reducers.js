@@ -6,7 +6,8 @@ const initialState = {
   detail: {},
   dataItem: [],
   detailItem: {},
-  dataAllItem: []
+  dataAllItem: [],
+  listMenuMiddle: []
 };
 
 const Menus = (state = initialState, action) => {
@@ -84,6 +85,11 @@ const Menus = (state = initialState, action) => {
       return {
         ...state,
         dataAllItem: action.data
+      };
+    case Actions.GET_MENU_MIDDLE_RESPONSE:
+      return {
+        ...state,
+        listMenuMiddle: action.data
       };
     default:
       return state;

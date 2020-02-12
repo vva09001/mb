@@ -13,6 +13,7 @@
   "description": "Description",
   "imgDescription": "Images Description",
   "baseImages": "Base Images",
+  "miniImages": "Mini Iamges",
   "category": "Category",
   "general": "General",
   "seo": "SEO",
@@ -88,7 +89,8 @@
     "sidebar": "Activate sidebar",
     "full": "Full",
     "default": "Default",
-    "group": "News group"
+    "group": "News group",
+    "menuMiddle": "Menu Middle"
   },
   "formBuilder": {
     "title": "Create Form",
@@ -245,7 +247,7 @@
     "subject": "Subject",
     "emailCc": "To",
     "content": "Content",
-    "active":"Active"
+    "active": "Active"
   },
   "network": {
     "approved": "Approved",
@@ -263,7 +265,7 @@
     "down": "Download the file",
     "processingunit": "Processing unit",
     "lastupdateddate": "Last updated date",
-    "districts":"Districts",
+    "districts": "Districts",
     "content": "Content"
   },
   "roleinit": {

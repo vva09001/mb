@@ -12,7 +12,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { map, filter } from 'lodash';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { PageActions, TagActions, GroupActions, NewActions, CategoryActions } from '../../store/actions';
+import { PageActions, TagActions, GroupActions, NewActions, CategoryActions, MenuActions } from '../../store/actions';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -22,12 +22,14 @@ const PropsType = {
   listGroup: PropTypes.array,
   listCategory: PropTypes.array,
   listNew: PropTypes.array,
+  listMenu: PropTypes.array,
   imageSeletedata: PropTypes.object,
   getListTags: PropTypes.func,
   getGroup: PropTypes.func,
   pageCreate: PropTypes.func,
   getCategory: PropTypes.func,
-  getNewByCategory: PropTypes.func
+  getNewByCategory: PropTypes.func,
+  getMenuMiddle: PropTypes.func
 };
 
 function PageCreate({
@@ -35,12 +37,14 @@ function PageCreate({
   listGroup,
   listCategory,
   listNew,
+  listMenu,
   imageSeletedata,
   getListTags,
   getGroup,
   getCategory,
   getNewByCategory,
-  pageCreate
+  pageCreate,
+  getMenuMiddle
 }) {
   const [formState, setFormState] = useState({ values: {} });
   const [fomEditor, setFomEditor] = useState([{}]);
@@ -62,7 +66,8 @@ function PageCreate({
     getListTags();
     getGroup();
     getCategory();
-  }, [getListTags, getGroup, getCategory]);
+    getMenuMiddle();
+  }, [getListTags, getGroup, getCategory, getMenuMiddle]);
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -81,12 +86,12 @@ function PageCreate({
     }));
   };
 
-  const getImage = () => {
+  const getImage = key => {
     setFormState(formState => ({
       ...formState,
       values: {
         ...formState.values,
-        miniImage: imageSeletedata.url
+        [key]: imageSeletedata.url
       }
     }));
   };
@@ -743,6 +748,23 @@ function PageCreate({
                 </div>
               </div>
               <FormGroup>
+                <Label for="template">{t('page.menuMiddle')}</Label>
+                <Input
+                  type="select"
+                  name="menuMiddleId"
+                  required
+                  value={formState.values.menuMiddleId === undefined ? 0 : formState.values.menuMiddleId}
+                  onChange={handleChange}
+                >
+                  <option value={0}>{t('select')}</option>
+                  {map(listMenu, value => (
+                    <option value={value.id} key={value.id}>
+                      {value.name}
+                    </option>
+                  ))}
+                </Input>
+              </FormGroup>
+              <FormGroup>
                 <Label for="template">{t('page.template')}</Label>
                 <Input
                   type="select"
@@ -769,14 +791,25 @@ function PageCreate({
               </FormGroup>
               <FormGroup>
                 <Label for="exampleFile">{t('baseImages')}</Label>
-                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
                   <img
-                    src={formState.values.miniImage === undefined ? '' : formState.values.miniImage}
+                    src={formState.values.baseImage === undefined ? IconNoImage : formState.values.baseImage}
                     style={{ maxWidth: '100px' }}
                     alt="logo"
                   />
                 </div>
-                <ModalMedia setState={getImage} />
+                <ModalMedia setState={() => getImage('baseImage')} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="exampleFile">{t('miniImages')}</Label>
+                <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="mb-2">
+                  <img
+                    src={formState.values.miniImage === undefined ? IconNoImage : formState.values.miniImage}
+                    style={{ maxWidth: '100px' }}
+                    alt="logo"
+                  />
+                </div>
+                <ModalMedia setState={() => getImage('miniImage')} />
               </FormGroup>
               <div className="mb-3">
                 {listBlock.length > 0 &&
@@ -840,7 +873,8 @@ const mapStateToProps = state => {
     listGroup: state.GroupReducer.listGroupByUser,
     listCategory: state.CategoryReducer.data,
     listNew: state.NewReducer.listNewByCategory,
-    imageSeletedata: state.MediaReducer.detail
+    imageSeletedata: state.MediaReducer.detail,
+    listMenu: state.MenuReducer.listMenuMiddle
   };
 };
 
@@ -849,7 +883,8 @@ const mapDispatchToProps = {
   pageCreate: PageActions.AddPages,
   getGroup: GroupActions.getGroupByUserAction,
   getCategory: CategoryActions.getCategoryAction,
-  getNewByCategory: NewActions.getNewByCategory
+  getNewByCategory: NewActions.getNewByCategory,
+  getMenuMiddle: MenuActions.getMenuMiddleAction
 };
 
 export default connect(

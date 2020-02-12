@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { NewActions, FormBuilderActions, GroupActions } from '../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { Error, Success } from 'helpers/notify';
+import IconNoImage from 'assets/img/mb/no_image.png';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { map } from 'lodash';
@@ -60,12 +61,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  const onSetState = () => {
+  const onSetState = key => {
     setFormState(formState => ({
       ...formState,
       values: {
         ...formState.values,
-        base_image: imageSeletedata.url
+        [key]: imageSeletedata.url
       }
     }));
   };
@@ -139,38 +140,36 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
     var title = await triggerValidation('title');
     var shortDescription = await triggerValidation('shortDescription');
     var meta_title = await triggerValidation('meta_title');
-    var meta_keyword = await triggerValidation('meta_keyword');
     var meta_description = await triggerValidation('meta_description');
     if (
       title === false ||
       shortDescription === false ||
       meta_title === false ||
-      meta_keyword === false ||
       meta_description === false
     )
       Error(t('errors.edit'));
-      if (formState.values.description === '')
+    if (formState.values.description === '')
       setStatus(status => ({
         ...status,
         description: true
       }));
-      else {
-        setStatus(status => ({
-          ...status,
-          description: false
-        }));
-      }
+    else {
+      setStatus(status => ({
+        ...status,
+        description: false
+      }));
+    }
     if (formState.values.categories.length === 0)
       setStatus(status => ({
         ...status,
         categories: true
       }));
-      else {
-        setStatus(status => ({
-          ...status,
-          categories: false
-        }));
-      }
+    else {
+      setStatus(status => ({
+        ...status,
+        categories: false
+      }));
+    }
   };
 
   const editNews = () => {
@@ -268,12 +267,26 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
               />
             </FormGroup>
             <FormGroup>
-              <img
-                src={formState.values.base_image === undefined ? '' : formState.values.base_image}
-                style={{ width: '100px' }}
-                alt="icon"
-              />
-              <ModalMedia setState={onSetState} />
+              <Label for="exampleFile">{t('baseImages')}</Label>
+              <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
+                <img
+                  src={formState.values.base_image === undefined ? IconNoImage : formState.values.base_image}
+                  style={{ maxWidth: '100px' }}
+                  alt="logo"
+                />
+              </div>
+              <ModalMedia setState={() => onSetState('base_image')} />
+            </FormGroup>
+            <FormGroup>
+              <Label for="exampleFile">{t('miniImages')}</Label>
+              <div style={{ maxHeight: '100px', maxWidth: '100px' }} className="block_image mb-2">
+                <img
+                  src={formState.values.miniImage === undefined ? IconNoImage : formState.values.miniImage}
+                  style={{ maxWidth: '100px' }}
+                  alt="logo"
+                />
+              </div>
+              <ModalMedia setState={() => onSetState('miniImage')} />
             </FormGroup>
             <div className="check__box">
               <Label>{t('sticky')}</Label>
@@ -334,17 +347,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <input
+              <Input
                 type="text"
                 name="meta_keyword"
                 value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
                 onChange={handleChange}
-                ref={register({
-                  required: true
-                })}
-                className={errors.meta_keyword === undefined ? 'inputStyle' : 'inputStyleError'}
               />
-              {errors.meta_keyword && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
@@ -370,7 +378,7 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
                 onChange={handleChange}
               />
             </FormGroup>
-            <Button color="primary" type="submit"  onClick={handleError}>
+            <Button color="primary" type="submit" onClick={handleError}>
               {t('edit')}
             </Button>
           </Form>
