@@ -15,22 +15,24 @@ import IconNoImage from 'assets/img/mb/no_image.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { map, filter } from 'lodash';
-import { PageActions, TagActions, GroupActions, NewActions, CategoryActions } from '../../store/actions';
+import { PageActions, TagActions, GroupActions, NewActions, CategoryActions, MenuActions } from '../../store/actions';
 
 const PropsType = {
   detail: PropTypes.object,
   listTags: PropTypes.array,
   listGroup: PropTypes.array,
+  listMenu: PropTypes.array,
+  listCategory: PropTypes.array,
+  listNew: PropTypes.array,
   getDetailById: PropTypes.func,
   getListTags: PropTypes.func,
   getGroup: PropTypes.func,
   pageEdit: PropTypes.func,
-  listCategory: PropTypes.array,
-  listNew: PropTypes.array,
   imageSeletedata: PropTypes.object,
   pageCreate: PropTypes.func,
   getCategory: PropTypes.func,
-  getNewByCategory: PropTypes.func
+  getNewByCategory: PropTypes.func,
+  getMenuMiddle: PropTypes.func
 };
 
 function PageEdit({
@@ -41,10 +43,12 @@ function PageEdit({
   listNew,
   listTags,
   listGroup,
+  listMenu,
   getDetailById,
   getListTags,
   getGroup,
-  pageEdit
+  pageEdit,
+  getMenuMiddle
 }) {
   const [formState, setFormState] = useState({ values: {} });
   const [activeTab, setActiveTab] = useState('1');
@@ -66,12 +70,17 @@ function PageEdit({
     getDetailById(id);
     getListTags();
     getGroup();
-  }, [getDetailById, id, getListTags, getGroup]);
+    getMenuMiddle();
+  }, [getDetailById, id, getListTags, getGroup, getMenuMiddle]);
 
   useEffect(() => {
+    let menuID = 0;
+    if (detail.menuMiddle !== undefined && detail.menuMiddle !== null) {
+      menuID = detail.menuMiddle.id;
+    }
     setFormState(formState => ({
       ...formState,
-      values: detail
+      values: { ...detail, menuMiddleId: menuID }
     }));
   }, [detail]);
 
@@ -634,7 +643,6 @@ function PageEdit({
     event.preventDefault();
     pageEdit({ ...formState.values, teams: formState.values.team, pageBlocks: [] }, '/pages/list');
   };
-
   return (
     <Row style={{ background: '#fff', padding: '15px 0' }}>
       <Col lg={3} md={4}>
@@ -712,6 +720,23 @@ function PageEdit({
                   <span>{t('page.sidebar')}</span>
                 </div>
               </div>
+              <FormGroup>
+                <Label for="template">{t('page.tab')}</Label>
+                <Input
+                  type="select"
+                  name="menuMiddleId"
+                  required
+                  value={formState.values.menuMiddleId === undefined ? 0 : formState.values.menuMiddleId}
+                  onChange={handleChange}
+                >
+                  <option value={0}>{t('select')}</option>
+                  {map(listMenu, value => (
+                    <option value={value.id} key={value.id}>
+                      {value.name}
+                    </option>
+                  ))}
+                </Input>
+              </FormGroup>
               <FormGroup>
                 <Label for="template">{t('page.template')}</Label>
                 <Input
@@ -850,7 +875,8 @@ const mapStateToProps = state => {
     detail: state.PageReducer.detail,
     listTags: state.TagReducer.listTags,
     listGroup: state.GroupReducer.listGroupByUser,
-    imageSeletedata: state.MediaReducer.detail
+    imageSeletedata: state.MediaReducer.detail,
+    listMenu: state.MenuReducer.listMenuMiddle
   };
 };
 
@@ -858,7 +884,8 @@ const mapDispatchToProps = {
   getDetailById: PageActions.getPageByID,
   getListTags: TagActions.getTagAction,
   pageEdit: PageActions.EditPages,
-  getGroup: GroupActions.getGroupByUserAction
+  getGroup: GroupActions.getGroupByUserAction,
+  getMenuMiddle: MenuActions.getMenuMiddleAction
 };
 
 export default connect(

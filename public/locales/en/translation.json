@@ -88,7 +88,8 @@
     "sidebar": "Activate sidebar",
     "full": "Full",
     "default": "Default",
-    "group": "News group"
+    "group": "News group",
+    "tab": "Tab"
   },
   "formBuilder": {
     "title": "Create Form",

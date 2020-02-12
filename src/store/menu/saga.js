@@ -12,6 +12,7 @@ import {
 } from '../../services/menu';
 import { Error, Success } from '../../helpers/notify';
 import actions from './actions';
+import { filter } from 'lodash';
 import history from '../../helpers/history';
 
 function* getMenusSaga() {
@@ -20,6 +21,22 @@ function* getMenusSaga() {
       const res = yield getMenus();
       if (res.status === 200) {
         yield put({ type: actions.GET_MENUS_RESPONSE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
+function* getMenuMiddleSaga() {
+  yield takeLatest(actions.GET_MENU_MIDDLE_REQUEST, function*() {
+    try {
+      const res = yield getMenus();
+      if (res.status === 200) {
+        const listMenu = filter(res.data, data => data.position === 'middle');
+        yield put({ type: actions.GET_MENU_MIDDLE_RESPONSE, data: listMenu });
       } else {
         yield Error(res.message);
       }
@@ -88,7 +105,8 @@ function* getMenuItemsSaga() {
       let data = [];
       if (res.status === 200) {
         const nest = (items, id = null, link = 'parentId') => {
-          return items.sort((a, b) => a.position - b.position)
+          return items
+            .sort((a, b) => a.position - b.position)
             .filter(item => item[link] === id)
             .map(item => ({
               ...item,
@@ -187,6 +205,7 @@ export default function* rootSaga() {
     fork(addMenuItemsSaga),
     fork(editMenuItemsSaga),
     fork(deleteMenuItemsSaga),
-    fork(updatePositionMenuItemsSaga)
+    fork(updatePositionMenuItemsSaga),
+    fork(getMenuMiddleSaga)
   ]);
 }

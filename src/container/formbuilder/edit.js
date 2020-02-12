@@ -1,6 +1,6 @@
 import React, { createRef, useState, useEffect } from 'react';
 import $ from 'jquery';
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Form, FormGroup, Label, Button } from 'reactstrap';
 import { useTranslation } from 'react-i18next';
 import Proptypes from 'prop-types';
 import { FormBuilderActions } from '../../store/actions';

@@ -92,7 +92,14 @@ const Actions = {
     positions
   }),
 
-  GET_ALL_MENUITEM: 'GET_ALL_MENUITEM'
+  GET_ALL_MENUITEM: 'GET_ALL_MENUITEM',
+
+  GET_MENU_MIDDLE_REQUEST: 'GET_MENU_MIDDLE_REQUEST',
+  GET_MENU_MIDDLE_RESPONSE: 'GET_MENU_MIDDLE_RESPONSE',
+
+  getMenuMiddleAction: () => ({
+    type: Actions.GET_MENU_MIDDLE_REQUEST
+  })
 };
 
 export default Actions;

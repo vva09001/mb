@@ -90,7 +90,8 @@
     "sidebar": "Kích hoạt thanh bên",
     "full": "Đầy đủ",
     "default": "Mặc định",
-    "group": "Nhóm tin"
+    "group": "Nhóm tin",
+    "tab": "Tab"
   },
   "formBuilder": {
     "title": "Tạo Form",
