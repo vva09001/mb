@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import { TabContent, TabPane, Nav, NavItem, NavLink, CustomInput, ButtonGroup } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { UserActions } from '../../store/actions';
@@ -11,19 +11,14 @@ import { Error } from 'helpers/notify';
 var jwt = require('jsonwebtoken');
 
 const PropsType = {
- profileUsername: PropTypes.object,
- getUserByUsername: PropTypes.func,
- editUser: PropTypes.func,
- detailByUsername: PropTypes.object
+  profileUsername: PropTypes.object,
+  getUserByUsername: PropTypes.func,
+  editUser: PropTypes.func,
+  detailByUsername: PropTypes.object
 };
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/;
-function UsersEdit({
-    profileUsername,
-    getUserByUsername,
-    editUser,
-    detailByUsername
-}) {
+function UsersEdit({ profileUsername, getUserByUsername, editUser, detailByUsername }) {
   const [formState, setFormState] = useState({
     values: detailByUsername,
 
@@ -38,20 +33,18 @@ function UsersEdit({
   });
   const { register, errors, triggerValidation, handleSubmit } = useForm();
 
-
   const { t } = useTranslation();
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
   useEffect(() => {
     getUserByUsername(decode.sub);
-  }, [getUserByUsername]);
+  }, [getUserByUsername, decode.sub]);
   useEffect(() => {
     setFormState(formState => ({
       ...formState,
       values: detailByUsername
     }));
-    
   }, [detailByUsername]);
 
   const handleChange = async event => {
@@ -94,8 +87,6 @@ function UsersEdit({
       }
   };
 
-
-     
   const handleGenaral = async () => {
     var firstName = await triggerValidation('firstName');
     var lastName = await triggerValidation('lastName');
@@ -136,14 +127,11 @@ function UsersEdit({
     }
   };
   const onSubmitUsers = () => {
-    
-    
     if (formState.values.password === undefined || formState.values.passwordConfirm === undefined) {
       formState.values.password = '';
       formState.values.passwordConfirm = '';
     }
-    if (status.password === false && status.passwordConfirm === false)
-     editUser(formState.values);
+    if (status.password === false && status.passwordConfirm === false) editUser(formState.values);
     else Error(t('errors.edit'));
   };
 
@@ -233,7 +221,6 @@ function UsersEdit({
                     </Col>
                   </Row>
                 </FormGroup>
-                
 
                 <Col sm="12" md={{ size: 6, offset: 2 }} style={{ paddingLeft: 6 }}>
                   <Button color="primary" type="submit" onClick={handleError}>
@@ -242,7 +229,7 @@ function UsersEdit({
                 </Col>
               </Form>
             </TabPane>
-           </TabContent>
+          </TabContent>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="2">
               <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitUsers)}>

@@ -39,7 +39,7 @@ class UploadAdapter {
   upload() {
     return this.loader.file.then(file => {
       const data = new FormData();
-      data.append('folderName', 'News/');
+      data.append('folderName', 'Editor/');
       data.append('files', file);
 
       return request({
