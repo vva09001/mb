@@ -334,17 +334,12 @@ function Edit({ detail, editNew, getCategory, listOptions, listForm, getForm, ge
             </FormGroup>
             <FormGroup>
               <Label>{t('meta.keywords')}</Label>
-              <input
+              <Input
                 type="text"
                 name="meta_keyword"
                 value={formState.values.meta_keyword === undefined ? '' : formState.values.meta_keyword}
                 onChange={handleChange}
-                ref={register({
-                  required: true
-                })}
-                className={errors.meta_keyword === undefined ? 'inputStyle' : 'inputStyleError'}
               />
-              {errors.meta_keyword && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="exampleText">{t('meta.description')}</Label>
