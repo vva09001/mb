@@ -66,7 +66,14 @@ function PageEdit({ detail,
       ...formState,
       values: detail
     }));
-    setListBlock(detail.pageBlocks);
+    if(detail.pageBlocks) {
+      setListBlock(detail.pageBlocks);
+    }
+    if(detail.pageBlocks) {
+      (detail.pageBlocks).forEach(element => {
+        setListData(element.blocks);
+      });
+    }
   }, [detail]);
 
   const toggle = tab => {
@@ -93,6 +100,8 @@ function PageEdit({ detail,
 
   const toggleOpeneBlock = (e, value, index) => {
     e.preventDefault();
+
+    // console. do du lieu vao day
     let data = [];
     map(value.blockValues, value => (data = [...data, { id: value.id, form_id: value.id }]));
     setBlockValue(data);
@@ -103,19 +112,21 @@ function PageEdit({ detail,
     data.blockValues.forEach(value => {
       if (value.type_id === 9) {
         formimage.push({
-          id: listBlock.length,
-          title: '',
-          description: '',
-          image: '',
-          learnMore: '',
-          text: '',
-          url: '',
-          video_url: '',
+          id: value.id || listBlock.length,
+          title: value.title || '',
+          description:value.description || '',
+          image:value.image ||  '',
+          learnMore: value.learnMore || '',
+          text: value.text || '',
+          url:value.url || '',
+          video_url: value.video_url || '',
           form_id: value.id
         });
       }
     });
     setFormImg([...formImg, ...formimage]);
+    console.log(listBlock);
+    console.log(data);
     setListBlock([...listBlock, data]);
     setFormBlock([...formBlock, { id_block: data.blockValues[0].block_id }]);
   };
@@ -405,8 +416,13 @@ function PageEdit({ detail,
         return (
           <FormGroup>
             <Label for="template">{item.title}</Label>
+            {console.log(formImg)}
             {map(formImg, (items, itemIndex) => {
-              if (items.id === index && item.id === items.form_id) {
+              if (item.id === items.form_id) {
+                // if we add 2 image elements in the same block.
+                // then both of element will show 2 images. 
+                // if 2 elements have 2 images then it will show 4 images.
+                // that's why we need to filter by form_id.
                 return (
                   <div key={itemIndex}>
                     <div className="mt-3 btnBlock-remove">
@@ -746,7 +762,8 @@ function PageEdit({ detail,
                               <Label>Tên khối</Label>
                               <Input type="text" name="title" onChange={event => handleTitle(event, index)} required />
                             </FormGroup>
-                            {map(value.blocks.blockValues, (item, indexItem) => {
+                            {console.log(value)}
+                            {map(value.blockValues, (item, indexItem) => {
                               return renderElement(item, index, indexItem);
                             })}
                           </ListGroupItem>
