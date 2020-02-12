@@ -816,7 +816,7 @@ function PageCreate({
                   map(listBlock, (value, index) => (
                     <div key={index + 1} className="mt-2 mb-2">
                       <ListGroupItem className="block__title" onClick={e => toggleOpeneBlock(e, value, index)}>
-                        {`Khối mới`}
+                        {formBlock[index].title === undefined ? 'Khối mới' : formBlock[index].title}
                         <div>
                           <Button onClick={() => removeBlock(index)}>
                             <FontAwesomeIcon icon={faTrash} />
@@ -828,7 +828,7 @@ function PageCreate({
                           <ListGroupItem>
                             <FormGroup>
                               <Label>Tên khối</Label>
-                              <Input type="text" name="title" onChange={event => handleTitle(event, index)} required />
+                              <Input type="text" name="title" onBlur={event => handleTitle(event, index)} required />
                             </FormGroup>
                             {map(value.blockValues, (item, indexItem) => {
                               return renderElement(item, index, indexItem);
