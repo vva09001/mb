@@ -4,7 +4,8 @@ import { filter, map } from 'lodash';
 const initialState = {
   data: [],
   detail: {},
-  homeID: null
+  homeID: null,
+  PagePagination: {}
 };
 
 const Pages = (state = initialState, action) => {
@@ -67,6 +68,11 @@ const Pages = (state = initialState, action) => {
       return {
         ...state,
         detail: action.data
+      };
+    case Actions.GET_PAGE_PAGINATION_RESPONESE:
+      return {
+        ...state,
+        PagePagination: action.data
       };
     default:
       return state;

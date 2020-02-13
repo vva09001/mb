@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 const PropsType = {
-  data: PropTypes.array,
+  data: PropTypes.object,
   getPages: PropTypes.func,
   deletePages: PropTypes.func,
   getDetail: PropTypes.func,
@@ -17,14 +17,15 @@ const PropsType = {
 };
 
 function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
+  const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    getPages();
-  }, [getPages]);
+    getPages(page);
+  }, [getPages, page]);
 
   const onDelete = () => {
     if (newsID !== null) {
@@ -37,13 +38,19 @@ function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
     getDetail(detail);
     history.push('/pages/approved');
   };
-
   return (
     <React.Fragment>
       <h4>{t('approved.approved_page')}</h4>
       <div>
         <Row style={{ background: '#fff' }} className="p-3">
-          <AprrTablePage data={data} getID={id => setNewsID(id)} getDetail={onGetDetail} apprPages ={apprPages} />
+          <AprrTablePage
+            data={data.pages}
+            size={data.size}
+            setPage={setPage}
+            getID={id => setNewsID(id)}
+            getDetail={onGetDetail}
+            apprPages={apprPages}
+          />
         </Row>
       </div>
       <PopupComfirm open={isOpen} onClose={() => setIsOpen(!isOpen)} onComfirm={onDelete} />
@@ -54,11 +61,11 @@ function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
 AprrPages.propTypes = PropsType;
 
 const mapStateToProps = state => {
-  return { data: state.PageReducer.data };
+  return { data: state.PageReducer.PagePagination };
 };
 
 const mapDispatchToProps = {
-  getPages: PageActions.GetAllPages,
+  getPages: PageActions.GetPagePagination,
   deletePages: PageActions.DeletePages,
   getDetail: PageActions.getDetailPages,
   apprPages: PageActions.apprPages

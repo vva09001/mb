@@ -11,14 +11,14 @@ import ButtonIcon from '../../common/ButtonIcon';
 const PropsType = {
   data: PropTypes.array,
   getDetail: PropTypes.func,
-  apprPages: PropTypes.func
+  apprPages: PropTypes.func,
+  size: PropTypes.number,
+  setPage: PropTypes.any
 };
 
-const AprrTablePage = ({ data, getID, apprPages }) => {
+const AprrTablePage = ({ data, getID, apprPages, size, setPage }) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(0);
 
-  const list = slice(data, page * 20, page * 20 + 20);
   return (
     <React.Fragment>
       <Table striped>
@@ -35,7 +35,7 @@ const AprrTablePage = ({ data, getID, apprPages }) => {
           </tr>
         </thead>
         <tbody>
-          {map(list, values => {
+          {map(data, values => {
             if (values.is_active === 0) {
               return (
                 <tr key={values.id}>
@@ -81,7 +81,7 @@ const AprrTablePage = ({ data, getID, apprPages }) => {
       </Table>
       <div className="pagination__wapper">
         <ReactPaginate
-          pageCount={Math.ceil(data && data.length / 20)}
+          pageCount={size}
           marginPagesDisplayed={5}
           pageRangeDisplayed={5}
           previousLabel={t('previous')}
@@ -95,7 +95,9 @@ const AprrTablePage = ({ data, getID, apprPages }) => {
           activeLinkClassName={'active'}
           breakLinkClassName={'page-item'}
           containerClassName={'pagination'}
-          onPageChange={data => setPage(data.selected)}
+          onPageChange={data => {
+            setPage(data.selected + 1);
+          }}
         />
       </div>
     </React.Fragment>
