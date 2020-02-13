@@ -7,8 +7,6 @@ import { RoleActions } from '../../../store/actions';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { useForm } from 'react-hook-form';
-import { Error } from 'helpers/notify';
 
 const PropsType = {
   getListPrvilegesByGroup: PropTypes.func,
@@ -21,20 +19,13 @@ let dataPrivileges = [];
 let dataTeamToAdd = [];
 function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, getAllTeam, dataTeam }) {
   const [formState, setFormState] = useState({
-    values: {
-      teams: [],
-      privileges: []
-    },
-    touched: {}
+    name: '',
+    privileges: [],
+    teams: []
   });
   const [SelectedOption, setSelectedOption] = useState({
     Select: []
   });
-  const [status, setStatus] = useState({
-    teams: false,
-    privileges: false
-  });
-  const { register, errors, triggerValidation, handleSubmit } = useForm();
   const optionTeam = [];
   useEffect(() => {
     getListPrivilegesByGroup();
@@ -71,26 +62,11 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  // const handleChange = event => {
-  //   event.persist();
-  //   setFormState(formState => ({
-  //     ...formState,
-  //     name: event.target.value
-  //   }));
-  // };
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]: event.target.type === 'checkbox' ? event.target.checked : event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
+      name: event.target.value
     }));
   };
 
@@ -101,12 +77,27 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     }));
     dataTeamToAdd = event;
   };
+  const onSubmitRoles = event => {
+    event.preventDefault();
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.checked === true) {
+          formState.privileges.push(docs.privilegeId);
+        }
+      });
+    });
+    event.preventDefault();
+    dataTeamToAdd.forEach(function(data) {
+      formState.teams.push(data.idTeam);
+    });
+    addRole(formState);
+  };
 
   const allowBlock = groupRole => {
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) === 1) {
+        if (Number(radios[i].value) % 2 === 0) {
           radios[i].checked = true;
         }
       }
@@ -123,7 +114,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) === 0) {
+        if (Number(radios[i].value) % 2 === 1) {
           radios[i].checked = true;
         }
       }
@@ -145,47 +136,6 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     dataPrivileges.forEach(function(data) {
       denyBlock(data.groupRole);
     });
-  };
-  const handleError = async () => {
-   dataPrivileges.forEach(function(data) {
-      data.privileges.forEach(function(docs) {
-        if (docs.checked === true) {
-          formState.values.privileges.push(docs.privilegeId);
-        }
-      });
-    });
-    var name = await triggerValidation('name');
-    if (name === false) Error(t('errors.create'));
-    if (SelectedOption.Select.length === 0)
-      setStatus(status => ({
-        ...status,
-        teams: true
-      }));
-    else {
-      setStatus(status => ({
-        ...status,
-        teams: false
-      }));
-    }
-    console.log(formState.values.privileges.length)
-      if (formState.values.privileges.length === 0)
-      setStatus(status => ({
-        ...status,
-        privileges: true
-      }));
-    else {
-      setStatus(status => ({
-        ...status,
-        privileges: false
-      }));
-    }
-  };
-  const onSubmitRoles = () => {
-    dataTeamToAdd.forEach(function(data) {
-      formState.values.teams.push(data.idTeam);
-    });
-    if (status.teams === false && status.privileges === false) addRole(formState.values);
-    else Error(t('errors.create'));
   };
   return (
     <React.Fragment>
@@ -209,67 +159,43 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                   toggle('2');
                 }}
               >
-                {t('user.permission')}
+                {t('user.permissions')}
               </NavLink>
             </NavItem>
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitRoles)}>
+              <Form className="p-3" style={{ background: '#fff' }}>
                 <h4>{t('account')}</h4>
                 <FormGroup>
                   <Label for="exampleName">{t('name')}</Label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="exampleName"
-                    onChange={handleChange}
-                    ref={register({
-                      required: true
-                    })}
-                    className={errors.name === undefined ? 'inputStyle' : 'inputStyleError'}
-                  />
-                  {errors.name && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+                  <Input type="text" name="name" id="exampleName" onChange={handleChange} />
                 </FormGroup>
-                <Button color="primary" type="submit" onClick={handleError}>
-                  {t('save')}
-                </Button>
               </Form>
             </TabPane>
             <TabPane tabId="2">
               <Row>
                 <Col lg={9} md={8}>
-                  <Form
-                    className="p-3"
-                    style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}
-                    onSubmit={handleSubmit(onSubmitRoles)}
-                  >
+                  <div className="p-3" style={{ background: '#fff', justifyContent: 'center', paddingBottom: 20 }}>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
                       <h4>{t('Team')}</h4>
                     </FormGroup>
                     <FormGroup>
                       {optionTeam.length >= 0 && (
-                        <Select
-                          name="teams"
-                          value={SelectedOption.Select}
-                          options={optionTeam}
-                          isMulti
-                          onChange={handleChangeTeam}
-                        />
-                      )}
-                      {SelectedOption.Select.length === 0 && status.teams && (
-                        <span style={{ color: 'red' }}>{t('errors.minone')}</span>
+                        <Select name="teams" 
+                        value={SelectedOption.Select}
+                        options={optionTeam} isMulti 
+                        onChange={handleChangeTeam} />
                       )}
                     </FormGroup>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
-                      <h4>{t('Permissions')}</h4>{' '}
-                      {status.privileges && <span style={{ color: 'red' }}>{t('errors.minallow')}</span>}
+                      <h4>{t('Permissions')}</h4>
                     </FormGroup>
                     <FormGroup>
                       <Row>
                         <Col />
 
-                        <Col xs="12" lg="6">
+                        <Col>
                           <ButtonGroup size="sm">
                             <Button onClick={() => allowAll()}>{t('Allow All')}</Button>
                             <Button onClick={() => denyAll()}>{t('Deny All')}</Button>
@@ -289,14 +215,14 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                           </FormGroup>
                           <FormGroup>
                             <Row>
-                              <Col xs="12" lg="6">
+                              <Col xs="6">
                                 <div>
                                   <Label for="exampleCheckbox" inline="true">
                                     <h5>{t('ADMIN.' + values.groupRole)}</h5>
                                   </Label>
                                 </div>
                               </Col>
-                              <Col xs="12" lg="6">
+                              <Col xs="6">
                                 <div>
                                   <ButtonGroup size="sm">
                                     <Button onClick={() => allowBlock(values.groupRole)}>{t('Allow All')}</Button>
@@ -315,31 +241,26 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                                   </Col>
                                   <Col xs="6">
                                     <div>
-                                    <CustomInput
+                                      <CustomInput
                                         type="radio"
                                         id={value.id}
-                                        value={1}
+                                        value={value.privilegeId}
                                         name={value.name}
                                         label="Allow"
                                         inline="true"
-                                        // checked={value.inherit ===1}
-                                        onChange={() => {
+                                        onClick={() => {
                                           value.checked = true;
-                                          value.status = 1;
                                         }}
-                                        // checked={}
                                       />
                                       <CustomInput
                                         type="radio"
                                         id={value.id + 1}
-                                        value={0}
+                                        value={value.privilegeId + 1}
                                         name={value.name}
                                         label="Deny"
                                         inline="true"
-                                        // checked={value.inherit ===0}
-                                        onChange={() => {
+                                        onClick={() => {
                                           value.checked = false;
-                                          value.status = 0;
                                         }}
                                       />
                                     </div>
@@ -351,12 +272,10 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                         </Form>
                       );
                     })}
-                    <Button color="primary" type="submit" onClick={() => {
-              handleError();
-            }}>
+                    <Button color="primary" type="submit" onClick={onSubmitRoles}>
                       {t('save')}
                     </Button>
-                  </Form>
+                  </div>
                 </Col>
               </Row>
             </TabPane>

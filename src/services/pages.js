@@ -118,6 +118,19 @@ const getHomepageIDService = () => {
     });
 };
 
+const getPagePaginationService = data => {
+  return request({
+    url: `/pages/pagination?page=${data}`,
+    method: 'GET'
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(error => {
+      return error.response.data;
+    });
+};
+
 export {
   getPagesService,
   getPageByIDService,
@@ -127,5 +140,6 @@ export {
   updatePositionPagesService,
   apprPagesService,
   deletePageBlockService,
-  getHomepageIDService
+  getHomepageIDService,
+  getPagePaginationService
 };

@@ -8,7 +8,8 @@ import {
   apprPagesService,
   deletePageBlockService,
   getHomepageIDService,
-  getPageByIDService
+  getPageByIDService,
+  getPagePaginationService
 } from '../../services/pages';
 import history from 'helpers/history';
 import { Error, Success } from '../../helpers/notify';
@@ -191,6 +192,22 @@ function* getPageByIDSaga() {
   });
 }
 
+function* getPagePagination() {
+  yield takeLatest(actions.GET_PAGE_PAGINATION_REQUEST, function*(params) {
+    const { data } = params;
+    try {
+      const res = yield getPagePaginationService(data);
+      if (res.status === 200) {
+        yield put({ type: actions.GET_PAGE_PAGINATION_RESPONESE, data: res.data });
+      } else {
+        yield Error(res.message);
+      }
+    } catch (error) {
+      yield Error('Không thể kết nối đến server');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
     fork(getPagesSaga),
@@ -202,6 +219,7 @@ export default function* rootSaga() {
     fork(apprPagesSaga),
     fork(deletePageBlockSaga),
     fork(getHomepageIDSaga),
-    fork(getPageByIDSaga)
+    fork(getPageByIDSaga),
+    fork(getPagePagination)
   ]);
 }
