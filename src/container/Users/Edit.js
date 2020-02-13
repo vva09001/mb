@@ -395,7 +395,7 @@ function UsersEdit({
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitUsers)}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Row>
