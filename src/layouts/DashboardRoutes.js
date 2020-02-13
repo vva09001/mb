@@ -56,10 +56,12 @@ import EditGroup from 'container/group/edit';
 import ExChangeRateEdit from 'container/exchangeRate/edit';
 import ApprDashboard from 'container/dashboard/Appr';
 
+import BlockElemnt from 'container/blockElement';
+import BlockElemntEdit from 'container/blockElement/Edit';
+
 const DashboardRoutes = () => (
   <Switch>
-
-    <Route path="/appr/:id" exact component={ApprDashboard}/>
+    <Route path="/appr/:id" exact component={ApprDashboard} />
 
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
@@ -68,8 +70,8 @@ const DashboardRoutes = () => (
     <Route path="/news/approved_listings" exact component={AprrNews} />
     <Route path="/news/approving/:id" exact component={AprrEdit} />
     <Route path="/pages/list" exact component={ListPage} />
-    <Route path="/pages/create/:id" exact component={PagesCreate} />
-    <Route path="/pages/edit/:id" exact component={PageEdit} />
+    <Route path="/pages/create/:id" exact component={BlockElemnt} />
+    <Route path="/pages/edit/:id" exact component={BlockElemntEdit} />
     <Route path="/pages/approved_listings" exact component={ApprPage} />
     <Route path="/pages/approved/:id" exact component={PageAppr} />
     <Route path="/pages/block" exact component={Block} />
@@ -136,6 +138,8 @@ const DashboardRoutes = () => (
     <Route path="/group" exact component={ListGroup} />
     <Route path="/group/create" exact component={CreateGroup} />
     <Route path="/group/edit/:id" exact component={EditGroup} />
+
+    <Route path="/block" exact component={BlockElemnt} />
     {/*Redirect*/}
     <Redirect to="/errors/404" />
   </Switch>

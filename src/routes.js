@@ -140,11 +140,11 @@ export const storefontRoutes = {
   //     permission: indexOf(listScopes, 'ROLE_XEM MẠNG LƯỚI') > 0 ? true : false
   //   }
   // ]
-   name: 'menu.network',
-      to: '/network',
-      exact: true,
-      icon: 'code-branch',
-      permission: indexOf(listScopes, 'ROLE_XEM MẠNG LƯỚI') > 0 ? true : false
+  name: 'menu.network',
+  to: '/network',
+  exact: true,
+  icon: 'code-branch',
+  permission: indexOf(listScopes, 'ROLE_XEM MẠNG LƯỚI') > 0 ? true : false
 };
 
 export const mediaRouter = {
@@ -183,6 +183,14 @@ export const toolMenu = {
   ]
 };
 
+export const blockRoutes = {
+  name: 'Block',
+  to: '/block',
+  permission: true,
+  exact: true,
+  icon: 'code-branch'
+};
+
 export default [
   homeRoutes,
   newRoutes,
@@ -195,5 +203,6 @@ export default [
   storefontRoutes,
   toolMenu,
   userRoutes,
+  blockRoutes,
   settingRoutes
 ];
