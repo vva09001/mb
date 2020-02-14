@@ -36,7 +36,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
-          checked: ''
+          checked: 0
         };
         docs = Object.assign(docs, check);
       });
@@ -81,7 +81,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     event.preventDefault();
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.checked === true) {
+        if (docs.checked !== 0 && docs.checked !== '') {
           formState.privileges.push(docs.privilegeId);
         }
       });
@@ -97,7 +97,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) % 2 === 0) {
+        if (Number(radios[i].value) === 1) {
           radios[i].checked = true;
         }
       }
@@ -105,7 +105,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === groupRole) {
-          docs.checked = true;
+          docs.checked = 1;
         }
       });
     });
@@ -114,7 +114,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     var radios = document.forms[groupRole].elements;
     for (var i = 1; i < radios.length; i++) {
       if (radios[i].type === 'radio') {
-        if (Number(radios[i].value) % 2 === 1) {
+        if (Number(radios[i].value) === 0) {
           radios[i].checked = true;
         }
       }
@@ -122,7 +122,7 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === groupRole) {
-          docs.checked = false;
+          docs.checked = 0;
         }
       });
     });
@@ -182,10 +182,13 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                     </FormGroup>
                     <FormGroup>
                       {optionTeam.length >= 0 && (
-                        <Select name="teams" 
-                        value={SelectedOption.Select}
-                        options={optionTeam} isMulti 
-                        onChange={handleChangeTeam} />
+                        <Select
+                          name="teams"
+                          value={SelectedOption.Select}
+                          options={optionTeam}
+                          isMulti
+                          onChange={handleChangeTeam}
+                        />
                       )}
                     </FormGroup>
                     <FormGroup style={{ borderBottom: '1px solid #ccc' }}>
@@ -243,24 +246,24 @@ function RolesCreate({ addRole, listPrivilegeByGroup, getListPrivilegesByGroup, 
                                     <div>
                                       <CustomInput
                                         type="radio"
-                                        id={value.id}
-                                        value={value.privilegeId}
+                                        id={value.privilegeId}
+                                        value={1}
                                         name={value.name}
                                         label="Allow"
                                         inline="true"
                                         onClick={() => {
-                                          value.checked = true;
+                                          value.checked = 1;
                                         }}
                                       />
                                       <CustomInput
                                         type="radio"
-                                        id={value.id + 1}
-                                        value={value.privilegeId + 1}
+                                        id={value.privilegeId + 1}
+                                        value={0}
                                         name={value.name}
                                         label="Deny"
                                         inline="true"
                                         onClick={() => {
-                                          value.checked = false;
+                                          value.checked = 0;
                                         }}
                                       />
                                     </div>

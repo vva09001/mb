@@ -123,8 +123,6 @@ function UsersEdit({ profileUsername, getUserByUsername, editUser, detailByUsern
   };
   const handleError = async () => {
     handleGenaral();
-    {
-    }
   };
   const onSubmitUsers = () => {
     if (formState.values.password === undefined || formState.values.passwordConfirm === undefined) {

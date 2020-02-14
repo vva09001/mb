@@ -81,7 +81,6 @@ function UsersEdit({
         if (data.status !== 2 && data.privilegeId % 2 !== 0) dataIdPrivilegesExact.push(data);
       });
   }, [detailById, dataIdPrivilegesExact]);
-  console.log(formState.values);
   useEffect(() => {
     dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
@@ -285,10 +284,8 @@ function UsersEdit({
     }
   };
 
-  console.log(formState.values.passwordConfirm);
   const handleErrorPassword = async () => {
     handleGenaral();
-    console.log(passwordRegex.test(formState.values.password));
     if (passwordRegex.test(formState.values.password) === false)
       setStatus(status => ({
         ...status,
@@ -315,8 +312,6 @@ function UsersEdit({
   };
   const handleError = async () => {
     handleGenaral();
-    {
-    }
   };
   const onSubmitUsers = () => {
     formState.values.roles.splice(0, formState.values.roles.length);

@@ -40,11 +40,11 @@ function CreateMenusItem({
     values: {},
     touched: {}
   });
-  const [status, setStatus] = useState({
-    tagId: false,
-    html: false
-  });
-  const { register, errors, triggerValidation, handleSubmit } = useForm();
+  // const [status, setStatus] = useState({
+  //   tagId: false,
+  //   html: false
+  // });
+  const { register, errors } = useForm();
   useEffect(() => {
     getPages();
     getCategorys();

@@ -90,7 +90,6 @@ function ExChangeRateCreate({ creatExchangeRate }) {
     };
     creatExchangeRate(body);
   };
-  console.log(date);
   return (
     <React.Fragment>
       <Form style={{ backgroundColor: 'white', height: 'auto' }} onSubmit={onSubmit}>

@@ -29,7 +29,6 @@ function* getSliderIdSaga() {
     const { id } = params;
     try {
       const res = yield getSliderId(id);
-      // console.log(res.data);
       if (res.status === 200) {
         yield put({ type: actions.GET_SLIDER_BY_ID_RESPONSE, data: res.data });
       } else {

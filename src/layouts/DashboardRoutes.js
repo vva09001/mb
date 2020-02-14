@@ -58,8 +58,7 @@ import ApprDashboard from 'container/dashboard/Appr';
 
 const DashboardRoutes = () => (
   <Switch>
-
-    <Route path="/appr/:id" exact component={ApprDashboard}/>
+    <Route path="/appr/:id" exact component={ApprDashboard} />
 
     <Route path="/news/list" exact component={Activity} />
     <Route path="/news/create" exact component={NewsCreate} />
@@ -136,6 +135,7 @@ const DashboardRoutes = () => (
     <Route path="/group" exact component={ListGroup} />
     <Route path="/group/create" exact component={CreateGroup} />
     <Route path="/group/edit/:id" exact component={EditGroup} />
+
     {/*Redirect*/}
     <Redirect to="/errors/404" />
   </Switch>
