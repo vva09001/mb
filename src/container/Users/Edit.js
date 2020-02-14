@@ -315,8 +315,6 @@ function UsersEdit({
   };
   const handleError = async () => {
     handleGenaral();
-    {
-    }
   };
   const onSubmitUsers = () => {
     formState.values.roles.splice(0, formState.values.roles.length);
