@@ -59,6 +59,7 @@ function RolesEdit({
       values: detailById
     }));
   }, [detailById]);
+  console.log(formState.values);
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();
@@ -219,8 +220,7 @@ function RolesEdit({
       });
     });
 
-    if (formState.values.privileges.length === 0)
-    formState.values.privileges = dataIdCurrent;
+    if (formState.values.privileges.length === 0) formState.values.privileges = dataIdCurrent;
     formState.values.teams.splice(0, formState.values.teams.length);
     if (dataTeamToEdit === null) formState.values.teams = [];
     else if (dataTeamToEdit.length === 0) {
@@ -232,7 +232,7 @@ function RolesEdit({
         formState.values.teams.push(data.value);
       });
     }
-   
+
     editRole(formState.values);
   };
 
