@@ -80,9 +80,8 @@ function UsersEdit({
       dataIdPrivileges.forEach(function(data) {
         if (data.status !== 2) dataIdPrivilegesExact.push(data);
       });
-     
   }, [detailById, dataIdPrivilegesExact]);
-  
+
   useEffect(() => {
     dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
@@ -145,7 +144,7 @@ function UsersEdit({
           radios[i].checked = true;
           dataPrivileges.forEach(function(data) {
             data.privileges.forEach(function(docs) {
-              if (docs.groupRole === value.groupRole ) {
+              if (docs.groupRole === value.groupRole) {
                 docs.checked = 1;
                 docs.status = 1;
               }
@@ -154,13 +153,6 @@ function UsersEdit({
         }
       }
     }
-     
-    dataPrivileges.forEach(function(data) {
-      data.privileges.forEach(function(docs) {
-        if (docs.status === 1)
-        console.log("on Click",docs)
-      })
-    })
   };
   const denyBlock = value => {
     var radios = document.forms[value.groupRole].elements;
@@ -298,14 +290,11 @@ function UsersEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.status === 1) {
-          console.log("accept")
           var tmpPrivilegeId = {
             privilegeId: docs.privilegeId,
             status: docs.status
           };
           formState.values.userPrivilegeRequests.push(tmpPrivilegeId);
-          if (docs.privilegeId === 194)
-          console.log(docs)
         } else if (docs.status === 0) {
           var tmp = {
             privilegeId: docs.privilegeId,
@@ -346,8 +335,8 @@ function UsersEdit({
   const handleError = async () => {
     handleGenaral();
     handlePrivilegeIdExact();
-  }
-   
+  };
+
   const onSubmitUsers = () => {
     formState.values.roles.splice(0, formState.values.roles.length);
     if (dataRolesToEdit === null) formState.values.roles = [];
@@ -360,22 +349,13 @@ function UsersEdit({
         formState.values.roles.push(data.value);
       });
     }
-    dataPrivileges.forEach(function(data) {
-      data.privileges.forEach(function(docs) {
-        if (docs.status === 1)
-        console.log(docs)
-      })
-    })
-    
     if (formState.values.password === undefined || formState.values.passwordConfirm === undefined) {
       formState.values.password = '';
       formState.values.passwordConfirm = '';
     }
-    if (status.roles === false && status.password === false && status.passwordConfirm === false)
-    {
+    if (status.roles === false && status.password === false && status.passwordConfirm === false) {
       editUser(formState.values);
-    }
-    else Error(t('errors.edit'));
+    } else Error(t('errors.edit'));
   };
 
   return (

@@ -167,7 +167,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
       ...SelectedOption,
       Select: event
     }));
-    
+
     if (event !== null)
       setStatus(status => ({
         ...status,
@@ -211,9 +211,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
   };
   const onSubmitUser = () => {
     if (dataRolesToAdd !== null)
-    dataRolesToAdd.forEach(function(data) {
-      formState.values.roles.push(data.idRole);
-    });
+      dataRolesToAdd.forEach(function(data) {
+        formState.values.roles.push(data.idRole);
+      });
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.status === 1) {
@@ -231,9 +231,9 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
         }
       });
     });
-    if (status.roles === false) 
-    {addUsers(formState.values); console.log(formState.values) }
-    else Error(t('errors.create'));
+    if (status.roles === false) {
+      addUsers(formState.values);
+    } else Error(t('errors.create'));
   };
 
   return (
@@ -372,9 +372,7 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
                             options={optionRoles}
                           />
                         )}
-                        { status.roles && (
-                          <span style={{ color: 'red' }}>{t('errors.minone')}</span>
-                        )}
+                        {status.roles && <span style={{ color: 'red' }}>{t('errors.minone')}</span>}
                       </FormGroup>
                     </Col>
                   </Row>
