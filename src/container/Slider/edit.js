@@ -167,7 +167,6 @@ function SliderEdit({ sliderEdit, detail, getSliderId }) {
                 action
                 onClick={() => {
                   setActiveGroup(1);
-                  // console.log(activeGroup);
                 }}
               >
                 {t('slider.slider')}
@@ -176,7 +175,6 @@ function SliderEdit({ sliderEdit, detail, getSliderId }) {
                 action
                 onClick={() => {
                   setActiveGroup(2);
-                  // console.log(activeGroup);
                 }}
               >
                 {t('slider.logo')}

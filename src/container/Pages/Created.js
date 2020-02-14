@@ -56,7 +56,6 @@ function BlockElement({ pageCreate }) {
       }
     });
     setPageBlock(data);
-    // console.log(convertElement);
   };
 
   const removeBlock = index => {

@@ -60,7 +60,6 @@ function MailsCreate({ MailsCreate }) {
         content: true
       }
     }));
-    // console.log(formState);
   };
   const handleError = async () => {
     var code = await triggerValidation('code');
