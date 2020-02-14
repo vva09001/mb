@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row } from 'reactstrap';
+import { Row, Input } from 'reactstrap';
 import AprrTablePage from '../../../components/ApprovingNews/Table/Page';
 import PropTypes from 'prop-types';
 import { PageActions } from '../../../store/actions';
@@ -20,12 +20,13 @@ function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
   const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [newsID, setNewsID] = useState(null);
+  const [record, setRecord] = useState(10);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    getPages(page);
-  }, [getPages, page]);
+    getPages(page, record);
+  }, [getPages, page, record]);
 
   const onDelete = () => {
     if (newsID !== null) {
@@ -38,11 +39,24 @@ function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
     getDetail(detail);
     history.push('/pages/approved');
   };
+  console.log(record);
   return (
     <React.Fragment>
       <h4>{t('approved.approved_page')}</h4>
       <div>
         <Row style={{ background: '#fff' }} className="p-3">
+          <div style={{ background: '#fff' }} className="d-flex flex-row  mb-3 align-items-center">
+            <Input
+              type="number"
+              name="record"
+              value={record}
+              style={{ width: '80px', marginRight: 10 }}
+              onChange={e => {
+                setRecord(e.target.value);
+              }}
+            />
+            <h5>{t('record')}</h5>
+          </div>
           <AprrTablePage
             data={data.pages}
             size={data.size}

@@ -79,7 +79,6 @@ const ExchangeRateTable = ({
           {date !== null &&
             map(
               filter(list, values => {
-                console.log(date.getTime(), values.date_update);
                 return values.date_update === date.getTime();
               }),
               values => {

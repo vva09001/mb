@@ -183,14 +183,6 @@ export const toolMenu = {
   ]
 };
 
-export const blockRoutes = {
-  name: 'Block',
-  to: '/block',
-  permission: true,
-  exact: true,
-  icon: 'code-branch'
-};
-
 export default [
   homeRoutes,
   newRoutes,
@@ -203,6 +195,5 @@ export default [
   storefontRoutes,
   toolMenu,
   userRoutes,
-  blockRoutes,
   settingRoutes
 ];

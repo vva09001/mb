@@ -57,7 +57,6 @@ function* aprrUsersSaga() {
         yield Error(res.message);
       }
     } catch (error) {
-      // console.log(error)
       // yield Error('Không thể kết nối đến server', error.message);
     }
   });

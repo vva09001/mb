@@ -9,9 +9,10 @@ const Actions = {
   GET_PAGE_PAGINATION_REQUEST: 'GET_PAGE_PAGINATION_REQUEST',
   GET_PAGE_PAGINATION_RESPONESE: 'GET_PAGE_PAGINATION_RESPONESE',
 
-  GetPagePagination: data => ({
+  GetPagePagination: (page, record) => ({
     type: Actions.GET_PAGE_PAGINATION_REQUEST,
-    data
+    page,
+    record
   }),
 
   GET_ALL_PAGES_REQUEST: 'GET_ALL_PAGES_REQUEST',

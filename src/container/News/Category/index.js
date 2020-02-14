@@ -169,7 +169,6 @@ function Category({
   };
 
   const onDelete = () => {
-    // console.log(id);
     deleteCategory(idCategory);
     setIsOpen(!isOpen);
   };

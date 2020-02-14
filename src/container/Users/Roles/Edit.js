@@ -59,7 +59,6 @@ function RolesEdit({
       values: detailById
     }));
   }, [detailById]);
-  console.log(formState.values);
   useEffect(() => {
     getListPrvilegesByGroup();
     getAllTeam();

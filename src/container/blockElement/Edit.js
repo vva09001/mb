@@ -72,7 +72,6 @@ function BlockElement({ detail, pageEdit, getDetailById, deleteBlock }) {
       }
     });
     setPageBlock(data);
-    // console.log(convertElement);
   };
 
   const removeBlock = (id_block, index) => {

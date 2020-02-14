@@ -194,9 +194,9 @@ function* getPageByIDSaga() {
 
 function* getPagePagination() {
   yield takeLatest(actions.GET_PAGE_PAGINATION_REQUEST, function*(params) {
-    const { data } = params;
+    const { page, record } = params;
     try {
-      const res = yield getPagePaginationService(data);
+      const res = yield getPagePaginationService(page, parseInt(record));
       if (res.status === 200) {
         yield put({ type: actions.GET_PAGE_PAGINATION_RESPONESE, data: res.data });
       } else {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
-import { slice, map } from 'lodash';
+import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import ButtonIcon from '../../common/ButtonIcon';
