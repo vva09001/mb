@@ -1,4 +1,3 @@
-
 const data = [
   {
     id: 1,
@@ -7,6 +6,10 @@ const data = [
       {
         name: 'Block Icon',
         component: 'Block Icon'
+      },
+      {
+        name: 'Block Images',
+        component: 'Block Images'
       }
     ]
   }

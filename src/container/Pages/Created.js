@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import Icon from 'components/element/Icon';
+import { Icon, Images } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -106,6 +106,11 @@ function BlockElement({ pageCreate }) {
                     {data.name === 'Block Icon' && (
                       <ListGroupItem>
                         <Icon onRender={onRender} key={index} indexElement={index} />
+                      </ListGroupItem>
+                    )}
+                    {data.name === 'Block Images' && (
+                      <ListGroupItem>
+                        <Images onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>
                     )}
                   </ListGroup>

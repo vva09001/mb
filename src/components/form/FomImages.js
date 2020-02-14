@@ -16,7 +16,7 @@ const Proptype = {
   onSave: Proptypes.func
 };
 
-function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave }) {
+function FomImages({ value, index, handleChange, handleImage, removeBlock, onSave }) {
   const { t } = useTranslation();
 
   return (
@@ -32,6 +32,18 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
           <Input type="text" name="title" value={value.title} onChange={event => handleChange(event, index)} />
         </div>
       )}
+      <Label for="template">{t('block_page.img_type')}</Label>
+      <Input
+        type="select"
+        name="type"
+        required
+        value={value.type === undefined ? 0 : value.type}
+        onChange={event => handleChange(event, index)}
+      >
+        <option value={0}>{t('select')}</option>
+        <option value={1}>{t('block_page.img_left')}</option>
+        <option value={2}>{t('block_page.img_right')}</option>
+      </Input>
       <div className="form-img mt-3">
         <div>
           <div className="block_image mb-2">
@@ -84,6 +96,6 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
   );
 }
 
-FormIcon.propTypes = Proptype;
+FomImages.propTypes = Proptype;
 
-export default FormIcon;
+export default FomImages;

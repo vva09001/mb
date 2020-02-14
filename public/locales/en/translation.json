@@ -118,7 +118,10 @@
   },
   "block_page": {
     "title": "Block",
-    "activeBock": "Activate block"
+    "activeBock": "Activate block",
+    "img_type": "Picture style displayed",
+    "img_right": "Picture shown on the right",
+    "img_left": "Picture shown on the left"
   },
   "approved": {
     "approved_page": "Page Accept",
