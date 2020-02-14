@@ -15,17 +15,23 @@ const Proptype = {
   onSave: Proptypes.func
 };
 
-function FormSilder({ value, index, handleChange, handleImage, removeBlock, onSave }) {
+function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave }) {
   const { t } = useTranslation();
 
   return (
     <Form onSubmit={onSave}>
-      <div style={{ float: 'right' }}>
+      <div className="mt-2 mb-2" style={{ float: 'right' }}>
         <Button onClick={() => removeBlock(index)}>
           <FontAwesomeIcon icon={faTrash} />
         </Button>
       </div>
-      <div className="form-img">
+      {index === 0 && (
+        <div>
+          <Label>{t('block.image.title')}</Label>
+          <Input type="text" name="title" value={value.title} onChange={event => handleChange(event, index)} />
+        </div>
+      )}
+      <div className="form-img mt-3">
         <div>
           <div className="block_image mb-2">
             <img alt="items" src={value.image === undefined ? '' : value.image} style={{ maxWidth: '100%' }} />
@@ -77,6 +83,6 @@ function FormSilder({ value, index, handleChange, handleImage, removeBlock, onSa
   );
 }
 
-FormSilder.propTypes = Proptype;
+FormIcon.propTypes = Proptype;
 
-export default FormSilder;
+export default FormIcon;

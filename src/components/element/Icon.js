@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { map, filter } from 'lodash';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
-import { FormSilder } from '../form';
-// import { useTranslation } from 'react-i18next';
+import { FormIcon } from '../form';
 import { connect } from 'react-redux';
 
 function Icon({ data, onRender, imageSeletedata, indexElement }) {
   const [formState, setFormState] = useState([{}]);
   const [title, setTitle] = useState('');
 
-  // const { t } = useTranslation();
 
   useEffect(() => {
     if (data && data.content !== undefined && data.title !== undefined) {
@@ -58,7 +56,7 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
   const onSave = () => {
     let element = (
       <div className="mutile_icon">
-        <p className="title">{title}</p>
+        <p className="title">{formState[0].title}</p>
         <div className="row">
           {map(formState, (data, index) => (
             <div className="col-sm-4 mb-5" key={index}>
@@ -94,7 +92,7 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
       </FormGroup>
       {map(formState, (value, index) => {
         return (
-          <FormSilder
+          <FormIcon
             key={index}
             index={index}
             value={value}

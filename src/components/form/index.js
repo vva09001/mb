@@ -1,3 +1,3 @@
-import FormSilder from './FormSilder';
+import FormIcon from './FormIcon';
 
-export { FormSilder };
+export { FormIcon };
