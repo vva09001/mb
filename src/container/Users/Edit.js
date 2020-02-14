@@ -78,10 +78,11 @@ function UsersEdit({
     dataIdPrivileges = detailById.userPrivilegeRequests;
     if (dataIdPrivileges !== undefined)
       dataIdPrivileges.forEach(function(data) {
-        if (data.status !== 2 && data.privilegeId % 2 !== 0) dataIdPrivilegesExact.push(data);
+        if (data.status !== 2) dataIdPrivilegesExact.push(data);
       });
+     
   }, [detailById, dataIdPrivilegesExact]);
-  console.log(formState.values);
+  
   useEffect(() => {
     dataAllRole.forEach(function(data) {
       var tmpSetDataOption = {
@@ -111,7 +112,7 @@ function UsersEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         var check = {
-          checked: '',
+          checked: 2,
           status: 2
         };
         docs = Object.assign(docs, check);
@@ -126,10 +127,10 @@ function UsersEdit({
             if (Number(docs.privilegeId) === Number(dataCurrent.privilegeId)) {
               if (dataCurrent.status === 0) {
                 docs.status = 0;
-                docs.checked = false;
+                docs.checked = 0;
               } else if (dataCurrent.status === 1) {
                 docs.status = 1;
-                docs.checked = true;
+                docs.checked = 1;
               }
             }
           });
@@ -142,17 +143,24 @@ function UsersEdit({
       if (String(radios[i].type) === 'radio') {
         if (Number(radios[i].value) === 1) {
           radios[i].checked = true;
+          dataPrivileges.forEach(function(data) {
+            data.privileges.forEach(function(docs) {
+              if (docs.groupRole === value.groupRole ) {
+                docs.checked = 1;
+                docs.status = 1;
+              }
+            });
+          });
         }
       }
     }
+     
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.groupRole === value.groupRole) {
-          docs.checked = true;
-          docs.status = 1;
-        }
-      });
-    });
+        if (docs.status === 1)
+        console.log("on Click",docs)
+      })
+    })
   };
   const denyBlock = value => {
     var radios = document.forms[value.groupRole].elements;
@@ -166,7 +174,7 @@ function UsersEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === value.groupRole) {
-          docs.checked = false;
+          docs.checked = 0;
           docs.status = 0;
         }
       });
@@ -184,7 +192,7 @@ function UsersEdit({
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
         if (docs.groupRole === value.groupRole) {
-          docs.checked = '';
+          docs.checked = 2;
           docs.status = 2;
         }
       });
@@ -285,10 +293,32 @@ function UsersEdit({
     }
   };
 
-  console.log(formState.values.passwordConfirm);
+  const handlePrivilegeIdExact = async () => {
+    formState.values.userPrivilegeRequests = [];
+    dataPrivileges.forEach(function(data) {
+      data.privileges.forEach(function(docs) {
+        if (docs.status === 1) {
+          console.log("accept")
+          var tmpPrivilegeId = {
+            privilegeId: docs.privilegeId,
+            status: docs.status
+          };
+          formState.values.userPrivilegeRequests.push(tmpPrivilegeId);
+          if (docs.privilegeId === 194)
+          console.log(docs)
+        } else if (docs.status === 0) {
+          var tmp = {
+            privilegeId: docs.privilegeId,
+            status: docs.status
+          };
+          formState.values.userPrivilegeRequests.push(tmp);
+        }
+      });
+    });
+  };
   const handleErrorPassword = async () => {
     handleGenaral();
-    console.log(passwordRegex.test(formState.values.password));
+    handlePrivilegeIdExact();
     if (passwordRegex.test(formState.values.password) === false)
       setStatus(status => ({
         ...status,
@@ -315,9 +345,9 @@ function UsersEdit({
   };
   const handleError = async () => {
     handleGenaral();
-    {
-    }
-  };
+    handlePrivilegeIdExact();
+  }
+   
   const onSubmitUsers = () => {
     formState.values.roles.splice(0, formState.values.roles.length);
     if (dataRolesToEdit === null) formState.values.roles = [];
@@ -330,30 +360,21 @@ function UsersEdit({
         formState.values.roles.push(data.value);
       });
     }
-    formState.values.userPrivilegeRequests = [];
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.status === 1 && docs.privilegeId % 2 !== 0) {
-          var tmpPrivilegeId = {
-            privilegeId: docs.privilegeId,
-            status: docs.status
-          };
-          formState.values.userPrivilegeRequests.push(tmpPrivilegeId);
-        } else if (docs.status === 0 && docs.privilegeId % 2 !== 0) {
-          var tmp = {
-            privilegeId: docs.privilegeId,
-            status: docs.status
-          };
-          formState.values.userPrivilegeRequests.push(tmp);
-        }
-      });
-    });
+        if (docs.status === 1)
+        console.log(docs)
+      })
+    })
+    
     if (formState.values.password === undefined || formState.values.passwordConfirm === undefined) {
       formState.values.password = '';
       formState.values.passwordConfirm = '';
     }
     if (status.roles === false && status.password === false && status.passwordConfirm === false)
+    {
       editUser(formState.values);
+    }
     else Error(t('errors.edit'));
   };
 
@@ -395,7 +416,7 @@ function UsersEdit({
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Form className="p-3" style={{ background: '#fff' }} onSubmit={onSubmitUsers}>
+              <Form className="p-3" style={{ background: '#fff' }} onSubmit={handleSubmit(onSubmitUsers)}>
                 <h4>{t('user.account')}</h4>
                 <FormGroup>
                   <Row>
@@ -595,7 +616,7 @@ function UsersEdit({
                                           inline="true"
                                           defaultChecked
                                           onChange={() => {
-                                            value.checked = true;
+                                            value.checked = 1;
                                             value.status = 1;
                                           }}
                                         />
@@ -608,7 +629,7 @@ function UsersEdit({
                                           label="Allow"
                                           inline="true"
                                           onChange={() => {
-                                            value.checked = true;
+                                            value.checked = 1;
                                             value.status = 1;
                                           }}
                                         />
@@ -616,15 +637,15 @@ function UsersEdit({
                                       {value.status === 0 ? (
                                         <CustomInput
                                           type="radio"
-                                          id={value.privilegeId}
+                                          id={value.privilegeId + 1}
                                           value={1}
                                           name={value.name}
                                           label="Deny"
                                           inline="true"
                                           defaultChecked
                                           onChange={() => {
-                                            value.checked = true;
-                                            value.status = 1;
+                                            value.checked = 0;
+                                            value.status = 0;
                                           }}
                                         />
                                       ) : (
@@ -636,7 +657,7 @@ function UsersEdit({
                                           label="Deny"
                                           inline="true"
                                           onChange={() => {
-                                            value.checked = false;
+                                            value.checked = 0;
                                             value.status = 0;
                                           }}
                                         />
@@ -651,7 +672,7 @@ function UsersEdit({
                                           value={2}
                                           defaultChecked
                                           onChange={() => {
-                                            value.checked = '';
+                                            value.checked = 2;
                                             value.status = 2;
                                           }}
                                         />
@@ -664,7 +685,7 @@ function UsersEdit({
                                           inline
                                           value={2}
                                           onChange={() => {
-                                            value.checked = '';
+                                            value.checked = 2;
                                             value.status = 2;
                                           }}
                                         />

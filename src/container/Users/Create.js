@@ -216,13 +216,13 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
     });
     dataPrivileges.forEach(function(data) {
       data.privileges.forEach(function(docs) {
-        if (docs.status === 1 && docs.privilegeId % 2 !== 0) {
+        if (docs.status === 1) {
           var tmpPrivilegeId = {
             privilegeId: docs.privilegeId,
             status: docs.status
           };
           formState.values.userPrivilegeRequests.push(tmpPrivilegeId);
-        } else if (docs.status === 0 && docs.privilegeId % 2 !== 0) {
+        } else if (docs.status === 0) {
           var tmp = {
             privilegeId: docs.privilegeId,
             status: docs.status
@@ -231,7 +231,8 @@ function UsersCreate({ addUsers, getAllRole, dataAllRole, listPrivilegeByGroup, 
         }
       });
     });
-    if (status.roles === false) addUsers(formState.values);
+    if (status.roles === false) 
+    {addUsers(formState.values); console.log(formState.values) }
     else Error(t('errors.create'));
   };
 
