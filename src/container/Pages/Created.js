@@ -103,7 +103,7 @@ function BlockElement({ pageCreate }) {
                 </ListGroupItem>
                 <Collapse isOpen={isOpen === index}>
                   <ListGroup>
-                    {data.name === 'Icon' && (
+                    {data.name === 'Block Icon' && (
                       <ListGroupItem>
                         <Icon onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>

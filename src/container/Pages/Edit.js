@@ -93,6 +93,7 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
     event.preventDefault();
     let body = {
       ...formState.values,
+      teams: formState.values.team,
       pageBlocks: pageBlock
     };
     pageEdit(body, '/pages/list');
@@ -123,7 +124,7 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
                 </ListGroupItem>
                 <Collapse isOpen={isOpen === index}>
                   <ListGroup>
-                    {data.name === 'Icon' && (
+                    {data.name === 'Block Icon' && (
                       <ListGroupItem>
                         <Icon onRender={onRender} key={index} indexElement={index} data={data} />
                       </ListGroupItem>

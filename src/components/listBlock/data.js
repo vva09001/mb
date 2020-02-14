@@ -5,8 +5,8 @@ const data = [
     name: 'Layout',
     listElemnt: [
       {
-        name: 'Icon',
-        component: 'Icon'
+        name: 'Block Icon',
+        component: 'Block Icon'
       }
     ]
   }
