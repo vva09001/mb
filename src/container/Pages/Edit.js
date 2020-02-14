@@ -9,9 +9,17 @@ import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
 import { PageActions } from '../../store/actions';
+import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
-function BlockElement({ detail, pageEdit, getDetailById, deleteBlock }) {
+const Proptype = {
+  detail: Proptypes.array,
+  getDetailById: Proptypes.func,
+  deleteBlock: Proptypes.func,
+  pageEdit: Proptypes.func
+};
+
+function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
   const [formState, setFormState] = useState({ values: {} });
   const [pageBlock, setPageBlock] = useState([]);
   const [isOpen, setIsOpen] = useState(null);
@@ -115,11 +123,11 @@ function BlockElement({ detail, pageEdit, getDetailById, deleteBlock }) {
                 </ListGroupItem>
                 <Collapse isOpen={isOpen === index}>
                   <ListGroup>
-                    {/* {data.name === 'Icon' && ( */}
-                    <ListGroupItem>
-                      <Icon onRender={onRender} key={index} indexElement={index} data={data} />
-                    </ListGroupItem>
-                    {/* )} */}
+                    {data.name === 'Icon' && (
+                      <ListGroupItem>
+                        <Icon onRender={onRender} key={index} indexElement={index} data={data} />
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Collapse>
               </div>
@@ -142,6 +150,8 @@ const mapDispatchToProps = {
   pageEdit: PageActions.EditPages,
   deleteBlock: PageActions.detelePageBlockAction
 };
+
+BlockElement.propTypes = Proptype;
 
 export default connect(
   mapStateToProps,
