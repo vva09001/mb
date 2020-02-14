@@ -8,7 +8,6 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
   const [formState, setFormState] = useState([{}]);
   const [title, setTitle] = useState('');
 
-
   useEffect(() => {
     if (data && data.content !== undefined && data.title !== undefined) {
       setTitle(data.title);
@@ -62,7 +61,7 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
             <div className="col-sm-4 mb-5" key={index}>
               <div className="icon_items">
                 <div className="icon">
-                  <img src={data.image} alt="icon" width="45" className="mb-3" />
+                  <img src={data.image} alt="icon" className="mb-3" />
                 </div>
                 <div className="icon_title">
                   <p>{data.note_1}</p>

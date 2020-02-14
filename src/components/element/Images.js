@@ -59,40 +59,38 @@ function Images({ data, onRender, imageSeletedata, indexElement }) {
         {map(formState, (data, index) => {
           if (data.type === '1') {
             return (
-              <div className="row" key={index}>
-                <div id="2" className="block_imege_left mb-5">
-                  <h2 className="title mb-5">{data.note_1}</h2>
-                  <div className="row">
-                    <div className="col-sm-7">
-                      <img src={data.image} alt="icon" />
-                    </div>
-                    <div className="col-sm-5">
-                      <p>{data.note_2}</p>
-                      <button>
-                        <a href={data.url === undefined ? '#' : data.url}>
-                          {data.text_action === undefined ? 'Đăng ký ngay' : data.text_action}
-                        </a>
-                      </button>
-                    </div>
+              <div className="block_imege_left mb-5" key={index}>
+                <h2 className="title mb-5">{data.note_1}</h2>
+                <div className="row">
+                  <div className="col-sm-7">
+                    <img src={data.image} alt="icon" />
+                  </div>
+                  <div className="col-sm-5">
+                    <p>{data.note_2}</p>
+                    <button>
+                      <a href={data.url === undefined ? '#' : data.url}>
+                        {data.text_action === undefined ? 'Đăng ký ngay' : data.text_action}
+                      </a>
+                    </button>
                   </div>
                 </div>
               </div>
             );
           } else {
             return (
-              <div className="row" key={index}>
-                <div id="2" className="block_imege_left mb-5">
-                  <h2 className="title mb-5">{data.note_1}</h2>
-                  <div className="row">
-                    <div className="col-sm-5">
-                      <p>{data.note_2}</p>
+              <div className="block_imege_left mb-5" key={index}>
+                <h2 className="title mb-5">{data.note_1}</h2>
+                <div className="row">
+                  <div className="col-sm-5">
+                    <p>{data.note_2}</p>
+                    <button>
                       <a href={data.url === undefined ? '#' : data.url}>
                         {data.text_action === undefined ? 'Đăng ký ngay' : data.text_action}
                       </a>
-                    </div>
-                    <div className="col-sm-7">
-                      <img src={data.image} alt="icon" />
-                    </div>
+                    </button>
+                  </div>
+                  <div className="col-sm-7">
+                    <img src={data.image} alt="icon" />
                   </div>
                 </div>
               </div>
