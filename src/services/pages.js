@@ -118,9 +118,9 @@ const getHomepageIDService = () => {
     });
 };
 
-const getPagePaginationService = data => {
+const getPagePaginationService = (page, record) => {
   return request({
-    url: `/pages/pagination?page=${data}`,
+    url: `/pages/pagination?number=${record}&page=${page}`,
     method: 'GET'
   })
     .then(res => {
