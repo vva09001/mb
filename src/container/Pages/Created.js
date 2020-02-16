@@ -4,12 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import Icon from 'components/element/Icon';
+import { Icon, Images } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
 import { PageActions } from '../../store/actions';
+import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
+
+const Proptype = {
+  pageCreate: Proptypes.func
+};
 
 function BlockElement({ pageCreate }) {
   const [formState, setFormState] = useState({ values: {} });
@@ -98,9 +103,14 @@ function BlockElement({ pageCreate }) {
                 </ListGroupItem>
                 <Collapse isOpen={isOpen === index}>
                   <ListGroup>
-                    {data.name === 'Icon' && (
+                    {data.name === 'Block Icon' && (
                       <ListGroupItem>
                         <Icon onRender={onRender} key={index} indexElement={index} />
+                      </ListGroupItem>
+                    )}
+                    {data.name === 'Block Images' && (
+                      <ListGroupItem>
+                        <Images onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>
                     )}
                   </ListGroup>
@@ -117,6 +127,8 @@ function BlockElement({ pageCreate }) {
 const mapDispatchToProps = {
   pageCreate: PageActions.AddPages
 };
+
+BlockElement.propTypes = Proptype;
 
 export default connect(
   null,

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { map, filter } from 'lodash';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
-import { FormIcon } from '../form';
+import { FromImages } from '../form';
 import { connect } from 'react-redux';
 
-function Icon({ data, onRender, imageSeletedata, indexElement }) {
+function Images({ data, onRender, imageSeletedata, indexElement }) {
   const [formState, setFormState] = useState([{}]);
   const [title, setTitle] = useState('');
 
@@ -54,29 +54,54 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
 
   const onSave = () => {
     let element = (
-      <div className="mutile_icon">
+      <div className="block_images">
         <p className="title">{formState[0].title}</p>
-        <div className="row">
-          {map(formState, (data, index) => (
-            <div className="col-sm-4 mb-5" key={index}>
-              <div className="icon_items">
-                <div className="icon">
-                  <img src={data.image} alt="icon" className="mb-3" />
-                </div>
-                <div className="icon_title">
-                  <p>{data.note_1}</p>
-                </div>
-                <div className="icon_content">
-                  <p>{data.note_2}</p>
+        {map(formState, (data, index) => {
+          if (data.type === '1') {
+            return (
+              <div className="block_imege_left mb-5" key={index}>
+                <h2 className="title mb-5">{data.note_1}</h2>
+                <div className="row">
+                  <div className="col-sm-7">
+                    <img src={data.image} alt="icon" />
+                  </div>
+                  <div className="col-sm-5">
+                    <p>{data.note_2}</p>
+                    <button>
+                      <a href={data.url === undefined ? '#' : data.url}>
+                        {data.text_action === undefined ? 'Đăng ký ngay' : data.text_action}
+                      </a>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            );
+          } else {
+            return (
+              <div className="block_imege_left mb-5" key={index}>
+                <h2 className="title mb-5">{data.note_1}</h2>
+                <div className="row">
+                  <div className="col-sm-5">
+                    <p>{data.note_2}</p>
+                    <button>
+                      <a href={data.url === undefined ? '#' : data.url}>
+                        {data.text_action === undefined ? 'Đăng ký ngay' : data.text_action}
+                      </a>
+                    </button>
+                  </div>
+                  <div className="col-sm-7">
+                    <img src={data.image} alt="icon" />
+                  </div>
+                </div>
+              </div>
+            );
+          }
+        })}
       </div>
     );
     onRender(element, indexElement, title, formState);
   };
+
   return (
     <React.Fragment>
       <FormGroup>
@@ -91,7 +116,7 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
       </FormGroup>
       {map(formState, (value, index) => {
         return (
-          <FormIcon
+          <FromImages
             key={index}
             index={index}
             value={value}
@@ -121,4 +146,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(Icon);
+)(Images);

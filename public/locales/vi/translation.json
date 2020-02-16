@@ -120,7 +120,10 @@
   },
   "block_page": {
     "title": "Khối",
-    "activeBock": "Kích hoạt khối"
+    "activeBock": "Kích hoạt khối",
+    "img_type": "Kiểu hiện thị của ảnh",
+    "img_right": "Ảnh hiển thị bên phải",
+    "img_left": "Ảnh hiển thị bên trái"
   },
   "approved": {
     "approved_page": "Duyệt Trang",
@@ -210,7 +213,7 @@
     "Pinterest": "Pinterest",
     "GooglePlus": "Google Plus",
     "Youtube": "Youtube",
-    "footer":"Chân trang"
+    "footer": "Chân trang"
   },
   "errors": {
     "passworderror": "Mật khẩu buộc phải có tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt",
@@ -253,7 +256,7 @@
     "subject": "Chủ đề",
     "emailCc": "Gửi đến",
     "content": "Nội dung",
-    "active":"Kích hoạt"
+    "active": "Kích hoạt"
   },
   "block": {
     "image": {

@@ -55,54 +55,6 @@ function Page({ data, homeID, getPage, getHomeID, deletePage, expanstion, update
     expanstion(newData);
   };
 
-  // const click = (node, path) => {
-  //   setFormState(formState => ({
-  //     ...formState,
-  //     values: node
-  //   }));
-  //   setPageDetai(node);
-  //   let stateEdit = [];
-  //   let newContent = [];
-  //   let listBlock = [];
-  //   let mutileImage = [];
-  //   let mutileEditor = [];
-  //   let singerImage = [];
-  //   map(node.pageBlocks, (values, index) => {
-  //     let content = JSON.parse(values.content);
-  //     newContent.push(content);
-  //     let block = values.blocks;
-  //     let blockValue = block.blockValues;
-  //     let type = null;
-  //     if (blockValue[0] !== undefined) {
-  //       type = blockValue[0].type_id;
-  //     }
-  //     if (type === 4) {
-  //       content.forEach(data => mutileEditor.push({ ...data, id: values.id }));
-  //     }
-  //     if (type === 9) {
-  //       content.forEach(data => mutileImage.push({ ...data, id: values.id }));
-  //     }
-  //     if (type === 10) {
-  //       content.forEach(data => singerImage.push({ ...data, id: values.id }));
-  //     }
-  //     listBlock.push({ ...values.blocks, id: values.id, content: values.content, title: values.title });
-
-  //     stateEdit = [
-  //       ...stateEdit,
-  //       { ...content, id: values.id, id_page: values.id_page, id_block: values.blocks.id, title: values.title }
-  //     ];
-  //   });
-  //   setMutileImage(mutileImage);
-  //   setMutileEditor(mutileEditor);
-  //   setSingerImage(singerImage);
-  //   setFormBlock(stateEdit);
-  //   setContentData([...newContent]);
-  //   setFormEdit([...stateEdit]);
-  //   setListBlock(listBlock);
-  //   setAddChildrenActive(false);
-  //   setDeleteActive(true);
-  //   setPageDetai(node);
-  // };
   const clickDelete = (node, path) => {
     setPageID(node.id);
     setIsOpen(!isOpen);
