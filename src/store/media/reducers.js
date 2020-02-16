@@ -21,7 +21,8 @@ const Images = (state = initialState, action) => {
           path: values.path,
           size: values.size,
           name: values.name,
-          url: values.url
+          url: values.url,
+          thumbnail_url: values.url
         })),
         ListFiles: action.data
       };

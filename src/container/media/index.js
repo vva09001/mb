@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MediaActions } from '../../store/actions';
 import { connect } from 'react-redux';
-import FileBrowser from 'react-keyed-file-browser';
+import FileBrowser, { FileRenderers, FolderRenderers, Groupers, Icons } from 'react-keyed-file-browser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import MediaDetail from '../../components/Media';
@@ -44,6 +44,7 @@ function Media({
 }) {
   const [isFolder, setIsFolder] = useState(true);
   const [formState, setFormState] = useState([]);
+  const [thumnail, setThumnail] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -120,9 +121,9 @@ function Media({
     setIsFolder(false);
     getPathFolder(key);
   };
-  
+
   window.__isReactDndBackendSetUp = false;
-  
+
   return (
     <React.Fragment>
       <h4>{t('Media')}</h4>
@@ -140,7 +141,7 @@ function Media({
               {t('UploadFile')}
             </Button>
           </div>
-          <div style={{ paddingBottom: 10 }}>
+          <div style={{ paddingBottom: 10, paddingRight: 10 }}>
             <Button
               color={'danger'}
               onClick={() => {
@@ -148,6 +149,16 @@ function Media({
               }}
             >
               {t('DeleteFiles')}
+            </Button>
+          </div>
+          <div style={{ paddingBottom: 10 }}>
+            <Button
+              color={'info'}
+              onClick={() => {
+                setThumnail(!thumnail);
+              }}
+            >
+              {t('ListView')}
             </Button>
           </div>
         </Row>
@@ -174,7 +185,9 @@ function Media({
             onSelectFolder={handleFolder}
             onDeleteFile={handleDeleteFile}
             onRenameFile={handleRenameFile}
+            fileRenderer={thumnail === true ? FileRenderers.ListThumbnailFile : FileRenderers.TableFile}
             detailRenderer={MediaDetail}
+            renderStyle={thumnail === true ? 'list' : 'table'}
           />
         </div>
       </div>
