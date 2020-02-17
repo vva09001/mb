@@ -49,6 +49,7 @@
   "SeleteImage": "Chọn ảnh",
   "acceptPage": "Trang chờ duyệt",
   "acceptNew": "Tin chờ duyệt",
+  "Limit": "Giới hạn",
   "customer": {
     "personal": "Khách hàng cá nhân",
     "enterprise": "Khách hàng doanh nghiệp",
@@ -222,7 +223,8 @@
     "create": "Tạo không thành công, kiểm tra lại các trường",
     "edit": "Chỉnh sửa không thành công, kiểm tra lại các trường",
     "minone": "Trường này cần chọn ít nhất một giá trị",
-    "minallow": "Trường này cần chọn ít nhất một quyền là cho phép"
+    "minallow": "Trường này cần chọn ít nhất một quyền là cho phép",
+    "limit": "Không đủ số lượng bài viết"
   },
   "slider": {
     "createslider": "Tạo Slider",

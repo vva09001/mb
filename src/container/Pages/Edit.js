@@ -4,22 +4,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images } from 'components/element';
+import { Icon, Images, News } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
-import { PageActions } from '../../store/actions';
+import { PageActions, CategoryActions, NewActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const Proptype = {
   detail: Proptypes.array,
+  listCategory: Proptypes.array,
+  listNews: Proptypes.array,
+  getCategory: Proptypes.func,
+  getNewByCategoryID: Proptypes.func,
   getDetailById: Proptypes.func,
   deleteBlock: Proptypes.func,
   pageEdit: Proptypes.func
 };
 
-function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
+function BlockElement({
+  detail,
+  listCategory,
+  listNew,
+  getCategory,
+  getNewByCategoryID,
+  getDetailById,
+  deleteBlock,
+  pageEdit
+}) {
   const [formState, setFormState] = useState({ values: {} });
   const [pageBlock, setPageBlock] = useState([]);
   const [isOpen, setIsOpen] = useState(null);
@@ -28,7 +41,8 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
 
   useEffect(() => {
     getDetailById(id);
-  }, [getDetailById, id]);
+    getCategory();
+  }, [getDetailById, id, getCategory]);
 
   useEffect(() => {
     let menuID = 0;
@@ -82,6 +96,10 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
     setPageBlock(data);
   };
 
+  const getNewsByCategoryID = value => {
+    getNewByCategoryID(value);
+  };
+
   const removeBlock = (id_block, index) => {
     if (id_block !== 0) {
       deleteBlock(id, id_block);
@@ -89,6 +107,7 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
     let data = filter(pageBlock, (item, itemIndex) => itemIndex !== index);
     setPageBlock(data);
   };
+
   const onSubmit = event => {
     event.preventDefault();
     let body = {
@@ -134,6 +153,19 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
                         <Images onRender={onRender} key={index} indexElement={index} data={data} />
                       </ListGroupItem>
                     )}
+                    {data.name === 'Block News' && (
+                      <ListGroupItem>
+                        <News
+                          onRender={onRender}
+                          key={index}
+                          indexElement={index}
+                          listCategory={listCategory}
+                          listNew={listNew}
+                          getNewsByCategoryID={getNewsByCategoryID}
+                          data={data}
+                        />
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Collapse>
               </div>
@@ -147,14 +179,18 @@ function BlockElement({ detail, getDetailById, deleteBlock, pageEdit }) {
 
 const mapStateToProps = state => {
   return {
-    detail: state.PageReducer.detail
+    detail: state.PageReducer.detail,
+    listCategory: state.CategoryReducer.listOption,
+    listNew: state.NewReducer.listNewByCategory
   };
 };
 
 const mapDispatchToProps = {
   getDetailById: PageActions.getPageByID,
   pageEdit: PageActions.EditPages,
-  deleteBlock: PageActions.detelePageBlockAction
+  deleteBlock: PageActions.detelePageBlockAction,
+  getCategory: CategoryActions.getCategoryAction,
+  getNewByCategoryID: NewActions.getNewByCategory
 };
 
 BlockElement.propTypes = Proptype;

@@ -125,22 +125,11 @@ function* getNewsByCategorySaga() {
     try {
       const res = yield getNewByCategoryID(id);
       if (res.status === 200) {
-        // value: 'AL', label: 'Alabama'
         let data = res.data.map(news => {
           return {
             ...news,
             label: news.title,
-            value: JSON.stringify({
-              categoryID: id,
-              newsID: news.newsId,
-              name: news.title,
-              url: news.url,
-              description: news.shortDescription,
-              image:
-                news.base_image === null
-                  ? `https://th2dev.mangoads.com.vn/themes/storefront/public/images/image.svg?v=5e12e47624638`
-                  : news.base_image
-            })
+            value: news.newsId
           };
         });
         yield put({ type: actions.GET_NEW_BY_CATEGORY_RESPONSE, data: data });
