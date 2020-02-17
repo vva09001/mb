@@ -168,7 +168,7 @@ function CreateMenusItem({
   const handleError = async () => {
     var name = await triggerValidation('name');
     if (name === false) Error(t('errors.create'));
-    if (formState.values.type === undefined || formState.values.type === 0)
+    if (formState.values.type === undefined || formState.values.type === '0')
       setStatus(status => ({
         ...status,
         type: true
@@ -179,7 +179,7 @@ function CreateMenusItem({
         type: false
       }));
     }
-    if (formState.values.targetId === undefined || formState.values.targetId === '1')
+    if (formState.values.targetId === undefined || formState.values.targetId === '0')
       setStatus(status => ({
         ...status,
         targetId: true

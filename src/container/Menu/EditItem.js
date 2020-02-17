@@ -356,7 +356,7 @@ function EditMenusItem({
               <Label for="exampleSelect">{t('menu.Target')}</Label>
               <Input type="select" name="target" value={formState.values.target} onChange={handleChange}>
                 <option value={0}>{t('menu.Select')}</option>
-                <option value={1}>{t('menu.SameTab')}b</option>
+                <option value={1}>{t('menu.SameTab')}</option>
                 <option value={2}>{t('menu.NewTab')}</option>
               </Input>
               {status.target && <span style={{ color: 'red' }}>{t('errors.minone')}</span>}
