@@ -1,31 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images } from 'components/element';
+import { Icon, Images, News } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
-import { PageActions } from '../../store/actions';
+import { PageActions, CategoryActions, NewActions } from '../../store/actions';
 import Proptypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const Proptype = {
+  listCategory: Proptypes.array,
+  listNews: Proptypes.array,
+  getCategory: Proptypes.func,
+  getNewByCategoryID: Proptypes.func,
   pageCreate: Proptypes.func
 };
 
-function BlockElement({ pageCreate }) {
+function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, pageCreate }) {
   const [formState, setFormState] = useState({ values: {} });
   const [pageBlock, setPageBlock] = useState([]);
   const [isOpen, setIsOpen] = useState(null);
 
   const { id } = useParams();
 
+  useEffect(() => {
+    getCategory();
+  }, [getCategory]);
+
   const handleChange = event => {
     event.persist();
-
     setFormState(formState => ({
       ...formState,
       values: {
@@ -46,6 +53,10 @@ function BlockElement({ pageCreate }) {
     }));
   };
 
+  const getNewsByCategoryID = value => {
+    getNewByCategoryID(value);
+  };
+
   const onRender = (element, indexElement, title, conent) => {
     let convertElement = ReactDOMServer.renderToString(element);
     let data = map(pageBlock, (value, index) => {
@@ -60,6 +71,7 @@ function BlockElement({ pageCreate }) {
         };
       }
     });
+    console.log(convertElement);
     setPageBlock(data);
   };
 
@@ -113,6 +125,18 @@ function BlockElement({ pageCreate }) {
                         <Images onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>
                     )}
+                    {data.name === 'Block News' && (
+                      <ListGroupItem>
+                        <News
+                          onRender={onRender}
+                          key={index}
+                          indexElement={index}
+                          listCategory={listCategory}
+                          listNew={listNew}
+                          getNewsByCategoryID={getNewsByCategoryID}
+                        />
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Collapse>
               </div>
@@ -124,13 +148,22 @@ function BlockElement({ pageCreate }) {
   );
 }
 
+const mapStateToProps = state => {
+  return {
+    listCategory: state.CategoryReducer.listOption,
+    listNew: state.NewReducer.listNewByCategory
+  };
+};
+
 const mapDispatchToProps = {
-  pageCreate: PageActions.AddPages
+  pageCreate: PageActions.AddPages,
+  getCategory: CategoryActions.getCategoryAction,
+  getNewByCategoryID: NewActions.getNewByCategory
 };
 
 BlockElement.propTypes = Proptype;
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(BlockElement);

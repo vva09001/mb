@@ -10,6 +10,10 @@ const data = [
       {
         name: 'Block Images',
         component: 'Block Images'
+      },
+      {
+        name: 'Block News',
+        component: 'Block News'
       }
     ]
   }

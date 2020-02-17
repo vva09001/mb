@@ -47,6 +47,7 @@
   "cancel": "Cancel",
   "questionConfirm": "Are you sure you want to delete ?",
   "SeleteImage": "Selete Image",
+  "Limit": "Limit",
   "customer": {
     "personal": "Personal customers",
     "enterprise": "Enterprise customers",
@@ -193,7 +194,8 @@
     "create": "Creating failed, check the fields again",
     "edit": "Editting failed, check the fields again",
     "minone": "This field needs to select at least one value",
-    "minallow": "This field needs to choose at least one allow permission"
+    "minallow": "This field needs to choose at least one allow permission",
+    "limit": "Insufficient number of posts"
   },
   "slider": {
     "createslider": "Create Slider",
