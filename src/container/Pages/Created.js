@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images, News } from 'components/element';
+import { Icon, Images, News, Post } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -128,6 +128,18 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
                     {data.name === 'Block News' && (
                       <ListGroupItem>
                         <News
+                          onRender={onRender}
+                          key={index}
+                          indexElement={index}
+                          listCategory={listCategory}
+                          listNew={listNew}
+                          getNewsByCategoryID={getNewsByCategoryID}
+                        />
+                      </ListGroupItem>
+                    )}
+                    {data.name === 'Single Post' && (
+                      <ListGroupItem>
+                        <Post
                           onRender={onRender}
                           key={index}
                           indexElement={index}

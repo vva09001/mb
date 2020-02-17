@@ -14,7 +14,8 @@ const data = [
       {
         name: 'Block News',
         component: 'Block News'
-      }
+      },
+      { name: 'Single Post', component: 'Single Post' }
     ]
   }
 ];

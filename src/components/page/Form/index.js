@@ -25,7 +25,7 @@ const PropsType = {
   listMenu: PropTypes.array,
   imageSeletedata: PropTypes.object,
   formState: PropTypes.object,
-  children: PropTypes.func,
+  children: PropTypes.node,
   getListTags: PropTypes.func,
   getGroup: PropTypes.func,
   pageCreate: PropTypes.func,

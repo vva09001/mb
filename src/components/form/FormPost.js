@@ -8,7 +8,6 @@ import Proptypes from 'prop-types';
 const Proptype = {
   value: Proptypes.object,
   errors: Proptypes.bool,
-  errorLimit: Proptypes.bool,
   handleChange: Proptypes.func,
   removeBlock: Proptypes.func,
   handleImage: Proptypes.func,
@@ -18,8 +17,6 @@ const Proptype = {
 function FormNews({
   value,
   errors,
-  errorLimit,
-  errorNews,
   listCategory,
   listNew,
   handleChange,
@@ -38,17 +35,6 @@ function FormNews({
           value={value.title === undefined ? '' : value.title}
           onChange={event => handleChange(event)}
         />
-      </FormGroup>
-      <FormGroup>
-        <Label>{t('Limit')}</Label>
-        <Input
-          type="number"
-          name="limit"
-          value={value.limit === undefined ? '' : value.limit}
-          onChange={event => handleChange(event)}
-        />
-        {errors && <span style={{ color: 'red' }}>{t('errors.limit')}</span>}
-        {errorLimit && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
       </FormGroup>
       <FormGroup>
         <Label>{t('category')}</Label>
@@ -75,10 +61,9 @@ function FormNews({
           closeMenuOnSelect={false}
           value={value.news === undefined ? '' : value.news}
           options={listNew}
-          isMulti
           onChange={event => handleChangeNew(event)}
         />
-        {errorNews && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
+        {errors && <span style={{ color: 'red' }}>{t('errors.required')}</span>}
       </FormGroup>
     </Form>
   );

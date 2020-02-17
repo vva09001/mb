@@ -29,7 +29,12 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
       {index === 0 && (
         <div>
           <Label>{t('block.image.title')}</Label>
-          <Input type="text" name="title" value={value.title} onChange={event => handleChange(event, index)} />
+          <Input
+            type="text"
+            name="title"
+            value={value.title === undefined ? '' : value.title}
+            onChange={event => handleChange(event, index)}
+          />
         </div>
       )}
       <div className="form-img mt-3">
@@ -43,15 +48,30 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
           <div className="input_wapper">
             <div>
               <Label>{t('block.image.title')}</Label>
-              <Input type="text" name="note_1" value={value.note_1} onChange={event => handleChange(event, index)} />
+              <Input
+                type="text"
+                name="note_1"
+                value={value.note_1 === undefined ? '' : value.note_1}
+                onChange={event => handleChange(event, index)}
+              />
             </div>
             <div>
               <Label>{t('block.image.description')}</Label>
-              <Input type="text" name="note_2" value={value.note_2} onChange={event => handleChange(event, index)} />
+              <Input
+                type="text"
+                name="note_2"
+                value={value.note_2 === undefined ? '' : value.note_2}
+                onChange={event => handleChange(event, index)}
+              />
             </div>
             <div>
               <Label>{t('block.image.learn_more')}</Label>
-              <Input type="text" name="note_3" value={value.note_3} onChange={event => handleChange(event, index)} />
+              <Input
+                type="text"
+                name="note_3"
+                value={value.note_3 === undefined ? '' : value.note_3}
+                onChange={event => handleChange(event, index)}
+              />
             </div>
           </div>
           <div className="input_wapper">
@@ -60,20 +80,25 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
               <Input
                 type="text"
                 name="text_action"
-                value={value.text_action}
+                value={value.text_action === undefined ? '' : value.text_action}
                 onChange={event => handleChange(event, index)}
               />
             </div>
             <div>
               <Label>{t('block.image.url')}</Label>
-              <Input type="text" name="url" value={value.url} onChange={event => handleChange(event, index)} />
+              <Input
+                type="text"
+                name="url"
+                value={value.url === undefined ? '' : value.url}
+                onChange={event => handleChange(event, index)}
+              />
             </div>
             <div>
               <Label>{t('block.image.video_url')}</Label>
               <Input
                 type="text"
                 name="video_url"
-                value={value.video_url}
+                value={value.video_url === undefined ? '' : value.video_url}
                 onChange={event => handleChange(event, index)}
               />
             </div>
