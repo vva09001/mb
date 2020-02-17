@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images, News, Post } from 'components/element';
+import { Icon, Images, News, Post, Repeat } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -81,6 +81,7 @@ function BlockElement({
 
   const onRender = (element, indexElement, title, conent) => {
     let convertElement = ReactDOMServer.renderToString(element);
+    console.log(convertElement);
     let data = map(pageBlock, (value, index) => {
       if (indexElement !== index) {
         return value;
@@ -177,6 +178,11 @@ function BlockElement({
                           getNewsByCategoryID={getNewsByCategoryID}
                           data={data}
                         />
+                      </ListGroupItem>
+                    )}
+                    {data.name === 'Repeat' && (
+                      <ListGroupItem>
+                        <Repeat onRender={onRender} key={index} indexElement={index} data={data} />
                       </ListGroupItem>
                     )}
                   </ListGroup>

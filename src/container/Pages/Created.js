@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images, News, Post } from 'components/element';
+import { Icon, Images, News, Post, Repeat } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -147,6 +147,11 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
                           listNew={listNew}
                           getNewsByCategoryID={getNewsByCategoryID}
                         />
+                      </ListGroupItem>
+                    )}
+                    {data.name === 'Repeat' && (
+                      <ListGroupItem>
+                        <Repeat onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>
                     )}
                   </ListGroup>
