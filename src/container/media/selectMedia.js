@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MediaActions } from '../../store/actions';
 import { connect } from 'react-redux';
-import FileBrowser from 'react-keyed-file-browser';
+import FileBrowser, { FileRenderers } from 'react-keyed-file-browser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages, faFolderMinus, faFolderOpen, faEdit, faTimes, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import Notthing from '../../components/Media/nothing';
 import { useTranslation } from 'react-i18next';
 import { map } from 'lodash';
-import { Button } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 
 const PropsType = {
   data: PropTypes.array,
@@ -36,6 +36,7 @@ function SelectMedia({
 }) {
   const [formState, setFormState] = useState([]);
   const [isFolder, setIsFolder] = useState(true);
+  const [thumnail, setThumnail] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -84,35 +85,51 @@ function SelectMedia({
       <h4>{t('Media')}</h4>
       <input type="file" id="file" style={{ display: 'none' }} onChange={handleChange} multiple />
       <div style={{ backgroundColor: 'white', maxHeight: '500px', overflow: 'auto' }}>
-        <div style={{ paddingBottom: 10, paddingRight: 10 }}>
-          <Button
-            color={'primary'}
-            onClick={() => {
-              document.getElementById('file').click();
+        <Row>
+          <div style={{ paddingBottom: 10, paddingRight: 10 }}>
+            <Button
+              color={'primary'}
+              onClick={() => {
+                document.getElementById('file').click();
+              }}
+              disabled={isFolder}
+            >
+              {t('UploadFile')}
+            </Button>
+          </div>
+          <div style={{ paddingBottom: 10 }}>
+            <Button
+              color={'info'}
+              onClick={() => {
+                setThumnail(!thumnail);
+              }}
+            >
+              {t('ListView')}
+            </Button>
+          </div>
+        </Row>
+        <div>
+          <FileBrowser
+            files={formState}
+            icons={{
+              File: <FontAwesomeIcon icon={faEdit} />,
+              Image: <FontAwesomeIcon icon={faImages} />,
+              PDF: <FontAwesomeIcon icon={faFilePdf} />,
+              Rename: <FontAwesomeIcon icon={faEdit} />,
+              Folder: <FontAwesomeIcon icon={faFolderMinus} />,
+              FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
+              Delete: <FontAwesomeIcon icon={faTimes} />,
+              Loading: <FontAwesomeIcon icon={faEdit} />
             }}
-            disabled={isFolder}
-          >
-            {t('UploadFile')}
-          </Button>
+            onSelectFile={handleBrowse}
+            detailRenderer={Notthing}
+            onCreateFolder={handleCreateFolder}
+            onSelectFolder={handleFolder}
+            onRenameFolder={handleRenameFolder}
+            fileRenderer={thumnail === true ? FileRenderers.ListThumbnailFile : FileRenderers.TableFile}
+            renderStyle={thumnail === true ? 'list' : 'table'}
+          />
         </div>
-        <FileBrowser
-          files={formState}
-          icons={{
-            File: <FontAwesomeIcon icon={faEdit} />,
-            Image: <FontAwesomeIcon icon={faImages} />,
-            PDF: <FontAwesomeIcon icon={faFilePdf} />,
-            Rename: <FontAwesomeIcon icon={faEdit} />,
-            Folder: <FontAwesomeIcon icon={faFolderMinus} />,
-            FolderOpen: <FontAwesomeIcon icon={faFolderOpen} />,
-            Delete: <FontAwesomeIcon icon={faTimes} />,
-            Loading: <FontAwesomeIcon icon={faEdit} />
-          }}
-          onSelectFile={handleBrowse}
-          detailRenderer={Notthing}
-          onCreateFolder={handleCreateFolder}
-          onSelectFolder={handleFolder}
-          onRenameFolder={handleRenameFolder}
-        />
       </div>
     </React.Fragment>
   );
