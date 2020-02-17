@@ -94,7 +94,7 @@ function CreateMenusItem({
         }));
       }
     if (event.target.name === 'targetId')
-      if (event.target.value !== '1')
+      if (event.target.value !== '0')
         setStatus(status => ({
           ...status,
           targetId: false
