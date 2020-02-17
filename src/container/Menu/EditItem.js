@@ -241,9 +241,8 @@ function EditMenusItem({
         (formState.values.type === '3' && status.categoryNewId === false) ||
         (formState.values.type === '4' && status.url === false))
     ) {
-      console.log(formState.values);
-      // editMenuItem(formState.values);
-      // history.push('/menu/edit');
+      editMenuItem(formState.values);
+      history.push('/menu/edit');
     } else Error(t('errors.edit'));
   };
 
