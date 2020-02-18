@@ -93,6 +93,7 @@ function SelectMedia({
                 document.getElementById('file').click();
               }}
               disabled={isFolder}
+              style={{marginLeft: 16}}
             >
               {t('UploadFile')}
             </Button>

@@ -26,7 +26,7 @@ function ModalMedia({ setState }) {
       <Button size="sm" color="primary" onClick={openModal}>
         {t('SeleteImage')}
       </Button>
-      <Modal isOpen={modalIsOpen} toggle={closeModal} size="lg">
+      <Modal isOpen={modalIsOpen} toggle={closeModal} size="lg" className='restyleModal'>
         <ModalBody>
           <SeleteMedia />
         </ModalBody>
