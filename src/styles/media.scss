@@ -102,6 +102,7 @@ div.rendered-react-keyed-file-browser div.action-bar {
     // list-style: none;
     // padding: 0;
     display: inline-table;
+    width: 140px;
     // gap: 4px;
     // width: 10%;
     // height: 10%;
@@ -185,4 +186,6 @@ div.rendered-react-keyed-file-browser div.action-bar {
   
   div.rendered-file-browser p.loading, div.rendered-file-browser p.empty {
     margin: 16px 0; }
-  
+    p {
+        margin: 0;
+     }
