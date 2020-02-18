@@ -61,13 +61,21 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
             <div className="col-sm-4 mb-5" key={index}>
               <div className="icon_items">
                 <div className="icon">
-                  <img src={data.image} alt="icon" className="mb-3" />
+                  <a href={data.url}>
+                    <img src={data.image} alt="icon" className="mb-3" />
+                  </a>
                 </div>
                 <div className="icon_title">
-                  <p>{data.note_1}</p>
+                  <a href={data.url}>
+                    <p>{data.note_1}</p>
+                  </a>
                 </div>
                 <div className="icon_content">
-                  <p>{data.note_2}</p>
+                  <p className="text_content">{data.note_2}</p>
+                  <p className="content_sub">{data.note_3}</p>
+                </div>
+                <div className="icon_button">
+                  <a href={data.url}>{data.text_action}</a>
                 </div>
               </div>
             </div>
