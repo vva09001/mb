@@ -40,13 +40,12 @@ function FormRepeat({ value, index, handleChange, handleEditor, removeBlock, onS
       <FormGroup>
         <CKEditor
           editor={ClassicEditor}
-          data={value.editor}
+          data={value.description}
           onChange={(event, editor) => {
             const editorData = editor.getData();
             handleEditor(editorData, index);
           }}
           onInit={editor => {
-            editor.ui.view.editable.element.style.height = 'auto';
             editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
               return new UploadAdapter(loader);
             };

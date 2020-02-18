@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { map, filter } from 'lodash';
 import { FormGroup, Label, Input, Button } from 'reactstrap';
 import { FormRepeat } from '../form';
-import ReactDOMServer from 'react-dom/server';
+import ReactHtmlParser from 'react-html-parser';
 
 function Repeat({ data, onRender, indexElement }) {
   const [formState, setFormState] = useState([{}]);
@@ -37,7 +37,7 @@ function Repeat({ data, onRender, indexElement }) {
       } else {
         return {
           ...value,
-          editor: editorData
+          description: editorData
         };
       }
     });
@@ -45,7 +45,7 @@ function Repeat({ data, onRender, indexElement }) {
   };
 
   const addElement = () => {
-    setFormState([...formState, {}]);
+    setFormState([...formState, { description: '' }]);
   };
   const removeBlock = index => {
     let data = filter(formState, (item, itemIndex) => itemIndex !== index);
@@ -59,7 +59,7 @@ function Repeat({ data, onRender, indexElement }) {
         {map(formState, (data, index) => {
           return (
             <div className="eidtor_content mb-5" key={index}>
-              {ReactDOMServer.renderToString(data.editor)}
+              {ReactHtmlParser(data.description)}
             </div>
           );
         })}
@@ -81,17 +81,19 @@ function Repeat({ data, onRender, indexElement }) {
         />
       </FormGroup>
       {map(formState, (value, index) => {
-        return (
-          <FormRepeat
-            key={index}
-            index={index}
-            value={value}
-            handleChange={handleChange}
-            handleEditor={handleEditor}
-            removeBlock={removeBlock}
-            onSave={onSave}
-          />
-        );
+        if (value.description !== undefined) {
+          return (
+            <FormRepeat
+              key={index}
+              index={index}
+              value={value}
+              handleChange={handleChange}
+              handleEditor={handleEditor}
+              removeBlock={removeBlock}
+              onSave={onSave}
+            />
+          );
+        }
       })}
       <div className="mt-3">
         <Button className="mr-2" onClick={addElement}>
