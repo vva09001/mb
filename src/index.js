@@ -12,7 +12,7 @@ import '../node_modules/noty/lib/themes/mint.css';
 import 'react-sortable-tree/style.css';
 import 'codemirror/lib/codemirror.css';
 import 'styles/index.scss';
-import '../node_modules/react-keyed-file-browser/dist/react-keyed-file-browser.css';
+// import '../node_modules/react-keyed-file-browser/dist/react-keyed-file-browser.css';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
