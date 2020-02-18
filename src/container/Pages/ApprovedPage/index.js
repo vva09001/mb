@@ -39,7 +39,6 @@ function AprrPages({ data, getPages, deletePages, getDetail, apprPages }) {
     getDetail(detail);
     history.push('/pages/approved');
   };
-  console.log(record);
   return (
     <React.Fragment>
       <h4>{t('approved.approved_page')}</h4>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Label, Input, Button } from 'reactstrap';
+import { Form, Label, Input, Button, FormGroup } from 'reactstrap';
 import ModalMedia from 'components/Media/ModalMedia';
 import IconNoImage from 'assets/img/mb/no_image.png';
 import { useTranslation } from 'react-i18next';
@@ -21,22 +21,39 @@ function FormIcon({ value, index, handleChange, handleImage, removeBlock, onSave
 
   return (
     <Form onSubmit={onSave}>
-      <div className="mt-2 mb-2" style={{ float: 'right' }}>
+      {index === 0 && (
+        <React.Fragment>
+          <FormGroup>
+            <Label>{t('block.image.title')}</Label>
+            <Input
+              type="text"
+              name="title"
+              value={value.title === undefined ? '' : value.title}
+              onChange={event => handleChange(event, index)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="template">{t('block_page.img_type')}</Label>
+            <Input
+              type="select"
+              name="type"
+              required
+              value={value.type === undefined ? 0 : value.type}
+              onChange={event => handleChange(event, index)}
+            >
+              <option value={0}>{t('select')}</option>
+              <option value={6}>{t('block_page.col_2')}</option>
+              <option value={4}>{t('block_page.col_3')}</option>
+              <option value={3}>{t('block_page.col_4')}</option>
+            </Input>
+          </FormGroup>
+        </React.Fragment>
+      )}
+      <FormGroup className="mt-2 mb-2" style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
         <Button onClick={() => removeBlock(index)}>
           <FontAwesomeIcon icon={faTrash} />
         </Button>
-      </div>
-      {index === 0 && (
-        <div>
-          <Label>{t('block.image.title')}</Label>
-          <Input
-            type="text"
-            name="title"
-            value={value.title === undefined ? '' : value.title}
-            onChange={event => handleChange(event, index)}
-          />
-        </div>
-      )}
+      </FormGroup>
       <div className="form-img mt-3">
         <div>
           <div className="block_image mb-2">

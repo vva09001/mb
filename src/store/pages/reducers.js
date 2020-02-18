@@ -5,7 +5,8 @@ const initialState = {
   data: [],
   detail: {},
   homeID: null,
-  PagePagination: {}
+  PagePagination: {},
+  listPageActive: []
 };
 
 const Pages = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const Pages = (state = initialState, action) => {
       return {
         ...state,
         data: action.data
+      };
+    case Actions.GET_PAGE_BLOCK_RESPONSE:
+      return {
+        ...state,
+        listPageActive: action.data
       };
     case Actions.GET_ALL_PAGES_RESPONSE:
       return {

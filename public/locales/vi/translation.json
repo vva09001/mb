@@ -13,7 +13,7 @@
   "description": "Mô tả",
   "imgDescription": "Ảnh mô tả",
   "baseImages": "Ảnh đại diện",
-  "miniImages": "Ản đại diện nhỏ",
+  "miniImages": "Ảnh đại diện nhỏ",
   "category": "Danh mục",
   "general": "Chung",
   "seo": "SEO",
@@ -122,9 +122,12 @@
   "block_page": {
     "title": "Khối",
     "activeBock": "Kích hoạt khối",
-    "img_type": "Kiểu hiện thị của ảnh",
+    "img_type": "Kiểu hiện thị",
     "img_right": "Ảnh hiển thị bên phải",
-    "img_left": "Ảnh hiển thị bên trái"
+    "img_left": "Ảnh hiển thị bên trái",
+    "col_2": "Kiểu hiển thị 2 cột",
+    "col_3": "Kiểu hiển thị 3 cột",
+    "col_4": "Kiểu hiển thị 4 cột"
   },
   "approved": {
     "approved_page": "Duyệt Trang",

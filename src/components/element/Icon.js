@@ -57,29 +57,31 @@ function Icon({ data, onRender, imageSeletedata, indexElement }) {
       <div className="mutile_icon">
         <p className="title">{formState[0].title}</p>
         <div className="row">
-          {map(formState, (data, index) => (
-            <div className="col-sm-4 mb-5" key={index}>
-              <div className="icon_items">
-                <div className="icon">
-                  <a href={data.url}>
-                    <img src={data.image} alt="icon" className="mb-3" />
-                  </a>
-                </div>
-                <div className="icon_title">
-                  <a href={data.url}>
-                    <p>{data.note_1}</p>
-                  </a>
-                </div>
-                <div className="icon_content">
-                  <p className="text_content">{data.note_2}</p>
-                  <p className="content_sub">{data.note_3}</p>
-                </div>
-                <div className="icon_button">
-                  <a href={data.url}>{data.text_action}</a>
+          {map(formState, (data, index) => {
+            return (
+              <div className={`col-sm-${formState[0].type} mb-5`} key={index}>
+                <div className="icon_items">
+                  <div className="icon">
+                    <a href={data.url}>
+                      <img src={data.image} alt="icon" className="mb-3" />
+                    </a>
+                  </div>
+                  <div className="icon_title">
+                    <a href={data.url}>
+                      <p>{data.note_1}</p>
+                    </a>
+                  </div>
+                  <div className="icon_content">
+                    <p className="text_content">{data.note_2}</p>
+                    <p className="content_sub">{data.note_3}</p>
+                  </div>
+                  <div className="icon_button">
+                    <a href={data.url}>{data.text_action}</a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );

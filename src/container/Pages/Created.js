@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images, News, Post, Repeat } from 'components/element';
+import { Icon, Images, News, Post, Repeat, Product } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -15,12 +15,14 @@ import { connect } from 'react-redux';
 const Proptype = {
   listCategory: Proptypes.array,
   listNews: Proptypes.array,
+  listPageActive: Proptypes.array,
+  getPage: Proptypes.func,
   getCategory: Proptypes.func,
   getNewByCategoryID: Proptypes.func,
   pageCreate: Proptypes.func
 };
 
-function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, pageCreate }) {
+function BlockElement({ listPageActive, listCategory, listNew, getPage, getCategory, getNewByCategoryID, pageCreate }) {
   const [formState, setFormState] = useState({ values: {} });
   const [pageBlock, setPageBlock] = useState([]);
   const [isOpen, setIsOpen] = useState(null);
@@ -29,7 +31,8 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
 
   useEffect(() => {
     getCategory();
-  }, [getCategory]);
+    getPage();
+  }, [getCategory, getPage]);
 
   const handleChange = event => {
     event.persist();
@@ -71,7 +74,6 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
         };
       }
     });
-    console.log(convertElement);
     setPageBlock(data);
   };
 
@@ -154,6 +156,11 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
                         <Repeat onRender={onRender} key={index} indexElement={index} />
                       </ListGroupItem>
                     )}
+                    {data.name === 'Product' && (
+                      <ListGroupItem>
+                        <Product onRender={onRender} key={index} indexElement={index} listPage={listPageActive} />
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Collapse>
               </div>
@@ -168,14 +175,16 @@ function BlockElement({ listCategory, listNew, getCategory, getNewByCategoryID, 
 const mapStateToProps = state => {
   return {
     listCategory: state.CategoryReducer.listOption,
-    listNew: state.NewReducer.listNewByCategory
+    listNew: state.NewReducer.listNewByCategory,
+    listPageActive: state.PageReducer.listPageActive
   };
 };
 
 const mapDispatchToProps = {
   pageCreate: PageActions.AddPages,
   getCategory: CategoryActions.getCategoryAction,
-  getNewByCategoryID: NewActions.getNewByCategory
+  getNewByCategoryID: NewActions.getNewByCategory,
+  getPage: PageActions.GetPages
 };
 
 BlockElement.propTypes = Proptype;

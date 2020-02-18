@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Row, Col, Collapse, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Form from '../../components/page/Form';
-import { Icon, Images, News, Post, Repeat } from 'components/element';
+import { Icon, Images, News, Post, Repeat, Product } from 'components/element';
 import { map, filter } from 'lodash';
 import { useParams } from 'react-router-dom';
 import ListGroups from 'components/listBlock';
@@ -16,6 +16,8 @@ const Proptype = {
   detail: Proptypes.array,
   listCategory: Proptypes.array,
   listNews: Proptypes.array,
+  listPageActive: Proptypes.array,
+  getPage: Proptypes.func,
   getCategory: Proptypes.func,
   getNewByCategoryID: Proptypes.func,
   getDetailById: Proptypes.func,
@@ -27,6 +29,8 @@ function BlockElement({
   detail,
   listCategory,
   listNew,
+  listPageActive,
+  getPage,
   getCategory,
   getNewByCategoryID,
   getDetailById,
@@ -42,7 +46,8 @@ function BlockElement({
   useEffect(() => {
     getDetailById(id);
     getCategory();
-  }, [getDetailById, id, getCategory]);
+    getPage();
+  }, [getDetailById, id, getCategory, getPage]);
 
   useEffect(() => {
     let menuID = 0;
@@ -81,7 +86,6 @@ function BlockElement({
 
   const onRender = (element, indexElement, title, conent) => {
     let convertElement = ReactDOMServer.renderToString(element);
-    console.log(convertElement);
     let data = map(pageBlock, (value, index) => {
       if (indexElement !== index) {
         return value;
@@ -185,6 +189,17 @@ function BlockElement({
                         <Repeat onRender={onRender} key={index} indexElement={index} data={data} />
                       </ListGroupItem>
                     )}
+                    {data.name === 'Product' && (
+                      <ListGroupItem>
+                        <Product
+                          onRender={onRender}
+                          key={index}
+                          indexElement={index}
+                          listPage={listPageActive}
+                          data={data}
+                        />
+                      </ListGroupItem>
+                    )}
                   </ListGroup>
                 </Collapse>
               </div>
@@ -200,7 +215,8 @@ const mapStateToProps = state => {
   return {
     detail: state.PageReducer.detail,
     listCategory: state.CategoryReducer.listOption,
-    listNew: state.NewReducer.listNewByCategory
+    listNew: state.NewReducer.listNewByCategory,
+    listPageActive: state.PageReducer.listPageActive
   };
 };
 
@@ -209,7 +225,8 @@ const mapDispatchToProps = {
   pageEdit: PageActions.EditPages,
   deleteBlock: PageActions.detelePageBlockAction,
   getCategory: CategoryActions.getCategoryAction,
-  getNewByCategoryID: NewActions.getNewByCategory
+  getNewByCategoryID: NewActions.getNewByCategory,
+  getPage: PageActions.GetPages
 };
 
 BlockElement.propTypes = Proptype;

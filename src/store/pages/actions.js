@@ -97,7 +97,9 @@ const Actions = {
   getPageByID: id => ({
     type: Actions.GET_PAGE_BY_ID_REQUEST,
     id
-  })
+  }),
+
+  GET_PAGE_BLOCK_RESPONSE: 'GET_PAGE_BLOCK_RESPONSE'
 };
 
 export default Actions;

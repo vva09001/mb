@@ -21,11 +21,6 @@ function FormRepeat({ value, index, handleChange, handleEditor, removeBlock, onS
   const { t } = useTranslation();
   return (
     <Form onSubmit={onSave}>
-      <FormGroup className="mt-2 mb-2" style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
-        <Button onClick={() => removeBlock(index)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </Button>
-      </FormGroup>
       {index === 0 && (
         <FormGroup>
           <Label>{t('block.image.title')}</Label>
@@ -37,6 +32,11 @@ function FormRepeat({ value, index, handleChange, handleEditor, removeBlock, onS
           />
         </FormGroup>
       )}
+      <FormGroup className="mt-2 mb-2" style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
+        <Button onClick={() => removeBlock(index)}>
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      </FormGroup>
       <FormGroup>
         <CKEditor
           editor={ClassicEditor}

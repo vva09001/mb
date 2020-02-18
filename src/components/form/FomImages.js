@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Label, Input, Button } from 'reactstrap';
+import { Form, Label, Input, Button, FormGroup } from 'reactstrap';
 import ModalMedia from 'components/Media/ModalMedia';
 import IconNoImage from 'assets/img/mb/no_image.png';
 import { useTranslation } from 'react-i18next';
@@ -21,13 +21,8 @@ function FomImages({ value, index, handleChange, handleImage, removeBlock, onSav
 
   return (
     <Form onSubmit={onSave}>
-      <div className="mt-2 mb-2" style={{ float: 'right' }}>
-        <Button onClick={() => removeBlock(index)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </Button>
-      </div>
       {index === 0 && (
-        <div>
+        <FormGroup>
           <Label>{t('block.image.title')}</Label>
           <Input
             type="text"
@@ -35,8 +30,13 @@ function FomImages({ value, index, handleChange, handleImage, removeBlock, onSav
             value={value.title === undefined ? '' : value.title}
             onChange={event => handleChange(event, index)}
           />
-        </div>
+        </FormGroup>
       )}
+      <FormGroup className="mt-2 mb-2" style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
+        <Button onClick={() => removeBlock(index)}>
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      </FormGroup>
       <Label for="template">{t('block_page.img_type')}</Label>
       <Input
         type="select"

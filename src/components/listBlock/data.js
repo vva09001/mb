@@ -16,7 +16,8 @@ const data = [
         component: 'Block News'
       },
       { name: 'Single Post', component: 'Single Post' },
-      { name: 'Repeat', component: 'Repeat' }
+      { name: 'Repeat', component: 'Repeat' },
+      { name: 'Product', component: 'Product' }
     ]
   }
 ];

@@ -32,6 +32,14 @@ function* getPagesSaga() {
             }));
         };
         data = nest(res.data);
+        let page_active = yield res.data
+          .filter(page => page.is_active === 1)
+          .map(item => ({
+            ...item,
+            label: item.name,
+            value: item.id
+          }));
+        yield put({ type: actions.GET_PAGE_BLOCK_RESPONSE, data: page_active });
         yield put({ type: actions.GET_PAGES_RESPONSE, data: data });
       } else {
         yield Error(res.message);

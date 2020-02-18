@@ -120,9 +120,12 @@
   "block_page": {
     "title": "Block",
     "activeBock": "Activate block",
-    "img_type": "Picture style displayed",
+    "img_type": "Picture style",
     "img_right": "Picture shown on the right",
-    "img_left": "Picture shown on the left"
+    "img_left": "Picture shown on the left",
+    "col_2": "2 column display style",
+    "col_3": "3 column display style",
+    "col_4": "4 column display style"
   },
   "approved": {
     "approved_page": "Page Accept",
