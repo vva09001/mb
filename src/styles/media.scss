@@ -99,13 +99,15 @@ div.rendered-react-keyed-file-browser div.action-bar {
       color: #fff; }
   
   div.rendered-file-browser div.files ul li {
-    list-style: none;
-    padding: 0;
-    display: -webkit-inline-box;
-    gap: 4px;
-    width: 10%;
-    height: 10%;
-    grid-template-columns: repeat(10, 1fr);}
+    // list-style: none;
+    // padding: 0;
+    display: inline-table;
+    // gap: 4px;
+    // width: 10%;
+    // height: 10%;
+    // grid-template-columns: repeat(auto-fit, 300px);
+    // grid-auto-rows: minmax(150px, auto);
+}
     div.rendered-file-browser div.files ul li.folder {
       grid-column: 1/4; }
       div.rendered-file-browser div.files ul li.folder > div.item {
